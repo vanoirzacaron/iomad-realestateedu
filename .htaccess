@@ -1,0 +1,3 @@
+php_value upload_max_filesize 20971520
+php_value post_max_size 20971520
+php_value max_execution_time 600
