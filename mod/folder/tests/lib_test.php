@@ -63,7 +63,7 @@ class lib_test extends \advanced_testcase {
      * Test folder_view
      * @return void
      */
-    public function test_folder_view(): void {
+    public function test_folder_view() {
         global $CFG;
 
         $CFG->enablecompletion = 1;
@@ -99,7 +99,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals(1, $completiondata->completionstate);
     }
 
-    public function test_folder_core_calendar_provide_event_action(): void {
+    public function test_folder_core_calendar_provide_event_action() {
         // Create the activity.
         $course = $this->getDataGenerator()->create_course();
         $folder = $this->getDataGenerator()->create_module('folder', array('course' => $course->id));
@@ -122,7 +122,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_folder_core_calendar_provide_event_action_for_non_user(): void {
+    public function test_folder_core_calendar_provide_event_action_for_non_user() {
         global $CFG;
 
         // Create a course.
@@ -149,7 +149,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_folder_core_calendar_provide_event_action_in_hidden_section(): void {
+    public function test_folder_core_calendar_provide_event_action_in_hidden_section() {
         // Create a course.
         $course = $this->getDataGenerator()->create_course();
 
@@ -176,7 +176,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_folder_core_calendar_provide_event_action_for_user(): void {
+    public function test_folder_core_calendar_provide_event_action_for_user() {
         // Create a course.
         $course = $this->getDataGenerator()->create_course();
 
@@ -207,7 +207,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_folder_core_calendar_provide_event_action_already_completed(): void {
+    public function test_folder_core_calendar_provide_event_action_already_completed() {
         global $CFG;
 
         $CFG->enablecompletion = 1;
@@ -238,7 +238,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_folder_core_calendar_provide_event_action_already_completed_for_user(): void {
+    public function test_folder_core_calendar_provide_event_action_already_completed_for_user() {
         global $CFG;
 
         $CFG->enablecompletion = 1;
@@ -307,7 +307,7 @@ class lib_test extends \advanced_testcase {
      * @param bool $hascapability if the user has the mod/folder:view capability
      * @param int $count The expected recent activities entries.
      */
-    public function test_folder_get_recent_mod_activity(int $forcedownload, bool $hascapability, int $count): void {
+    public function test_folder_get_recent_mod_activity(int $forcedownload, bool $hascapability, int $count) {
         global $USER, $DB;
 
         $this->resetAfterTest();
@@ -376,7 +376,7 @@ class lib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function folder_get_recent_mod_activity_provider(): array {
+    public static function folder_get_recent_mod_activity_provider(): array {
         return [
             'Teacher with force download' => [
                 'forcedownload' => 1,

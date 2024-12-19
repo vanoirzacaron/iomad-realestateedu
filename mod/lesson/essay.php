@@ -421,13 +421,13 @@ switch ($mode) {
 
                     // Different colors for all the states of an essay (graded, if sent, not graded)
                     if (!$essayinfo->graded) {
-                        $class = "badge bg-warning text-dark";
+                        $class = "badge badge-warning";
                         $status = get_string('notgraded', 'lesson');
                     } elseif (!$essayinfo->sent) {
-                        $class = "badge bg-success text-white";
+                        $class = "badge badge-success";
                         $status = get_string('graded', 'lesson');
                     } else {
-                        $class = "badge bg-success text-white";
+                        $class = "badge badge-success";
                         $status = get_string('sent', 'lesson');
                     }
                     $attributes = array('tabindex' => 0);

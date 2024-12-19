@@ -73,7 +73,7 @@ class navigationlib_test extends \advanced_testcase {
         $hiddendemo1->add('hiddendemo3', $inactiveurl, navigation_node::TYPE_COURSE, null, 'hiddendemo3', new pix_icon('i/course', ''))->display = false;
     }
 
-    public function test_node__construct(): void {
+    public function test_node__construct() {
         $this->setup_node();
 
         $fakeproperties = array(
@@ -91,7 +91,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertSame($fakeproperties['action'], $node->action);
     }
 
-    public function test_node_add(): void {
+    public function test_node_add() {
         $this->setup_node();
 
         // Add a node with all args set.
@@ -117,7 +117,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertSame($node3, $ref);
     }
 
-    public function test_node_add_before(): void {
+    public function test_node_add_before() {
         $this->setup_node();
 
         // Create 3 nodes.
@@ -140,7 +140,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertSame('testadd3', $keys[count($keys)-1]);
     }
 
-    public function test_node_add_class(): void {
+    public function test_node_add_class() {
         $this->setup_node();
 
         $node = $this->node->get('demo1');
@@ -152,23 +152,7 @@ class navigationlib_test extends \advanced_testcase {
         }
     }
 
-    /**
-     * Test the add_attribute method.
-     * @covers \navigation_node::add_attribute
-     */
-    public function test_node_add_attribute(): void {
-        $this->setup_node();
-
-        $node = $this->node->get('demo1');
-        $this->assertInstanceOf('navigation_node', $node);
-        if ($node !== false) {
-            $node->add_attribute('data-foo', 'bar');
-            $attribute = reset($node->attributes);
-            $this->assertEqualsCanonicalizing(['name' => 'data-foo', 'value' => 'bar'], $attribute);
-        }
-    }
-
-    public function test_node_check_if_active(): void {
+    public function test_node_check_if_active() {
         $this->setup_node();
 
         // First test the string urls
@@ -185,7 +169,7 @@ class navigationlib_test extends \advanced_testcase {
         }
     }
 
-    public function test_node_contains_active_node(): void {
+    public function test_node_contains_active_node() {
         $this->setup_node();
 
         // Demo5, and activity1 were set to active during setup.
@@ -203,7 +187,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertFalse($this->node->get('demo3')->get('demo4')->contains_active_node());
     }
 
-    public function test_node_find_active_node(): void {
+    public function test_node_find_active_node() {
         $this->setup_node();
 
         $activenode1 = $this->node->find_active_node();
@@ -217,7 +201,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertNotInstanceOf('navigation_node', $activenode2);
     }
 
-    public function test_node_find(): void {
+    public function test_node_find() {
         $this->setup_node();
 
         $node1 = $this->node->find('demo1', navigation_node::TYPE_COURSE);
@@ -230,7 +214,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertNotInstanceOf('navigation_node', $node4);
     }
 
-    public function test_node_find_expandable(): void {
+    public function test_node_find_expandable() {
         $this->setup_node();
 
         $expandable = array();
@@ -246,7 +230,7 @@ class navigationlib_test extends \advanced_testcase {
         }
     }
 
-    public function test_node_get(): void {
+    public function test_node_get() {
         $this->setup_node();
 
         $node1 = $this->node->get('demo1'); // Exists.
@@ -259,7 +243,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertFalse($node4);
     }
 
-    public function test_node_get_css_type(): void {
+    public function test_node_get_css_type() {
         $this->setup_node();
 
         $csstype1 = $this->node->get('demo3')->get_css_type();
@@ -273,7 +257,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertSame('type_container', $csstype4);
     }
 
-    public function test_node_make_active(): void {
+    public function test_node_make_active() {
         global $CFG;
         $this->setup_node();
 
@@ -285,7 +269,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertTrue($this->node->get('anode2')->isactive);
     }
 
-    public function test_node_remove(): void {
+    public function test_node_remove() {
         $this->setup_node();
 
         $remove1 = $this->node->add('child to remove 1', null, navigation_node::TYPE_CUSTOM, null, 'remove1');
@@ -324,7 +308,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertFalse($this->node->get('remove2'));
     }
 
-    public function test_node_remove_class(): void {
+    public function test_node_remove_class() {
         $this->setup_node();
 
         $this->node->add_class('testclass');
@@ -332,7 +316,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertNotContains('testclass', $this->node->classes);
     }
 
-    public function test_module_extends_navigation(): void {
+    public function test_module_extends_navigation() {
         $node = new exposed_global_navigation();
         // Create an initial tree structure to work with.
         $cat1 = $node->add('category 1', null, navigation_node::TYPE_CATEGORY, null, 'cat1');
@@ -358,7 +342,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertFalse($node->exposed_module_extends_navigation('test1'));
     }
 
-    public function test_navbar_prepend_and_add(): \moodle_page {
+    public function test_navbar_prepend_and_add() {
         global $PAGE;
         // Unfortunate hack needed because people use global $PAGE around the place.
         $PAGE->set_url('/');
@@ -402,13 +386,13 @@ class navigationlib_test extends \advanced_testcase {
      * @depends test_navbar_prepend_and_add
      * @param $node
      */
-    public function test_navbar_has_items(\moodle_page $page): void {
+    public function test_navbar_has_items(\moodle_page $page) {
         $this->resetAfterTest();
 
         $this->assertTrue($page->navbar->has_items());
     }
 
-    public function test_cache__get(): void {
+    public function test_cache__get() {
         $cache = new navigation_cache('unittest_nav');
         $cache->anysetvariable = true;
 
@@ -416,7 +400,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertEquals($cache->notasetvariable, null);
     }
 
-    public function test_cache__set(): void {
+    public function test_cache__set() {
         $cache = new navigation_cache('unittest_nav');
         $cache->anysetvariable = true;
 
@@ -425,7 +409,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertSame('Sam Hemelryk', $cache->myname);
     }
 
-    public function test_cache_cached(): void {
+    public function test_cache_cached() {
         $cache = new navigation_cache('unittest_nav');
         $cache->anysetvariable = true;
 
@@ -433,7 +417,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertFalse($cache->cached('notasetvariable'));
     }
 
-    public function test_cache_clear(): void {
+    public function test_cache_clear() {
         $cache = new navigation_cache('unittest_nav');
         $cache->anysetvariable = true;
 
@@ -443,7 +427,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertFalse($cache->cached('anysetvariable'));
     }
 
-    public function test_cache_set(): void {
+    public function test_cache_set() {
         $cache = new navigation_cache('unittest_nav');
         $cache->anysetvariable = true;
 
@@ -452,7 +436,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertEquals($cache->software, 'Moodle');
     }
 
-    public function test_setting___construct(): settings_navigation {
+    public function test_setting___construct() {
         global $PAGE, $SITE;
 
         $this->resetAfterTest(false);
@@ -470,7 +454,7 @@ class navigationlib_test extends \advanced_testcase {
      * @param mixed $node
      * @return mixed
      */
-    public function test_setting__initialise($node): settings_navigation {
+    public function test_setting__initialise($node) {
         $this->resetAfterTest(false);
 
         $node->initialise();
@@ -482,7 +466,7 @@ class navigationlib_test extends \advanced_testcase {
     /**
      * Test that users with the correct permissions can view the preferences page.
      */
-    public function test_can_view_user_preferences(): void {
+    public function test_can_view_user_preferences() {
         global $PAGE, $DB, $SITE;
         $this->resetAfterTest();
 
@@ -523,14 +507,14 @@ class navigationlib_test extends \advanced_testcase {
      * @param mixed $node
      * @return mixed
      */
-    public function test_setting_in_alternative_role($node): void {
+    public function test_setting_in_alternative_role($node) {
         $this->resetAfterTest();
 
         $this->assertFalse($node->exposed_in_alternative_role());
     }
 
 
-    public function test_navigation_node_collection_remove_with_no_type(): void {
+    public function test_navigation_node_collection_remove_with_no_type() {
         $navigationnodecollection = new navigation_node_collection();
         $this->setup_node();
         $this->node->key = 100;
@@ -551,7 +535,7 @@ class navigationlib_test extends \advanced_testcase {
         $this->assertEquals(0, count($navigationnodecollection->get_key_list()));
     }
 
-    public function test_navigation_node_collection_remove_with_type(): void {
+    public function test_navigation_node_collection_remove_with_type() {
         $navigationnodecollection = new navigation_node_collection();
         $this->setup_node();
         $this->node->key = 100;
@@ -579,7 +563,7 @@ class navigationlib_test extends \advanced_testcase {
      * @param bool $forceintomoremenu Whether to force the navigation node and its children into the "more" menu
      * @dataProvider set_force_into_more_menu_provider
      */
-    public function test_set_force_into_more_menu(bool $haschildren, bool $forceintomoremenu): void {
+    public function test_set_force_into_more_menu(bool $haschildren, bool $forceintomoremenu) {
         // Create a navigation node.
         $node = new navigation_node(['text' => 'Navigation node', 'key' => 'navnode']);
 
@@ -604,7 +588,7 @@ class navigationlib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function set_force_into_more_menu_provider(): array {
+    public static function set_force_into_more_menu_provider(): array {
         return [
             'Navigation node without any children nodes; Force into "more" menu => true.' =>
                 [
@@ -632,7 +616,7 @@ class navigationlib_test extends \advanced_testcase {
      * @dataProvider is_action_link_provider
      * @covers navigation_node::is_action_link
      */
-    public function test_is_action_link(navigation_node $node, bool $expected): void {
+    public function test_is_action_link(navigation_node $node, bool $expected) {
         $this->assertEquals($node->is_action_link(), $expected);
     }
 
@@ -641,7 +625,7 @@ class navigationlib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function is_action_link_provider(): array {
+    public static function is_action_link_provider(): array {
         return [
             'The navigation node has an action link.' =>
                 [
@@ -665,7 +649,7 @@ class navigationlib_test extends \advanced_testcase {
      * @dataProvider action_link_actions_provider
      * @covers navigation_node::action_link_actions
      */
-    public function test_action_link_actions(navigation_node $node): void {
+    public function test_action_link_actions(navigation_node $node) {
         // Get the formatted array of action link actions.
         $data = $node->action_link_actions();
         // The navigation node has an action link.
@@ -694,7 +678,7 @@ class navigationlib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function action_link_actions_provider(): array {
+    public static function action_link_actions_provider(): array {
         return [
             'The navigation node has an action link with an action attached.' =>
                 [

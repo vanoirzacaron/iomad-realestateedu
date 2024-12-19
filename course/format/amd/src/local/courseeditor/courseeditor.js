@@ -52,9 +52,9 @@ export default class extends Reactive {
      * The current page section return
      * @attribute sectionReturn
      * @type number
-     * @default null
+     * @default 0
      */
-    sectionReturn = null;
+    sectionReturn = 0;
 
     /**
      * Set up the course editor when the page is ready.

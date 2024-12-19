@@ -105,15 +105,15 @@ class question_type_test extends \advanced_testcase {
         return $q;
     }
 
-    public function test_name(): void {
+    public function test_name() {
         $this->assertEquals($this->qtype->name(), 'match');
     }
 
-    public function test_can_analyse_responses(): void {
+    public function test_can_analyse_responses() {
         $this->assertTrue($this->qtype->can_analyse_responses());
     }
 
-    public function test_make_question_instance(): void {
+    public function test_make_question_instance() {
         $questiondata = \test_question_maker::get_question_data('match', 'trickynums');
         $question = question_bank::make_question($questiondata);
         $this->assertEquals($questiondata->name, $question->name);
@@ -133,12 +133,12 @@ class question_type_test extends \advanced_testcase {
         $this->assertEquals([14 => 14, 15 => 15], $question->right);
     }
 
-    public function test_get_random_guess_score(): void {
+    public function test_get_random_guess_score() {
         $q = $this->get_test_question_data();
         $this->assertEqualsWithDelta(0.3333333, $this->qtype->get_random_guess_score($q), 0.0000001);
     }
 
-    public function test_get_possible_responses(): void {
+    public function test_get_possible_responses() {
         $q = $this->get_test_question_data();
 
         $this->assertEquals(array(
@@ -161,7 +161,7 @@ class question_type_test extends \advanced_testcase {
     }
 
 
-    public function test_question_saving_foursubq(): void {
+    public function test_question_saving_foursubq() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -201,7 +201,7 @@ class question_type_test extends \advanced_testcase {
             }
         }
 
-        $this->assertObjectHasProperty('subquestions', $actualquestiondata->options);
+        $this->assertObjectHasAttribute('subquestions', $actualquestiondata->options);
 
         $subqpropstoignore = array('id');
         foreach ($questiondata->options->subquestions as $subq) {

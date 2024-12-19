@@ -46,7 +46,18 @@ class question_type_test extends \question_testcase {
         $this->qtype = null;
     }
 
-    public function test_save_question(): void {
+    /**
+     * Asserts that two strings containing XML are the same ignoring the line-endings.
+     *
+     * @param string $expectedxml
+     * @param string $xml
+     */
+    public function assert_same_xml($expectedxml, $xml) {
+        $this->assertEquals(str_replace("\r\n", "\n", $expectedxml),
+                str_replace("\r\n", "\n", $xml));
+    }
+
+    public function test_save_question() {
         $this->resetAfterTest();
 
         $syscontext = \context_system::instance();
@@ -80,15 +91,15 @@ class question_type_test extends \question_testcase {
         return \test_question_maker::get_question_data('gapselect');
     }
 
-    public function test_name(): void {
+    public function test_name() {
         $this->assertEquals($this->qtype->name(), 'gapselect');
     }
 
-    public function test_can_analyse_responses(): void {
+    public function test_can_analyse_responses() {
         $this->assertTrue($this->qtype->can_analyse_responses());
     }
 
-    public function test_initialise_question_instance(): void {
+    public function test_initialise_question_instance() {
         $qdata = $this->get_test_question_data();
 
         $expected = \test_question_maker::make_question('gapselect');
@@ -99,12 +110,12 @@ class question_type_test extends \question_testcase {
         $this->assertEquals($expected, $q);
     }
 
-    public function test_get_random_guess_score(): void {
+    public function test_get_random_guess_score() {
         $q = $this->get_test_question_data();
         $this->assertEqualsWithDelta(0.5, $this->qtype->get_random_guess_score($q), 0.0000001);
     }
 
-    public function test_get_possible_responses(): void {
+    public function test_get_possible_responses() {
         $q = $this->get_test_question_data();
 
         $this->assertEquals(array(
@@ -123,7 +134,7 @@ class question_type_test extends \question_testcase {
         ), $this->qtype->get_possible_responses($q));
     }
 
-    public function test_xml_import(): void {
+    public function test_xml_import() {
         $xml = '  <question type="gapselect">
     <name>
       <text>A select missing words question</text>
@@ -212,7 +223,7 @@ class question_type_test extends \question_testcase {
         $this->assertEquals($expectedq->hint, $q->hint);
     }
 
-    public function test_xml_export(): void {
+    public function test_xml_export() {
         $qdata = new \stdClass();
         $qdata->id = 123;
         $qdata->contextid = \context_system::instance()->id;

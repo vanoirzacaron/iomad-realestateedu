@@ -24,7 +24,7 @@
 "use strict";
 
 import $ from 'jquery';
-import AutoComplete from 'core/form-autocomplete';
+import CustomEvents from 'core/custom_interaction_events';
 import 'core/inplace_editable';
 import Notification from 'core/notification';
 import Pending from 'core/pending';
@@ -65,12 +65,7 @@ const reloadSettingsFiltersRegion = (reportElement, templateContext) => {
  * Initialise filters form, must be called on each init because the form container is re-created when switching editor modes
  */
 const initFiltersForm = () => {
-    const reportElement = document.querySelector(reportSelectors.regions.report);
-
-    // Enhance filter selector.
-    const reportAddFilter = reportElement.querySelector(reportSelectors.actions.reportAddFilter);
-    AutoComplete.enhanceField(reportAddFilter, false, '', getString('selectafilter', 'core_reportbuilder'))
-        .catch(Notification.exception);
+    CustomEvents.define(reportSelectors.actions.reportAddFilter, [CustomEvents.events.accessibleChange]);
 };
 
 /**
@@ -85,7 +80,6 @@ export const init = initialized => {
         'filteradded',
         'filterdeleted',
         'filtermoved',
-        'selectafilter',
     ]);
 
     prefetchStrings('core', [
@@ -97,14 +91,14 @@ export const init = initialized => {
         return;
     }
 
-    // Add filter to report.
-    document.addEventListener('change', event => {
+    // Add filter to report. Use custom events helper to ensure consistency across platforms.
+    $(document).on(CustomEvents.events.accessibleChange, reportSelectors.actions.reportAddFilter, event => {
         const reportAddFilter = event.target.closest(reportSelectors.actions.reportAddFilter);
         if (reportAddFilter) {
             event.preventDefault();
 
             // Check if dropdown is closed with no filter selected.
-            if (reportAddFilter.value === "" || reportAddFilter.value === "0") {
+            if (reportAddFilter.selectedIndex === 0) {
                 return;
             }
 
@@ -168,10 +162,8 @@ export const init = initialized => {
                 targetFilterPosition--;
             }
 
-            // Re-order filter, giving drop event transition time to finish.
-            const reorderPromise = reorderFilter(reportElement.dataset.reportId, filterId, targetFilterPosition);
-            Promise.all([reorderPromise, new Promise(resolve => setTimeout(resolve, 1000))])
-                .then(([data]) => reloadSettingsFiltersRegion(reportElement, data))
+            reorderFilter(reportElement.dataset.reportId, filterId, targetFilterPosition)
+                .then(data => reloadSettingsFiltersRegion(reportElement, data))
                 .then(() => getString('filtermoved', 'core_reportbuilder', info.element.data('filterName')))
                 .then(addToast)
                 .then(() => pendingPromise.resolve())

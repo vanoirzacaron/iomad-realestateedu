@@ -53,7 +53,7 @@ class customfield_test extends \advanced_testcase {
     /**
      * Test creating course with customfields and retrieving them
      */
-    public function test_create_course(): void {
+    public function test_create_course() {
         global $DB;
         $dg = $this->getDataGenerator();
 
@@ -135,7 +135,7 @@ class customfield_test extends \advanced_testcase {
     /**
      * Test backup and restore of custom fields
      */
-    public function test_restore_customfields(): void {
+    public function test_restore_customfields() {
         global $USER;
         $dg = $this->getDataGenerator();
 
@@ -155,7 +155,7 @@ class customfield_test extends \advanced_testcase {
     /**
      * Delete a category that has fields and the fields have data.
      */
-    public function test_delete_category(): void {
+    public function test_delete_category() {
         global $DB;
         $dg = $this->getDataGenerator();
 

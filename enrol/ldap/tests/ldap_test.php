@@ -45,7 +45,7 @@ class ldap_test extends \advanced_testcase {
      *
      * @return array[]
      */
-    public function enrol_ldap_provider() {
+    public static function enrol_ldap_provider(): array {
         $pagesizes = [1, 3, 5, 1000];
         $subcontexts = [0, 1];
         $combinations = [];
@@ -64,7 +64,7 @@ class ldap_test extends \advanced_testcase {
      * @param int $pagesize Value to be configured in settings controlling page size.
      * @param int $subcontext Value to be configured in settings controlling searching in subcontexts.
      */
-    public function test_enrol_ldap(int $pagesize, int $subcontext): void {
+    public function test_enrol_ldap(int $pagesize, int $subcontext) {
         global $CFG, $DB;
 
         if (!extension_loaded('ldap')) {
@@ -502,7 +502,7 @@ class ldap_test extends \advanced_testcase {
      * @param string $usertype The supported user type
      * @param string $expected The expected filter value
      */
-    public function test_objectclass_fetch($usertype, $expected): void {
+    public function test_objectclass_fetch($usertype, $expected) {
         $this->resetAfterTest();
         // Set the user type - this must be performed before the plugin is instantiated.
         set_config('user_type', $usertype, 'enrol_ldap');
@@ -513,6 +513,7 @@ class ldap_test extends \advanced_testcase {
         // Use reflection to sneak a look at the plugin.
         $rc = new \ReflectionClass('enrol_ldap_plugin');
         $rcp = $rc->getProperty('userobjectclass');
+        $rcp->setAccessible(true);
 
         // Fetch the current userobjectclass value.
         $value = $rcp->getValue($instance);
@@ -524,7 +525,7 @@ class ldap_test extends \advanced_testcase {
      *
      * @return array of testcases.
      */
-    public function objectclass_fetch_provider() {
+    public static function objectclass_fetch_provider(): array {
         return array(
             // This is the list of values from ldap_getdefaults() normalised.
             'edir' => array(

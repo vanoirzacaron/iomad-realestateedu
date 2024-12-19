@@ -66,7 +66,7 @@ videojs.addLanguage('cs', {
   "Raised": "Zvýšený",
   "Depressed": "Propadlý",
   "Uniform": "Rovnoměrný",
-  "Drop shadow": "Stínovaný",
+  "Dropshadow": "Stínovaný",
   "Font Family": "Rodina písma",
   "Proportional Sans-Serif": "Proporcionální bezpatkové",
   "Monospace Sans-Serif": "Monospace bezpatkové",

@@ -64,11 +64,11 @@ final class CommentsManager
      */
     private array $drawingFilePointers = [];
 
-    private readonly string $xlFolder;
+    private string $xlFolder;
 
     private int $shapeId = 1024;
 
-    private readonly Escaper\XLSX $stringsEscaper;
+    private Escaper\XLSX $stringsEscaper;
 
     /**
      * @param string $xlFolder Path to the "xl" folder

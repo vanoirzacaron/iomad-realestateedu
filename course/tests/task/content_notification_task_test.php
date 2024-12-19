@@ -120,8 +120,8 @@ class content_notification_task_test extends \advanced_testcase {
 
             $messagecustomdata = json_decode($message->customdata);
             $this->assertEquals($course->id, $messagecustomdata->courseid);
-            $this->assertObjectHasProperty('notificationiconurl', $messagecustomdata);
-            $this->assertObjectHasProperty('notificationpictureurl', $messagecustomdata);
+            $this->assertObjectHasAttribute('notificationiconurl', $messagecustomdata);
+            $this->assertObjectHasAttribute('notificationpictureurl', $messagecustomdata);
         }
 
         // Now, set the course to not visible.

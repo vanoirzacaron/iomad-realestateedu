@@ -76,6 +76,7 @@ final class community_of_inquiry_activities_completed_by_test extends advanced_t
         ));
 
         $method = new ReflectionMethod($availabilityinfo, 'set_in_database');
+        $method->setAccessible(true);
         $method->invoke($availabilityinfo, json_encode($structure));
 
         $this->setUser($stu1);
@@ -336,9 +337,11 @@ final class community_of_inquiry_activities_completed_by_test extends advanced_t
         $class = new ReflectionClass($indicator);
 
         $property = $class->getProperty('course');
+        $property->setAccessible(true);
         $property->setValue($indicator, $course);
 
         $method = new ReflectionMethod($indicator, 'get_activities');
+        $method->setAccessible(true);
 
         return array($indicator, $method);
     }

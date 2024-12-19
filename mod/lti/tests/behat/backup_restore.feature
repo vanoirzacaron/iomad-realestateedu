@@ -13,8 +13,6 @@ Feature: Restoring Moodle 2 backup restores LTI configuration
       | user | course | role |
       | teacher1 | C1 | editingteacher |
       | teacher1 | C2 | editingteacher |
-    And the following config values are set as admin:
-      | enableasyncbackup | 0 |
 
   Scenario: Backup and restore course with preconfigured site LTI tool on the same site
     Given the following "mod_lti > tool types" exist:
@@ -56,8 +54,7 @@ Feature: Restoring Moodle 2 backup restores LTI configuration
     And I am on "Course 1" course homepage
     And I navigate to "LTI External tools" in current page administration
     Then I should see "My course tool"
-    And I open the action menu in "My course tool" "table_row"
-    And I choose "Edit" in the open action menu
+    And I press "Edit" action in the "My course tool" report row
     And the field "Tool URL" matches value "http://www.example.com/lti/provider.php"
     And the field "Consumer key" matches value "my key"
     And the field "Shared secret" matches value "my secret"

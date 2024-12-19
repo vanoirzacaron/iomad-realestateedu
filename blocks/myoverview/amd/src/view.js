@@ -64,16 +64,6 @@ let lastLimit = 0;
 let namespace = null;
 
 /**
- * Whether the summary display has been loaded.
- *
- * If true, this means that courses have been loaded with the summary text.
- * Otherwise, switching to the summary display mode will require course data to be fetched with the summary text.
- *
- * @type {boolean}
- */
-let summaryDisplayLoaded = false;
-
-/**
  * Get filter values from DOM.
  *
  * @param {object} root The root element for the courses view.
@@ -107,21 +97,14 @@ const DEFAULT_PAGED_CONTENT_CONFIG = {
  * @return {promise} Resolved with an array of courses.
  */
 const getMyCourses = (filters, limit) => {
-    const params = {
+    return Repository.getEnrolledCoursesByTimeline({
         offset: courseOffset,
         limit: limit,
         classification: filters.grouping,
         sort: filters.sort,
         customfieldname: filters.customfieldname,
-        customfieldvalue: filters.customfieldvalue,
-    };
-    if (filters.display === 'summary') {
-        params.requiredfields = Repository.SUMMARY_REQUIRED_FIELDS;
-        summaryDisplayLoaded = true;
-    } else {
-        params.requiredfields = Repository.CARDLIST_REQUIRED_FIELDS;
-    }
-    return Repository.getEnrolledCoursesByTimeline(params);
+        customfieldvalue: filters.customfieldvalue
+    });
 };
 
 /**
@@ -133,23 +116,15 @@ const getMyCourses = (filters, limit) => {
  * @return {promise} Resolved with an array of courses.
  */
 const getSearchMyCourses = (filters, limit, searchValue) => {
-    const params = {
+    return Repository.getEnrolledCoursesByTimeline({
         offset: courseOffset,
         limit: limit,
         classification: 'search',
         sort: filters.sort,
         customfieldname: filters.customfieldname,
         customfieldvalue: filters.customfieldvalue,
-        searchvalue: searchValue,
-    };
-    if (filters.display === 'summary') {
-        params.requiredfields = Repository.SUMMARY_REQUIRED_FIELDS;
-        summaryDisplayLoaded = true;
-    } else {
-        params.requiredfields = Repository.CARDLIST_REQUIRED_FIELDS;
-        summaryDisplayLoaded = false;
-    }
-    return Repository.getEnrolledCoursesByTimeline(params);
+        searchvalue: searchValue
+    });
 };
 
 /**
@@ -698,6 +673,7 @@ const initializePagedContent = (root, promiseFunction, inputValue = null) => {
     const pagingLimit = parseInt(root.find(SELECTORS.courseView.region).attr('data-paging'), 10);
     let itemsPerPage = itemsPerPageFunc(pagingLimit, root);
 
+    const filters = getFilterValues(root);
     const config = {...{}, ...DEFAULT_PAGED_CONTENT_CONFIG};
     config.eventNamespace = namespace;
 
@@ -731,9 +707,6 @@ const initializePagedContent = (root, promiseFunction, inputValue = null) => {
                         limit *= 2;
                     }
                 }
-
-                // Get the current applied filters.
-                const filters = getFilterValues(root);
 
                 // Call the curried function that'll handle the course promise and any manipulation of it.
                 promiseFunction(filters, currentPage, pageData, actions, root, promises, limit, inputValue);
@@ -865,25 +838,12 @@ export const init = root => {
  */
 export const reset = root => {
     if (loadedPages.length > 0) {
-        const filters = getFilterValues(root);
-        // If the display mode is changed to 'summary' but the summary display has not been loaded yet,
-        // we need to re-fetch the courses to include the course summary text.
-        if (filters.display === 'summary' && !summaryDisplayLoaded) {
-            const page = document.querySelector(SELECTORS.region.selectBlock);
-            const input = page.querySelector(SELECTORS.region.searchInput);
-            if (input.value !== '') {
-                initializePagedContent(root, searchFunctionalityCurry(), input.value.trim());
-            } else {
-                initializePagedContent(root, standardFunctionalityCurry());
-            }
-        } else {
-            loadedPages.forEach((courseList, index) => {
-                let pagedContentPage = getPagedContentContainer(root, index);
-                renderCourses(root, courseList).then((html, js) => {
-                    return Templates.replaceNodeContents(pagedContentPage, html, js);
-                }).catch(Notification.exception);
-            });
-        }
+        loadedPages.forEach((courseList, index) => {
+            let pagedContentPage = getPagedContentContainer(root, index);
+            renderCourses(root, courseList).then((html, js) => {
+                return Templates.replaceNodeContents(pagedContentPage, html, js);
+            }).catch(Notification.exception);
+        });
     } else {
         init(root);
     }

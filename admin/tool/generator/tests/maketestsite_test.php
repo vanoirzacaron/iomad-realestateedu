@@ -40,7 +40,7 @@ class maketestsite_test extends \advanced_testcase {
     /**
      * Checks that site courses shortnames are properly generated.
      */
-    public function test_shortnames_generation(): void {
+    public function test_shortnames_generation() {
 
         $this->resetAfterTest();
         $this->setAdminUser();

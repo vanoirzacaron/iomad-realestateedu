@@ -30,7 +30,7 @@ require_once($CFG->dirroot . '/mod/quiz/report/reportlib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
 class reportlib_test extends \advanced_testcase {
-    public function test_quiz_report_index_by_keys(): void {
+    public function test_quiz_report_index_by_keys() {
         $datum = [];
         $object = new \stdClass();
         $object->qid = 3;
@@ -54,7 +54,7 @@ class reportlib_test extends \advanced_testcase {
         $this->assertEquals($indexed[101][3][0]->grade, 3);
     }
 
-    public function test_quiz_report_scale_summarks_as_percentage(): void {
+    public function test_quiz_report_scale_summarks_as_percentage() {
         $quiz = new \stdClass();
         $quiz->sumgrades = 10;
         $quiz->decimalpoints = 2;
@@ -67,20 +67,20 @@ class reportlib_test extends \advanced_testcase {
             quiz_report_scale_summarks_as_percentage('-', $quiz, true));
     }
 
-    public function test_quiz_report_qm_filter_select_only_one_attempt_allowed(): void {
+    public function test_quiz_report_qm_filter_select_only_one_attempt_allowed() {
         $quiz = new \stdClass();
         $quiz->attempts = 1;
         $this->assertSame('', quiz_report_qm_filter_select($quiz));
     }
 
-    public function test_quiz_report_qm_filter_select_average(): void {
+    public function test_quiz_report_qm_filter_select_average() {
         $quiz = new \stdClass();
         $quiz->attempts = 10;
         $quiz->grademethod = QUIZ_GRADEAVERAGE;
         $this->assertSame('', quiz_report_qm_filter_select($quiz));
     }
 
-    public function test_quiz_report_qm_filter_select_first_last_best(): void {
+    public function test_quiz_report_qm_filter_select_first_last_best() {
         global $DB;
         $this->resetAfterTest();
 
@@ -159,7 +159,7 @@ class reportlib_test extends \advanced_testcase {
         $this->assertEquals(2, $bestattempt->attempt);
     }
 
-    public function test_quiz_results_never_below_zero(): void {
+    public function test_quiz_results_never_below_zero() {
         global $DB;
         $this->resetAfterTest();
 

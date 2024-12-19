@@ -43,7 +43,7 @@ Feature: Add H5P activity context locking
     And I am on the "H5P package" "h5pactivity activity" page logged in as admin
     When I navigate to "Attempts report" in current page administration
     Then I should see "Student 1"
-    And I should see "View (1)" in the "Student 1" "table_row"
+    And I should see "View user attempts (1)" in the "Student 1" "table_row"
     And I should see "Student 2"
     And I should not see "Teacher 1"
 
@@ -62,7 +62,7 @@ Feature: Add H5P activity context locking
     And I am on the "H5P package" "h5pactivity activity" page logged in as admin
     When I navigate to "Attempts report" in current page administration
     Then I should see "Student 1"
-    And I should see "View (1)" in the "Student 1" "table_row"
+    And I should see "View user attempts (1)" in the "Student 1" "table_row"
     And I should see "Student 2"
     And I should not see "Teacher 1"
 
@@ -86,10 +86,10 @@ Feature: Add H5P activity context locking
   Scenario: Access participant report in a hidden activity
     Given I log in as "admin"
     And I am on "Course 1" course homepage with editing mode on
-    And I click on "Hide" "link" in the "H5P package" activity
+    And I click on "Hide on course page" "link" in the "H5P package" activity
     When I am on the "H5P package" "h5pactivity activity" page
     And I navigate to "Attempts report" in current page administration
     Then I should see "Student 1"
-    And I should see "View (1)"
+    And I should see "View user attempts (1)"
     And I should see "Student 2"
     And I should not see "Teacher 1"

@@ -29,7 +29,7 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
     /**
      * @var bool
      */
-    private $ignoreFirstRewind = true;
+    private $rewindable;
 
     // these 3 properties take part of the performance optimization to avoid redoing the same work in all iterations
     private $rootPath;
@@ -56,7 +56,7 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
     /**
      * Return an instance of SplFileInfo with support for relative paths.
      *
-     * @return SplFileInfo
+     * @return SplFileInfo File information
      */
     #[\ReturnTypeWillChange]
     public function current()
@@ -79,31 +79,7 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
     }
 
     /**
-     * @param bool $allowLinks
-     *
-     * @return bool
-     */
-    #[\ReturnTypeWillChange]
-    public function hasChildren($allowLinks = false)
-    {
-        $hasChildren = parent::hasChildren($allowLinks);
-
-        if (!$hasChildren || !$this->ignoreUnreadableDirs) {
-            return $hasChildren;
-        }
-
-        try {
-            parent::getChildren();
-
-            return true;
-        } catch (\UnexpectedValueException $e) {
-            // If directory is unreadable and finder is set to ignore it, skip children
-            return false;
-        }
-    }
-
-    /**
-     * @return \RecursiveDirectoryIterator
+     * @return \RecursiveIterator
      *
      * @throws AccessDeniedException
      */
@@ -118,40 +94,56 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
                 $children->ignoreUnreadableDirs = $this->ignoreUnreadableDirs;
 
                 // performance optimization to avoid redoing the same work in all children
+                $children->rewindable = &$this->rewindable;
                 $children->rootPath = $this->rootPath;
             }
 
             return $children;
         } catch (\UnexpectedValueException $e) {
-            throw new AccessDeniedException($e->getMessage(), $e->getCode(), $e);
+            if ($this->ignoreUnreadableDirs) {
+                // If directory is unreadable and finder is set to ignore it, a fake empty content is returned.
+                return new \RecursiveArrayIterator([]);
+            } else {
+                throw new AccessDeniedException($e->getMessage(), $e->getCode(), $e);
+            }
         }
     }
 
     /**
-     * @return void
-     */
-    #[\ReturnTypeWillChange]
-    public function next()
-    {
-        $this->ignoreFirstRewind = false;
-
-        parent::next();
-    }
-
-    /**
+     * Do nothing for non rewindable stream.
+     *
      * @return void
      */
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        // some streams like FTP are not rewindable, ignore the first rewind after creation,
-        // as newly created DirectoryIterator does not need to be rewound
-        if ($this->ignoreFirstRewind) {
-            $this->ignoreFirstRewind = false;
-
+        if (false === $this->isRewindable()) {
             return;
         }
 
         parent::rewind();
+    }
+
+    /**
+     * Checks if the stream is rewindable.
+     *
+     * @return bool true when the stream is rewindable, false otherwise
+     */
+    public function isRewindable()
+    {
+        if (null !== $this->rewindable) {
+            return $this->rewindable;
+        }
+
+        if (false !== $stream = @opendir($this->getPath())) {
+            $infos = stream_get_meta_data($stream);
+            closedir($stream);
+
+            if ($infos['seekable']) {
+                return $this->rewindable = true;
+            }
+        }
+
+        return $this->rewindable = false;
     }
 }

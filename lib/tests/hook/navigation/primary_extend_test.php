@@ -31,7 +31,7 @@ class primary_extend_test extends \advanced_testcase {
      * Test stoppable_trait.
      * @covers ::stop_propagation
      */
-    public function test_stop_propagation(): void {
+    public function test_stop_propagation() {
         global $PAGE;
         $this->resetAfterTest();
 
@@ -51,7 +51,7 @@ class primary_extend_test extends \advanced_testcase {
      * Test hook is triggered when initialising primary navigation menu.
      * @covers \core\navigation\views\primary::initialise
      */
-    public function test_trigggering(): void {
+    public function test_trigggering() {
         global $PAGE;
         $this->resetAfterTest();
 
@@ -79,7 +79,7 @@ class primary_extend_test extends \advanced_testcase {
      * Verify that nothing except this hook modifies the primary menu.
      * @covers \core\navigation\views\primary::initialise
      */
-    public function test_unsupported_hacks(): void {
+    public function test_unsupported_hacks() {
         global $PAGE;
         $this->resetAfterTest();
 
@@ -107,7 +107,7 @@ class primary_extend_test extends \advanced_testcase {
      * Test adding of primary menu items via hook.
      * @covers \core\navigation\views\primary::initialise
      */
-    public function test_primary_menu_extending(): void {
+    public function test_primary_menu_extending() {
         global $PAGE;
         $this->resetAfterTest();
 
@@ -137,7 +137,7 @@ class primary_extend_test extends \advanced_testcase {
      * Test replacing of the whole primary menu.
      * @covers \core\navigation\views\primary::initialise
      */
-    public function test_primary_menu_replacing(): void {
+    public function test_primary_menu_replacing() {
         global $PAGE;
         $this->resetAfterTest();
 

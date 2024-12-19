@@ -44,7 +44,7 @@ class mod_lti_edit_types_form_test extends \advanced_testcase {
      *
      * @covers \mod_lti_edit_types_form::lti_build_category_tree
      */
-    public function test_set_nested_categories(): void {
+    public function test_set_nested_categories() {
         global $CFG, $DB;
 
         require_once($CFG->dirroot . '/mod/lti/tests/fixtures/test_edit_form.php');

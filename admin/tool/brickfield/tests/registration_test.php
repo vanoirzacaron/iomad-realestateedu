@@ -40,7 +40,7 @@ class registration_test extends \advanced_testcase {
      * Tests the state of the registration system when first installed.
      * @throws \dml_exception
      */
-    public function test_initial_state(): void {
+    public function test_initial_state() {
         $this->resetAfterTest();
         $regobj = new mock_registration();
 
@@ -56,7 +56,7 @@ class registration_test extends \advanced_testcase {
      * Test the various states for setting registration keys.
      * @throws \dml_exception
      */
-    public function test_set_keys_for_registration(): void {
+    public function test_set_keys_for_registration() {
         $this->resetAfterTest();
         $regobj = new mock_registration();
 
@@ -79,7 +79,7 @@ class registration_test extends \advanced_testcase {
      * Test the validation system through its several states.
      * @throws \dml_exception
      */
-    public function test_validation(): void {
+    public function test_validation() {
         $this->resetAfterTest();
         $regobj = new mock_registration();
 
@@ -112,7 +112,7 @@ class registration_test extends \advanced_testcase {
      * Tests the system after validation grace periods expire.
      * @throws \dml_exception
      */
-    public function test_validation_time_expiry(): void {
+    public function test_validation_time_expiry() {
         $this->resetAfterTest();
         $regobj = new mock_registration();
 
@@ -149,7 +149,7 @@ class registration_test extends \advanced_testcase {
      * Tests the system after summary data time periods expire.
      * @throws \dml_exception
      */
-    public function test_summary_time_expiry(): void {
+    public function test_summary_time_expiry() {
         $this->resetAfterTest();
         $regobj = new mock_registration();
 

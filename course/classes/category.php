@@ -181,7 +181,7 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
      * @param string $name Callback function name.
      * @return [callable] $pluginfunctions
      */
-    public function get_plugins_callback_function(string $name): array {
+    public function get_plugins_callback_function(string $name) : array {
         $pluginfunctions = [];
         if ($pluginsfunction = get_plugins_with_function($name)) {
             foreach ($pluginsfunction as $plugintype => $plugins) {
@@ -639,13 +639,6 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
             fix_course_sortorder();
         }
 
-        // Delete theme usage cache if the theme has been changed.
-        if (isset($newcategory->theme)) {
-            if ($newcategory->theme != $this->theme) {
-                theme_delete_used_in_context_cache($newcategory->theme, (string) $this->theme);
-            }
-        }
-
         $newcategory->timemodified = time();
 
         $categorycontext = $this->get_context();
@@ -779,7 +772,7 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
      * @throws dml_exception
      * @throws moodle_exception
      */
-    private static function get_cached_cat_tree(): ?array {
+    private static function get_cached_cat_tree() : ?array {
         // IOMAD Need to filter here.
         $coursecattreecache = cache::make('core', 'coursecattree');
         $all = $coursecattreecache->get('all');
@@ -818,7 +811,7 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
      * @throws dml_exception
      * @throws moodle_exception
      */
-    private static function rebuild_coursecattree_cache_contents(): array {
+    private static function rebuild_coursecattree_cache_contents() : array {
         global $DB;
         $sql = "SELECT cc.id, cc.parent, cc.visible
                 FROM {course_categories} cc
@@ -1615,7 +1608,6 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
      *     - modulelist - name of module (if we are searching for courses containing specific module
      *     - tagid - id of tag
      *     - onlywithcompletion - set to true if we only need courses with completion enabled
-     *     - limittoenrolled - set to true if we only need courses where user is enrolled
      * @param array $options display options, same as in get_courses() except 'recursive' is ignored -
      *                       search is always category-independent
      * @param array $requiredcapabilities List of capabilities required to see return course.
@@ -1686,15 +1678,6 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
             $search['search'] = '';
         }
 
-        $courseidsearch = '';
-        $courseidparams = [];
-
-        if (!empty($search['limittoenrolled'])) {
-            $enrolled = enrol_get_my_courses(['id']);
-            list($sql, $courseidparams) = $DB->get_in_or_equal(array_keys($enrolled), SQL_PARAMS_NAMED, 'courseid', true, 0);
-            $courseidsearch = "c.id " . $sql;
-        }
-
         if (empty($search['blocklist']) && empty($search['modulelist']) && empty($search['tagid'])) {
             // Search courses that have specified words in their names/summaries.
             $searchterms = preg_split('|\s+|', trim($search['search']), 0, PREG_SPLIT_NO_EMPTY);
@@ -1702,10 +1685,6 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
             if (!empty($search['onlywithcompletion'])) {
                 $searchcond = ['c.enablecompletion = :p1'];
                 $searchcondparams = ['p1' => 1];
-            }
-            if (!empty($courseidsearch)) {
-                $searchcond[] = $courseidsearch;
-                $searchcondparams = array_merge($searchcondparams, $courseidparams);
             }
             $courselist = get_courses_search($searchterms, 'c.sortorder ASC', 0, 9999999, $totalcount,
                 $requiredcapabilities, $searchcond, $searchcondparams);
@@ -1759,11 +1738,6 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
                 debugging('No criteria is specified while searching courses', DEBUG_DEVELOPER);
                 return array();
             }
-            if (!empty($courseidsearch)) {
-                $where .= ' AND ' . $courseidsearch;
-                $params = array_merge($params, $courseidparams);
-            }
-
             $courselist = self::get_course_records($where, $params, $options, true);
 
             if (!empty($requiredcapabilities)) {

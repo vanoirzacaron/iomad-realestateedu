@@ -7,33 +7,33 @@ interface ILtiRegistration
 {
     public function getIssuer();
 
-    public function setIssuer(string $issuer): ILtiRegistration;
+    public function setIssuer($issuer);
 
     public function getClientId();
 
-    public function setClientId(string $clientId): ILtiRegistration;
+    public function setClientId($clientId);
 
-    public function getKeySetUrl(): ?string;
+    public function getKeySetUrl();
 
-    public function setKeySetUrl(string $keySetUrl): ILtiRegistration;
+    public function setKeySetUrl($keySetUrl);
 
-    public function getAuthTokenUrl(): ?string;
+    public function getAuthTokenUrl();
 
-    public function setAuthTokenUrl(?string $authTokenUrl): ILtiRegistration;
+    public function setAuthTokenUrl($authTokenUrl);
 
-    public function getAuthLoginUrl(): ?string;
+    public function getAuthLoginUrl();
 
-    public function setAuthLoginUrl(string $authLoginUrl): ILtiRegistration;
+    public function setAuthLoginUrl($authLoginUrl);
 
-    public function getAuthServer(): ?string;
+    public function getAuthServer();
 
-    public function setAuthServer(string $authServer): ILtiRegistration;
+    public function setAuthServer($authServer);
 
     public function getToolPrivateKey();
 
-    public function setToolPrivateKey(string $toolPrivateKey): ILtiRegistration;
+    public function setToolPrivateKey($toolPrivateKey);
 
     public function getKid();
 
-    public function setKid(string $kid): ILtiRegistration;
+    public function setKid($kid);
 }

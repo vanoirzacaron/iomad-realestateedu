@@ -50,7 +50,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test that a user who has no data gets no contexts
      */
-    public function test_get_contexts_for_userid_no_data(): void {
+    public function test_get_contexts_for_userid_no_data() {
         global $USER;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -62,7 +62,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_contexts_for_userid() when there is no quiz attempt at all.
      */
-    public function test_get_contexts_for_userid_no_attempt_with_override(): void {
+    public function test_get_contexts_for_userid_no_attempt_with_override() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -92,7 +92,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * The export function should handle an empty contextlist properly.
      */
-    public function test_export_user_data_no_data(): void {
+    public function test_export_user_data_no_data() {
         global $USER;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -114,7 +114,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * The delete function should handle an empty contextlist properly.
      */
-    public function test_delete_data_for_user_no_data(): void {
+    public function test_delete_data_for_user_no_data() {
         global $USER;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -132,7 +132,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Export + Delete quiz data for a user who has made a single attempt.
      */
-    public function test_user_with_data(): void {
+    public function test_user_with_data() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -221,7 +221,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Export + Delete quiz data for a user who has made a single attempt.
      */
-    public function test_user_with_preview(): void {
+    public function test_user_with_preview() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -284,7 +284,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Export + Delete quiz data for a user who has made a single attempt.
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -339,7 +339,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Export + Delete quiz data for a user who has made a single attempt.
      */
-    public function test_wrong_context(): void {
+    public function test_wrong_context() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -466,7 +466,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_users_in_context().
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -502,7 +502,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_users().
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -535,7 +535,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
         // Delete the data for user1 and user3 in course1 and check it is removed.
         $quiz1context = $quiz1obj->get_context();
         $approveduserlist = new \core_privacy\local\request\approved_userlist($quiz1context, 'mod_quiz',
-            [$user1->id, $user3->id]);
+                [$user1->id, $user3->id]);
         provider::delete_data_for_users($approveduserlist);
 
         // Only the attempt of user2 should be remained in quiz1.

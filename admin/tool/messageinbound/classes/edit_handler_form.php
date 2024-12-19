@@ -46,6 +46,7 @@ class tool_messageinbound_edit_handler_form extends moodleform {
         $formatoptions = new stdClass();
         $formatoptions->trusted = false;
         $formatoptions->noclean = false;
+        $formatoptions->smiley = false;
         $formatoptions->filter = false;
         $formatoptions->para = true;
         $formatoptions->newlines = false;

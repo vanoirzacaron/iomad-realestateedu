@@ -37,7 +37,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test that a new group with the name of the cohort is created.
      */
-    public function test_enrol_cohort_create_new_group(): void {
+    public function test_enrol_cohort_create_new_group() {
         global $DB;
         $this->resetAfterTest();
         // Create a category.
@@ -83,7 +83,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test for getting user enrolment actions.
      */
-    public function test_get_user_enrolment_actions(): void {
+    public function test_get_user_enrolment_actions() {
         global $CFG, $PAGE;
         $this->resetAfterTest();
 
@@ -132,7 +132,7 @@ class lib_test extends \advanced_testcase {
         $this->assertCount(1, $actions);
     }
 
-    public function test_enrol_cohort_unenrolaction_suspend_only(): void {
+    public function test_enrol_cohort_unenrolaction_suspend_only() {
         global $CFG, $DB, $PAGE;
         $this->resetAfterTest();
 
@@ -215,7 +215,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::validate_plugin_data_context
      */
-    public function test_validate_plugin_data_context(): void {
+    public function test_validate_plugin_data_context() {
         $this->resetAfterTest();
 
         $cohortplugin = enrol_get_plugin('cohort');
@@ -226,18 +226,12 @@ class lib_test extends \advanced_testcase {
 
         $course = $this->getDataGenerator()->create_course(['category' => $cat1->id, 'shortname' => 'ANON']);
 
-        $cohort1 = $this->getDataGenerator()->create_cohort([
-            'contextid' => \context_coursecat::instance($cat1->id)->id,
-            'idnumber' => 'one',
-        ]);
-        $cohort2 = $this->getDataGenerator()->create_cohort([
-            'contextid' => \context_coursecat::instance($cat2->id)->id,
-            'idnumber' => 'two',
-        ]);
+        $cohort1 = $this->getDataGenerator()->create_cohort(['contextid' => \context_coursecat::instance($cat1->id)->id]);
+        $cohort2 = $this->getDataGenerator()->create_cohort(['contextid' => \context_coursecat::instance($cat2->id)->id]);
 
         $enrolmentdata = [
             'customint1' => $cohort2->id,
-            'cohortidnumber' => $cohort2->idnumber,
+            'cohortname' => $cohort2->name,
         ];
         $error = $cohortplugin->validate_plugin_data_context($enrolmentdata, $course->id);
         $this->assertInstanceOf('lang_string', $error);
@@ -245,12 +239,8 @@ class lib_test extends \advanced_testcase {
 
         $enrolmentdata = [
             'customint1' => $cohort1->id,
-            'cohortidnumber' => $cohort1->idnumber,
-            'courseid' => $course->id,
-            'id' => null,
-            'status' => ENROL_INSTANCE_ENABLED,
+            'cohortname' => $cohort1->name,
         ];
-        $enrolmentdata = $cohortplugin->fill_enrol_custom_fields($enrolmentdata, $course->id);
         $error = $cohortplugin->validate_plugin_data_context($enrolmentdata, $course->id);
         $this->assertNull($error);
     }
@@ -260,32 +250,29 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::fill_enrol_custom_fields
      */
-    public function test_fill_enrol_custom_fields(): void {
+    public function test_fill_enrol_custom_fields() {
         $this->resetAfterTest();
 
         $cohortplugin = enrol_get_plugin('cohort');
 
         $cat = $this->getDataGenerator()->create_category();
         $course = $this->getDataGenerator()->create_course(['category' => $cat->id, 'shortname' => 'ANON']);
-        $cohort = $this->getDataGenerator()->create_cohort([
-            'contextid' => \context_coursecat::instance($cat->id)->id,
-            'idnumber' => 'one',
-        ]);
+        $cohort = $this->getDataGenerator()->create_cohort(['contextid' => \context_coursecat::instance($cat->id)->id]);
         $group = $this->getDataGenerator()->create_group(['courseid' => $course->id]);
 
-        $enrolmentdata['cohortidnumber'] = $cohort->idnumber;
+        $enrolmentdata['cohortname'] = $cohort->name;
         $enrolmentdata = $cohortplugin->fill_enrol_custom_fields($enrolmentdata, $course->id);
         $this->assertArrayHasKey('customint1', $enrolmentdata);
         $this->assertEquals($cohort->id, $enrolmentdata['customint1']);
         $this->assertArrayNotHasKey('customint2', $enrolmentdata);
 
-        $enrolmentdata['cohortidnumber'] = 'notexist';
+        $enrolmentdata['cohortname'] = 'notexist';
         $enrolmentdata = $cohortplugin->fill_enrol_custom_fields($enrolmentdata, $course->id);
         $this->assertArrayHasKey('customint1', $enrolmentdata);
-        $this->assertFalse($enrolmentdata['customint1']);
+        $this->assertNull($enrolmentdata['customint1']);
         $this->assertArrayNotHasKey('customint2', $enrolmentdata);
 
-        $enrolmentdata['cohortidnumber'] = $cohort->idnumber;
+        $enrolmentdata['cohortname'] = $cohort->name;
 
         $enrolmentdata['addtogroup'] = COHORT_NOGROUP;
         $enrolmentdata = $cohortplugin->fill_enrol_custom_fields($enrolmentdata, $course->id);
@@ -315,9 +302,8 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::validate_enrol_plugin_data
      */
-    public function test_validate_enrol_plugin_data(): void {
+    public function test_validate_enrol_plugin_data() {
         $this->resetAfterTest();
-        $this->setAdminUser();
 
         $cat = $this->getDataGenerator()->create_category();
         $cat1 = $this->getDataGenerator()->create_category(['parent' => $cat->id]);
@@ -327,14 +313,8 @@ class lib_test extends \advanced_testcase {
 
         $group1 = $this->getDataGenerator()->create_group(['courseid' => $course->id, 'name' => 'Group 1']);
 
-        $cohort1 = $this->getDataGenerator()->create_cohort([
-            'contextid' => \context_coursecat::instance($cat1->id)->id,
-            'idnumber' => 'one',
-        ]);
-        $cohort2 = $this->getDataGenerator()->create_cohort([
-            'contextid' => \context_coursecat::instance($cat2->id)->id,
-            'idnumber' => 'two',
-        ]);
+        $cohort1 = $this->getDataGenerator()->create_cohort(['contextid' => \context_coursecat::instance($cat1->id)->id]);
+        $cohort2 = $this->getDataGenerator()->create_cohort(['contextid' => \context_coursecat::instance($cat2->id)->id]);
 
         enrol::enable_plugin('cohort', false);
 
@@ -348,14 +328,13 @@ class lib_test extends \advanced_testcase {
 
         enrol::enable_plugin('cohort', true);
 
-        // Unknown cohort idnumber and missing role.
-        $enrolmentdata['cohortidnumber'] = 'test';
+        // Unknown cohort name.
+        $enrolmentdata['cohortname'] = 'test';
         $errors = $cohortplugin->validate_enrol_plugin_data($enrolmentdata);
-        $this->assertArrayHasKey('missingmandatoryfields', $errors);
         $this->assertArrayHasKey('unknowncohort', $errors);
 
         // Non-valid 'addtogroup' option.
-        $enrolmentdata['cohortidnumber'] = $cohort1->idnumber;
+        $enrolmentdata['cohortname'] = $cohort1->name;
         $enrolmentdata['addtogroup'] = 2;
         $errors = $cohortplugin->validate_enrol_plugin_data($enrolmentdata, $course->id);
         $this->assertArrayHasKey('erroraddtogroup', $errors);
@@ -367,7 +346,7 @@ class lib_test extends \advanced_testcase {
         $this->assertArrayHasKey('erroraddtogroupgroupname', $errors);
 
         // Cohort is not allowed on a given category context.
-        $enrolmentdata['cohortidnumber'] = $cohort2->idnumber;
+        $enrolmentdata['cohortname'] = $cohort2->name;
         $errors = $cohortplugin->validate_enrol_plugin_data($enrolmentdata, $course->id);
         $this->assertArrayHasKey('contextnotallowed', $errors);
 
@@ -376,14 +355,8 @@ class lib_test extends \advanced_testcase {
         $errors = $cohortplugin->validate_enrol_plugin_data($enrolmentdata, $course->id);
         $this->assertArrayHasKey('errorinvalidgroup', $errors);
 
-        // Unknown role.
-        $enrolmentdata['role'] = 'test';
-        $errors = $cohortplugin->validate_enrol_plugin_data($enrolmentdata, $course->id);
-        $this->assertArrayHasKey('unknownrole', $errors);
-
         // Valid data when trying to create a group.
-        $enrolmentdata['cohortidnumber'] = $cohort1->idnumber;
-        $enrolmentdata['role'] = 'student';
+        $enrolmentdata['cohortname'] = $cohort1->name;
         $enrolmentdata['addtogroup'] = 1;
         unset($enrolmentdata['groupname']);
         $errors = $cohortplugin->validate_enrol_plugin_data($enrolmentdata, $course->id);
@@ -402,80 +375,4 @@ class lib_test extends \advanced_testcase {
         $this->assertEmpty($errors);
     }
 
-    /**
-     * Test the behaviour of find_instance().
-     *
-     * @covers ::find_instance
-     */
-    public function test_find_instance(): void {
-        global $DB;
-        $this->resetAfterTest();
-
-        $cat = $this->getDataGenerator()->create_category();
-        $course = $this->getDataGenerator()->create_course(['category' => $cat->id, 'shortname' => 'ANON']);
-
-        $cohort1 = $this->getDataGenerator()->create_cohort([
-            'contextid' => \context_coursecat::instance($cat->id)->id,
-            'idnumber' => 'one',
-        ]);
-        $cohort2 = $this->getDataGenerator()->create_cohort([
-            'contextid' => \context_coursecat::instance($cat->id)->id,
-            'idnumber' => 'two',
-        ]);
-
-        $cohort3 = $this->getDataGenerator()->create_cohort([
-            'contextid' => \context_coursecat::instance($cat->id)->id,
-            'idnumber' => 'three',
-        ]);
-
-        $studentrole = $DB->get_record('role', ['shortname' => 'student']);
-        $teacherrole = $DB->get_record('role', ['shortname' => 'teacher']);
-        $managerrole = $DB->get_record('role', ['shortname' => 'manager']);
-        $cohortplugin = enrol_get_plugin('cohort');
-
-        // Add three cohort enrol instances.
-        $instanceid1 = $cohortplugin->add_instance($course, ['customint1' => $cohort1->id, 'roleid' => $teacherrole->id]);
-        $instanceid2 = $cohortplugin->add_instance($course, ['customint1' => $cohort2->id, 'roleid' => $managerrole->id]);
-        $instanceid3 = $cohortplugin->add_instance($course, ['customint1' => $cohort2->id, 'roleid' => $studentrole->id]);
-
-        $instance1 = $DB->get_record('enrol', ['id' => $instanceid1]);
-        $instance2 = $DB->get_record('enrol', ['id' => $instanceid2]);
-
-        $enrolmentdata = [];
-        $instance = $cohortplugin->find_instance($enrolmentdata, $course->id);
-        $this->assertNull($instance);
-
-        // Unknown idnumber.
-        $enrolmentdata['cohortidnumber'] = 'test';
-        $instance = $cohortplugin->find_instance($enrolmentdata, $course->id);
-        $this->assertNull($instance);
-
-        // Unknown role.
-        $enrolmentdata['role'] = 'test';
-        $enrolmentdata['cohortidnumber'] = $cohort1->idnumber;
-        $instance = $cohortplugin->find_instance($enrolmentdata, $course->id);
-        $this->assertNull($instance);
-
-        // Cohort3 instance has not matching role and cohort.
-        $enrolmentdata['role'] = $teacherrole->shortname;
-        $enrolmentdata['cohortidnumber'] = $cohort3->idnumber;
-        $instance = $cohortplugin->find_instance($enrolmentdata, $course->id);
-        $this->assertNull($instance);
-
-        // Cohort2 instance has matching cohort, but not matching role.
-        $enrolmentdata['role'] = $teacherrole->shortname;
-        $enrolmentdata['cohortidnumber'] = $cohort2->idnumber;
-        $instance = $cohortplugin->find_instance($enrolmentdata, $course->id);
-        $this->assertNull($instance);
-
-        $enrolmentdata['role'] = $teacherrole->shortname;
-        $enrolmentdata['cohortidnumber'] = $cohort1->idnumber;
-        $instance = $cohortplugin->find_instance($enrolmentdata, $course->id);
-        $this->assertEquals($instance1->id, $instance->id);
-
-        $enrolmentdata['role'] = $managerrole->shortname;
-        $enrolmentdata['cohortidnumber'] = $cohort2->idnumber;
-        $instance = $cohortplugin->find_instance($enrolmentdata, $course->id);
-        $this->assertEquals($instance2->id, $instance->id);
-    }
 }

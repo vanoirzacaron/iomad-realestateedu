@@ -182,7 +182,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test getting a user_favourite_service from the static locator.
      */
-    public function test_get_service_for_user_context(): void {
+    public function test_get_service_for_user_context() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
         $userservice = \core_favourites\service_factory::get_service_for_user_context($user1context);
         $this->assertInstanceOf(\core_favourites\local\service\user_favourite_service::class, $userservice);
@@ -191,7 +191,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming an item can be favourited only once.
      */
-    public function test_create_favourite_basic(): void {
+    public function test_create_favourite_basic() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for a user.
@@ -200,7 +200,7 @@ class user_favourite_service_test extends \advanced_testcase {
 
         // Favourite a course.
         $favourite1 = $user1service->create_favourite('core_course', 'course', $course1context->instanceid, $course1context);
-        $this->assertObjectHasProperty('id', $favourite1);
+        $this->assertObjectHasAttribute('id', $favourite1);
 
         // Try to favourite the same course again.
         $this->expectException('moodle_exception');
@@ -210,7 +210,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming that an exception is thrown if trying to favourite an item for a non-existent component.
      */
-    public function test_create_favourite_nonexistent_component(): void {
+    public function test_create_favourite_nonexistent_component() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for the user.
@@ -225,7 +225,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test fetching favourites for single user, by area.
      */
-    public function test_find_favourites_by_type_single_user(): void {
+    public function test_find_favourites_by_type_single_user() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for the user.
@@ -251,7 +251,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test fetching favourites for single user, by area.
      */
-    public function test_find_all_favourites(): void {
+    public function test_find_all_favourites() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for the user.
@@ -287,7 +287,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Make sure the find_favourites_by_type() method only returns favourites for the scoped user.
      */
-    public function test_find_favourites_by_type_multiple_users(): void {
+    public function test_find_favourites_by_type_multiple_users() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for 2 users.
@@ -314,7 +314,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming that an exception is thrown if trying to get favourites for a non-existent component.
      */
-    public function test_find_favourites_by_type_nonexistent_component(): void {
+    public function test_find_favourites_by_type_nonexistent_component() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for the user.
@@ -329,7 +329,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming the pagination support for the find_favourites_by_type() method.
      */
-    public function test_find_favourites_by_type_pagination(): void {
+    public function test_find_favourites_by_type_pagination() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for the user.
@@ -360,7 +360,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming the basic deletion behaviour.
      */
-    public function test_delete_favourite_basic(): void {
+    public function test_delete_favourite_basic() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for the user.
@@ -385,7 +385,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming the behaviour of the favourite_exists() method.
      */
-    public function test_favourite_exists(): void {
+    public function test_favourite_exists() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for the user.
@@ -419,7 +419,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming the behaviour of the get_favourite() method.
      */
-    public function test_get_favourite(): void {
+    public function test_get_favourite() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for the user.
@@ -452,7 +452,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming the behaviour of the count_favourites_by_type() method.
      */
-    public function test_count_favourites_by_type(): void {
+    public function test_count_favourites_by_type() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for the user.
@@ -482,7 +482,7 @@ class user_favourite_service_test extends \advanced_testcase {
     /**
      * Verify that the join sql generated by get_join_sql_by_type is valid and can be used to include favourite information.
      */
-    public function test_get_join_sql_by_type(): void {
+    public function test_get_join_sql_by_type() {
         global $DB;
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 

@@ -19,13 +19,7 @@ namespace mod_quiz;
 use moodle_url;
 use question_bank;
 use question_engine;
-use mod_quiz\question\bank\qbank_helper;
-
-defined('MOODLE_INTERNAL') || die();
-
-global $CFG;
-require_once($CFG->dirroot . '/mod/quiz/locallib.php');
-require_once($CFG->dirroot . '/mod/quiz/tests/quiz_question_helper_test_trait.php');
+use mod_quiz\tests\question_helper_test_trait;
 
 /**
  * Quiz attempt walk through.
@@ -37,14 +31,22 @@ require_once($CFG->dirroot . '/mod/quiz/tests/quiz_question_helper_test_trait.ph
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers \mod_quiz\quiz_attempt
  */
-class attempt_walkthrough_test extends \advanced_testcase {
+final class attempt_walkthrough_test extends \advanced_testcase {
+    use question_helper_test_trait;
 
-    use \quiz_question_helper_test_trait;
+    #[\Override]
+    public static function setUpBeforeClass(): void {
+        global $CFG;
+
+        parent::setUpBeforeClass();
+
+        require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+    }
 
     /**
      * Create a quiz with questions and walk through a quiz attempt.
      */
-    public function test_quiz_attempt_walkthrough(): void {
+    public function test_quiz_attempt_walkthrough() {
         global $SITE;
 
         $this->resetAfterTest(true);
@@ -235,7 +237,7 @@ class attempt_walkthrough_test extends \advanced_testcase {
         return $quiz;
     }
 
-    public function test_quiz_attempt_walkthrough_submit_time_recorded_correctly_when_overdue(): void {
+    public function test_quiz_attempt_walkthrough_submit_time_recorded_correctly_when_overdue() {
 
         $quiz = $this->create_quiz_with_one_question();
 
@@ -279,7 +281,7 @@ class attempt_walkthrough_test extends \advanced_testcase {
         $this->assertEquals(0, $attemptobj->get_number_of_unanswered_questions());
     }
 
-    public function test_quiz_attempt_walkthrough_close_time_extended_at_last_minute(): void {
+    public function test_quiz_attempt_walkthrough_close_time_extended_at_last_minute() {
         global $DB;
 
         $quiz = $this->create_quiz_with_one_question();
@@ -318,7 +320,7 @@ class attempt_walkthrough_test extends \advanced_testcase {
     /**
      * Create a quiz with a random as well as other questions and walk through quiz attempts.
      */
-    public function test_quiz_with_random_question_attempt_walkthrough(): void {
+    public function test_quiz_with_random_question_attempt_walkthrough() {
         global $SITE;
 
         $this->resetAfterTest(true);
@@ -424,7 +426,7 @@ class attempt_walkthrough_test extends \advanced_testcase {
     }
 
 
-    public function get_correct_response_for_variants() {
+    public static function get_correct_response_for_variants(): array {
         return [[1, 9.9], [2, 8.5], [5, 14.2], [10, 6.8, true]];
     }
 
@@ -435,7 +437,7 @@ class attempt_walkthrough_test extends \advanced_testcase {
      *
      * @dataProvider get_correct_response_for_variants
      */
-    public function test_quiz_with_question_with_variants_attempt_walkthrough($variantno, $correctresponse, $done = false): void {
+    public function test_quiz_with_question_with_variants_attempt_walkthrough($variantno, $correctresponse, $done = false) {
         global $SITE;
 
         $this->resetAfterTest($done);
@@ -515,7 +517,7 @@ class attempt_walkthrough_test extends \advanced_testcase {
         $this->assertEquals(100, $gradebookgrade->grade);
     }
 
-    public function test_quiz_attempt_walkthrough_abandoned_attempt_reopened_with_timelimit_override(): void {
+    public function test_quiz_attempt_walkthrough_abandoned_attempt_reopened_with_timelimit_override() {
         global $DB;
 
         $quiz = $this->create_quiz_with_one_question('autoabandon');
@@ -575,7 +577,7 @@ class attempt_walkthrough_test extends \advanced_testcase {
                 $reopenedevent->get_url());
     }
 
-    public function test_quiz_attempt_walkthrough_abandoned_attempt_reopened_after_close_time(): void {
+    public function test_quiz_attempt_walkthrough_abandoned_attempt_reopened_after_close_time() {
         $quiz = $this->create_quiz_with_one_question('autoabandon');
         $originaltimeclose = $quiz->timeclose;
 

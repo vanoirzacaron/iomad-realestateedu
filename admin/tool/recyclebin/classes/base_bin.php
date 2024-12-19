@@ -47,33 +47,33 @@ abstract class base_bin {
      *
      * @param int $itemid Item ID to retrieve.
      */
-    abstract public function get_item($itemid);
+    public abstract function get_item($itemid);
 
     /**
      * Returns a list of items in the recycle bin.
      */
-    abstract public function get_items();
+    public abstract function get_items();
 
     /**
      * Store an item in this recycle bin.
      *
      * @param \stdClass $item Item to store.
      */
-    abstract public function store_item($item);
+    public abstract function store_item($item);
 
     /**
      * Restore an item from the recycle bin.
      *
      * @param \stdClass $item The item database record
      */
-    abstract public function restore_item($item);
+    public abstract function restore_item($item);
 
     /**
      * Delete an item from the recycle bin.
      *
      * @param \stdClass $item The item database record
      */
-    abstract public function delete_item($item);
+    public abstract function delete_item($item);
 
     /**
      * Empty the recycle bin.
@@ -91,15 +91,15 @@ abstract class base_bin {
     /**
      * Can we view items in this recycle bin?
      */
-    abstract public function can_view();
+    public abstract function can_view();
 
     /**
      * Can we restore items in this recycle bin?
      */
-    abstract public function can_restore();
+    public abstract function can_restore();
 
     /**
      * Can we delete this?
      */
-    abstract public function can_delete();
+    public abstract function can_delete();
 }

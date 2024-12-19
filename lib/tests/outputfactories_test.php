@@ -34,12 +34,12 @@ require_once($CFG->libdir . '/tests/fixtures/test_renderer_factory.php');
  */
 class outputfactories_test extends \advanced_testcase {
 
-    public function test_nonautoloaded_classnames(): void {
+    public function test_nonautoloaded_classnames() {
         global $PAGE;
         $renderer = $PAGE->get_renderer('mod_assign');
     }
 
-    public function test_autoloaded_classnames(): void {
+    public function test_autoloaded_classnames() {
         $testfactory = new test_output_factory();
         $component = 'mod_assign';
         $subtype = 'custom';

@@ -35,7 +35,7 @@ class data_request_test extends data_privacy_testcase {
      *
      * @return  array
      */
-    public function status_state_provider(): array {
+    public static function status_state_provider(): array {
         return [
             [
                 'state' => api::DATAREQUEST_STATUS_PENDING,
@@ -93,7 +93,7 @@ class data_request_test extends data_privacy_testcase {
      * @param       bool    $resettable
      * @param       bool    $active
      */
-    public function test_pseudo_states_export(int $status, bool $resettable, bool $active): void {
+    public function test_pseudo_states_export(int $status, bool $resettable, bool $active) {
         $uut = new \tool_dataprivacy\data_request();
         $uut->set('status', $status);
         $uut->set('type', api::DATAREQUEST_TYPE_EXPORT);
@@ -110,7 +110,7 @@ class data_request_test extends data_privacy_testcase {
      * @param       bool    $resettable
      * @param       bool    $active
      */
-    public function test_pseudo_states_delete(int $status, bool $resettable, bool $active): void {
+    public function test_pseudo_states_delete(int $status, bool $resettable, bool $active) {
         $uut = new \tool_dataprivacy\data_request();
         $uut->set('status', $status);
         $uut->set('type', api::DATAREQUEST_TYPE_DELETE);
@@ -125,7 +125,7 @@ class data_request_test extends data_privacy_testcase {
      * @dataProvider        status_state_provider
      * @param       int     $status
      */
-    public function test_can_reset_others($status): void {
+    public function test_can_reset_others($status) {
         $uut = new \tool_dataprivacy\data_request();
         $uut->set('status', $status);
         $uut->set('type', api::DATAREQUEST_TYPE_OTHERS);
@@ -138,9 +138,9 @@ class data_request_test extends data_privacy_testcase {
      *
      * @return      array
      */
-    public function non_resettable_provider(): array {
+    public static function non_resettable_provider(): array {
         $states = [];
-        foreach ($this->status_state_provider() as $thisstatus) {
+        foreach (self::status_state_provider() as $thisstatus) {
             if (!$thisstatus['resettable']) {
                 $states[] = $thisstatus;
             }
@@ -155,7 +155,7 @@ class data_request_test extends data_privacy_testcase {
      * @dataProvider        non_resettable_provider
      * @param       int     $status
      */
-    public function test_non_resubmit_request($status): void {
+    public function test_non_resubmit_request($status) {
         $uut = new \tool_dataprivacy\data_request();
         $uut->set('status', $status);
 
@@ -168,7 +168,7 @@ class data_request_test extends data_privacy_testcase {
     /**
      * Ensure that a rejected request can be reset.
      */
-    public function test_resubmit_request(): void {
+    public function test_resubmit_request() {
         $this->resetAfterTest();
 
         $uut = new \tool_dataprivacy\data_request();
@@ -192,7 +192,7 @@ class data_request_test extends data_privacy_testcase {
     /**
      * Ensure that an active request can be reset.
      */
-    public function test_resubmit_active_request(): void {
+    public function test_resubmit_active_request() {
         $this->resetAfterTest();
 
         $uut = new \tool_dataprivacy\data_request();
@@ -221,7 +221,7 @@ class data_request_test extends data_privacy_testcase {
      * @param   int     $status
      * @return  data_request
      */
-    public function create_request_for_user_with_status(int $userid, int $type, int $status): data_request {
+    public function create_request_for_user_with_status(int $userid, int $type, int $status) : data_request {
         $request = new data_request(0, (object) [
                 'userid' => $userid,
                 'type' => $type,

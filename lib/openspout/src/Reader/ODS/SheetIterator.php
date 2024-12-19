@@ -35,15 +35,15 @@ final class SheetIterator implements SheetIteratorInterface
     public const XML_ATTRIBUTE_TABLE_DISPLAY = 'table:display';
 
     /** @var string Path of the file to be read */
-    private readonly string $filePath;
+    private string $filePath;
 
-    private readonly Options $options;
+    private Options $options;
 
     /** @var XMLReader The XMLReader object that will help read sheet's XML data */
-    private readonly XMLReader $xmlReader;
+    private XMLReader $xmlReader;
 
     /** @var ODS Used to unescape XML data */
-    private readonly ODS $escaper;
+    private ODS $escaper;
 
     /** @var bool Whether there are still at least a sheet to be read */
     private bool $hasFoundSheet;
@@ -52,7 +52,7 @@ final class SheetIterator implements SheetIteratorInterface
     private int $currentSheetIndex;
 
     /** @var string The name of the sheet that was defined as active */
-    private readonly ?string $activeSheetName;
+    private ?string $activeSheetName;
 
     /** @var array<string, bool> Associative array [STYLE_NAME] => [IS_SHEET_VISIBLE] */
     private array $sheetsVisibility;
@@ -75,7 +75,7 @@ final class SheetIterator implements SheetIteratorInterface
      *
      * @see http://php.net/manual/en/iterator.rewind.php
      *
-     * @throws IOException If unable to open the XML file containing sheets' data
+     * @throws \OpenSpout\Common\Exception\IOException If unable to open the XML file containing sheets' data
      */
     public function rewind(): void
     {

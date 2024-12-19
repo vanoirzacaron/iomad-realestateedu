@@ -54,7 +54,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_supports
      */
-    public function test_bigbluebuttonbn_supports(): void {
+    public function test_bigbluebuttonbn_supports() {
         $this->resetAfterTest();
         $this->assertTrue(bigbluebuttonbn_supports(FEATURE_IDNUMBER));
         $this->assertTrue(bigbluebuttonbn_supports(FEATURE_MOD_INTRO));
@@ -66,7 +66,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_add_instance
      */
-    public function test_bigbluebuttonbn_add_instance(): void {
+    public function test_bigbluebuttonbn_add_instance() {
         $this->resetAfterTest();
         list($bbactivitycontext, $bbactivitycm, $bbactivity) = $this->create_instance();
         $bbformdata = $this->get_form_data_from_instance($bbactivity);
@@ -79,7 +79,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_update_instance
      */
-    public function test_bigbluebuttonbn_update_instance(): void {
+    public function test_bigbluebuttonbn_update_instance() {
         $this->resetAfterTest();
         list($bbactivitycontext, $bbactivitycm, $bbactivity) = $this->create_instance();
         $bbformdata = $this->get_form_data_from_instance($bbactivity);
@@ -92,7 +92,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_delete_instance
      */
-    public function test_bigbluebuttonbn_delete_instance(): void {
+    public function test_bigbluebuttonbn_delete_instance() {
         $this->resetAfterTest();
         $this->initialise_mock_server();
         list($bbactivitycontext, $bbactivitycm, $bbactivity) = $this->create_instance();
@@ -105,7 +105,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_delete_instance
      */
-    public function test_bigbluebuttonbn_delete_instance_with_running_meeting(): void {
+    public function test_bigbluebuttonbn_delete_instance_with_running_meeting() {
         $this->resetAfterTest();
         $this->initialise_mock_server();
         list($bbactivitycontext, $bbactivitycm, $bbactivity) = $this->create_instance();
@@ -130,7 +130,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_delete_instance
      */
-    public function test_bigbluebuttonbn_delete_instance_with_running_group_meetings(): void {
+    public function test_bigbluebuttonbn_delete_instance_with_running_group_meetings() {
         $this->resetAfterTest();
         $this->initialise_mock_server();
         $datagenerator = $this->getDataGenerator();
@@ -178,7 +178,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_user_outline
      */
-    public function test_bigbluebuttonbn_user_outline(): void {
+    public function test_bigbluebuttonbn_user_outline() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -200,7 +200,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_user_complete
      */
-    public function test_bigbluebuttonbn_user_complete(): void {
+    public function test_bigbluebuttonbn_user_complete() {
         $this->initialise_mock_server();
         $this->resetAfterTest();
 
@@ -224,7 +224,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_get_recent_mod_activity
      */
-    public function test_bigbluebuttonbn_get_recent_mod_activity(): void {
+    public function test_bigbluebuttonbn_get_recent_mod_activity() {
         $this->initialise_mock_server();
         $this->resetAfterTest();
 
@@ -327,7 +327,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_print_recent_mod_activity
      */
-    public function test_bigbluebuttonbn_print_recent_mod_activity(): void {
+    public function test_bigbluebuttonbn_print_recent_mod_activity() {
         $this->initialise_mock_server();
         $this->resetAfterTest();
 
@@ -356,7 +356,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_print_recent_activity
      */
-    public function test_bigbluebuttonbn_print_recent_activity(): void {
+    public function test_bigbluebuttonbn_print_recent_activity() {
         global $CFG;
         $this->initialise_mock_server();
         $this->resetAfterTest();
@@ -405,7 +405,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_get_extra_capabilities
      */
-    public function test_bigbluebuttonbn_get_extra_capabilities(): void {
+    public function test_bigbluebuttonbn_get_extra_capabilities() {
         $this->resetAfterTest();
         $this->assertEquals(['moodle/site:accessallgroups'], bigbluebuttonbn_get_extra_capabilities());
     }
@@ -415,7 +415,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_reset_course_form_definition
      */
-    public function test_bigbluebuttonbn_reset_course_form_definition(): void {
+    public function test_bigbluebuttonbn_reset_course_form_definition() {
         global $CFG, $PAGE;
         $this->initialise_mock_server();
 
@@ -432,6 +432,7 @@ class lib_test extends \advanced_testcase {
         $form = new mod_bigbluebuttonbn_mod_form($data, 1, $bbactivitycm, $this->get_course());
         $refclass = new ReflectionClass("mod_bigbluebuttonbn_mod_form");
         $formprop = $refclass->getProperty('_form');
+        $formprop->setAccessible(true);
 
         /* @var $mform MoodleQuickForm quickform object definition */
         $mform = $formprop->getValue($form);
@@ -444,7 +445,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_reset_course_form_defaults
      */
-    public function test_bigbluebuttonbn_reset_course_form_defaults(): void {
+    public function test_bigbluebuttonbn_reset_course_form_defaults() {
         global $CFG;
         $this->resetAfterTest();
         $results = bigbluebuttonbn_reset_course_form_defaults($this->get_course());
@@ -461,7 +462,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_reset_userdata
      */
-    public function test_bigbluebuttonbn_reset_userdata(): void {
+    public function test_bigbluebuttonbn_reset_userdata() {
         global $DB;
         $this->resetAfterTest();
         $data = new stdClass();
@@ -494,7 +495,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_reset_userdata
      */
-    public function test_bigbluebuttonbn_reset_userdata_in_a_course(): void {
+    public function test_bigbluebuttonbn_reset_userdata_in_a_course() {
         global $DB;
         $this->resetAfterTest();
         $data = new stdClass();
@@ -527,7 +528,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_reset_userdata
      */
-    public function test_bigbluebuttonbn_reset_userdata_logs_not_deleted(): void {
+    public function test_bigbluebuttonbn_reset_userdata_logs_not_deleted() {
         global $DB;
         $this->resetAfterTest();
         $data = new stdClass();
@@ -552,7 +553,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_get_coursemodule_info
      */
-    public function test_bigbluebuttonbn_get_coursemodule_info(): void {
+    public function test_bigbluebuttonbn_get_coursemodule_info() {
         $this->resetAfterTest();
         list($bbactivitycontext, $bbactivitycm, $bbactivity) = $this->create_instance();
         $info = bigbluebuttonbn_get_coursemodule_info($bbactivitycm);
@@ -564,7 +565,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_check_updates_since
      */
-    public function test_bigbluebuttonbn_check_updates_since(): void {
+    public function test_bigbluebuttonbn_check_updates_since() {
         $this->resetAfterTest();
         list($bbactivitycontext, $bbactivitycm, $bbactivity) = $this->create_instance();
         $result = bigbluebuttonbn_check_updates_since($bbactivitycm, 0);
@@ -580,7 +581,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::mod_bigbluebuttonbn_core_calendar_provide_event_action
      */
-    public function test_mod_bigbluebuttonbn_core_calendar_provide_event_action(): void {
+    public function test_mod_bigbluebuttonbn_core_calendar_provide_event_action() {
         global $DB;
         $this->initialise_mock_server();
         $this->resetAfterTest();
@@ -632,7 +633,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_extend_settings_navigation
      */
-    public function test_bigbluebuttonbn_extend_settings_navigation_admin(): void {
+    public function test_bigbluebuttonbn_extend_settings_navigation_admin() {
         global $PAGE, $CFG;
         $this->resetAfterTest();
         list($bbactivitycontext, $bbactivitycm, $bbactivity) = $this->create_instance();
@@ -654,7 +655,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::bigbluebuttonbn_extend_settings_navigation
      */
-    public function test_bigbluebuttonbn_extend_settings_navigation_user(): void {
+    public function test_bigbluebuttonbn_extend_settings_navigation_user() {
         global $PAGE, $CFG;
         $this->resetAfterTest();
 
@@ -680,7 +681,7 @@ class lib_test extends \advanced_testcase {
      * Check the visibility on calendar
      * @covers ::mod_bigbluebuttonbn_core_calendar_is_event_visible
      */
-    public function test_mod_bigbluebuttonbn_core_calendar_is_event_visible(): void {
+    public function test_mod_bigbluebuttonbn_core_calendar_is_event_visible() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -698,4 +699,71 @@ class lib_test extends \advanced_testcase {
         $this->assertFalse(mod_bigbluebuttonbn_core_calendar_is_event_visible($event));
     }
 
+    /**
+     * Check the bigbluebuttonbn_pre_enable_plugin_actions function.
+     *
+     * @covers ::bigbluebuttonbn_pre_enable_plugin_actions
+     * @dataProvider bigbluebuttonbn_pre_enable_plugin_actions_provider
+     * @param bool $initialstate
+     * @param bool $expected
+     * @param int $notificationcount
+     */
+    public function test_bigbluebuttonbn_pre_enable_plugin_actions(
+        ?bool $initialstate,
+        bool $expected,
+        int $notificationcount
+    ): void {
+        $this->resetAfterTest(true);
+
+        set_config('bigbluebuttonbn_default_dpa_accepted', $initialstate);
+
+        $this->assertEquals($expected, bigbluebuttonbn_pre_enable_plugin_actions());
+        $this->assertCount($notificationcount, \core\notification::fetch());
+    }
+
+    /**
+     * Check the bigbluebuttonbn_pre_enable_plugin_actions function.
+     *
+     * @covers ::bigbluebuttonbn_pre_enable_plugin_actions
+     * @dataProvider bigbluebuttonbn_pre_enable_plugin_actions_provider
+     * @param bool $initialstate
+     * @param bool $expected
+     * @param int $notificationcount
+     */
+    public function test_enable_plugin(
+        ?bool $initialstate,
+        bool $expected,
+        int $notificationcount
+    ): void {
+        $this->resetAfterTest(true);
+
+        set_config('bigbluebuttonbn_default_dpa_accepted', $initialstate);
+        $this->assertEquals($expected, \core\plugininfo\mod::enable_plugin('bigbluebuttonbn', 1));
+        $this->assertCount($notificationcount, \core\notification::fetch());
+    }
+
+    /**
+     * Data provider for bigbluebuttonbn_pre_enable_plugin_actions tests.
+     *
+     * @return array
+     */
+    public function bigbluebuttonbn_pre_enable_plugin_actions_provider(): array {
+        return [
+            'Initially unset' => [
+                null,
+                false,
+                1,
+            ],
+            'Set to false' => [
+                false,
+                false,
+                1,
+            ],
+            'Initially set' => [
+                true,
+                true,
+                0,
+            ],
+        ];
+    }
 }

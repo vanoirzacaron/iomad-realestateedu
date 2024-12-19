@@ -284,10 +284,10 @@ export default class Drawers {
         }
 
         if (this.drawerNode.classList.contains(CLASSES.SHOW)) {
-            this.openDrawer({focusOnCloseButton: false, setUserPref: false});
+            this.openDrawer({focusOnCloseButton: false});
         } else if (this.drawerNode.dataset.forceopen == 1) {
             if (!isSmall()) {
-                this.openDrawer({focusOnCloseButton: false, setUserPref: false});
+                this.openDrawer({focusOnCloseButton: false});
             }
         } else {
             Aria.hide(this.drawerNode);
@@ -414,9 +414,8 @@ export default class Drawers {
      *
      * @param {object} args
      * @param {boolean} [args.focusOnCloseButton=true] Whether to alter page focus when opening the drawer
-     * @param {boolean} [args.setUserPref=true] Whether to store the opened drawer state as a user preference
      */
-    openDrawer({focusOnCloseButton = true, setUserPref = true} = {}) {
+    openDrawer({focusOnCloseButton = true} = {}) {
 
         const pendingPromise = new Pending('theme_iomadboost/drawers:open');
         const showEvent = this.dispatchEvent(Drawers.eventTypes.drawerShow, true);
@@ -440,7 +439,7 @@ export default class Drawers {
         this.drawerNode.classList.add(CLASSES.SHOW);
 
         const preference = this.drawerNode.dataset.preference;
-        if (preference && !isSmall() && (this.drawerNode.dataset.forceopen != 1) && setUserPref) {
+        if (preference && !isSmall() && (this.drawerNode.dataset.forceopen != 1)) {
             setUserPreference(preference, true);
         }
 

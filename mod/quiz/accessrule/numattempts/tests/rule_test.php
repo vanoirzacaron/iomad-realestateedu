@@ -34,7 +34,7 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/numattempts/rule.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class rule_test extends \basic_testcase {
-    public function test_num_attempts_access_rule(): void {
+    public function test_num_attempts_access_rule() {
         $quiz = new \stdClass();
         $quiz->attempts = 3;
         $cm = new \stdClass();

@@ -30,7 +30,7 @@ class preset_reverted_test extends \advanced_testcase {
     /**
      * Test preset_reverted event.
      */
-    public function test_preset_reverted_event(): void {
+    public function test_preset_reverted_event() {
         $this->resetAfterTest();
         $this->setAdminUser();
 

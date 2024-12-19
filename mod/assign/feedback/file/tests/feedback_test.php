@@ -38,7 +38,7 @@ class feedback_test extends \advanced_testcase {
     /**
      * Test the is_feedback_modified() method for the file feedback.
      */
-    public function test_is_feedback_modified(): void {
+    public function test_is_feedback_modified() {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
         $teacher = $this->getDataGenerator()->create_and_enrol($course, 'teacher');

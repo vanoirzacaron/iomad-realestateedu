@@ -37,7 +37,7 @@ class recording_proxy_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_fetch_recordings(): void {
+    public function test_fetch_recordings() {
         $this->resetAfterTest();
         $this->initialise_mock_server();
         [$context, $cm, $bbbactivity] = $this->create_instance();
@@ -55,7 +55,7 @@ class recording_proxy_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_fetch_recordings_breakoutroom(): void {
+    public function test_fetch_recordings_breakoutroom() {
         $this->resetAfterTest();
         $this->initialise_mock_server();
         [$context, $cm, $bbbactivity] = $this->create_instance();

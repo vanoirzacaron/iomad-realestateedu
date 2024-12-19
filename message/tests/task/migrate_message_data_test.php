@@ -44,7 +44,7 @@ class migrate_message_data_test extends \advanced_testcase {
     /**
      * Test migrating legacy messages.
      */
-    public function test_migrating_messages(): void {
+    public function test_migrating_messages() {
         global $DB;
 
         // Create users to test with.
@@ -180,7 +180,7 @@ class migrate_message_data_test extends \advanced_testcase {
     /**
      * Test migrating legacy notifications.
      */
-    public function test_migrating_notifications(): void {
+    public function test_migrating_notifications() {
         global $DB;
 
         // Create users to test with.
@@ -264,7 +264,7 @@ class migrate_message_data_test extends \advanced_testcase {
     /**
      * Test migrating a legacy message that contains null as the format.
      */
-    public function test_migrating_message_null_format(): void {
+    public function test_migrating_message_null_format() {
         global $DB;
 
         // Create users to test with.
@@ -292,7 +292,7 @@ class migrate_message_data_test extends \advanced_testcase {
     /**
      * Test migrating a legacy notification that contains null as the format.
      */
-    public function test_migrating_notification_null_format(): void {
+    public function test_migrating_notification_null_format() {
         global $DB;
 
         // Create users to test with.
@@ -320,7 +320,7 @@ class migrate_message_data_test extends \advanced_testcase {
     /**
      * Test migrating a legacy message that a user sent to themselves then deleted.
      */
-    public function test_migrating_message_deleted_message_sent_to_self(): void {
+    public function test_migrating_message_deleted_message_sent_to_self() {
         global $DB;
 
         // Create user to test with.

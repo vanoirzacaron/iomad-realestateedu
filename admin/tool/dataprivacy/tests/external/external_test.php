@@ -27,7 +27,6 @@ namespace tool_dataprivacy\external;
 use core_external\external_api;
 use externallib_advanced_testcase;
 use tool_dataprivacy\api;
-use tool_dataprivacy\data_request;
 use tool_dataprivacy\context_instance;
 use tool_dataprivacy\external;
 
@@ -48,7 +47,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::approve_data_request() with the user not logged in.
      */
-    public function test_approve_data_request_not_logged_in(): void {
+    public function test_approve_data_request_not_logged_in() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -69,7 +68,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::approve_data_request() with the user not having a DPO role.
      */
-    public function test_approve_data_request_not_dpo(): void {
+    public function test_approve_data_request_not_dpo() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -89,7 +88,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::approve_data_request() for request that's not ready for approval
      */
-    public function test_approve_data_request_not_waiting_for_approval(): void {
+    public function test_approve_data_request_not_waiting_for_approval() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -110,7 +109,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::approve_data_request()
      */
-    public function test_approve_data_request(): void {
+    public function test_approve_data_request() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -133,7 +132,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::approve_data_request() for a non-existent request ID.
      */
-    public function test_approve_data_request_non_existent(): void {
+    public function test_approve_data_request_non_existent() {
         $this->resetAfterTest();
 
         // Admin as DPO. (The default when no one's assigned as a DPO in the site).
@@ -151,7 +150,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::cancel_data_request() of another user.
      */
-    public function test_cancel_data_request_other_user(): void {
+    public function test_cancel_data_request_other_user() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -177,7 +176,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test cancellation of a request where you are the requester of another user's data.
      */
-    public function test_cancel_data_request_other_user_as_requester(): void {
+    public function test_cancel_data_request_other_user_as_requester() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -204,7 +203,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test cancellation of a request where you are the requester of another user's data.
      */
-    public function test_cancel_data_request_requester_lost_permissions(): void {
+    public function test_cancel_data_request_requester_lost_permissions() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -233,7 +232,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test cancellation of a request where you are the requester of another user's data.
      */
-    public function test_cancel_data_request_other_user_as_child(): void {
+    public function test_cancel_data_request_other_user_as_child() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -260,7 +259,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::cancel_data_request()
      */
-    public function test_cancel_data_request(): void {
+    public function test_cancel_data_request() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -283,7 +282,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test contact DPO.
      */
-    public function test_contact_dpo(): void {
+    public function test_contact_dpo() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -300,7 +299,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test contact DPO with message containing invalid input.
      */
-    public function test_contact_dpo_with_nasty_input(): void {
+    public function test_contact_dpo_with_nasty_input() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -314,7 +313,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::deny_data_request() with the user not logged in.
      */
-    public function test_deny_data_request_not_logged_in(): void {
+    public function test_deny_data_request_not_logged_in() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -334,7 +333,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::deny_data_request() with the user not having a DPO role.
      */
-    public function test_deny_data_request_not_dpo(): void {
+    public function test_deny_data_request_not_dpo() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -353,7 +352,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::deny_data_request() for request that's not ready for approval
      */
-    public function test_deny_data_request_not_waiting_for_approval(): void {
+    public function test_deny_data_request_not_waiting_for_approval() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -373,7 +372,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::deny_data_request()
      */
-    public function test_deny_data_request(): void {
+    public function test_deny_data_request() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -395,7 +394,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::deny_data_request() for a non-existent request ID.
      */
-    public function test_deny_data_request_non_existent(): void {
+    public function test_deny_data_request_non_existent() {
         $this->resetAfterTest();
 
         // Admin as DPO. (The default when no one's assigned as a DPO in the site).
@@ -412,7 +411,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::get_data_request() with the user not logged in.
      */
-    public function test_get_data_request_not_logged_in(): void {
+    public function test_get_data_request_not_logged_in() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -430,7 +429,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::get_data_request() with the user not having a DPO role.
      */
-    public function test_get_data_request_not_dpo(): void {
+    public function test_get_data_request_not_dpo() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -450,7 +449,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::get_data_request()
      */
-    public function test_get_data_request(): void {
+    public function test_get_data_request() {
         $this->resetAfterTest();
 
         $generator = new \testing_data_generator();
@@ -475,7 +474,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::get_data_request() for a non-existent request ID.
      */
-    public function test_get_data_request_non_existent(): void {
+    public function test_get_data_request_non_existent() {
         $this->resetAfterTest();
 
         // Admin as DPO. (The default when no one's assigned as a DPO in the site).
@@ -488,7 +487,7 @@ class external_test extends externallib_advanced_testcase {
      * Test for \tool_dataprivacy\external::set_context_defaults()
      * when called by a user that doesn't have the manage registry capability.
      */
-    public function test_set_context_defaults_no_capability(): void {
+    public function test_set_context_defaults_no_capability() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -508,7 +507,7 @@ class external_test extends externallib_advanced_testcase {
      * @param bool $modulelevel Whether defaults are to be applied on the module context level or for an activity only.
      * @param bool $override Whether to override instances.
      */
-    public function test_set_context_defaults($modulelevel, $override): void {
+    public function test_set_context_defaults($modulelevel, $override) {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -567,7 +566,7 @@ class external_test extends externallib_advanced_testcase {
      * Test for \tool_dataprivacy\external::get_category_options()
      * when called by a user that doesn't have the manage registry capability.
      */
-    public function test_get_category_options_no_capability(): void {
+    public function test_get_category_options_no_capability() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
@@ -580,7 +579,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Data provider for \tool_dataprivacy_external_testcase::test_XX_options().
      */
-    public function get_options_provider() {
+    public static function get_options_provider(): array {
         return [
             [false, false],
             [false, true],
@@ -596,7 +595,7 @@ class external_test extends externallib_advanced_testcase {
      * @param bool $includeinherit Whether "Inherit" would be included to the options.
      * @param bool $includenotset Whether "Not set" would be included to the options.
      */
-    public function test_get_category_options($includeinherit, $includenotset): void {
+    public function test_get_category_options($includeinherit, $includenotset) {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -642,7 +641,7 @@ class external_test extends externallib_advanced_testcase {
      * Test for \tool_dataprivacy\external::get_purpose_options()
      * when called by a user that doesn't have the manage registry capability.
      */
-    public function test_get_purpose_options_no_capability(): void {
+    public function test_get_purpose_options_no_capability() {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
@@ -658,7 +657,7 @@ class external_test extends externallib_advanced_testcase {
      * @param bool $includeinherit Whether "Inherit" would be included to the options.
      * @param bool $includenotset Whether "Not set" would be included to the options.
      */
-    public function test_get_purpose_options($includeinherit, $includenotset): void {
+    public function test_get_purpose_options($includeinherit, $includenotset) {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -705,7 +704,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Data provider for \tool_dataprivacy_external_testcase::get_activity_options().
      */
-    public function get_activity_options_provider() {
+    public static function get_activity_options_provider(): array {
         return [
             [false, false, true],
             [false, true, true],
@@ -726,7 +725,7 @@ class external_test extends externallib_advanced_testcase {
      * @param bool $inheritpurpose Whether the purpose would be set to "Inherit".
      * @param bool $nodefaults Whether to fetch only activities that don't have defaults.
      */
-    public function test_get_activity_options($inheritcategory, $inheritpurpose, $nodefaults): void {
+    public function test_get_activity_options($inheritcategory, $inheritpurpose, $nodefaults) {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -774,7 +773,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::bulk_approve_data_requests().
      */
-    public function test_bulk_approve_data_requests(): void {
+    public function test_bulk_approve_data_requests() {
         $this->resetAfterTest();
 
         // Create delete data requests.
@@ -802,7 +801,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::bulk_approve_data_requests() for a non-existent request ID.
      */
-    public function test_bulk_approve_data_requests_non_existent(): void {
+    public function test_bulk_approve_data_requests_non_existent() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -820,7 +819,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::bulk_deny_data_requests() for a user without permission to deny requests.
      */
-    public function test_bulk_approve_data_requests_no_permission(): void {
+    public function test_bulk_approve_data_requests_no_permission() {
         $this->resetAfterTest();
 
         // Create delete data requests.
@@ -849,7 +848,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::bulk_deny_data_requests() for a user without permission to deny requests.
      */
-    public function test_bulk_approve_data_requests_own_request(): void {
+    public function test_bulk_approve_data_requests_own_request() {
         $this->resetAfterTest();
 
         // Create delete data requests.
@@ -877,7 +876,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::bulk_deny_data_requests().
      */
-    public function test_bulk_deny_data_requests(): void {
+    public function test_bulk_deny_data_requests() {
         $this->resetAfterTest();
 
         // Create delete data requests.
@@ -905,7 +904,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::bulk_deny_data_requests() for a non-existent request ID.
      */
-    public function test_bulk_deny_data_requests_non_existent(): void {
+    public function test_bulk_deny_data_requests_non_existent() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -922,7 +921,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::bulk_deny_data_requests() for a user without permission to deny requests.
      */
-    public function test_bulk_deny_data_requests_no_permission(): void {
+    public function test_bulk_deny_data_requests_no_permission() {
         $this->resetAfterTest();
 
         // Create delete data requests.
@@ -951,7 +950,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test for external::bulk_deny_data_requests() for a user cannot approve their own request.
      */
-    public function test_bulk_deny_data_requests_own_request(): void {
+    public function test_bulk_deny_data_requests_own_request() {
         $this->resetAfterTest();
 
         // Create delete data requests.
@@ -986,7 +985,7 @@ class external_test extends externallib_advanced_testcase {
      * @throws required_capability_exception
      * @throws restricted_context_exception
      */
-    public function test_get_users_using_using_non_identity(): void {
+    public function test_get_users_using_using_non_identity() {
         $this->resetAfterTest();
         $context = \context_system::instance();
         $requester = $this->getDataGenerator()->create_user();
@@ -1021,7 +1020,7 @@ class external_test extends externallib_advanced_testcase {
      * @throws required_capability_exception
      * @throws restricted_context_exception
      */
-    public function test_get_users_using_identity_without_permission(): void {
+    public function test_get_users_using_identity_without_permission() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1053,7 +1052,7 @@ class external_test extends externallib_advanced_testcase {
      * @throws required_capability_exception
      * @throws restricted_context_exception
      */
-    public function test_get_users_using_field_not_in_identity(): void {
+    public function test_get_users_using_field_not_in_identity() {
         $this->resetAfterTest();
 
         $context = \context_system::instance();
@@ -1082,7 +1081,7 @@ class external_test extends externallib_advanced_testcase {
      * @throws required_capability_exception
      * @throws restricted_context_exception
      */
-    public function test_get_users(): void {
+    public function test_get_users() {
         global $CFG;
         $this->resetAfterTest();
         $CFG->showuseridentity = 'institution';
@@ -1113,253 +1112,5 @@ class external_test extends externallib_advanced_testcase {
                 ]
             ]
         ], $results[$student1->id]);
-    }
-
-    /**
-     * Test for external::get_access_information().
-     */
-    public function test_get_access_information(): void {
-        $this->resetAfterTest();
-
-        $this->setAdminUser();
-        $result = get_access_information::execute();
-        $result = external_api::clean_returnvalue(get_access_information::execute_returns(), $result);
-        $this->assertFalse($result['cancontactdpo']);   // Disabled by default.
-
-        // Enable contact DPO.
-        set_config('contactdataprotectionofficer', 1, 'tool_dataprivacy');
-
-        $user = $this->getDataGenerator()->create_user();
-        $this->setUser($user);
-        $result = get_access_information::execute();
-        $result = external_api::clean_returnvalue(get_access_information::execute_returns(), $result);
-
-        $this->assertTrue($result['cancontactdpo']);
-        $this->assertTrue($result['cancreatedatadownloadrequest']);
-        $this->assertTrue($result['cancreatedatadeletionrequest']);
-        $this->assertFalse($result['canmanagedatarequests']);
-        $this->assertFalse($result['hasongoingdatadownloadrequest']);
-        $this->assertFalse($result['hasongoingdatadeletionrequest']);
-    }
-
-    /**
-     * Test for external::create_data_request()
-     */
-    public function test_create_data_request(): void {
-        $this->resetAfterTest();
-
-        $systemcontext = \context_system::instance();
-        $user = $this->getDataGenerator()->create_user();
-        $requester = $this->getDataGenerator()->create_user();
-        $role = $this->getDataGenerator()->create_role();
-        assign_capability('tool/dataprivacy:makedatarequestsforchildren', CAP_ALLOW, $role, $systemcontext);
-        role_assign($role, $requester->id, \context_user::instance($user->id));
-
-        // Enable contact DPO.
-        set_config('contactdataprotectionofficer', 1, 'tool_dataprivacy');
-
-        // Create a data request for myself.
-        $this->setUser($user);
-        $comment = 'Example comment';
-        $result = create_data_request::execute(api::DATAREQUEST_TYPE_DELETE, $comment);
-        $result = external_api::clean_returnvalue(create_data_request::execute_returns(), $result);
-
-        $this->assertEmpty($result['warnings']);
-
-        $requests = api::get_data_requests($user->id);
-        $this->assertCount(1, $requests);
-        $request = reset($requests);
-        $this->assertEquals($result['datarequestid'], $request->get('id'));
-        $this->assertEquals($user->id, $request->get('userid'));
-        $this->assertEquals(api::DATAREQUEST_TYPE_DELETE, $request->get('type'));
-        $this->assertEquals($comment, $request->get('comments'));
-
-        // Create on behalf of other user a different type of request.
-        $this->setUser($requester);
-        $comment = 'Example comment';
-        $result = create_data_request::execute(api::DATAREQUEST_TYPE_EXPORT, $comment, $user->id);
-        $result = external_api::clean_returnvalue(create_data_request::execute_returns(), $result);
-
-        $this->assertEmpty($result['warnings']);
-
-        $requests = api::get_data_requests($user->id);
-        $this->assertCount(2, $requests);
-        foreach ($requests as $request) {
-            if ($request->get('type') == api::DATAREQUEST_TYPE_EXPORT) {
-                $this->assertEquals($result['datarequestid'], $request->get('id'));
-                $this->assertEquals($user->id, $request->get('userid'));
-                $this->assertEquals($comment, $request->get('comments'));
-            } else {
-                $this->assertEquals($user->id, $request->get('userid'));
-                $this->assertEquals(api::DATAREQUEST_TYPE_DELETE, $request->get('type'));
-                $this->assertEquals('Example comment', $request->get('comments'));
-            }
-        }
-    }
-
-    /**
-     * Test for external::create_data_request() when no dpo available.
-     */
-    public function test_create_data_request_no_dpo(): void {
-        $this->resetAfterTest();
-
-        $user = $this->getDataGenerator()->create_user();
-        $this->setUser($user);
-
-        $this->expectException(\moodle_exception::class);
-        $this->expectExceptionMessage(get_string('contactdpoviaprivacypolicy', 'tool_dataprivacy'));
-        create_data_request::execute(api::DATAREQUEST_TYPE_DELETE, 'Example comment');
-    }
-
-    /**
-     * Test for external::create_data_request() with missing permission.
-     */
-    public function test_create_data_request_no_permission(): void {
-        $this->resetAfterTest();
-
-        // Enable contact DPO.
-        set_config('contactdataprotectionofficer', 1, 'tool_dataprivacy');
-
-        $user = $this->getDataGenerator()->create_user();
-        $anotheruser = $this->getDataGenerator()->create_user();
-        $this->setUser($user);
-
-        $this->expectException(\required_capability_exception::class);
-        create_data_request::execute(api::DATAREQUEST_TYPE_DELETE, 'Example comment', $anotheruser->id);
-    }
-
-    /**
-     * Test for external::create_data_request() with invalid request type.
-     */
-    public function test_create_data_request_invalid_type(): void {
-        $this->resetAfterTest();
-
-        // Enable contact DPO.
-        set_config('contactdataprotectionofficer', 1, 'tool_dataprivacy');
-
-        $user = $this->getDataGenerator()->create_user();
-        $this->setUser($user);
-
-        $this->expectException(\moodle_exception::class);
-        $this->expectExceptionMessage(get_string('errorinvalidrequesttype', 'tool_dataprivacy'));
-        create_data_request::execute(125, 'Example comment');
-    }
-
-    /**
-     * Test for external::get_data_requests().
-     */
-    public function test_get_data_requests(): void {
-        global $DB;
-
-        $this->resetAfterTest();
-
-        $user = $this->getDataGenerator()->create_user();
-        $anotheruser = $this->getDataGenerator()->create_user();
-        $this->setUser($user);
-
-        // Empty results.
-        $result = get_data_requests::execute($user->id);
-        $result = external_api::clean_returnvalue(get_data_requests::execute_returns(), $result);
-
-        $this->assertEmpty($result['warnings']);
-        $this->assertEmpty($result['requests']);
-
-        // Create data requests.
-        $comment = 'Example comment';
-        $request1 = api::create_data_request($user->id, api::DATAREQUEST_TYPE_DELETE, $comment);
-        $request2 = api::create_data_request($user->id, api::DATAREQUEST_TYPE_EXPORT, $comment);
-        $request3 = api::create_data_request($anotheruser->id, api::DATAREQUEST_TYPE_EXPORT, $comment,
-            data_request::DATAREQUEST_CREATION_AUTO);
-
-        // Get data requests.
-        $result = get_data_requests::execute($user->id);
-        $result = external_api::clean_returnvalue(get_data_requests::execute_returns(), $result);
-
-        $this->assertEmpty($result['warnings']);
-        $this->assertCount(2, $result['requests']);
-        foreach ($result['requests'] as $request) {
-            if ($request['id'] == $request1->get('id')) {
-                $this->assertEquals($user->id, $request['userid']);
-                $this->assertEquals(api::DATAREQUEST_TYPE_DELETE, $request['type']);
-                $this->assertEquals($comment, $request['comments']);
-            } else {
-                $this->assertEquals($user->id, $request['userid']);
-                $this->assertEquals(api::DATAREQUEST_TYPE_EXPORT, $request['type']);
-                $this->assertEquals($comment, $request['comments']);
-            }
-            $this->assertArrayNotHasKey('downloadlink', $request);  // Download link only present for download ready requests.
-        }
-
-        // Filter by type.
-        $result = get_data_requests::execute($user->id, [], [api::DATAREQUEST_TYPE_DELETE]);
-        $result = external_api::clean_returnvalue(get_data_requests::execute_returns(), $result);
-        $this->assertCount(1, $result['requests']);
-        $this->assertEquals($request1->get('id'), $result['requests'][0]['id']);
-
-        // Admin get all.
-        $this->setAdminUser();
-        $result = get_data_requests::execute();
-        $result = external_api::clean_returnvalue(get_data_requests::execute_returns(), $result);
-
-        $this->assertCount(3, $result['requests']);
-
-        // Test limit.
-        $result = get_data_requests::execute(0, [], [], [], '', 2, 1);
-        $result = external_api::clean_returnvalue(get_data_requests::execute_returns(), $result);
-
-        $this->assertCount(1, $result['requests']);
-
-        // Test sort.
-        $result = get_data_requests::execute(0, [], [], [], 'id DESC');
-        $result = external_api::clean_returnvalue(get_data_requests::execute_returns(), $result);
-        $this->assertEquals($request1->get('id'), $result['requests'][2]['id']);
-        $this->assertEquals($request2->get('id'), $result['requests'][1]['id']);
-        $this->assertEquals($request3->get('id'), $result['requests'][0]['id']);
-
-        // Test filter by status.
-        api::update_request_status($request3->get('id'), api::DATAREQUEST_STATUS_DOWNLOAD_READY);
-        $result = get_data_requests::execute(0, [api::DATAREQUEST_STATUS_DOWNLOAD_READY]);
-        $result = external_api::clean_returnvalue(get_data_requests::execute_returns(), $result);
-
-        $this->assertCount(1, $result['requests']);
-        $this->assertEquals($request3->get('id'), $result['requests'][0]['id']);
-        // Check download link because the download is now ready.
-        $usercontext = \context_user::instance($anotheruser->id, IGNORE_MISSING);
-        $downloadlink = api::get_download_link($usercontext, $result['requests'][0]['id'])->url;
-        $this->assertEquals($downloadlink->out(false), $result['requests'][0]['downloadlink']);
-
-        // Test filter by creation method.
-        $result = get_data_requests::execute(0, [], [], [data_request::DATAREQUEST_CREATION_AUTO]);
-        $result = external_api::clean_returnvalue(get_data_requests::execute_returns(), $result);
-
-        $this->assertCount(1, $result['requests']);
-        $this->assertEquals($request3->get('id'), $result['requests'][0]['id']);
-
-        // Get data requests for another user without required permissions.
-        $userrole = $DB->get_field('role', 'id', ['shortname' => 'user'], MUST_EXIST);
-        assign_capability('tool/dataprivacy:downloadownrequest', CAP_PROHIBIT, $userrole, \context_user::instance($anotheruser->id));
-
-        $this->setUser($anotheruser);
-        // Get my data request ready for download but without permissons for download it.
-        $result = get_data_requests::execute($anotheruser->id, [api::DATAREQUEST_STATUS_DOWNLOAD_READY]);
-        $result = external_api::clean_returnvalue(get_data_requests::execute_returns(), $result);
-        $this->assertArrayNotHasKey('downloadlink', $result['requests'][0]);   // Download link is not present.
-
-        // And now try to see a different user requests.
-        $this->expectException(\moodle_exception::class);
-        $dponamestring = implode (', ', api::get_dpo_role_names());
-        $this->expectExceptionMessage(get_string('privacyofficeronly', 'tool_dataprivacy', $dponamestring));
-        $result = get_data_requests::execute($user->id);
-    }
-
-    /**
-     * Test for external::get_data_requests() invalid user id.
-     */
-    public function test_get_data_requests_invalid_userid(): void {
-        $this->resetAfterTest();
-        $this->setAdminUser();
-
-        $this->expectException(\dml_exception::class);
-        get_data_requests::execute(-1);
     }
 }

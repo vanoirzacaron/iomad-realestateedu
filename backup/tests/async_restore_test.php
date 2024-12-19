@@ -40,7 +40,7 @@ class async_restore_test extends \advanced_testcase {
     /**
      * Tests the asynchronous backup.
      */
-    public function test_async_restore(): void {
+    public function test_async_restore() {
         global $CFG, $USER, $DB;
 
         $this->resetAfterTest(true);
@@ -116,6 +116,7 @@ class async_restore_test extends \advanced_testcase {
 
         // Create the adhoc task.
         $asynctask = new \core\task\asynchronous_restore_task();
+        $asynctask->set_blocking(false);
         $asynctask->set_custom_data(array('backupid' => $restoreid));
         $asynctask->set_userid($USER->id);
         \core\task\manager::queue_adhoc_task($asynctask);
@@ -141,7 +142,7 @@ class async_restore_test extends \advanced_testcase {
     /**
      * Tests the asynchronous restore will resolve in duplicate cases where the controller is already removed.
      */
-    public function test_async_restore_missing_controller(): void {
+    public function test_async_restore_missing_controller() {
         global $CFG, $USER, $DB;
 
         $this->resetAfterTest(true);
@@ -222,6 +223,7 @@ class async_restore_test extends \advanced_testcase {
 
         // Create the adhoc task.
         $asynctask = new \core\task\asynchronous_restore_task();
+        $asynctask->set_blocking(false);
         $asynctask->set_custom_data(['backupid' => $restoreid]);
         \core\task\manager::queue_adhoc_task($asynctask);
 
@@ -243,6 +245,7 @@ class async_restore_test extends \advanced_testcase {
 
         // Create the adhoc task.
         $asynctask = new \core\task\asynchronous_restore_task();
+        $asynctask->set_blocking(false);
         $asynctask->set_custom_data(['backupid' => $restoreid]);
         \core\task\manager::queue_adhoc_task($asynctask);
 

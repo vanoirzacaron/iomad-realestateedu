@@ -41,7 +41,7 @@ class deleted_test extends \advanced_testcase {
      * test_event_h5p_deleted description
      * @runInSeparateProcess
      */
-    public function test_event_h5p_deleted(): void {
+    public function test_event_h5p_deleted() {
         $this->resetAfterTest(true);
 
         $user = $this->getDataGenerator()->create_user();

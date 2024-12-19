@@ -46,7 +46,7 @@ class contextlist_base_test extends advanced_testcase {
      * @param   int     $count Expected count
      * @covers ::get_contextids
      */
-    public function test_get_contextids($input, $expected, $count): void {
+    public function test_get_contextids($input, $expected, $count) {
         $uit = new test_contextlist_base();
         $uit->set_contextids($input);
 
@@ -64,7 +64,7 @@ class contextlist_base_test extends advanced_testcase {
      *
      * @return array
      */
-    public function get_contextids_provider() {
+    public static function get_contextids_provider(): array {
         return [
             'basic' => [
                 [1, 2, 3, 4, 5],
@@ -89,7 +89,7 @@ class contextlist_base_test extends advanced_testcase {
      *
      * @covers ::get_contexts
      */
-    public function test_get_contexts(): void {
+    public function test_get_contexts() {
         global $DB;
 
         $contexts = [];
@@ -120,7 +120,7 @@ class contextlist_base_test extends advanced_testcase {
      * @param   int     $count Expected count
      * @covers ::count
      */
-    public function test_countable($input, $expected, $count): void {
+    public function test_countable($input, $expected, $count) {
         $uit = new test_contextlist_base();
         $uit->set_contextids($input);
 
@@ -136,7 +136,7 @@ class contextlist_base_test extends advanced_testcase {
      * @covers ::rewind
      * @covers ::valid
      */
-    public function test_context_iteration(): void {
+    public function test_context_iteration() {
         global $DB;
 
         $allcontexts = $DB->get_records('context');
@@ -158,7 +158,7 @@ class contextlist_base_test extends advanced_testcase {
      *
      * @covers ::current
      */
-    public function test_current_context_one_context(): void {
+    public function test_current_context_one_context() {
         global $DB;
 
         $this->resetAfterTest();
@@ -187,7 +187,7 @@ class contextlist_base_test extends advanced_testcase {
      *
      * @covers ::current
      */
-    public function test_current_context_two_contexts(): void {
+    public function test_current_context_two_contexts() {
         global $DB;
 
         $this->resetAfterTest();
@@ -224,7 +224,7 @@ class contextlist_base_test extends advanced_testcase {
      *
      * @covers ::get_contexts
      */
-    public function test_get_contexts_all_deleted(): void {
+    public function test_get_contexts_all_deleted() {
         global $DB;
 
         $this->resetAfterTest();
@@ -251,7 +251,7 @@ class contextlist_base_test extends advanced_testcase {
      *
      * @covers ::get_contexts
      */
-    public function test_get_contexts_one_deleted(): void {
+    public function test_get_contexts_one_deleted() {
         global $DB;
 
         $this->resetAfterTest();

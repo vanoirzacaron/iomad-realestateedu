@@ -14,7 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Unit tests for the tool_usertours implementation of the privacy API.
+ *
+ * @package    tool_usertours
+ * @category   test
+ * @copyright  2018 Andrew Nicols <andrew@nicols.co.uk>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace tool_usertours\privacy;
+
+defined('MOODLE_INTERNAL') || die();
 
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\writer;
@@ -24,13 +34,11 @@ use tool_usertours\privacy\provider;
 /**
  * Unit tests for the tool_usertours implementation of the privacy API.
  *
- * @package    tool_usertours
- * @category   test
  * @copyright  2018 Andrew Nicols <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers \tool_usertours\privacy\provider
  */
 class provider_test extends \core_privacy\tests\provider_testcase {
+
     /**
      * Helper method for creating a tour
      *
@@ -48,7 +56,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Ensure that get_metadata exports valid content.
      */
-    public function test_get_metadata(): void {
+    public function test_get_metadata() {
         $items = new collection('tool_usertours');
         $result = provider::get_metadata($items);
         $this->assertSame($items, $result);
@@ -58,7 +66,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Ensure that export_user_preferences returns no data if the user has completed no tours.
      */
-    public function test_export_user_preferences_no_pref(): void {
+    public function test_export_user_preferences_no_pref() {
         $user = \core_user::get_user_by_username('admin');
         provider::export_user_preferences($user->id);
 
@@ -70,7 +78,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Ensure that export_user_preferences returns request completion data.
      */
-    public function test_export_user_preferences_completed(): void {
+    public function test_export_user_preferences_completed() {
         global $DB;
 
         $this->resetAfterTest();
@@ -93,7 +101,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Ensure that export_user_preferences returns request completion data.
      */
-    public function test_export_user_preferences_requested(): void {
+    public function test_export_user_preferences_requested() {
         global $DB;
 
         $this->resetAfterTest();
@@ -141,16 +149,14 @@ class provider_test extends \core_privacy\tests\provider_testcase {
         $this->assertCount(1, $prefs);
 
         // We should have received back the "completed tour" preference of the test user.
-        $this->assertStringStartsWith(
-            'You last marked the "' . $tour->get_name() . '" user tour as completed on',
-            reset($prefs)->description
-        );
+        $this->assertStringStartsWith('You last marked the "' . $tour->get_name() . '" user tour as completed on',
+            reset($prefs)->description);
     }
 
     /**
      * Ensure that export_user_preferences excludes deleted tours.
      */
-    public function test_export_user_preferences_deleted_tour(): void {
+    public function test_export_user_preferences_deleted_tour() {
         global $DB;
 
         $this->resetAfterTest();

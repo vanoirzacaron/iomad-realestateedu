@@ -39,7 +39,7 @@ class events_test extends \advanced_testcase {
         $this->resetAfterTest();
     }
 
-    public function test_function_called(): void {
+    public function test_function_called() {
         // The Web service API doesn't allow the testing of the events directly by
         // calling some functions which trigger the events, so what we are going here
         // is just checking that the event returns the expected information.
@@ -63,7 +63,7 @@ class events_test extends \advanced_testcase {
         $this->assertEventContextNotUsed($event);
     }
 
-    public function test_login_failed(): void {
+    public function test_login_failed() {
         // The Web service API doesn't allow the testing of the events directly by
         // calling some functions which trigger the events, so what we are going here
         // is just checking that the event returns the expected information.
@@ -99,7 +99,7 @@ class events_test extends \advanced_testcase {
         $this->assertEventContextNotUsed($event);
     }
 
-    public function test_service_created(): void {
+    public function test_service_created() {
         global $CFG, $DB;
 
         // The Web service API doesn't allow the testing of the events directly by
@@ -141,7 +141,7 @@ class events_test extends \advanced_testcase {
         $this->assertEventContextNotUsed($event);
     }
 
-    public function test_service_updated(): void {
+    public function test_service_updated() {
         global $CFG, $DB;
 
         // The Web service API doesn't allow the testing of the events directly by
@@ -183,7 +183,7 @@ class events_test extends \advanced_testcase {
         $this->assertEventContextNotUsed($event);
     }
 
-    public function test_service_deleted(): void {
+    public function test_service_deleted() {
         global $CFG, $DB;
 
         // The Web service API doesn't allow the testing of the events directly by
@@ -225,7 +225,7 @@ class events_test extends \advanced_testcase {
         $this->assertEventContextNotUsed($event);
     }
 
-    public function test_service_user_added(): void {
+    public function test_service_user_added() {
         global $CFG;
 
         // The Web service API doesn't allow the testing of the events directly by
@@ -251,7 +251,7 @@ class events_test extends \advanced_testcase {
         $this->assertEventContextNotUsed($event);
     }
 
-    public function test_service_user_removed(): void {
+    public function test_service_user_removed() {
         global $CFG;
 
         // The Web service API doesn't allow the testing of the events directly by
@@ -277,7 +277,7 @@ class events_test extends \advanced_testcase {
         $this->assertEventContextNotUsed($event);
     }
 
-    public function test_token_created(): void {
+    public function test_token_created() {
         // The Web service API doesn't allow the testing of the events directly by
         // calling some functions which trigger the events, so what we are going here
         // is just checking that the event returns the expected information.
@@ -304,7 +304,7 @@ class events_test extends \advanced_testcase {
         $this->assertEventContextNotUsed($event);
     }
 
-    public function test_token_sent(): void {
+    public function test_token_sent() {
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
 

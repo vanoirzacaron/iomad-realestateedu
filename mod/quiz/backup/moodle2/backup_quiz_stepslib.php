@@ -46,14 +46,10 @@ class backup_quiz_activity_structure_step extends backup_questions_activity_stru
         // Define elements for access rule subplugin settings.
         $this->add_subplugin_structure('quizaccess', $quiz, true);
 
-        $quizgradeitems = new backup_nested_element('quiz_grade_items');
-
-        $quizgradeitem = new backup_nested_element('quiz_grade_item', ['id'], ['sortorder', 'name']);
-
         $qinstances = new backup_nested_element('question_instances');
 
         $qinstance = new backup_nested_element('question_instance', ['id'],
-                ['quizid', 'slot', 'page', 'displaynumber', 'requireprevious', 'maxmark', 'quizgradeitemid']);
+                ['quizid', 'slot', 'page', 'displaynumber', 'requireprevious', 'maxmark']);
 
         $this->add_question_references($qinstance, 'mod_quiz', 'slot');
 
@@ -92,9 +88,6 @@ class backup_quiz_activity_structure_step extends backup_questions_activity_stru
         $this->add_subplugin_structure('quizaccess', $attempt, true);
 
         // Build the tree.
-        $quiz->add_child($quizgradeitems);
-        $quizgradeitems->add_child($quizgradeitem);
-
         $quiz->add_child($qinstances);
         $qinstances->add_child($qinstance);
 
@@ -115,8 +108,6 @@ class backup_quiz_activity_structure_step extends backup_questions_activity_stru
 
         // Define sources.
         $quiz->set_source_table('quiz', ['id' => backup::VAR_ACTIVITYID]);
-
-        $quizgradeitem->set_source_table('quiz_grade_items', ['quizid' => backup::VAR_PARENTID]);
 
         $qinstance->set_source_table('quiz_slots', ['quizid' => backup::VAR_PARENTID]);
 

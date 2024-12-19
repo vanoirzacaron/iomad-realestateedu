@@ -33,7 +33,7 @@ use context_user;
  */
 class context_to_string_translator_test extends \advanced_testcase {
 
-    public function test_context_to_string_translator_test_good_case(): void {
+    public function test_context_to_string_translator_test_good_case() {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
 
@@ -66,7 +66,7 @@ class context_to_string_translator_test extends \advanced_testcase {
         $this->assertEquals($systemcontext->id, $translator->string_to_context('system'));
     }
 
-    public function test_context_to_string_translator_throws_exception_with_bad_context(): void {
+    public function test_context_to_string_translator_throws_exception_with_bad_context() {
         global $USER;
         $this->resetAfterTest();
         $this->setAdminUser();

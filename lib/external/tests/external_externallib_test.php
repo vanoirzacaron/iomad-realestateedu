@@ -38,7 +38,7 @@ class external_externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_string
      */
-    public function test_get_string(): void {
+    public function test_get_string() {
         $this->resetAfterTest(true);
 
         $service = new \stdClass();
@@ -86,7 +86,7 @@ class external_externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_string with HTML.
      */
-    public function test_get_string_containing_html(): void {
+    public function test_get_string_containing_html() {
         $result = \core_external::get_string('registrationinfo');
         $actual = external_api::clean_returnvalue(\core_external::get_string_returns(), $result);
         $expected = get_string('registrationinfo', 'moodle');
@@ -96,7 +96,7 @@ class external_externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_string with arguments containing HTML.
      */
-    public function test_get_string_with_args_containing_html(): void {
+    public function test_get_string_with_args_containing_html() {
         $result = \core_external::get_string('added', 'moodle', null, [['value' => '<strong>Test</strong>']]);
         $actual = external_api::clean_returnvalue(\core_external::get_string_returns(), $result);
         $expected = get_string('added', 'moodle', '<strong>Test</strong>');
@@ -106,7 +106,7 @@ class external_externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_strings
      */
-    public function test_get_strings(): void {
+    public function test_get_strings() {
         $this->resetAfterTest(true);
 
         $stringmanager = get_string_manager();
@@ -142,7 +142,7 @@ class external_externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_strings with HTML.
      */
-    public function test_get_strings_containing_html(): void {
+    public function test_get_strings_containing_html() {
         $result = \core_external::get_strings([['stringid' => 'registrationinfo'], ['stringid' => 'loginaspasswordexplain']]);
         $actual = external_api::clean_returnvalue(\core_external::get_strings_returns(), $result);
         $this->assertSame(get_string('registrationinfo', 'moodle'), $actual[0]['string']);
@@ -152,7 +152,7 @@ class external_externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_strings with arguments containing HTML.
      */
-    public function test_get_strings_with_args_containing_html(): void {
+    public function test_get_strings_with_args_containing_html() {
         $result = \core_external::get_strings([
             ['stringid' => 'added', 'stringparams' => [['value' => '<strong>Test</strong>']]],
             ['stringid' => 'loggedinas', 'stringparams' => [['value' => '<strong>Test</strong>']]]]
@@ -165,7 +165,7 @@ class external_externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_component_strings
      */
-    public function test_get_component_strings(): void {
+    public function test_get_component_strings() {
         global $USER;
         $this->resetAfterTest(true);
 
@@ -187,7 +187,7 @@ class external_externallib_test extends externallib_advanced_testcase {
     /**
      * Test update_inplace_editable()
      */
-    public function test_update_inplace_editable(): void {
+    public function test_update_inplace_editable() {
         $this->resetAfterTest(true);
 
         // Call service for component that does not have inplace_editable callback.
@@ -211,7 +211,7 @@ class external_externallib_test extends externallib_advanced_testcase {
     /**
      * Test update_inplace_editable with mathjax.
      */
-    public function test_update_inplace_editable_with_mathjax(): void {
+    public function test_update_inplace_editable_with_mathjax() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -239,7 +239,7 @@ class external_externallib_test extends externallib_advanced_testcase {
         $this->assertEquals($editlabel, $res['editlabel']);
     }
 
-    public function test_get_user_dates(): void {
+    public function test_get_user_dates() {
         $this->resetAfterTest();
 
         $this->setAdminUser();

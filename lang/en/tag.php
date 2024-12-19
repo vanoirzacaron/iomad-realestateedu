@@ -65,7 +65,6 @@ $string['eventtagunflagged'] = 'Tag unflagged';
 $string['eventtagupdated'] = 'Tag updated';
 $string['exclusivemode'] = 'Show only tagged {$a->tagarea}';
 $string['flag'] = 'Flag';
-$string['flagcount'] = 'Flag count';
 $string['flagged'] = 'Tag flagged';
 $string['flagasinappropriate'] = 'Flag as inappropriate';
 $string['helprelatedtags'] = 'Comma separated related tags';

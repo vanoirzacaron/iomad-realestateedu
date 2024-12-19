@@ -217,7 +217,7 @@ abstract class generic_parser {
      * Rules processing function & callback
      */
 
-    final protected function rules(&$text, $rules = null) {
+    protected final function rules(&$text, $rules = null) {
         if ($rules === null) {
             $rules = array('except' => array());
         } else if (is_array($rules) && count($rules) > 1) {

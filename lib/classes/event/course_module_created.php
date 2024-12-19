@@ -64,7 +64,7 @@ class course_module_created extends base {
      *
      * @return \core\event\base returns instance of new event
      */
-    final public static function create_from_cm($cm, $modcontext = null) {
+    public static final function create_from_cm($cm, $modcontext = null) {
         // If not set, get the module context.
         if (empty($modcontext)) {
             $modcontext = \context_module::instance($cm->id);

@@ -16,9 +16,7 @@
 
 namespace mod_bigbluebuttonbn\completion;
 
-use cm_info;
 use core_completion\activity_custom_completion;
-use mod_bigbluebuttonbn\extension;
 use mod_bigbluebuttonbn\instance;
 use mod_bigbluebuttonbn\logger;
 use moodle_exception;
@@ -45,26 +43,6 @@ class custom_completion extends activity_custom_completion {
         'completionengagementpollvotes' => [logger::EVENT_SUMMARY],
         'completionengagementemojis' => [logger::EVENT_SUMMARY],
     ];
-
-    /**
-     * @var array $completionaddons array of extension class for the completion
-     */
-    private $completionaddons;
-
-    /**
-     * activity_custom_completion constructor.
-     *
-     * @param cm_info $cm
-     * @param int $userid
-     * @param array|null $completionstate The current state of the core completion criteria
-     */
-    public function __construct(cm_info $cm, int $userid, ?array $completionstate = null) {
-        parent::__construct($cm, $userid, $completionstate);
-        $completionaddonsclasses = extension::custom_completion_addons_instances($cm, $userid, $completionstate);
-        $this->completionaddons = array_map(function($targetclassname) use ($cm, $userid, $completionstate) {
-            return new $targetclassname($cm, $userid, $completionstate);
-        }, $completionaddonsclasses);
-    }
 
     /**
      * Get current state
@@ -101,12 +79,6 @@ class custom_completion extends activity_custom_completion {
                 }
             }
         }
-        // Check for any completion for this rule in addons / extensions.
-        foreach ($this->completionaddons as $customcompletion) {
-            if (in_array($rule, $customcompletion->get_defined_custom_rules())) {
-                $returnedvalue = $returnedvalue || $customcompletion->get_state($rule);
-            }
-        }
         return $returnedvalue;
     }
 
@@ -137,7 +109,7 @@ class custom_completion extends activity_custom_completion {
      * @return array
      */
     public static function get_defined_custom_rules(): array {
-        $rules = [
+        return [
             'completionattendance',
             'completionengagementchats',
             'completionengagementtalks',
@@ -145,11 +117,6 @@ class custom_completion extends activity_custom_completion {
             'completionengagementpollvotes',
             'completionengagementemojis',
         ];
-        $completionaddonsclasses = extension::custom_completion_addons_classes();
-        foreach ($completionaddonsclasses as $customcompletion) {
-            $rules = array_merge($rules, $customcompletion::get_defined_custom_rules());
-        }
-        return $rules;
     }
 
     /**
@@ -164,7 +131,7 @@ class custom_completion extends activity_custom_completion {
         $completionengagementpollvotes = $this->cm->customdata['customcompletionrules']['completionengagementpollvotes'] ?? 1;
         $completionengagementemojis = $this->cm->customdata['customcompletionrules']['completionengagementemojis'] ?? 1;
         $completionattendance = $this->cm->customdata['customcompletionrules']['completionattendance'] ?? 1;
-        $descriptions = [
+        return [
             'completionengagementchats' => get_string('completionengagementchats_desc', 'mod_bigbluebuttonbn',
                 $completionengagementchats),
             'completionengagementtalks' => get_string('completionengagementtalks_desc', 'mod_bigbluebuttonbn',
@@ -178,11 +145,6 @@ class custom_completion extends activity_custom_completion {
             'completionattendance' => get_string('completionattendance_desc', 'mod_bigbluebuttonbn',
                 $completionattendance),
         ];
-        // Check for any completion for this rule in addons / extensions.
-        foreach ($this->completionaddons as $customcompletion) {
-            $descriptions = array_merge($descriptions, $customcompletion->get_custom_rule_descriptions());
-        }
-        return $descriptions;
     }
 
     /**
@@ -191,9 +153,15 @@ class custom_completion extends activity_custom_completion {
      * @return array
      */
     public function get_sort_order(): array {
-        $rules = self::get_defined_custom_rules();
-        array_unshift($rules, 'completionview');
-        return $rules;
+        return [
+            'completionview',
+            'completionengagementchats',
+            'completionengagementtalks',
+            'completionengagementraisehand',
+            'completionengagementpollvotes',
+            'completionengagementemojis',
+            'completionattendance',
+        ];
     }
 
     /**

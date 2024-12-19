@@ -16,7 +16,6 @@
 
 namespace qformat_gift;
 
-use phpunit_util;
 use qformat_gift;
 use question_bank;
 use question_check_specified_fields_expectation;
@@ -38,17 +37,15 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
  */
 class giftformat_test extends \question_testcase {
     public function assert_same_gift($expectedtext, $text) {
-        $this->assertEquals(
-            phpunit_util::normalise_line_endings($expectedtext),
-            phpunit_util::normalise_line_endings($text)
-        );
+        $this->assertEquals(str_replace("\r\n", "\n", $expectedtext),
+                str_replace("\r\n", "\n", $text));
     }
 
-    public function test_import_essay(): void {
+    public function test_import_essay() {
         $gift = '
 // essay
 ::Q8:: How are you? {}';
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -75,7 +72,7 @@ class giftformat_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_essay(): void {
+    public function test_export_essay() {
         $qdata = (object) array(
             'id' => 666 ,
             'name' => 'Q8',
@@ -107,7 +104,7 @@ class giftformat_test extends \question_testcase {
         $this->assert_same_gift($expectedgift, $gift);
     }
 
-    public function test_import_match(): void {
+    public function test_import_match() {
         $gift = '
 // question: 2  name: Moodle activities
 ::Moodle activities::[html]Match the <b>activity</b> to the description.{
@@ -117,7 +114,7 @@ class giftformat_test extends \question_testcase {
     =[markdown]A collection of web pages that anyone can add to or edit. -> Wiki
     = -> Chat
 }';
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -189,7 +186,7 @@ class giftformat_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_match(): void {
+    public function test_export_match() {
         $qdata = (object) array(
             'id' => 666 ,
             'name' => 'Moodle activities',
@@ -275,7 +272,7 @@ class giftformat_test extends \question_testcase {
      * @param string $numberingstyle multichoice numbering style to set for qtype_multichoice
      *
      */
-    public function test_import_multichoice($numberingstyle): void {
+    public function test_import_multichoice($numberingstyle) {
         $this->resetAfterTest(true);
 
         set_config('answernumbering', $numberingstyle, 'qtype_multichoice');
@@ -287,7 +284,7 @@ class giftformat_test extends \question_testcase {
     ~red # [html]wrong, it's yellow
     ~[plain]blue # wrong, it's yellow
 }";
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -369,7 +366,7 @@ class giftformat_test extends \question_testcase {
      *
      * @return array Array of 1-element arrays of qtype_multichoice numbering styles
      */
-    public function numberingstyle_provider() {
+    public static function numberingstyle_provider(): array {
         return [
             ['abc'],
             ['ABCD'],
@@ -380,7 +377,7 @@ class giftformat_test extends \question_testcase {
         ];
     }
 
-    public function test_import_multichoice_multi(): void {
+    public function test_import_multichoice_multi() {
         $gift = "
 // multiple choice, multiple response with specified feedback for right and wrong answers
 ::colours:: What's between orange and green in the spectrum?
@@ -390,7 +387,7 @@ class giftformat_test extends \question_testcase {
     ~%50%off-beige # right; good!
     ~%-100%[plain]blue # wrong
 }";
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -476,7 +473,7 @@ class giftformat_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_multichoice_multi_tricky(): void {
+    public function test_import_multichoice_multi_tricky() {
         $gift = "
 // multiple choice, multiple response with specified feedback for right and wrong answers
 ::colours:: What's between orange and green in the spectrum?
@@ -485,7 +482,7 @@ class giftformat_test extends \question_testcase {
     ~%-50%red # wrong
     ~%-50%blue # wrong
 }";
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -561,7 +558,7 @@ class giftformat_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_multichoice(): void {
+    public function test_export_multichoice() {
         $qdata = (object) array(
             'id' => 666 ,
             'name' => 'Q8',
@@ -627,7 +624,7 @@ class giftformat_test extends \question_testcase {
         $this->assert_same_gift($expectedgift, $gift);
     }
 
-    public function test_export_multichoice_multi_tricky(): void {
+    public function test_export_multichoice_multi_tricky() {
         $qdata = (object) array(
             'id' => 666 ,
             'name' => 'Q8',
@@ -693,11 +690,11 @@ class giftformat_test extends \question_testcase {
         $this->assert_same_gift($expectedgift, $gift);
     }
 
-    public function test_import_numerical(): void {
+    public function test_import_numerical() {
         $gift = "
 // math range question
 ::Q5:: What is a number from 1 to 5? {#3:2~#Completely wrong}";
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -739,7 +736,7 @@ class giftformat_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_numerical(): void {
+    public function test_export_numerical() {
         $qdata = (object) array(
             'id' => 666 ,
             'name' => 'Q5',
@@ -795,7 +792,7 @@ class giftformat_test extends \question_testcase {
         $this->assert_same_gift($expectedgift, $gift);
     }
 
-    public function test_import_shortanswer(): void {
+    public function test_import_shortanswer() {
         $gift = "
 // question: 666  name: Shortanswer
 ::Shortanswer::Which is the best animal?{
@@ -803,7 +800,7 @@ class giftformat_test extends \question_testcase {
     =%50%Cat#What is it with Moodlers and cats?
     =%0%*#Completely wrong
 }";
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -850,7 +847,7 @@ class giftformat_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_shortanswer_with_general_feedback(): void {
+    public function test_import_shortanswer_with_general_feedback() {
         $gift = "
 // question: 666  name: Shortanswer
 ::Shortanswer::Which is the best animal?{
@@ -859,7 +856,7 @@ class giftformat_test extends \question_testcase {
     =%0%*#Completely wrong
     ####[html]Here is some general feedback!
 }";
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -906,7 +903,7 @@ class giftformat_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_shortanswer(): void {
+    public function test_export_shortanswer() {
         $qdata = (object) array(
             'id' => 666 ,
             'name' => 'Shortanswer',
@@ -966,7 +963,7 @@ class giftformat_test extends \question_testcase {
         $this->assert_same_gift($expectedgift, $gift);
     }
 
-    public function test_export_shortanswer_with_general_feedback(): void {
+    public function test_export_shortanswer_with_general_feedback() {
         $qdata = (object) array(
             'id' => 666 ,
             'name' => 'Shortanswer',
@@ -1027,12 +1024,12 @@ class giftformat_test extends \question_testcase {
         $this->assert_same_gift($expectedgift, $gift);
     }
 
-    public function test_import_truefalse(): void {
+    public function test_import_truefalse() {
         $gift = "
 // true/false
 ::Q1:: 42 is the Absolute Answer to everything.{
 FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -1063,10 +1060,10 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_truefalse_true_answer1(): void {
+    public function test_import_truefalse_true_answer1() {
         $gift = "// name 0-11
 ::2-08 TSL::TSL is blablabla.{T}";
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -1097,10 +1094,10 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_truefalse_true_answer2(): void {
+    public function test_import_truefalse_true_answer2() {
         $gift = "// name 0-11
 ::2-08 TSL::TSL is blablabla.{TRUE}";
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -1131,7 +1128,7 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_truefalse(): void {
+    public function test_export_truefalse() {
         $qdata = (object) array(
             'id' => 666 ,
             'name' => 'Q1',
@@ -1180,7 +1177,7 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
         $this->assert_same_gift($expectedgift, $gift);
     }
 
-    public function test_export_backslash(): void {
+    public function test_export_backslash() {
         // There was a bug (MDL-34171) where \\ was getting exported as \\, not
         // \\\\, and on import, \\ in converted to \.
         // We need \\\\ in the test code, because of PHPs string escaping rules.
@@ -1215,14 +1212,14 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
         $this->assert_same_gift($expectedgift, $gift);
     }
 
-    public function test_import_backslash(): void {
+    public function test_import_backslash() {
         // There was a bug (MDL-34171) where \\ in the import was getting changed
         // to \. This test checks for that.
         // We need \\\\ in the test code, because of PHPs string escaping rules.
         $gift = '
 // essay
 ::double backslash:: A \\\\ B \\\\\\\\ C{}';
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -1249,7 +1246,7 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_pre_content(): void {
+    public function test_import_pre_content() {
         $gift = '
 ::Q001::[html]<p>What would running the test method print?</p>
 <pre>
@@ -1260,7 +1257,7 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
     \}
 </pre>
 {}';
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -1294,12 +1291,12 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_question_with_tags(): void {
+    public function test_import_question_with_tags() {
         $gift = '
 // This question is to test importing tags: [tag:tag] [tag:other-tag].
 // And an idnumber: [id:myid].
 ::Question name:: How are you? {}';
-        $lines = preg_split('/[\\n\\r]/', phpunit_util::normalise_line_endings($gift));
+        $lines = preg_split('/[\\n\\r]/', str_replace("\r\n", "\n", $gift));
 
         $importer = new qformat_gift();
         $q = $importer->readquestion($lines);
@@ -1333,7 +1330,7 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
      *
      * @return array the test cases.
      */
-    public function extract_idnumber_and_tags_from_comment_testcases() {
+    public static function extract_idnumber_and_tags_from_comment_testcases(): array {
         return [
             'blank comment' => ['', [], ''],
             'nothing in comment' => ['', [], '// A basic comment.'],
@@ -1357,7 +1354,7 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
      * @param string $comment the comment to parse.
      */
     public function test_extract_idnumber_and_tags_from_comment(
-            string $expectedidnumber, array $expectedtags, string $comment): void {
+            string $expectedidnumber, array $expectedtags, string $comment) {
         $importer = new qformat_gift();
 
         list($idnumber, $tags) = $importer->extract_idnumber_and_tags_from_comment($comment);
@@ -1365,7 +1362,7 @@ FALSE#42 is the Ultimate Answer.#You gave the right answer.}";
         $this->assertSame($expectedtags, $tags);
     }
 
-    public function test_export_question_with_tags_and_idnumber(): void {
+    public function test_export_question_with_tags_and_idnumber() {
         $this->resetAfterTest();
 
         // Create a question with tags.

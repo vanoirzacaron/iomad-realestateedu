@@ -21,10 +21,8 @@ namespace core_reportbuilder\local\helpers;
 use advanced_testcase;
 use core_reportbuilder_generator;
 use invalid_parameter_exception;
-use core_reportbuilder\datasource;
 use core_reportbuilder\local\models\column;
 use core_reportbuilder\local\models\filter;
-use core_tag_tag;
 use core_user\reportbuilder\datasource\users;
 
 /**
@@ -38,70 +36,6 @@ use core_user\reportbuilder\datasource\users;
 class report_test extends advanced_testcase {
 
     /**
-     * Test creation report
-     */
-    public function test_create_report(): void {
-        $this->resetAfterTest();
-        $this->setAdminUser();
-
-        $report = report::create_report((object) [
-            'name' => 'My report with tags',
-            'source' => users::class,
-            'tags' => ['cat', 'dog'],
-        ]);
-
-        $this->assertEquals('My report with tags', $report->get('name'));
-        $this->assertEquals(datasource::TYPE_CUSTOM_REPORT, $report->get('type'));
-        $this->assertEqualsCanonicalizing(['cat', 'dog'],
-            core_tag_tag::get_item_tags_array('core_reportbuilder', 'reportbuilder_report', $report->get('id')));
-
-        $report = report::create_report((object) [
-            'name' => 'My report without tags',
-            'source' => users::class,
-        ]);
-
-        $this->assertEquals('My report without tags', $report->get('name'));
-        $this->assertEquals(datasource::TYPE_CUSTOM_REPORT, $report->get('type'));
-        $this->assertEmpty(core_tag_tag::get_item_tags_array('core_reportbuilder', 'reportbuilder_report',
-            $report->get('id')));
-    }
-
-    /**
-     * Test updating report
-     */
-    public function test_update_report(): void {
-        $this->resetAfterTest();
-        $this->setAdminUser();
-
-        /** @var core_reportbuilder_generator $generator */
-        $generator = $this->getDataGenerator()->get_plugin_generator('core_reportbuilder');
-        $report = $generator->create_report(['name' => 'My report', 'source' => users::class, 'uniquerows' => 0]);
-
-        $reportupdated = report::update_report((object) [
-            'id' => $report->get('id'),
-            'name' => 'My renamed report without add tags',
-            'uniquerows' => 1,
-        ]);
-
-        $this->assertEquals('My renamed report without add tags', $reportupdated->get('name'));
-        $this->assertTrue($reportupdated->get('uniquerows'));
-        $this->assertEmpty(core_tag_tag::get_item_tags_array('core_reportbuilder', 'reportbuilder_report',
-            $reportupdated->get('id')));
-
-        $reportupdated = report::update_report((object) [
-            'id' => $report->get('id'),
-            'name' => 'My renamed report adding tags',
-            'uniquerows' => 1,
-            'tags' => ['cat', 'dog'],
-        ]);
-
-        $this->assertEquals('My renamed report adding tags', $reportupdated->get('name'));
-        $this->assertTrue($reportupdated->get('uniquerows'));
-        $this->assertEqualsCanonicalizing(['cat', 'dog'],
-            core_tag_tag::get_item_tags_array('core_reportbuilder', 'reportbuilder_report', $reportupdated->get('id')));
-    }
-
-    /**
      * Test deleting report
      */
     public function test_delete_report(): void {
@@ -112,8 +46,7 @@ class report_test extends advanced_testcase {
         $generator = $this->getDataGenerator()->get_plugin_generator('core_reportbuilder');
 
         // Create Report1 and add some elements.
-        $report1 = $generator->create_report(['name' => 'My report 1', 'source' => users::class, 'default' => false,
-            'tags' => ['cat', 'dog']]);
+        $report1 = $generator->create_report(['name' => 'My report 1', 'source' => users::class, 'default' => false]);
         $column1 = $generator->create_column(['reportid' => $report1->get('id'), 'uniqueidentifier' => 'user:email']);
         $filter1 = $generator->create_filter(['reportid' => $report1->get('id'), 'uniqueidentifier' => 'user:email']);
         $condition1 = $generator->create_condition(['reportid' => $report1->get('id'), 'uniqueidentifier' => 'user:email']);
@@ -125,15 +58,13 @@ class report_test extends advanced_testcase {
         $condition2 = $generator->create_condition(['reportid' => $report2->get('id'), 'uniqueidentifier' => 'user:email']);
 
         // Delete Report1.
-        $result = report::delete_report($report1->get('id'));
-        $this->assertTrue($result);
+        report::delete_report($report1->get('id'));
 
         // Make sure Report1, and all it's elements are deleted.
         $this->assertFalse($report1::record_exists($report1->get('id')));
         $this->assertFalse($column1::record_exists($column1->get('id')));
         $this->assertFalse($filter1::record_exists($filter1->get('id')));
         $this->assertFalse($condition1::record_exists($condition1->get('id')));
-        $this->assertEmpty(core_tag_tag::get_item_tags_array('core_reportbuilder', 'reportbuilder_report', $report1->get('id')));
 
         // Make sure Report2, and all it's elements still exist.
         $this->assertTrue($report2::record_exists($report2->get('id')));

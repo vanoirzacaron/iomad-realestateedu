@@ -52,13 +52,9 @@ class provider_test extends provider_testcase {
         global $PAGE;
         $this->resetAfterTest();
         $PAGE->get_renderer('core');
-
-        // Survey module is disabled by default, enable it for testing.
-        $manager = \core_plugin_manager::resolve_plugininfo_class('mod');
-        $manager::enable_plugin('survey', 1);
     }
 
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         $dg = $this->getDataGenerator();
 
         $c1 = $dg->create_course();
@@ -94,7 +90,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::test_get_users_in_context().
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         $dg = $this->getDataGenerator();
         $component = 'mod_survey';
 
@@ -144,7 +140,7 @@ class provider_test extends provider_testcase {
         $this->assertEquals($bothusers, $actual);
     }
 
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
         $dg = $this->getDataGenerator();
 
@@ -205,7 +201,7 @@ class provider_test extends provider_testcase {
         $this->assertFalse($DB->record_exists('survey_analysis', ['userid' => $u2->id, 'survey' => $cm1c->id]));
     }
 
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
         $dg = $this->getDataGenerator();
 
@@ -252,7 +248,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_data_for_users().
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
         $dg = $this->getDataGenerator();
         $component = 'mod_survey';
@@ -307,7 +303,7 @@ class provider_test extends provider_testcase {
         $this->assertTrue($DB->record_exists('survey_analysis', ['userid' => $u2->id, 'survey' => $cm1c->id]));
     }
 
-    public function test_export_data_for_user(): void {
+    public function test_export_data_for_user() {
         global $DB;
         $dg = $this->getDataGenerator();
 

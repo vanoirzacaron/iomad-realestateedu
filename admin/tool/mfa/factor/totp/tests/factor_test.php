@@ -45,7 +45,7 @@ class factor_test extends \advanced_testcase {
     /**
      * Test code validation of the TOTP factor
      */
-    public function test_validate_code(): void {
+    public function test_validate_code() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -123,7 +123,7 @@ class factor_test extends \advanced_testcase {
      *
      * @covers ::setup_user_factor
      */
-    public function test_wont_store_same_secret_twice(): void {
+    public function test_wont_store_same_secret_twice() {
         global $DB;
         $this->resetAfterTest(true);
         $user = $this->getDataGenerator()->create_user();
@@ -135,11 +135,11 @@ class factor_test extends \advanced_testcase {
             'secret' => 'fakekey',
             'devicename' => 'fakedevice',
         ];
-        $totpfactor->setup_user_factor((object) $totpdata);
+        $record = $totpfactor->setup_user_factor((object) $totpdata);
 
-        // Trying to add the same TOTP should return null.
+        // Trying to add the same TOTP should return the existing record (exactly).
         $anotherecord = $totpfactor->setup_user_factor((object) $totpdata);
-        $this->assertNull($anotherecord);
+        $this->assertEquals($record, $anotherecord);
 
         // The total count for factors added should be 1 at this point.
         $count = $DB->count_records('tool_mfa');

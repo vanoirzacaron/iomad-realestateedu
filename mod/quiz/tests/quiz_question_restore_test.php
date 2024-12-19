@@ -60,7 +60,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers \mod_quiz\question\bank\qbank_helper::get_question_structure
      */
-    public function test_quiz_restore_in_a_different_course_using_course_question_bank(): void {
+    public function test_quiz_restore_in_a_different_course_using_course_question_bank() {
         $this->resetAfterTest();
 
         // Create the test quiz.
@@ -99,7 +99,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers \mod_quiz\question\bank\qbank_helper::get_question_structure
      */
-    public function test_quiz_restore_in_a_different_course_using_quiz_question_bank(): void {
+    public function test_quiz_restore_in_a_different_course_using_quiz_question_bank() {
         $this->resetAfterTest();
 
         // Create the test quiz.
@@ -155,7 +155,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers ::duplicate_module
      */
-    public function test_quiz_duplicate_does_not_duplicate_course_question_bank_questions(): void {
+    public function test_quiz_duplicate_does_not_duplicate_course_question_bank_questions() {
         $this->resetAfterTest();
         $quiz = $this->create_test_quiz($this->course);
         // Test for questions from a different context.
@@ -177,7 +177,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers ::duplicate_module
      */
-    public function test_quiz_duplicate_for_quiz_question_bank_questions(): void {
+    public function test_quiz_duplicate_for_quiz_question_bank_questions() {
         $this->resetAfterTest();
         $quiz = $this->create_test_quiz($this->course);
         // Test for questions from a different context.
@@ -199,7 +199,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers \mod_quiz\question\bank\qbank_helper::get_question_structure
      */
-    public function test_quiz_restore_with_attempts(): void {
+    public function test_quiz_restore_with_attempts() {
         $this->resetAfterTest();
 
         // Create a quiz.
@@ -240,7 +240,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers \restore_quiz_activity_structure_step::process_quiz_question_legacy_instance
      */
-    public function test_pre_4_quiz_restore_for_regular_questions(): void {
+    public function test_pre_4_quiz_restore_for_regular_questions() {
         global $USER, $DB;
         $this->resetAfterTest();
         $backupid = 'abc';
@@ -288,7 +288,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers \restore_quiz_activity_structure_step::process_quiz_question_legacy_instance
      */
-    public function test_pre_4_quiz_restore_for_random_questions(): void {
+    public function test_pre_4_quiz_restore_for_random_questions() {
         global $USER, $DB;
         $this->resetAfterTest();
 
@@ -336,7 +336,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers \restore_quiz_activity_structure_step::process_quiz_question_legacy_instance
      */
-    public function test_pre_4_quiz_restore_for_random_question_tags(): void {
+    public function test_pre_4_quiz_restore_for_random_question_tags() {
         global $USER, $DB;
         $this->resetAfterTest();
         $randomtags = [
@@ -393,7 +393,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers \restore_quiz_activity_structure_step::process_quiz_question_legacy_instance
      */
-    public function test_pre_4_quiz_restore_shared_random_question(): void {
+    public function test_pre_4_quiz_restore_shared_random_question() {
         global $USER, $DB;
         $this->resetAfterTest();
 
@@ -522,7 +522,7 @@ class quiz_question_restore_test extends \advanced_testcase {
      *
      * @covers \restore_question_set_reference_data_trait::process_question_set_reference
      */
-    public function test_pre_43_quiz_restore_for_random_question_filtercondition(): void {
+    public function test_pre_43_quiz_restore_for_random_question_filtercondition() {
         global $USER, $DB;
         $this->resetAfterTest();
         $backupid = 'abc';

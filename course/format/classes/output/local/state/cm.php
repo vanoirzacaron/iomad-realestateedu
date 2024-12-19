@@ -18,7 +18,6 @@ namespace core_courseformat\output\local\state;
 
 use core_courseformat\base as course_format;
 use completion_info;
-use core_courseformat\sectiondelegate;
 use renderer_base;
 use section_info;
 use cm_info;
@@ -84,8 +83,6 @@ class cm implements renderable {
             'groupmode' => $cm->groupmode,
             'module' => $cm->modname,
             'plugin' => 'mod_' . $cm->modname,
-            // Activities with delegate section has some restriction to prevent structure loops.
-            'delegatesection' => sectiondelegate::has_delegate_class('mod_'.$cm->modname),
         ];
 
         // Check the user access type to this cm.

@@ -40,7 +40,7 @@ class indicators_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_core_indicators(): void {
+    public function test_core_indicators() {
         global $DB;
 
         $this->preventResetByRollback();

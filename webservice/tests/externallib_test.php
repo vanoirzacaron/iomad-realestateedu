@@ -43,7 +43,7 @@ class externallib_test extends externallib_advanced_testcase {
         set_config('enablewebservices', '1');
     }
 
-    public function test_get_site_info(): void {
+    public function test_get_site_info() {
         global $DB, $USER, $CFG, $PAGE;
 
         $this->resetAfterTest(true);
@@ -111,7 +111,6 @@ class externallib_test extends externallib_advanced_testcase {
         $this->assertEquals(1, $siteinfo['downloadfiles']);
         $this->assertEquals(1, $siteinfo['uploadfiles']);
 
-        $this->assertCount(12, $siteinfo['advancedfeatures']);
         foreach ($siteinfo['advancedfeatures'] as $feature) {
             if ($feature['name'] == 'mnet_dispatcher_mode') {
                 if ($CFG->mnet_dispatcher_mode == 'off') {
@@ -119,9 +118,6 @@ class externallib_test extends externallib_advanced_testcase {
                 } else {
                     $this->assertEquals(1, $feature['value']);
                 }
-            } else if ($feature['name'] == 'enablecompetencies') {
-                $expected = (!empty(get_config('core_competency', 'enabled'))) ? 1 : 0;
-                $this->assertEquals($expected, $feature['value']);
             } else {
                 $this->assertEquals($CFG->{$feature['name']}, $feature['value']);
             }
@@ -145,7 +141,6 @@ class externallib_test extends externallib_advanced_testcase {
         $this->assertFalse($siteinfo['userissiteadmin']);
         $this->assertEquals($CFG->calendartype, $siteinfo['sitecalendartype']);
         $this->assertEquals($user['theme'], $siteinfo['theme']);
-        $this->assertEquals($USER->policyagreed, $siteinfo['policyagreed']);
 
         // Now as admin.
         $this->setAdminUser();
@@ -201,7 +196,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_site_info with values > PHP_INT_MAX. We check only userquota since maxbytes require PHP ini changes.
      */
-    public function test_get_site_info_max_int(): void {
+    public function test_get_site_info_max_int() {
         $this->resetAfterTest(true);
 
         self::setUser(self::getDataGenerator()->create_user());
@@ -218,7 +213,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_site_info with missing components.
      */
-    public function test_get_site_missing_components(): void {
+    public function test_get_site_missing_components() {
         global $USER, $DB;
 
         $this->resetAfterTest(true);

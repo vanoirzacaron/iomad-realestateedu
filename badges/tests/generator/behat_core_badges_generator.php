@@ -37,7 +37,6 @@ class behat_core_badges_generator extends behat_generator_base {
                 'datagenerator' => 'badge',
                 'required' => [
                     'name',
-                    'image',
                 ],
                 'switchids' => [
                     'course' => 'courseid',

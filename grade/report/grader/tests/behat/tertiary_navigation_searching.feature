@@ -156,12 +156,13 @@ Feature: Within the grader report, test that we can search for users
       | Dummy User         |
 
   Scenario: A teacher can quickly tell that a search is active on the current table
-    When I click on "Turtle" in the "user" search widget
-    # The search input should contain the name of the user we have selected, so that it is clear that the result pertains to a specific user.
-    Then the field "Search users" matches value "Turtle Manatee"
+    Given I click on "Turtle" in the "user" search widget
+    # The search input remains in the field on reload this is in keeping with other search implementations.
+    When the field "Search users" matches value "Turtle"
+    And I wait until "View all results (1)" "link" does not exist
     # Test if we can then further retain the turtle result set and further filter from there.
-    And I set the field "Search users" to "Turtle plagiarism"
-    And "Turtle Manatee" "list_item" should not be visible
+    Then I set the field "Search users" to "Turtle plagiarism"
+    And "Turtle Manatee" "list_item" should not exist
     And I should see "No results for \"Turtle plagiarism\""
 
   Scenario: A teacher can search for values besides the users' name
@@ -243,11 +244,15 @@ Feature: Within the grader report, test that we can search for users
     And the page should meet "wcag131, wcag141, wcag412" accessibility standards
     And the page should meet accessibility standards with "wcag131, wcag141, wcag412" extra tests
     And I press the down key
-    And ".active" "css_element" should exist in the "Student 1" "option_role"
+    And the focused element is "Student 1" "option_role"
+    And I press the end key
+    And the focused element is "View all results (5)" "option_role"
+    And I press the home key
+    And the focused element is "Student 1" "option_role"
     And I press the up key
-    And ".active" "css_element" should exist in the "View all results (5)" "option_role"
+    And the focused element is "View all results (5)" "option_role"
     And I press the down key
-    And ".active" "css_element" should exist in the "Student 1" "option_role"
+    And the focused element is "Student 1" "option_role"
     And I press the escape key
     And the focused element is "Search users" "field"
     Then I set the field "Search users" to "Goodmeme"
@@ -258,20 +263,20 @@ Feature: Within the grader report, test that we can search for users
     And I set the field "Search users" to "ABC"
     And I wait until "Turtle Manatee" "option_role" exists
     And I press the down key
-    And ".active" "css_element" should exist in the "Student 1" "option_role"
+    And the focused element is "Student 1" "option_role"
 
     # Lets check the tabbing order.
     And I set the field "Search users" to "ABC"
-    And I click on "Search users" "field"
-    And I wait until "Turtle Manatee" "option_role" exists
+    And I wait until "View all results (5)" "option_role" exists
     And I press the tab key
     And the focused element is "Clear search input" "button"
+    And I press the tab key
+    And the focused element is "View all results (5)" "option_role"
     And I press the tab key
     And ".groupsearchwidget" "css_element" should exist
     # Ensure we can interact with the input & clear search options with the keyboard.
     # Space & Enter have the same handling for triggering the two functionalities.
     And I set the field "Search users" to "User"
-    And I press the up key
     And I press the enter key
     And I wait to be redirected
     # Sometimes with behat we get unattached nodes causing spurious failures.
@@ -352,7 +357,7 @@ Feature: Within the grader report, test that we can search for users
     And the field "perpage" matches value "20"
     When I set the field "Search users" to "42"
     # One of the users' phone numbers also matches.
-    And I wait until "View all results (2)" "option_role" exists
+    And I wait until "View all results (2)" "link" exists
     Then I confirm "Student s42" in "user" search within the gradebook widget exists
 
   Scenario: As a teacher I save grades using search and pagination
@@ -368,18 +373,17 @@ Feature: Within the grader report, test that we can search for users
     And I reload the page
     And I turn editing mode on
     And the field "perpage" matches value "20"
-    And I click on user profile field menu "fullname"
-    And I choose "Ascending" in the open action menu
+    And I click on "Last name" "link"
     And I wait until the page is ready
     # Search for a single user on second page and save grades.
     When I set the field "Search users" to "test32"
-    And I wait until "View all results (1)" "option_role" exists
+    And I wait until "View all results (1)" "link" exists
     And I click on "Student test32" "option_role"
     And I wait until the page is ready
     And I give the grade "80.00" to the user "Student test32" for the grade item "Test assignment one"
     And I press "Save changes"
     And I wait until the page is ready
-    Then the field "Search users" matches value "Student test32"
+    Then the field "Search users" matches value "test32"
     And the following should exist in the "user-grades" table:
       | -1-                   |
       | Student test32        |
@@ -389,7 +393,7 @@ Feature: Within the grader report, test that we can search for users
     And I give the grade "70.00" to the user "Student test31" for the grade item "Test assignment one"
     And I press "Save changes"
     And I wait until the page is ready
-    Then the field "Search users" matches value "Student test31"
+    Then the field "Search users" matches value "test3"
     And the following should exist in the "user-grades" table:
       | -1-                   |
       | Student test31        |
@@ -418,7 +422,7 @@ Feature: Within the grader report, test that we can search for users
       | Student test32        |
     # Search for multiple users on second page and save grades.
     And I set the field "Search users" to "test3"
-    And I wait until "View all results (11)" "option_role" exists
+    And I wait until "View all results (11)" "link" exists
     And I click on "View all results (11)" "option_role"
     And I wait until the page is ready
     And I give the grade "10.00" to the user "Student test32" for the grade item "Test assignment one"

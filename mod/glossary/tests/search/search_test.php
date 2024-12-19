@@ -61,7 +61,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_search_enabled(): void {
+    public function test_search_enabled() {
 
         $searcharea = \core_search\manager::get_search_area($this->entryareaid);
         list($componentname, $varname) = $searcharea->get_config_var_name();
@@ -81,7 +81,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_entries_indexing(): void {
+    public function test_entries_indexing() {
         global $DB;
 
         $searcharea = \core_search\manager::get_search_area($this->entryareaid);
@@ -156,7 +156,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_entries_document(): void {
+    public function test_entries_document() {
         global $DB;
 
         $searcharea = \core_search\manager::get_search_area($this->entryareaid);
@@ -187,7 +187,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_entries_access(): void {
+    public function test_entries_access() {
         global $DB;
 
         // Returns the instance as long as the component is supported.

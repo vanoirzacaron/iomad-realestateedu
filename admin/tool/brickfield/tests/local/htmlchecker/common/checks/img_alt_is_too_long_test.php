@@ -68,7 +68,7 @@ EOD;
     /**
      * Test for image alt attributes being too long
      */
-    public function test_check(): void {
+    public function test_check() {
         $results = $this->get_checker_results($this->htmlfail);
         $this->assertTrue($results[0]->element->tagName == 'img');
 

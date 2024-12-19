@@ -35,7 +35,7 @@ class store_test extends \advanced_testcase {
      * @param bool $jsonformat True to test with JSON format
      * @dataProvider log_writing_provider
      */
-    public function test_log_writing(bool $jsonformat): void {
+    public function test_log_writing(bool $jsonformat) {
         global $DB, $CFG;
         $this->resetAfterTest();
         $this->preventResetByRollback(); // Logging waits till the transaction gets committed.
@@ -263,7 +263,7 @@ class store_test extends \advanced_testcase {
     /**
      * Test method is_event_ignored.
      */
-    public function test_is_event_ignored(): void {
+    public function test_is_event_ignored() {
         $this->resetAfterTest();
 
         // Test guest filtering.
@@ -306,7 +306,7 @@ class store_test extends \advanced_testcase {
     /**
      * Test logmanager::get_supported_reports returns all reports that require this store.
      */
-    public function test_get_supported_reports(): void {
+    public function test_get_supported_reports() {
         $logmanager = get_log_manager();
         $allreports = \core_component::get_plugin_list('report');
 

@@ -44,13 +44,13 @@ require_once($CFG->dirroot . '/question/type/numerical/questiontype.php');
 final class provider_test extends \core_privacy\tests\provider_testcase {
     // Include the privacy helper which has assertions on it.
 
-    public function test_get_metadata(): void {
+    public function test_get_metadata() {
         $collection = new \core_privacy\local\metadata\collection('qtype_numerical');
         $actual = provider::get_metadata($collection);
         $this->assertEquals($collection, $actual);
     }
 
-    public function test_export_user_preferences_no_pref(): void {
+    public function test_export_user_preferences_no_pref() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
@@ -67,7 +67,7 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
      * @param string $value The value stored in the database
      * @param string $expected The expected transformed value
      */
-    public function test_export_user_preferences($name, $value, $expected): void {
+    public function test_export_user_preferences($name, $value, $expected) {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         set_user_preference("qtype_numerical_$name", $value, $user);

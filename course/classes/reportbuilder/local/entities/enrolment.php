@@ -42,15 +42,12 @@ use stdClass;
 class enrolment extends base {
 
     /**
-     * Database tables that this entity uses
+     * Database tables that this entity uses and their default aliases
      *
-     * @return string[]
+     * @return array
      */
-    protected function get_default_tables(): array {
-        return [
-            'user_enrolments',
-            'enrol',
-        ];
+    protected function get_default_table_aliases(): array {
+        return ['user_enrolments' => 'ue', 'enrol' => 'e'];
     }
 
     /**

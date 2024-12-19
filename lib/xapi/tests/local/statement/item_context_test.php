@@ -40,7 +40,7 @@ class item_context_test extends advanced_testcase {
     /**
      * Test item creation.
      */
-    public function test_create(): void {
+    public function test_create() {
 
         $data = $this->get_generic_data();
         $item = item_context::create_from_data($data);

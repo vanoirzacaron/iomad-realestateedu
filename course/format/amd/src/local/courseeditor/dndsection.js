@@ -115,16 +115,14 @@ export default class extends BaseComponent {
         if (dropdata?.type === 'files') {
             return true;
         }
-        // We accept any course module unless it can form a subsection loop.
+        // We accept any course module.
         if (dropdata?.type === 'cm') {
-            if (this.section?.component && dropdata?.delegatesection === true) {
-                return false;
-            }
             return true;
         }
-        // We accept any section but yourself and the next one.
+        // We accept any section but the section 0 or ourself
         if (dropdata?.type === 'section') {
-            return dropdata?.id != this.id && dropdata?.number != this.section.number + 1;
+            const sectionzeroid = this.course.sectionlist[0];
+            return dropdata?.id != this.id && dropdata?.id != sectionzeroid && this.id != sectionzeroid;
         }
         return false;
     }
@@ -153,8 +151,14 @@ export default class extends BaseComponent {
             this.getLastCm()?.classList.add(this.classes.DROPDOWN);
         }
         if (dropdata.type == 'section') {
-            this.element.classList.remove(this.classes.DROPUP);
-            this.element.classList.add(this.classes.DROPDOWN);
+            // The relative move of section depends on the section number.
+            if (this.section.number > dropdata.number) {
+                this.element.classList.remove(this.classes.DROPUP);
+                this.element.classList.add(this.classes.DROPDOWN);
+            } else {
+                this.element.classList.add(this.classes.DROPUP);
+                this.element.classList.remove(this.classes.DROPDOWN);
+            }
         }
     }
 
@@ -190,7 +194,7 @@ export default class extends BaseComponent {
             this.reactive.dispatch(mutation, [dropdata.id], this.id);
         }
         if (dropdata.type == 'section') {
-            this.reactive.dispatch('sectionMoveAfter', [dropdata.id], this.id);
+            this.reactive.dispatch('sectionMove', [dropdata.id], this.id);
         }
     }
 }

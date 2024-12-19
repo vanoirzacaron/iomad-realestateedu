@@ -33,7 +33,7 @@ class module_test extends \advanced_testcase {
      * Tests legacy class.
      * @coversNothing
      */
-    public function test_legacy_classname(): void {
+    public function test_legacy_classname() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -49,7 +49,7 @@ class module_test extends \advanced_testcase {
      * @covers ::instance
      * @covers \core\context::instance_by_id
      */
-    public function test_factory_methods(): void {
+    public function test_factory_methods() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -68,7 +68,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_short_name
      */
-    public function test_get_short_name(): void {
+    public function test_get_short_name() {
         $this->assertSame('module', module::get_short_name());
     }
 
@@ -76,7 +76,7 @@ class module_test extends \advanced_testcase {
      * Tests context level.
      * @coversNothing
      */
-    public function test_level(): void {
+    public function test_level() {
         $this->assertSame(70, module::LEVEL);
         $this->assertSame(CONTEXT_MODULE, module::LEVEL);
     }
@@ -85,7 +85,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_level_name
      */
-    public function test_get_level_name(): void {
+    public function test_get_level_name() {
         $this->assertSame('Activity module', module::get_level_name());
     }
 
@@ -93,7 +93,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_context_name
      */
-    public function test_get_context_name(): void {
+    public function test_get_context_name() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -111,7 +111,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_url
      */
-    public function test_get_url(): void {
+    public function test_get_url() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -130,7 +130,7 @@ class module_test extends \advanced_testcase {
      * @covers ::get_behat_reference_columns()
      * @covers \core\context_helper::resolve_behat_reference
      */
-    public function test_resolve_behat_reference(): void {
+    public function test_resolve_behat_reference() {
         global $DB;
         $this->resetAfterTest();
 
@@ -159,7 +159,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_compatible_role_archetypes
      */
-    public function test_get_compatible_role_archetypes(): void {
+    public function test_get_compatible_role_archetypes() {
         global $DB;
 
         $allarchetypes = $DB->get_fieldset_select('role', 'DISTINCT archetype', 'archetype IS NOT NULL');
@@ -177,7 +177,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_possible_parent_levels
      */
-    public function test_get_possible_parent_levels(): void {
+    public function test_get_possible_parent_levels() {
         $this->assertSame([course::LEVEL], module::get_possible_parent_levels());
     }
 
@@ -185,7 +185,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_capabilities
      */
-    public function test_get_capabilities(): void {
+    public function test_get_capabilities() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -206,7 +206,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::create_level_instances
      */
-    public function test_create_level_instances(): void {
+    public function test_create_level_instances() {
         global $DB;
         $this->resetAfterTest();
 
@@ -223,7 +223,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_child_contexts
      */
-    public function test_get_child_contexts(): void {
+    public function test_get_child_contexts() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -238,7 +238,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_cleanup_sql
      */
-    public function test_get_cleanup_sql(): void {
+    public function test_get_cleanup_sql() {
         global $DB;
         $this->resetAfterTest();
 
@@ -257,7 +257,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::build_paths
      */
-    public function test_build_paths(): void {
+    public function test_build_paths() {
         global $DB;
         $this->resetAfterTest();
 
@@ -283,7 +283,7 @@ class module_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::set_locked
      */
-    public function test_set_locked(): void {
+    public function test_set_locked() {
         global $DB;
         $this->resetAfterTest();
 

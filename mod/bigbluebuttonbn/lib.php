@@ -75,7 +75,7 @@ function bigbluebuttonbn_supports($feature) {
         FEATURE_GRADE_HAS_GRADE => false,
         FEATURE_GRADE_OUTCOMES => false,
         FEATURE_SHOW_DESCRIPTION => true,
-        FEATURE_MOD_PURPOSE => MOD_PURPOSE_COMMUNICATION,
+        FEATURE_MOD_PURPOSE => MOD_PURPOSE_OTHER
     ];
     if (isset($features[(string) $feature])) {
         return $features[$feature];
@@ -719,6 +719,28 @@ function bigbluebuttonbn_print_recent_activity(object $course, bool $viewfullnam
     return true;
 }
 
+/**
+ * Callback method executed prior to enabling the activity module.
+ *
+ * @return bool Whether to proceed and enable the plugin or not.
+ */
+function bigbluebuttonbn_pre_enable_plugin_actions(): bool {
+    global $PAGE;
+
+    // If the default server configuration is used and the administrator has not accepted the default data processing
+    // agreement, do not enable the plugin. Instead, display a dynamic form where the administrator can confirm that he
+    // accepts the DPA prior to enabling the plugin.
+    if (config::get('server_url') === config::DEFAULT_SERVER_URL && !config::get('default_dpa_accepted')) {
+        $url = new moodle_url('/admin/category.php', ['category' => 'modbigbluebuttonbnfolder']);
+        \core\notification::add(
+            get_string('dpainfonotsigned', 'mod_bigbluebuttonbn', $url->out(false)),
+            \core\notification::ERROR
+        );
+        return false;
+    }
+    // Otherwise, continue and enable the plugin.
+    return true;
+}
 
 /**
  * Creates a number of BigblueButtonBN activities.
@@ -746,14 +768,4 @@ function bigbluebuttonbn_course_backend_generator_create_activity(tool_generator
         $backend->dot($i, $number);
     }
     $backend->end_log();
-}
-
-/**
- * Whether the activity is branded.
- * This information is used, for instance, to decide if a filter should be applied to the icon or not.
- *
- * @return bool True if the activity is branded, false otherwise.
- */
-function bigbluebuttonbn_is_branded(): bool {
-    return true;
 }

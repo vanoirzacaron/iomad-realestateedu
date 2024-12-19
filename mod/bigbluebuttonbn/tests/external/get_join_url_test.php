@@ -64,8 +64,7 @@ class get_join_url_test extends \externallib_advanced_testcase {
     /**
      * Test execute API CALL with no instance
      */
-    public function test_execute_no_instance(): void {
-        $this->resetAfterTest();
+    public function test_execute_no_instance() {
         $this->expectExceptionMessageMatches('/No such instance.*/');
         $joinurl = $this->get_join_url(1234, 5678);
 
@@ -77,7 +76,7 @@ class get_join_url_test extends \externallib_advanced_testcase {
     /**
      * Test execute API CALL without login
      */
-    public function test_execute_without_login(): void {
+    public function test_execute_without_login() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -113,7 +112,7 @@ class get_join_url_test extends \externallib_advanced_testcase {
     /**
      * Test execute API CALL with invalid login
      */
-    public function test_execute_with_invalid_login(): void {
+    public function test_execute_with_invalid_login() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -131,7 +130,7 @@ class get_join_url_test extends \externallib_advanced_testcase {
     /**
      * When login as a student
      */
-    public function test_execute_with_valid_login(): void {
+    public function test_execute_with_valid_login() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -160,7 +159,7 @@ class get_join_url_test extends \externallib_advanced_testcase {
     /**
      * Check that URL are different depending on the group.
      */
-    public function test_execute_with_group(): void {
+    public function test_execute_with_group() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -198,7 +197,7 @@ class get_join_url_test extends \externallib_advanced_testcase {
     /**
      * Check that we return the same URL once meeting is started.
      */
-    public function test_execute_with_same_url(): void {
+    public function test_execute_with_same_url() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -232,7 +231,7 @@ class get_join_url_test extends \externallib_advanced_testcase {
     /**
      * Check that we return the same URL once meeting is started.
      */
-    public function test_user_limit(): void {
+    public function test_user_limit() {
         $this->resetAfterTest();
         set_config('bigbluebuttonbn_userlimit_editable', true);
         $generator = $this->getDataGenerator();

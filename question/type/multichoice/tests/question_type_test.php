@@ -47,7 +47,7 @@ class question_type_test extends \advanced_testcase {
         $this->qtype = null;
     }
 
-    public function test_name(): void {
+    public function test_name() {
         $this->assertEquals($this->qtype->name(), 'multichoice');
     }
 
@@ -64,28 +64,28 @@ class question_type_test extends \advanced_testcase {
         return $q;
     }
 
-    public function test_can_analyse_responses(): void {
+    public function test_can_analyse_responses() {
         $this->assertTrue($this->qtype->can_analyse_responses());
     }
 
-    public function test_get_random_guess_score(): void {
+    public function test_get_random_guess_score() {
         $q = $this->get_test_question_data();
         $this->assertEquals(0.5, $this->qtype->get_random_guess_score($q));
     }
 
-    public function test_get_random_guess_score_broken_question(): void {
+    public function test_get_random_guess_score_broken_question() {
         $q = $this->get_test_question_data();
         $q->options->answers = [];
         $this->assertNull($this->qtype->get_random_guess_score($q));
     }
 
-    public function test_get_random_guess_score_multi(): void {
+    public function test_get_random_guess_score_multi() {
         $q = $this->get_test_question_data();
         $q->options->single = false;
         $this->assertNull($this->qtype->get_random_guess_score($q));
     }
 
-    public function test_get_possible_responses_single(): void {
+    public function test_get_possible_responses_single() {
         $q = $this->get_test_question_data();
         $responses = $this->qtype->get_possible_responses($q);
 
@@ -97,7 +97,7 @@ class question_type_test extends \advanced_testcase {
             )), $this->qtype->get_possible_responses($q));
     }
 
-    public function test_get_possible_responses_multi(): void {
+    public function test_get_possible_responses_multi() {
         $q = $this->get_test_question_data();
         $q->options->single = false;
 
@@ -107,14 +107,14 @@ class question_type_test extends \advanced_testcase {
         ), $this->qtype->get_possible_responses($q));
     }
 
-    public function get_question_saving_which() {
+    public static function get_question_saving_which(): array {
         return array(array('two_of_four'), array('one_of_four'));
     }
 
     /**
      * @dataProvider get_question_saving_which
      */
-    public function test_question_saving_two_of_four($which): void {
+    public function test_question_saving_two_of_four($which) {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -173,7 +173,7 @@ class question_type_test extends \advanced_testcase {
     /**
      * Test to make sure that loading of question options works, including in an error case.
      */
-    public function test_get_question_options(): void {
+    public function test_get_question_options() {
         global $DB;
 
         $this->resetAfterTest(true);

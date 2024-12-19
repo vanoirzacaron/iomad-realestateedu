@@ -144,18 +144,6 @@ if ($hassiteconfig) {
     $temp->add($setting);
     $ADMIN->add('authsettings', $temp);
 
-    // Toggle password visiblity icon.
-    $temp->add(new admin_setting_configselect('loginpasswordtoggle',
-        new lang_string('auth_loginpasswordtoggle', 'auth'),
-        new lang_string('auth_loginpasswordtoggle_desc', 'auth'),
-        TOGGLE_SENSITIVE_SMALL_SCREENS_ONLY,
-        [
-            TOGGLE_SENSITIVE_DISABLED => get_string('disabled', 'admin'),
-            TOGGLE_SENSITIVE_ENABLED => get_string('enabled', 'admin'),
-            TOGGLE_SENSITIVE_SMALL_SCREENS_ONLY => get_string('smallscreensonly', 'admin'),
-        ],
-    ));
-
     $temp = new admin_externalpage('authtestsettings', get_string('testsettings', 'core_auth'), new moodle_url("/auth/test_settings.php"), 'moodle/site:config', true);
     $ADMIN->add('authsettings', $temp);
 
@@ -204,10 +192,6 @@ if ($hassiteconfig) {
     $ADMIN->add('modules', new admin_category('antivirussettings', new lang_string('antiviruses', 'antivirus')));
     $temp = new admin_settingpage('manageantiviruses', new lang_string('antivirussettings', 'antivirus'));
     $temp->add(new admin_setting_manageantiviruses());
-
-    // Status check.
-    $temp->add(new admin_setting_heading('antivirus/statuschecks', new lang_string('statuschecks'), ''));
-    $temp->add(new admin_setting_check('antivirus/checkantivirus', new \core\check\environment\antivirus()));
 
     // Common settings.
     $temp->add(new admin_setting_heading('antiviruscommonsettings', new lang_string('antiviruscommonsettings', 'antivirus'), ''));

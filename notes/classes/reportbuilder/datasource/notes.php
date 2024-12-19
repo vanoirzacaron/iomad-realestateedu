@@ -68,14 +68,17 @@ class notes extends datasource {
                    ON {$recipientalias}.id = {$postalias}.userid")
         );
 
-        // Join the user entity to represent the note author.
+        // Join the user entity to represent the note author. Override all entity table aliases to avoid clash with first instance.
         $authorentity = (new user())
             ->set_entity_name('author')
-            ->set_entity_title(new lang_string('author', 'core_notes'));
-        $authoralias = $authorentity->get_table_alias('user');
+            ->set_entity_title(new lang_string('author', 'core_notes'))
+            ->set_table_aliases([
+                'user' => 'au',
+                'context' => 'auctx',
+            ]);
         $this->add_entity($authorentity->add_join("
-            LEFT JOIN {user} {$authoralias}
-                   ON {$authoralias}.id = {$postalias}.usermodified")
+            LEFT JOIN {user} au
+                   ON au.id = {$postalias}.usermodified")
         );
 
         // Join the course entity for course notes.

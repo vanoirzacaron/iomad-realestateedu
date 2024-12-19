@@ -145,11 +145,15 @@ class addsection implements named_templatable, renderable {
         $course = $format->get_course();
         $data = new stdClass();
 
-        $addstring = $format->get_format_string('addsection');
+        if (get_string_manager()->string_exists('addsections', 'format_' . $course->format)) {
+            $addstring = get_string('addsections', 'format_' . $course->format);
+        } else {
+            $addstring = get_string('addsections');
+        }
 
         $params = ['courseid' => $course->id, 'insertsection' => 0, 'sesskey' => sesskey()];
 
-        $singlesection = $this->format->get_sectionnum();
+        $singlesection = $this->format->get_section_number();
         if ($singlesection) {
             $params['sectionreturn'] = $singlesection;
         }

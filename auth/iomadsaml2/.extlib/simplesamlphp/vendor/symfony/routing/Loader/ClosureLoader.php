@@ -29,17 +29,17 @@ class ClosureLoader extends Loader
      * @param \Closure    $closure A Closure
      * @param string|null $type    The resource type
      *
-     * @return RouteCollection
+     * @return RouteCollection A RouteCollection instance
      */
-    public function load($closure, string $type = null)
+    public function load($closure, $type = null)
     {
-        return $closure($this->env);
+        return $closure();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, string $type = null)
+    public function supports($resource, $type = null)
     {
         return $resource instanceof \Closure && (!$type || 'closure' === $type);
     }

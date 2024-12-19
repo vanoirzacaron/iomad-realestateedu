@@ -68,7 +68,7 @@ videojs.addLanguage('et', {
   "Raised": "Kõrgem",
   "Depressed": "Madalam",
   "Uniform": "Ühtlane",
-  "Drop shadow": "Langeva varjuga",
+  "Dropshadow": "Langeva varjuga",
   "Font Family": "Fondipere",
   "Proportional Sans-Serif": "Seriifideta proportsionaalkiri",
   "Monospace Sans-Serif": "Seriifideta püsisammkiri",

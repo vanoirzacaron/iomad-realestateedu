@@ -45,7 +45,7 @@ class get_tool_types_and_proxies_count_test extends \mod_lti_testcase {
     /**
      * Test get_tool_types_and_proxies_count returns the correct number.
      */
-    public function test_mod_lti_get_tool_types_and_proxies_count(): void {
+    public function test_mod_lti_get_tool_types_and_proxies_count() {
         for ($i = 0; $i < 10; $i++) {
             $proxy = $this->generate_tool_proxy($i);
             $this->generate_tool_type($i, $proxy->id);
@@ -60,7 +60,7 @@ class get_tool_types_and_proxies_count_test extends \mod_lti_testcase {
     /**
      * Test get_tool_types_and_proxies_count returns the correct number.
      */
-    public function test_mod_lti_get_tool_types_and_proxies_count_with_no_tools_configured(): void {
+    public function test_mod_lti_get_tool_types_and_proxies_count_with_no_tools_configured() {
         $data = \mod_lti\external\get_tool_types_and_proxies_count::execute(0, false);
         $data = external_api::clean_returnvalue(\mod_lti\external\get_tool_types_and_proxies_count::execute_returns(), $data);
 

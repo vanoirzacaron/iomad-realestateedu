@@ -39,10 +39,8 @@ class processor {
     /** @var int The provider inactive flag */
     public const PROVIDER_INACTIVE = 0;
 
-    /**
-     * @var communication_provider|room_chat_provider|room_user_provider|synchronise_provider|user_provider|null The provider class
-     */
-    private communication_provider|user_provider|room_chat_provider|room_user_provider|synchronise_provider|null $provider = null;
+    /** @var null|communication_provider|user_provider|room_chat_provider|room_user_provider The provider class */
+    private communication_provider|user_provider|room_chat_provider|room_user_provider|null $provider = null;
 
     /**
      * Communication processor constructor.
@@ -111,7 +109,7 @@ class processor {
     /**
      * Update the communication instance with any changes.
      *
-     * @param null|string $active Active state of the instance (processor::PROVIDER_ACTIVE or processor::PROVIDER_INACTIVE)
+     * @param null|int $active Active state of the instance (processor::PROVIDER_ACTIVE or processor::PROVIDER_INACTIVE)
      * @param null|string $roomname The room name
      */
     public function update_instance(
@@ -490,15 +488,6 @@ class processor {
     }
 
     /**
-     * Get provider active status.
-     *
-     * @return int
-     */
-    public function get_provider_status(): int {
-        return $this->instancedata->active;
-    }
-
-    /**
      * Get communication instance id.
      *
      * @return room_chat_provider
@@ -529,17 +518,6 @@ class processor {
         $this->require_api_enabled();
         $this->require_room_features();
         $this->require_room_user_features();
-        return $this->provider;
-    }
-
-    /**
-     * Get the provider after checking if it supports sync features.
-     *
-     * @return synchronise_provider
-     */
-    public function get_sync_provider(): synchronise_provider {
-        $this->require_api_enabled();
-        $this->require_sync_provider_features();
         return $this->provider;
     }
 
@@ -652,24 +630,6 @@ class processor {
     public function require_room_user_features(): void {
         if (!$this->supports_room_user_features()) {
             throw new \coding_exception('room features are not supported by the provider');
-        }
-    }
-
-    /**
-     * Check if the provider supports sync features.
-     *
-     * @return bool whether the provider supports sync features or not
-     */
-    public function supports_sync_provider_features(): bool {
-        return ($this->provider instanceof synchronise_provider);
-    }
-
-    /**
-     * Check if the provider supports sync features when required.
-     */
-    public function require_sync_provider_features(): void {
-        if (!$this->supports_sync_provider_features()) {
-            throw new \coding_exception('sync features are not supported by the provider');
         }
     }
 

@@ -7,27 +7,17 @@
         {{/element.hiddenlabel}}
     {{/label}}
     {{$element}}
-        {{#label}}
-            <fieldset class="w-100 m-0 p-0 border-0">
+        <fieldset class="w-100 m-0 p-0 border-0">
+            {{#label}}
                 <legend class="sr-only">{{label}}</legend>
-                <div class="d-flex flex-wrap align-items-center">
-                {{#element.elements}}
-                    {{{separator}}}
-                    {{{html}}}
-                {{/element.elements}}
-                </div>
-            </fieldset>
-        {{/label}}
-        {{^label}}
-            <div class="w-100 m-0 p-0 border-0">
-                <div class="d-flex flex-wrap align-items-center">
-                {{#element.elements}}
-                    {{{separator}}}
-                    {{{html}}}
-                {{/element.elements}}
-                </div>
+            {{/label}}
+            <div class="d-flex flex-wrap align-items-center">
+            {{#element.elements}}
+                {{{separator}}}
+                {{{html}}}
+            {{/element.elements}}
             </div>
-        {{/label}}
+        </fieldset>
     {{/element}}
 {{/ core_form/element-template }}
 {{#js}}

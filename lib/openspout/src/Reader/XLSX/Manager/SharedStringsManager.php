@@ -6,7 +6,6 @@ namespace OpenSpout\Reader\XLSX\Manager;
 
 use DOMElement;
 use OpenSpout\Common\Exception\IOException;
-use OpenSpout\Reader\Exception\SharedStringNotFoundException;
 use OpenSpout\Reader\Exception\XMLProcessingException;
 use OpenSpout\Reader\Wrapper\XMLReader;
 use OpenSpout\Reader\XLSX\Manager\SharedStringsCaching\CachingStrategyFactoryInterface;
@@ -35,15 +34,15 @@ final class SharedStringsManager
     public const XML_ATTRIBUTE_VALUE_PRESERVE = 'preserve';
 
     /** @var string Path of the XLSX file being read */
-    private readonly string $filePath;
+    private string $filePath;
 
-    private readonly Options $options;
+    private Options $options;
 
     /** @var WorkbookRelationshipsManager Helps retrieving workbook relationships */
-    private readonly WorkbookRelationshipsManager $workbookRelationshipsManager;
+    private WorkbookRelationshipsManager $workbookRelationshipsManager;
 
     /** @var CachingStrategyFactoryInterface Factory to create shared strings caching strategies */
-    private readonly CachingStrategyFactoryInterface $cachingStrategyFactory;
+    private CachingStrategyFactoryInterface $cachingStrategyFactory;
 
     /** @var CachingStrategyInterface The best caching strategy for storing shared strings */
     private CachingStrategyInterface $cachingStrategy;
@@ -78,7 +77,7 @@ final class SharedStringsManager
      * The XML file can be really big with sheets containing a lot of data. That is why
      * we need to use a XML reader that provides streaming like the XMLReader library.
      *
-     * @throws IOException If shared strings XML file can't be read
+     * @throws \OpenSpout\Common\Exception\IOException If shared strings XML file can't be read
      */
     public function extractSharedStrings(): void
     {
@@ -119,7 +118,7 @@ final class SharedStringsManager
      *
      * @return string The shared string at the given index
      *
-     * @throws SharedStringNotFoundException If no shared string found for the given index
+     * @throws \OpenSpout\Reader\Exception\SharedStringNotFoundException If no shared string found for the given index
      */
     public function getStringAtIndex(int $sharedStringIndex): string
     {
@@ -143,7 +142,7 @@ final class SharedStringsManager
      *
      * @return null|int Number of unique shared strings in the sharedStrings.xml file
      *
-     * @throws IOException If sharedStrings.xml is invalid and can't be read
+     * @throws \OpenSpout\Common\Exception\IOException If sharedStrings.xml is invalid and can't be read
      */
     private function getSharedStringsUniqueCount(XMLReader $xmlReader): ?int
     {

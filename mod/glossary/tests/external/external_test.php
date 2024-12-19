@@ -47,7 +47,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_glossaries_by_courses
      */
-    public function test_get_glossaries_by_courses(): void {
+    public function test_get_glossaries_by_courses() {
         $this->resetAfterTest(true);
 
         // As admin.
@@ -96,7 +96,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals(1, $glossaries['glossaries'][0]['canaddentry']);
     }
 
-    public function test_view_glossary(): void {
+    public function test_view_glossary() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -119,7 +119,7 @@ class external_test extends externallib_advanced_testcase {
         $sink->close();
     }
 
-    public function test_view_glossary_without_permission(): void {
+    public function test_view_glossary_without_permission() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -142,7 +142,7 @@ class external_test extends externallib_advanced_testcase {
         mod_glossary_external::view_glossary($g1->id, 'letter');
     }
 
-    public function test_view_entry(): void {
+    public function test_view_entry() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -194,7 +194,7 @@ class external_test extends externallib_advanced_testcase {
         mod_glossary_external::view_entry($e4->id);
     }
 
-    public function test_get_entries_by_letter(): void {
+    public function test_get_entries_by_letter() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -255,7 +255,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($e1b->id, $return['entries'][2]['id']);
     }
 
-    public function test_get_entries_by_letter_with_parameters(): void {
+    public function test_get_entries_by_letter_with_parameters() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -301,7 +301,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($e1b->id, $return['entries'][1]['id']);
     }
 
-    public function test_get_entries_by_date(): void {
+    public function test_get_entries_by_date() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -393,7 +393,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($e1b->id, $return['entries'][1]['id']);
     }
 
-    public function test_get_categories(): void {
+    public function test_get_categories() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -422,7 +422,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($cat1c->id, $return['categories'][1]['id']);
     }
 
-    public function test_get_entries_by_category(): void {
+    public function test_get_entries_by_category() {
         $this->resetAfterTest(true);
 
         $gg = $this->getDataGenerator()->get_plugin_generator('mod_glossary');
@@ -505,7 +505,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($e1a3->id, $return['entries'][1]['id']);
     }
 
-    public function test_get_authors(): void {
+    public function test_get_authors() {
         $this->resetAfterTest(true);
 
         $gg = $this->getDataGenerator()->get_plugin_generator('mod_glossary');
@@ -552,7 +552,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($u3->id, $return['authors'][0]['id']);
     }
 
-    public function test_get_entries_by_author(): void {
+    public function test_get_entries_by_author() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -668,7 +668,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($e1a3->id, $return['entries'][3]['id']);
     }
 
-    public function test_get_entries_by_author_id(): void {
+    public function test_get_entries_by_author_id() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -776,7 +776,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($e1a3->id, $return['entries'][1]['id']);
     }
 
-    public function test_get_entries_by_search(): void {
+    public function test_get_entries_by_search() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -892,7 +892,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($e8->id, $return['entries'][1]['id']);
     }
 
-    public function test_get_entries_by_term(): void {
+    public function test_get_entries_by_term() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -966,7 +966,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals(3, $return['count']);
     }
 
-    public function test_get_entries_to_approve(): void {
+    public function test_get_entries_to_approve() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -1072,7 +1072,7 @@ class external_test extends externallib_advanced_testcase {
         $this->fail('Do not test anything else after this.');
     }
 
-    public function test_get_entry_by_id(): void {
+    public function test_get_entry_by_id() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -1150,7 +1150,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertFalse($return['permissions']['candelete']);
     }
 
-    public function test_add_entry_without_optional_settings(): void {
+    public function test_add_entry_without_optional_settings() {
         global $CFG, $DB;
         $this->resetAfterTest(true);
 
@@ -1175,7 +1175,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEmpty($DB->get_records('glossary_entries_categories', array('entryid' => $return['entryid'])));
     }
 
-    public function test_add_entry_with_aliases(): void {
+    public function test_add_entry_with_aliases() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1202,7 +1202,7 @@ class external_test extends externallib_advanced_testcase {
         }
     }
 
-    public function test_add_entry_in_categories(): void {
+    public function test_add_entry_in_categories() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1232,7 +1232,7 @@ class external_test extends externallib_advanced_testcase {
         }
     }
 
-    public function test_add_entry_with_attachments(): void {
+    public function test_add_entry_with_attachments() {
         global $DB, $USER;
         $this->resetAfterTest(true);
 
@@ -1292,7 +1292,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      *   Test get entry including rating information.
      */
-    public function test_get_entry_rating_information(): void {
+    public function test_get_entry_rating_information() {
         $this->resetAfterTest(true);
 
         global $DB, $CFG;

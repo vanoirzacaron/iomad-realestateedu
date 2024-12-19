@@ -62,8 +62,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
     /**
      * Test execute API CALL with no instance
      */
-    public function test_execute_wrong_instance(): void {
-        $this->resetAfterTest();
+    public function test_execute_wrong_instance() {
         $getrecordings = $this->get_recordings(1234);
 
         $this->assertIsArray($getrecordings);
@@ -75,7 +74,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
     /**
      * Test execute API CALL without login
      */
-    public function test_execute_without_login(): void {
+    public function test_execute_without_login() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -89,7 +88,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
     /**
      * Test execute API CALL with invalid login
      */
-    public function test_execute_with_invalid_login(): void {
+    public function test_execute_with_invalid_login() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -107,7 +106,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
     /**
      * When login as a student
      */
-    public function test_execute_with_valid_login(): void {
+    public function test_execute_with_valid_login() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -130,7 +129,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
     /**
      * Check if tools are present for teacher/moderator
      */
-    public function test_get_recordings_tools(): void {
+    public function test_get_recordings_tools() {
         $this->resetAfterTest();
         $dataset = [
             'type' => instance::TYPE_ALL,
@@ -182,7 +181,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
     /**
      * Check preview is present and displayed
      */
-    public function test_get_recordings_preview(): void {
+    public function test_get_recordings_preview() {
         $this->resetAfterTest();
         $dataset = [
             'type' => instance::TYPE_ALL,
@@ -213,7 +212,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
      * Check we can see all recording from a course in a room only instance
      * @covers \mod_bigbluebuttonbn\external\get_recordings::execute
      */
-    public function test_get_recordings_room_only(): void {
+    public function test_get_recordings_room_only() {
         $this->resetAfterTest();
         set_config('bigbluebuttonbn_importrecordings_enabled', 1);
         $dataset = [
@@ -256,7 +255,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
      * Check if we can see the imported recording in a new instance
      * @covers \mod_bigbluebuttonbn\external\get_recordings::execute
      */
-    public function test_get_recordings_imported(): void {
+    public function test_get_recordings_imported() {
         $this->resetAfterTest();
         set_config('bigbluebuttonbn_importrecordings_enabled', 1);
         $dataset = [
@@ -319,7 +318,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
      * Check we can see only imported recordings in a recordings only instance when "Show only imported links" enabled.
      * @covers \mod_bigbluebuttonbn\external\get_recordings::execute
      */
-    public function test_get_imported_recordings_only(): void {
+    public function test_get_imported_recordings_only() {
         $this->resetAfterTest();
         set_config('bigbluebuttonbn_importrecordings_enabled', 1);
         $dataset = [
@@ -379,7 +378,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
      * @covers   \mod_bigbluebuttonbn\external\get_recordings::execute
      * @dataProvider recording_group_test_data
      */
-    public function test_get_recordings_groups($type, $groups, $users, $recordingsdata, $test, $coursemode): void {
+    public function test_get_recordings_groups($type, $groups, $users, $recordingsdata, $test, $coursemode) {
         $this->resetAfterTest();
         $dataset = compact('type', 'groups', 'users', 'recordingsdata', 'test', 'coursemode');
         $activityid = $this->create_from_dataset($dataset);
@@ -421,7 +420,7 @@ class get_recordings_test extends \externallib_advanced_testcase {
      *
      * @return array[]
      */
-    public function recording_group_test_data() {
+    public static function recording_group_test_data(): array {
         return [
             'visiblegroups' => [
                 'type' => instance::TYPE_ALL,

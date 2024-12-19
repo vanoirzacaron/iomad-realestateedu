@@ -44,7 +44,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_metadata().
      */
-    public function test_get_metadata(): void {
+    public function test_get_metadata() {
         $this->resetAfterTest(true);
 
         $collection = new collection('mod_bigbluebuttonbn');
@@ -85,7 +85,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_contexts_for_userid().
      */
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         $this->resetAfterTest();
 
         $e = $this->get_bigbluebuttonbn_environemnt();
@@ -113,7 +113,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::export_user_data().
      */
-    public function test_export_for_context_logs(): void {
+    public function test_export_for_context_logs() {
         $this->resetAfterTest();
 
         $e = $this->get_bigbluebuttonbn_environemnt();
@@ -144,7 +144,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test that only users with relevant contexts are fetched.
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         // For backward compatibility with old versions of Moodle.
         if (!class_exists('\core_privacy\local\request\userlist')) {
             return;
@@ -182,7 +182,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_all_users_in_context().
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
 
         $this->resetAfterTest();
@@ -205,7 +205,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_user().
      */
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
 
         $this->resetAfterTest();
@@ -232,7 +232,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test that data for users in approved userlist is deleted.
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
 
         // For backward compatibility with old versions of Moodle.

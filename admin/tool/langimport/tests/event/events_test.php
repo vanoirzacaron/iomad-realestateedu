@@ -41,7 +41,7 @@ class events_test extends \advanced_testcase {
         $this->resetAfterTest();
     }
 
-    public function test_langpack_updated(): void {
+    public function test_langpack_updated() {
         global $CFG;
 
         $event = \tool_langimport\event\langpack_updated::event_with_langcode($CFG->lang);
@@ -56,14 +56,14 @@ class events_test extends \advanced_testcase {
         $this->assertEquals(\context_system::instance(), $event->get_context());
     }
 
-    public function test_langpack_updated_validation(): void {
+    public function test_langpack_updated_validation() {
 
         $this->expectException('coding_exception');
         $this->expectExceptionMessage("The 'langcode' value must be set to a valid language code");
         \tool_langimport\event\langpack_updated::event_with_langcode('broken langcode');
     }
 
-    public function test_langpack_installed(): void {
+    public function test_langpack_installed() {
         $event = \tool_langimport\event\langpack_imported::event_with_langcode('fr');
 
         // Trigger and capture the event.
@@ -76,14 +76,14 @@ class events_test extends \advanced_testcase {
         $this->assertEquals(\context_system::instance(), $event->get_context());
     }
 
-    public function test_langpack_installed_validation(): void {
+    public function test_langpack_installed_validation() {
 
         $this->expectException('coding_exception');
         $this->expectExceptionMessage("The 'langcode' value must be set to a valid language code");
         \tool_langimport\event\langpack_imported::event_with_langcode('broken langcode');
     }
 
-    public function test_langpack_removed(): void {
+    public function test_langpack_removed() {
         $event = \tool_langimport\event\langpack_removed::event_with_langcode('fr');
 
         // Trigger and capture the event.
@@ -96,7 +96,7 @@ class events_test extends \advanced_testcase {
         $this->assertEquals(\context_system::instance(), $event->get_context());
     }
 
-    public function test_langpack_removed_validation(): void {
+    public function test_langpack_removed_validation() {
 
         $this->expectException('coding_exception');
         $this->expectExceptionMessage("The 'langcode' value must be set to a valid language code");

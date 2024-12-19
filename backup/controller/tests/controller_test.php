@@ -76,7 +76,7 @@ class controller_test extends \advanced_testcase {
      *
      * @covers \restore_controller::get_copy
      */
-    public function test_restore_controller_get_copy(): void {
+    public function test_restore_controller_get_copy() {
         $copydata = (object)["some" => "copydata"];
         $rc = new \restore_controller(1729, $this->courseid, backup::INTERACTIVE_NO, backup::MODE_COPY,
                 $this->userid, backup::TARGET_NEW_COURSE, null, backup::RELEASESESSION_NO, $copydata);
@@ -89,7 +89,7 @@ class controller_test extends \advanced_testcase {
      *
      * @covers \restore_controller::__construct
      */
-    public function test_restore_controller_copy_without_copydata(): void {
+    public function test_restore_controller_copy_without_copydata() {
         $this->expectException(\restore_controller_exception::class);
 
         new \restore_controller(1729, $this->courseid, backup::INTERACTIVE_NO, backup::MODE_COPY,
@@ -99,7 +99,7 @@ class controller_test extends \advanced_testcase {
     /*
      * test base_setting class
      */
-    public function test_backup_controller(): void {
+    public function test_backup_controller() {
         // Instantiate non interactive backup_controller
         $bc = new mock_backup_controller(backup::TYPE_1ACTIVITY, $this->moduleid, backup::FORMAT_MOODLE,
             backup::INTERACTIVE_NO, backup::MODE_GENERAL, $this->userid);
@@ -120,7 +120,7 @@ class controller_test extends \advanced_testcase {
         $this->assertTrue($newbc instanceof backup_controller); // This means checksum and load worked ok
     }
 
-    public function test_backup_controller_include_files(): void {
+    public function test_backup_controller_include_files() {
         // A MODE_GENERAL controller - this should include files
         $bc = new mock_backup_controller(backup::TYPE_1ACTIVITY, $this->moduleid, backup::FORMAT_MOODLE,
             backup::INTERACTIVE_NO, backup::MODE_GENERAL, $this->userid);
@@ -142,7 +142,7 @@ class controller_test extends \advanced_testcase {
     /**
      * Test set kept roles method.
      */
-    public function test_backup_controller_set_kept_roles(): void {
+    public function test_backup_controller_set_kept_roles() {
         $this->expectException(\backup_controller_exception::class);
 
         // Set up controller as a non-copy operation.
@@ -155,7 +155,7 @@ class controller_test extends \advanced_testcase {
     /**
      * Tests the restore_controller.
      */
-    public function test_restore_controller_is_executing(): void {
+    public function test_restore_controller_is_executing() {
         global $CFG;
 
         // Make a backup.
@@ -202,7 +202,7 @@ class controller_test extends \advanced_testcase {
     /**
      * Test prepare copy method.
      */
-    public function test_restore_controller_prepare_copy(): void {
+    public function test_restore_controller_prepare_copy() {
         $this->expectException(\restore_controller_exception::class);
 
         global $CFG;
@@ -225,7 +225,7 @@ class controller_test extends \advanced_testcase {
     /**
      * Test restore of deadlock causing backup.
      */
-    public function test_restore_of_deadlock_causing_backup(): void {
+    public function test_restore_of_deadlock_causing_backup() {
         global $USER, $CFG;
         $this->preventResetByRollback();
 

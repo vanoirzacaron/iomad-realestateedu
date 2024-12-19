@@ -33,7 +33,7 @@ class restore_date_test extends \restore_date_testcase {
     /**
      * Test restore dates.
      */
-    public function test_restore_dates(): void {
+    public function test_restore_dates() {
         global $DB, $USER;
 
         // Create quiz data.

@@ -20,6 +20,7 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once($CFG->dirroot.'/user/lib.php');
+require_once($CFG->dirroot.'/lib/authlib.php');
 
 /**
  * Unit tests for user lib api.
@@ -33,7 +34,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test user_get_user_details_courses
      */
-    public function test_user_get_user_details_courses(): void {
+    public function test_user_get_user_details_courses() {
         global $DB;
 
         $this->resetAfterTest();
@@ -75,7 +76,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Verify return when course groupmode set to 'no groups'.
      */
-    public function test_user_get_user_details_courses_groupmode_nogroups(): void {
+    public function test_user_get_user_details_courses_groupmode_nogroups() {
         $this->resetAfterTest();
 
         // Enrol 2 users into a course with groupmode set to 'no groups'.
@@ -95,7 +96,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Verify return when course groupmode set to 'separate groups'.
      */
-    public function test_user_get_user_details_courses_groupmode_separate(): void {
+    public function test_user_get_user_details_courses_groupmode_separate() {
         $this->resetAfterTest();
 
         // Enrol 2 users into a course with groupmode set to 'separate groups'.
@@ -113,7 +114,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Verify return when course groupmode set to 'visible groups'.
      */
-    public function test_user_get_user_details_courses_groupmode_visible(): void {
+    public function test_user_get_user_details_courses_groupmode_visible() {
         $this->resetAfterTest();
 
         // Enrol 2 users into a course with groupmode set to 'visible groups'.
@@ -135,7 +136,7 @@ class userlib_test extends \advanced_testcase {
      *
      * @covers ::user_get_user_details_courses
      */
-    public function test_user_get_user_details_courses_limit_return(): void {
+    public function test_user_get_user_details_courses_limit_return() {
         $this->resetAfterTest();
 
         // Setup some data.
@@ -176,7 +177,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test user_update_user.
      */
-    public function test_user_update_user(): void {
+    public function test_user_update_user() {
         global $DB;
 
         $this->resetAfterTest();
@@ -250,7 +251,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test create_users.
      */
-    public function test_create_users(): void {
+    public function test_create_users() {
         global $DB;
 
         $this->resetAfterTest();
@@ -365,7 +366,7 @@ class userlib_test extends \advanced_testcase {
      * @param string $username Invalid username
      * @param string $expectmessage Expected exception message
      */
-    public function test_create_user_invalid_username($username, $expectmessage): void {
+    public function test_create_user_invalid_username($username, $expectmessage) {
         global $CFG;
 
         $this->resetAfterTest();
@@ -386,7 +387,7 @@ class userlib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function data_create_user_invalid_username() {
+    public static function data_create_user_invalid_username(): array {
         return [
             'empty_string' => [
                 '',
@@ -410,7 +411,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test function user_count_login_failures().
      */
-    public function test_user_count_login_failures(): void {
+    public function test_user_count_login_failures() {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $this->assertEquals(0, get_user_preferences('login_failed_count_since_success', 0, $user));
@@ -434,7 +435,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test function user_add_password_history().
      */
-    public function test_user_add_password_history(): void {
+    public function test_user_add_password_history() {
         global $DB;
 
         $this->resetAfterTest();
@@ -508,7 +509,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test function user_add_password_history().
      */
-    public function test_user_is_previously_used_password(): void {
+    public function test_user_is_previously_used_password() {
         global $DB;
 
         $this->resetAfterTest();
@@ -576,7 +577,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test that password history is deleted together with user.
      */
-    public function test_delete_of_hashes_on_user_delete(): void {
+    public function test_delete_of_hashes_on_user_delete() {
         global $DB;
 
         $this->resetAfterTest();
@@ -604,7 +605,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test user_list_view function
      */
-    public function test_user_list_view(): void {
+    public function test_user_list_view() {
 
         $this->resetAfterTest();
 
@@ -633,7 +634,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test setting the user menu avatar size.
      */
-    public function test_user_menu_custom_avatar_size(): void {
+    public function test_user_menu_custom_avatar_size() {
         global $PAGE;
         $this->resetAfterTest(true);
 
@@ -653,7 +654,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test user_can_view_profile
      */
-    public function test_user_can_view_profile(): void {
+    public function test_user_can_view_profile() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -828,7 +829,7 @@ class userlib_test extends \advanced_testcase {
     /**
      * Test user_get_user_details
      */
-    public function test_user_get_user_details(): void {
+    public function test_user_get_user_details() {
         global $DB;
 
         $this->resetAfterTest();
@@ -879,7 +880,7 @@ class userlib_test extends \advanced_testcase {
      * Ensure the fields "auth, confirmed, idnumber, lang, theme, timezone and mailformat" are present when
      * calling user_get_user_details() function.
      */
-    public function test_user_get_user_details_missing_fields(): void {
+    public function test_user_get_user_details_missing_fields() {
         global $CFG;
 
         $this->resetAfterTest(true);
@@ -892,7 +893,6 @@ class userlib_test extends \advanced_testcase {
                                                           'theme'      => $CFG->theme,
                                                           'timezone'   => '5',
                                                           'mailformat' => '0',
-                                                          'trackforums' => '1',
                                                       ]);
 
         // Fields that should get by default.
@@ -904,14 +904,13 @@ class userlib_test extends \advanced_testcase {
         self::assertSame($CFG->theme, $got['theme']);
         self::assertSame('5', $got['timezone']);
         self::assertSame('0', $got['mailformat']);
-        self::assertSame('1', $got['trackforums']);
     }
 
     /**
      * Test user_get_user_details_permissions.
      * @covers ::user_get_user_details
      */
-    public function test_user_get_user_details_permissions(): void {
+    public function test_user_get_user_details_permissions() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -987,7 +986,7 @@ class userlib_test extends \advanced_testcase {
      * Test user_get_user_details_groups.
      * @covers ::user_get_user_details
      */
-    public function test_user_get_user_details_groups(): void {
+    public function test_user_get_user_details_groups() {
         $this->resetAfterTest();
 
         // Create user and modify user profile.

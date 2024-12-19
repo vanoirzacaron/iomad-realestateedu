@@ -84,7 +84,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test getting the context for the user ID related to this plugin.
      */
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         $contextlist = provider::get_contexts_for_userid($this->user->id);
 
         $this->assertCount(2, $contextlist);
@@ -100,7 +100,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::export_user_data().
      */
-    public function test_export_for_context(): void {
+    public function test_export_for_context() {
         $coursecontext = \context_course::instance($this->course->id);
         $cmcontext = \context_module::instance($this->activity->cmid);
 
@@ -134,7 +134,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_all_users_in_context().
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
 
         $count = $DB->count_records('enrol_lti_users');
@@ -154,7 +154,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_user().
      */
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
 
         $cmcontext = \context_module::instance($this->activity->cmid);
@@ -208,7 +208,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_users_in_context() when the context is a course.
      */
-    public function test_get_users_in_context_course(): void {
+    public function test_get_users_in_context_course() {
         $coursecontext = \context_course::instance($this->course->id);
         $userlist = new \core_privacy\local\request\userlist($coursecontext, 'enrol_paypal');
         provider::get_users_in_context($userlist);
@@ -221,7 +221,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_users_in_context() when the context is an activity.
      */
-    public function test_get_users_in_context_activity(): void {
+    public function test_get_users_in_context_activity() {
         $activityctx = \context_module::instance($this->activity->cmid);
         $userlist = new \core_privacy\local\request\userlist($activityctx, 'enrol_paypal');
         provider::get_users_in_context($userlist);
@@ -234,7 +234,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_users() when the context is a course.
      */
-    public function test_delete_data_for_users_course(): void {
+    public function test_delete_data_for_users_course() {
         global $DB;
 
         $coursecontext = \context_course::instance($this->course->id);
@@ -264,7 +264,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_users() when the context is an activity.
      */
-    public function test_delete_data_for_users_activity(): void {
+    public function test_delete_data_for_users_activity() {
         global $DB;
 
         $cmcontext = \context_module::instance($this->activity->cmid);

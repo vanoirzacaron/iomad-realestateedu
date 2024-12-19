@@ -37,7 +37,7 @@ class user_info_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_get_user_info_outline(): void {
+    public function test_get_user_info_outline() {
         $this->initialise_mock_server();
         $this->resetAfterTest();
 
@@ -64,7 +64,7 @@ class user_info_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_get_user_info_outline_several_logs(): void {
+    public function test_get_user_info_outline_several_logs() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -89,7 +89,7 @@ class user_info_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_get_user_info_outline_view(): void {
+    public function test_get_user_info_outline_view() {
         $this->initialise_mock_server();
         $this->resetAfterTest();
 

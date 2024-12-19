@@ -41,7 +41,7 @@ require_once($CFG->dirroot . '/mod/quiz/tests/quiz_question_helper_test_trait.ph
 class lib_test extends \advanced_testcase {
     use \quiz_question_helper_test_trait;
 
-    public function test_quiz_has_grades(): void {
+    public function test_quiz_has_grades() {
         $quiz = new \stdClass();
         $quiz->grade = '100.0000';
         $quiz->sumgrades = '100.0000';
@@ -54,7 +54,7 @@ class lib_test extends \advanced_testcase {
         $this->assertFalse(quiz_has_grades($quiz));
     }
 
-    public function test_quiz_format_grade(): void {
+    public function test_quiz_format_grade() {
         $quiz = new \stdClass();
         $quiz->decimalpoints = 2;
         $this->assertEquals(quiz_format_grade($quiz, 0.12345678), format_float(0.12, 2));
@@ -64,7 +64,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals(quiz_format_grade($quiz, 0.12345678), '0');
     }
 
-    public function test_quiz_get_grade_format(): void {
+    public function test_quiz_get_grade_format() {
         $quiz = new \stdClass();
         $quiz->decimalpoints = 2;
         $this->assertEquals(quiz_get_grade_format($quiz), 2);
@@ -78,7 +78,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals(quiz_get_grade_format($quiz), 4);
     }
 
-    public function test_quiz_format_question_grade(): void {
+    public function test_quiz_format_question_grade() {
         $quiz = new \stdClass();
         $quiz->decimalpoints = 2;
         $quiz->questiondecimalpoints = 2;
@@ -99,7 +99,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test deleting a quiz instance.
      */
-    public function test_quiz_delete_instance(): void {
+    public function test_quiz_delete_instance() {
         global $SITE, $DB;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -139,7 +139,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals(0, $DB->count_records('question_set_references', ['usingcontextid' => $context->id]));
     }
 
-    public function test_quiz_get_user_attempts(): void {
+    public function test_quiz_get_user_attempts() {
         global $DB;
         $this->resetAfterTest();
 
@@ -363,7 +363,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test for quiz_get_group_override_priorities().
      */
-    public function test_quiz_get_group_override_priorities(): void {
+    public function test_quiz_get_group_override_priorities() {
         global $DB;
         $this->resetAfterTest();
 
@@ -409,7 +409,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals(2, $closepriorities[$override2->timeclose]);
     }
 
-    public function test_quiz_core_calendar_provide_event_action_open(): void {
+    public function test_quiz_core_calendar_provide_event_action_open() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -440,7 +440,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_quiz_core_calendar_provide_event_action_open_for_user(): void {
+    public function test_quiz_core_calendar_provide_event_action_open_for_user() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -470,7 +470,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_quiz_core_calendar_provide_event_action_closed(): void {
+    public function test_quiz_core_calendar_provide_event_action_closed() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -492,7 +492,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull(mod_quiz_core_calendar_provide_event_action($event, $factory));
     }
 
-    public function test_quiz_core_calendar_provide_event_action_closed_for_user(): void {
+    public function test_quiz_core_calendar_provide_event_action_closed_for_user() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -517,7 +517,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull(mod_quiz_core_calendar_provide_event_action($event, $factory, $student->id));
     }
 
-    public function test_quiz_core_calendar_provide_event_action_open_in_future(): void {
+    public function test_quiz_core_calendar_provide_event_action_open_in_future() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -548,7 +548,7 @@ class lib_test extends \advanced_testcase {
         $this->assertFalse($actionevent->is_actionable());
     }
 
-    public function test_quiz_core_calendar_provide_event_action_open_in_future_for_user(): void {
+    public function test_quiz_core_calendar_provide_event_action_open_in_future_for_user() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -578,7 +578,7 @@ class lib_test extends \advanced_testcase {
         $this->assertFalse($actionevent->is_actionable());
     }
 
-    public function test_quiz_core_calendar_provide_event_action_no_capability(): void {
+    public function test_quiz_core_calendar_provide_event_action_no_capability() {
         global $DB;
 
         $this->resetAfterTest();
@@ -615,7 +615,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull(mod_quiz_core_calendar_provide_event_action($event, $factory));
     }
 
-    public function test_quiz_core_calendar_provide_event_action_no_capability_for_user(): void {
+    public function test_quiz_core_calendar_provide_event_action_no_capability_for_user() {
         global $DB;
 
         $this->resetAfterTest();
@@ -649,7 +649,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull(mod_quiz_core_calendar_provide_event_action($event, $factory, $student->id));
     }
 
-    public function test_quiz_core_calendar_provide_event_action_already_finished(): void {
+    public function test_quiz_core_calendar_provide_event_action_already_finished() {
         global $DB;
 
         $this->resetAfterTest();
@@ -704,7 +704,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull(mod_quiz_core_calendar_provide_event_action($event, $factory));
     }
 
-    public function test_quiz_core_calendar_provide_event_action_already_finished_for_user(): void {
+    public function test_quiz_core_calendar_provide_event_action_already_finished_for_user() {
         global $DB;
 
         $this->resetAfterTest();
@@ -756,7 +756,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull(mod_quiz_core_calendar_provide_event_action($event, $factory, $student->id));
     }
 
-    public function test_quiz_core_calendar_provide_event_action_already_completed(): void {
+    public function test_quiz_core_calendar_provide_event_action_already_completed() {
         $this->resetAfterTest();
         set_config('enablecompletion', 1);
         $this->setAdminUser();
@@ -787,7 +787,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_quiz_core_calendar_provide_event_action_already_completed_for_user(): void {
+    public function test_quiz_core_calendar_provide_event_action_already_completed_for_user() {
         $this->resetAfterTest();
         set_config('enablecompletion', 1);
         $this->setAdminUser();
@@ -847,7 +847,7 @@ class lib_test extends \advanced_testcase {
      * This function should work given either an instance of the module (cm_info), such as when checking the active rules,
      * or if passed a stdClass of similar structure, such as when checking the the default completion settings for a mod type.
      */
-    public function test_mod_quiz_completion_get_active_rule_descriptions(): void {
+    public function test_mod_quiz_completion_get_active_rule_descriptions() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -889,7 +889,7 @@ class lib_test extends \advanced_testcase {
     /**
      * A user who does not have capabilities to add events to the calendar should be able to create a quiz.
      */
-    public function test_creation_with_no_calendar_capabilities(): void {
+    public function test_creation_with_no_calendar_capabilities() {
         $this->resetAfterTest();
         $course = self::getDataGenerator()->create_course();
         $context = \context_course::instance($course->id);
@@ -914,7 +914,7 @@ class lib_test extends \advanced_testcase {
      *
      * @return array List of data sets (test cases)
      */
-    public function mod_quiz_inplace_editable_provider(): array {
+    public static function mod_quiz_inplace_editable_provider(): array {
         return [
             'set to A1' => [1, 'A1'],
             'set with HTML characters' => [2, 'A & &amp; <-:'],

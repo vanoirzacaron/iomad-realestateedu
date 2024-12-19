@@ -63,7 +63,8 @@ class manual extends base {
         global $DB;
 
         $users = $this->get_configdata()['users'];
-        [$insql, $inparams] = $DB->get_in_or_equal($users, SQL_PARAMS_NAMED, database::generate_param_name('_'));
+        $prefix = database::generate_param_name() . '_';
+        [$insql, $inparams] = $DB->get_in_or_equal($users, SQL_PARAMS_NAMED, $prefix);
 
         return ['', "{$usertablealias}.id $insql", $inparams];
     }

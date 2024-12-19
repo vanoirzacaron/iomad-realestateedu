@@ -23,7 +23,7 @@ use context_system;
 use core_customfield_generator;
 use core_reportbuilder_generator;
 use core_reportbuilder_testcase;
-use core_reportbuilder\local\filters\{boolean_select, date, select, text};
+use core_reportbuilder\local\filters\{date, select, text};
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -63,13 +63,6 @@ class cohorts_test extends core_reportbuilder_testcase {
             'description' => 'This is my category cohort',
         ]);
 
-        // Non-visible cohort (excluded by default).
-        $cohortnonvisible = $this->getDataGenerator()->create_cohort([
-            'contextid' => $contextsystem->id,
-            'name' => 'Non-visible',
-            'visible' => false,
-        ]);
-
         /** @var core_reportbuilder_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_reportbuilder');
         $report = $generator->create_report(['name' => 'Cohorts', 'source' => cohorts::class, 'default' => 1]);
@@ -92,8 +85,6 @@ class cohorts_test extends core_reportbuilder_testcase {
         $this->resetAfterTest();
         $this->setAdminUser();
 
-        set_config('allowcohortthemes', true);
-
         /** @var core_customfield_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_customfield');
 
@@ -105,7 +96,6 @@ class cohorts_test extends core_reportbuilder_testcase {
             'name' => 'Legends',
             'idnumber' => 'C101',
             'description' => 'Cohort for the legends',
-            'theme' => 'boost',
             'customfield_hi' => 'Hello',
         ]);
 
@@ -134,7 +124,7 @@ class cohorts_test extends core_reportbuilder_testcase {
         $this->assertNotEmpty($timecreated);
         $this->assertNotEmpty($timemodified);
         $this->assertEquals('Created manually', $component);
-        $this->assertEquals('Boost', $theme);
+        $this->assertEmpty($theme);
         $this->assertEquals('Hello', $custom);
         $this->assertNotEmpty($timeadded);
         $this->assertEquals(fullname($user), $fullname);
@@ -145,12 +135,9 @@ class cohorts_test extends core_reportbuilder_testcase {
      *
      * @return array[]
      */
-    public function datasource_filters_provider(): array {
+    public static function datasource_filters_provider(): array {
         return [
             // Cohort.
-            'Filter cohort' => ['cohort:cohortselect', [
-                'cohort:cohortselect_values' => [-1],
-            ], false],
             'Filter context' => ['cohort:context', [
                 'cohort:context_operator' => select::EQUAL_TO,
                 'cohort:context_value' => context_system::instance()->id,
@@ -190,20 +177,6 @@ class cohorts_test extends core_reportbuilder_testcase {
             'Filter description (no match)' => ['cohort:description', [
                 'cohort:description_operator' => text::IS_EMPTY,
             ], false],
-            'Filter theme' => ['cohort:theme', [
-                'cohort:theme_operator' => select::EQUAL_TO,
-                'cohort:theme_value' => 'boost',
-            ], true],
-            'Filter theme (no match)' => ['cohort:theme', [
-                'cohort:theme_operator' => select::EQUAL_TO,
-                'cohort:theme_value' => 'classic',
-            ], false],
-            'Filter visible' => ['cohort:visible', [
-                'cohort:visible_operator' => boolean_select::CHECKED,
-            ], true],
-            'Filter visible (no match)' => ['cohort:visible', [
-                'cohort:visible_operator' => boolean_select::NOT_CHECKED,
-            ], false],
 
             // Cohort member.
             'Filter time added' => ['cohort_member:timeadded', [
@@ -239,14 +212,11 @@ class cohorts_test extends core_reportbuilder_testcase {
     public function test_datasource_filters(string $filtername, array $filtervalues, bool $expectmatch): void {
         $this->resetAfterTest();
 
-        set_config('allowcohortthemes', true);
-
         // Test subject.
         $cohort = $this->getDataGenerator()->create_cohort([
             'name' => 'Legends',
             'idnumber' => 'C101',
             'description' => 'Cohort for the legends',
-            'theme' => 'boost',
         ]);
 
         $user = $this->getDataGenerator()->create_user(['username' => 'lionel']);

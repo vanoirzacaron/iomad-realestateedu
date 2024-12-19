@@ -62,8 +62,7 @@ class view_bigbluebuttonbn_test extends \externallib_advanced_testcase {
     /**
      * Test execute API CALL with no instance
      */
-    public function test_execute_no_instance(): void {
-        $this->resetAfterTest();
+    public function test_execute_no_instance() {
         $bbbactivities = $this->view_bigbluebuttonbn(1234);
 
         $this->assertIsArray($bbbactivities);
@@ -75,7 +74,7 @@ class view_bigbluebuttonbn_test extends \externallib_advanced_testcase {
     /**
      * Test execute API CALL without login
      */
-    public function test_execute_without_login(): void {
+    public function test_execute_without_login() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -88,7 +87,7 @@ class view_bigbluebuttonbn_test extends \externallib_advanced_testcase {
     /**
      * Test execute API CALL with invalid login
      */
-    public function test_execute_with_invalid_login(): void {
+    public function test_execute_with_invalid_login() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -105,7 +104,7 @@ class view_bigbluebuttonbn_test extends \externallib_advanced_testcase {
     /**
      * When login as a student
      */
-    public function test_execute_with_valid_login(): void {
+    public function test_execute_with_valid_login() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();

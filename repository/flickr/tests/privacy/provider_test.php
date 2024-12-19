@@ -47,7 +47,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::export_user_preferences().
      */
-    public function test_export_user_preferences(): void {
+    public function test_export_user_preferences() {
         global $DB;
 
         // Test setup.

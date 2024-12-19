@@ -33,7 +33,7 @@ class system_test extends \advanced_testcase {
      * Tests legacy class.
      * @coversNothing
      */
-    public function test_legacy_classname(): void {
+    public function test_legacy_classname() {
         $context = \context_system::instance();
         $this->assertInstanceOf(system::class, $context);
         $this->assertInstanceOf(\context_system::class, $context);
@@ -44,7 +44,7 @@ class system_test extends \advanced_testcase {
      * @covers ::instance
      * @covers \core\context::instance_by_id
      */
-    public function test_factory_methods(): void {
+    public function test_factory_methods() {
         $context = system::instance();
         $this->assertInstanceOf(system::class, $context);
         $this->assertEquals(SYSCONTEXTID, $context->id);
@@ -58,7 +58,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_short_name
      */
-    public function test_get_short_name(): void {
+    public function test_get_short_name() {
         $this->assertSame('system', system::get_short_name());
     }
 
@@ -66,7 +66,7 @@ class system_test extends \advanced_testcase {
      * Tests context level.
      * @coversNothing
      */
-    public function test_level(): void {
+    public function test_level() {
         $this->assertSame(10, system::LEVEL);
         $this->assertSame(CONTEXT_SYSTEM, system::LEVEL);
     }
@@ -75,7 +75,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_level_name
      */
-    public function test_get_level_name(): void {
+    public function test_get_level_name() {
         $this->assertSame('System', system::get_level_name());
     }
 
@@ -83,7 +83,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_context_name
      */
-    public function test_get_context_name(): void {
+    public function test_get_context_name() {
         $context = system::instance();
         $this->assertSame('System', $context->get_context_name());
         $this->assertSame('System', $context->get_context_name(true));
@@ -96,7 +96,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_url
      */
-    public function test_get_url(): void {
+    public function test_get_url() {
         $context = system::instance();
         $expected = new \moodle_url('/');
         $url = $context->get_url();
@@ -108,7 +108,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers \core\context_helper::resolve_behat_reference
      */
-    public function test_resolve_behat_reference(): void {
+    public function test_resolve_behat_reference() {
         $syscontext = context\system::instance();
 
         $result = context_helper::resolve_behat_reference('System', '');
@@ -128,7 +128,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_compatible_role_archetypes
      */
-    public function test_get_compatible_role_archetypes(): void {
+    public function test_get_compatible_role_archetypes() {
         global $DB;
 
         $allarchetypes = $DB->get_fieldset_select('role', 'DISTINCT archetype', 'archetype IS NOT NULL');
@@ -146,7 +146,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_possible_parent_levels
      */
-    public function test_get_possible_parent_levels(): void {
+    public function test_get_possible_parent_levels() {
         $this->assertSame([], system::get_possible_parent_levels());
     }
 
@@ -154,7 +154,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_capabilities
      */
-    public function test_get_capabilities(): void {
+    public function test_get_capabilities() {
         global $DB;
 
         $context = system::instance();
@@ -167,7 +167,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::create_level_instances
      */
-    public function test_create_level_instances(): void {
+    public function test_create_level_instances() {
         context_helper::create_instances(system::LEVEL);
     }
 
@@ -175,7 +175,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_child_contexts
      */
-    public function test_get_child_contexts(): void {
+    public function test_get_child_contexts() {
         global $DB;
 
         $context = system::instance();
@@ -190,7 +190,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::get_cleanup_sql
      */
-    public function test_get_cleanup_sql(): void {
+    public function test_get_cleanup_sql() {
         // Nothing to clean up actually.
         context_helper::cleanup_instances();
     }
@@ -199,7 +199,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::build_paths
      */
-    public function test_build_paths(): void {
+    public function test_build_paths() {
         global $DB;
         $this->resetAfterTest();
 
@@ -217,7 +217,7 @@ class system_test extends \advanced_testcase {
      * Tests covered method.
      * @covers ::set_locked
      */
-    public function test_set_locked(): void {
+    public function test_set_locked() {
         $context = system::instance();
 
         $context->set_locked(false);

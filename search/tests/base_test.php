@@ -68,7 +68,7 @@ class base_test extends \advanced_testcase {
     /**
      * Test base get search fileareas
      */
-    public function test_get_search_fileareas_base(): void {
+    public function test_get_search_fileareas_base() {
 
         $builder = $this->getMockBuilder('\core_search\base');
         $builder->disableOriginalConstructor();
@@ -82,7 +82,7 @@ class base_test extends \advanced_testcase {
     /**
      * Test base attach files
      */
-    public function test_attach_files_base(): void {
+    public function test_attach_files_base() {
         $filearea = 'search';
         $component = 'mod_test';
 
@@ -128,7 +128,7 @@ class base_test extends \advanced_testcase {
     /**
      * Tests the base version (stub) of get_contexts_to_reindex.
      */
-    public function test_get_contexts_to_reindex(): void {
+    public function test_get_contexts_to_reindex() {
         $area = new \core_mocksearch\search\mock_search_area();
         $this->assertEquals([\context_system::instance()],
                 iterator_to_array($area->get_contexts_to_reindex(), false));
@@ -137,7 +137,7 @@ class base_test extends \advanced_testcase {
     /**
      * Test default document icon.
      */
-    public function test_get_default_doc_icon(): void {
+    public function test_get_default_doc_icon() {
         $basearea = $this->getMockBuilder('\core_search\base')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
@@ -155,7 +155,7 @@ class base_test extends \advanced_testcase {
     /**
      * Test base search area category names.
      */
-    public function test_get_category_names(): void {
+    public function test_get_category_names() {
         $builder = $this->getMockBuilder('\core_search\base');
         $builder->disableOriginalConstructor();
         $stub = $builder->getMockForAbstractClass();
@@ -167,7 +167,7 @@ class base_test extends \advanced_testcase {
     /**
      * Test getting all required search area setting names.
      */
-    public function test_get_settingnames(): void {
+    public function test_get_settingnames() {
         $expected = array('_enabled', '_indexingstart', '_indexingend', '_lastindexrun',
             '_docsignored', '_docsprocessed', '_recordsprocessed', '_partial');
         $this->assertEquals($expected, \core_search\base::get_settingnames());

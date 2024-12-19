@@ -25,7 +25,7 @@ namespace core_competency;
  */
 class course_module_competency_test extends \advanced_testcase {
 
-    public function test_count_competencies(): void {
+    public function test_count_competencies() {
         global $CFG, $DB;
 
         $this->resetAfterTest(true);

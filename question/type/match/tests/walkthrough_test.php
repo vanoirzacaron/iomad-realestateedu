@@ -34,7 +34,7 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
  */
 class walkthrough_test extends \qbehaviour_walkthrough_test_base {
 
-    public function test_deferred_feedback_unanswered(): void {
+    public function test_deferred_feedback_unanswered() {
 
         // Create a matching question.
         $m = \test_question_maker::make_question('match');
@@ -91,7 +91,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_contains_select_expectation('sub3', $choices, null, false));
     }
 
-    public function test_deferred_feedback_partial_answer(): void {
+    public function test_deferred_feedback_partial_answer() {
 
         // Create a matching question.
         $m = \test_question_maker::make_question('match');
@@ -148,7 +148,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_contains_select_expectation('sub3', $choices, null, false));
     }
 
-    public function test_interactive_correct_no_submit(): void {
+    public function test_interactive_correct_no_submit() {
 
         // Create a matching question.
         $m = \test_question_maker::make_question('match');
@@ -221,7 +221,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 get_string('deletedchoice', 'qtype_match'), $this->currentoutput);
     }
 
-    public function test_interactive_partial_no_submit(): void {
+    public function test_interactive_partial_no_submit() {
 
         // Create a matching question.
         $m = \test_question_maker::make_question('match');
@@ -275,7 +275,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_contains_select_expectation('sub3', $choices, null, false));
     }
 
-    public function test_interactive_with_invalid(): void {
+    public function test_interactive_with_invalid() {
 
         // Create a matching question.
         $m = \test_question_maker::make_question('match');
@@ -345,7 +345,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_contains_select_expectation('sub3', $choices, $orderforchoice[1], false));
     }
 
-    public function test_match_with_tricky_html_choices(): void {
+    public function test_match_with_tricky_html_choices() {
 
         // Create a matching question.
         $m = \test_question_maker::make_question('match');
@@ -399,7 +399,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                         preg_quote(htmlspecialchars($rightresponsesummary, ENT_COMPAT), '/') . '/'));
     }
 
-    public function test_match_clear_wrong(): void {
+    public function test_match_clear_wrong() {
 
         // Create a matching question.
         $m = \test_question_maker::make_question('match');

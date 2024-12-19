@@ -47,6 +47,11 @@ class question_type_test extends \question_testcase {
         $this->qtype = null;
     }
 
+    public function assert_same_xml($expectedxml, $xml) {
+        $this->assertEquals(str_replace("\r\n", "\n", $expectedxml),
+                str_replace("\r\n", "\n", $xml));
+    }
+
     /**
      * Get some test question data.
      *
@@ -105,15 +110,15 @@ class question_type_test extends \question_testcase {
         return $dd;
     }
 
-    public function test_name(): void {
+    public function test_name() {
         $this->assertEquals($this->qtype->name(), 'ddwtos');
     }
 
-    public function test_can_analyse_responses(): void {
+    public function test_can_analyse_responses() {
         $this->assertTrue($this->qtype->can_analyse_responses());
     }
 
-    public function test_save_question(): void {
+    public function test_save_question() {
         $this->resetAfterTest();
 
         $syscontext = \context_system::instance();
@@ -138,7 +143,7 @@ class question_type_test extends \question_testcase {
         $this->assertEquals([1 => 1, 2 => 2], $q->rightchoices);
     }
 
-    public function test_initialise_question_instance(): void {
+    public function test_initialise_question_instance() {
         $qdata = $this->get_test_question_data();
 
         $expected = \test_question_maker::make_question('ddwtos');
@@ -150,12 +155,12 @@ class question_type_test extends \question_testcase {
         $this->assertEquals($expected, $q);
     }
 
-    public function test_get_random_guess_score(): void {
+    public function test_get_random_guess_score() {
         $q = $this->get_test_question_data();
         $this->assertEqualsWithDelta(0.5, $this->qtype->get_random_guess_score($q), 0.0000001);
     }
 
-    public function test_get_possible_responses(): void {
+    public function test_get_possible_responses() {
         $q = $this->get_test_question_data();
 
         $this->assertEquals(array(
@@ -174,7 +179,7 @@ class question_type_test extends \question_testcase {
         ), $this->qtype->get_possible_responses($q));
     }
 
-    public function test_xml_import(): void {
+    public function test_xml_import() {
         $xml = '  <question type="ddwtos">
     <name>
       <text>A drag-and-drop question</text>
@@ -265,7 +270,7 @@ class question_type_test extends \question_testcase {
         $this->assertEquals($expectedq->hint, $q->hint);
     }
 
-    public function test_xml_export(): void {
+    public function test_xml_export() {
         $qdata = new \stdClass();
         $qdata->id = 123;
         $qdata->contextid = \context_system::instance()->id;

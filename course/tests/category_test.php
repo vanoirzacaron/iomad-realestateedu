@@ -69,7 +69,7 @@ class category_test extends \advanced_testcase {
         accesslib_clear_all_caches_for_unit_testing();
     }
 
-    public function test_create_coursecat(): void {
+    public function test_create_coursecat() {
         // Create the category.
         $data = new \stdClass();
         $data->name = 'aaa';
@@ -96,7 +96,7 @@ class category_test extends \advanced_testcase {
         $this->assertGreaterThan($category2->sortorder, $category3->sortorder);
     }
 
-    public function test_name_idnumber_exceptions(): void {
+    public function test_name_idnumber_exceptions() {
         try {
             core_course_category::create(array('name' => ''));
             $this->fail('Missing category name exception expected in core_course_category::create');
@@ -140,7 +140,7 @@ class category_test extends \advanced_testcase {
         }
     }
 
-    public function test_visibility(): void {
+    public function test_visibility() {
         $this->assign_capability('moodle/category:viewhiddencategories');
         $this->assign_capability('moodle/category:manage');
 
@@ -208,7 +208,7 @@ class category_test extends \advanced_testcase {
         $this->assertEquals(1, $category5->visibleold);
     }
 
-    public function test_hierarchy(): void {
+    public function test_hierarchy() {
         $this->assign_capability('moodle/category:viewhiddencategories');
         $this->assign_capability('moodle/category:manage');
 
@@ -241,7 +241,7 @@ class category_test extends \advanced_testcase {
         $this->assertEquals(array(), array_keys($category2->get_children()));
     }
 
-    public function test_update(): void {
+    public function test_update() {
         $category1 = core_course_category::create(array('name' => 'Cat1'));
         $timecreated = $category1->timemodified;
         $this->assertSame('Cat1', $category1->name);
@@ -259,7 +259,7 @@ class category_test extends \advanced_testcase {
         $this->assertGreaterThan($timecreated, $category1->timemodified);
     }
 
-    public function test_delete(): void {
+    public function test_delete() {
         global $DB;
 
         $this->assign_capability('moodle/category:manage');
@@ -336,7 +336,7 @@ class category_test extends \advanced_testcase {
                 (array)$DB->get_record_sql('SELECT id, category from {course} where id <> ?', array(SITEID)));
     }
 
-    public function test_get_children(): void {
+    public function test_get_children() {
         $category1 = core_course_category::create(array('name' => 'Cat1'));
         $category2 = core_course_category::create(array('name' => 'Cat2', 'parent' => $category1->id));
         $category3 = core_course_category::create(array('name' => 'Cat3', 'parent' => $category1->id, 'visible' => 0));
@@ -380,7 +380,7 @@ class category_test extends \advanced_testcase {
     /**
      * Test the get_all_children_ids function.
      */
-    public function test_get_all_children_ids(): void {
+    public function test_get_all_children_ids() {
         $category1 = core_course_category::create(array('name' => 'Cat1'));
         $category2 = core_course_category::create(array('name' => 'Cat2'));
         $category11 = core_course_category::create(array('name' => 'Cat11', 'parent' => $category1->id));
@@ -411,7 +411,7 @@ class category_test extends \advanced_testcase {
     /**
      * Test the countall function
      */
-    public function test_count_all(): void {
+    public function test_count_all() {
         global $DB;
         // Dont assume there is just one. An add-on might create a category as part of the install.
         $numcategories = $DB->count_records('course_categories');
@@ -435,7 +435,7 @@ class category_test extends \advanced_testcase {
     /**
      * Test the is_simple_site function
      */
-    public function test_is_simple_site(): void {
+    public function test_is_simple_site() {
         // By default site has one category and is considered simple.
         $this->assertEquals(true, core_course_category::is_simple_site());
         $default = core_course_category::get_default();
@@ -452,7 +452,7 @@ class category_test extends \advanced_testcase {
     /**
      * Test a categories ability to resort courses.
      */
-    public function test_resort_courses(): void {
+    public function test_resort_courses() {
         $this->resetAfterTest(true);
         $generator = $this->getDataGenerator();
         $category = $generator->create_category();
@@ -512,9 +512,7 @@ class category_test extends \advanced_testcase {
         $this->assertSame($expected, array_keys($coursecat->get_courses()));
     }
 
-    public function test_get_search_courses(): void {
-        global $DB;
-
+    public function test_get_search_courses() {
         $cat1 = core_course_category::create(array('name' => 'Cat1'));
         $cat2 = core_course_category::create(array('name' => 'Cat2', 'parent' => $cat1->id));
         $c1 = $this->getDataGenerator()->create_course(array('category' => $cat1->id, 'fullname' => 'Test 3', 'summary' => ' ', 'idnumber' => 'ID3'));
@@ -580,8 +578,7 @@ class category_test extends \advanced_testcase {
         $this->assertEquals(array($c3->id, $c6->id), array_keys($res));
         $this->assertEquals(2, core_course_category::search_courses_count(array('search' => 'Математика'), array()));
 
-        $user = $this->getDataGenerator()->create_user();
-        $this->setUser($user);
+        $this->setUser($this->getDataGenerator()->create_user());
 
         // Add necessary capabilities.
         $this->assign_capability('moodle/course:create', CAP_ALLOW, \context_coursecat::instance($cat2->id));
@@ -590,39 +587,9 @@ class category_test extends \advanced_testcase {
         $res = core_course_category::search_courses(array('search' => 'test'), array(), $reqcaps);
         $this->assertEquals(array($c8->id, $c5->id), array_keys($res));
         $this->assertEquals(2, core_course_category::search_courses_count(array('search' => 'test'), array(), $reqcaps));
-
-        // We should get no courses here as user is not enrolled to any courses.
-        $res = core_course_category::search_courses([
-            'search' => '',
-            'limittoenrolled' => 1,
-        ]);
-        $this->assertEquals([], $res);
-        $this->assertEquals(0, core_course_category::search_courses_count([
-            'search' => '',
-            'limittoenrolled' => 1,
-        ]));
-
-        $manual = enrol_get_plugin('manual');
-        $teacherrole = $DB->get_record('role', ['shortname' => 'editingteacher']);
-        $enrol = $DB->get_record('enrol', ['courseid' => $c5->id, 'enrol' => 'manual'], '*', MUST_EXIST);
-        $manual->enrol_user($enrol, $user->id, $teacherrole->id);
-
-        // Avoid using the cached values from previous method call.
-        \cache::make('core', 'coursecat')->purge();
-
-        // As the user is now enrolled, we should get this one course.
-        $res = core_course_category::search_courses([
-            'search' => '',
-            'limittoenrolled' => 1,
-        ]);
-        $this->assertEquals([$c5->id], array_keys($res));
-        $this->assertEquals(1, core_course_category::search_courses_count([
-            'search' => '',
-            'limittoenrolled' => 1,
-        ]));
     }
 
-    public function test_course_contacts(): void {
+    public function test_course_contacts() {
         global $DB, $CFG;
 
         set_config('coursecontactduplicates', false);
@@ -751,7 +718,7 @@ class category_test extends \advanced_testcase {
         $CFG->coursecontact = $oldcoursecontact;
     }
 
-    public function test_course_contacts_with_duplicates(): void {
+    public function test_course_contacts_with_duplicates() {
         global $DB, $CFG;
 
         set_config('coursecontactduplicates', true);
@@ -907,7 +874,7 @@ class category_test extends \advanced_testcase {
         $CFG->coursecontact = $oldcoursecontact;
     }
 
-    public function test_overview_files(): void {
+    public function test_overview_files() {
         global $CFG;
         $this->setAdminUser();
         $cat1 = core_course_category::create(array('name' => 'Cat1'));
@@ -998,7 +965,7 @@ class category_test extends \advanced_testcase {
         $this->assertEquals(1, count($courses[$c5->id]->get_course_overviewfiles()));
     }
 
-    public function test_get_nested_name(): void {
+    public function test_get_nested_name() {
         $cat1name = 'Cat1';
         $cat2name = 'Cat2';
         $cat3name = 'Cat3';
@@ -1014,7 +981,7 @@ class category_test extends \advanced_testcase {
         $this->assertEquals("{$cat1name} / {$cat2name} / {$cat4name}", $category4->get_nested_name(false));
     }
 
-    public function test_coursecat_is_uservisible(): void {
+    public function test_coursecat_is_uservisible() {
         global $USER;
 
         // Create category 1 as visible.
@@ -1044,7 +1011,7 @@ class category_test extends \advanced_testcase {
         $this->assertFalse($category2->is_uservisible());
     }
 
-    public function test_current_user_coursecat_get(): void {
+    public function test_current_user_coursecat_get() {
         $this->assign_capability('moodle/category:viewhiddencategories');
 
         // Create category 1 as visible.
@@ -1065,7 +1032,7 @@ class category_test extends \advanced_testcase {
         core_course_category::get($category2->id);
     }
 
-    public function test_another_user_coursecat_get(): void {
+    public function test_another_user_coursecat_get() {
         global $USER;
 
         $this->assign_capability('moodle/category:viewhiddencategories');
@@ -1115,7 +1082,7 @@ class category_test extends \advanced_testcase {
     /**
      * This test ensures that is the list of courses in a category can be retrieved while a course is being deleted.
      */
-    public function test_get_courses_during_delete(): void {
+    public function test_get_courses_during_delete() {
         global $DB;
         $category = self::getDataGenerator()->create_category();
         $course = self::getDataGenerator()->create_course(['category' => $category->id]);
@@ -1289,7 +1256,7 @@ class category_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function get_nearest_editable_subcategory_provider(): array {
+    public static function get_nearest_editable_subcategory_provider(): array {
         return [
             'Hidden main category for manager. Checking create and manage' => [
                 0,
@@ -1383,7 +1350,7 @@ class category_test extends \advanced_testcase {
      *
      * @coversNothing
      */
-    public function test_make_category_list_context(): void {
+    public function test_make_category_list_context() {
         global $DB;
         // Ensure that the category list is empty.
         $DB->delete_records('course_categories');

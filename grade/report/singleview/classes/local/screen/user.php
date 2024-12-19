@@ -151,7 +151,7 @@ class user extends tablelike implements selectable_items {
             get_string('assessmentname', 'gradereport_singleview'),
             '', // For filter icon.
             get_string('gradecategory', 'grades'),
-            get_string('gradenoun'),
+            get_string('grade', 'grades'),
             get_string('range', 'grades'),
             get_string('feedback', 'grades'),
             get_string('override', 'gradereport_singleview'),
@@ -190,13 +190,13 @@ class user extends tablelike implements selectable_items {
         $gradetreeitem['object'] = $item;
         $gradetreeitem['userid'] = $this->item->id;
 
-        $itemname = \grade_helper::get_element_header($gradetreeitem, true, false, false, false, true);
+        $itemname = $this->structure->get_element_header($gradetreeitem, true, false, false, false, true);
         $grade->label = $item->get_name();
 
         $formatteddefinition = $this->format_definition($grade);
 
         $itemicon = html_writer::div($this->format_icon($item), 'mr-1');
-        $itemtype = \html_writer::span(\grade_helper::get_element_type_string($gradetreeitem),
+        $itemtype = \html_writer::span($this->structure->get_element_type_string($gradetreeitem),
             'd-block text-uppercase small dimmed_text');
 
         $itemtitle = html_writer::div($itemname, 'rowtitle');
@@ -246,7 +246,7 @@ class user extends tablelike implements selectable_items {
      */
     private function format_icon($item): string {
         $element = ['type' => 'item', 'object' => $item];
-        return \grade_helper::get_element_icon($element);
+        return $this->structure->get_element_icon($element);
     }
 
     /**

@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Performs upgrade of the database structure and data
  *
@@ -29,6 +31,14 @@
  * @return bool true
  */
 function xmldb_enrol_imsenterprise_upgrade($oldversion) {
+    global $CFG;
+
+    // Automatically generated Moodle v3.9.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    // Automatically generated Moodle v4.0.0 release upgrade line.
+    // Put any upgrade step following this.
+
     // Automatically generated Moodle v4.1.0 release upgrade line.
     // Put any upgrade step following this.
 
@@ -36,9 +46,6 @@ function xmldb_enrol_imsenterprise_upgrade($oldversion) {
     // Put any upgrade step following this.
 
     // Automatically generated Moodle v4.3.0 release upgrade line.
-    // Put any upgrade step following this.
-
-    // Automatically generated Moodle v4.4.0 release upgrade line.
     // Put any upgrade step following this.
 
     return true;

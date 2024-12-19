@@ -84,4 +84,4 @@ Feature: Allow teachers to bulk edit activity completion rules in a course.
     Given I am on the "Course 1" course page logged in as "teacher1"
     When I navigate to "Course completion" in current page administration
     And I set the field "Course completion tertiary navigation" to "Bulk edit activity completion"
-    And the page should meet accessibility standards
+    And the page should meet "wcag21aa" accessibility standards

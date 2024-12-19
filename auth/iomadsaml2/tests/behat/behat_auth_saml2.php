@@ -25,7 +25,7 @@
 
 // NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
 
-use auth_iomadsaml2\admin\saml2_settings;
+use auth_iomadsaml2\admin\iomadsaml2_settings;
 use auth_iomadsaml2\task\metadata_refresh;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Mink\Exception\ExpectationException;
@@ -49,14 +49,14 @@ class behat_auth_iomadsaml2 extends behat_base {
      * @Given /^the authentication plugin iomadsaml2 is (disabled|enabled) +\# auth_iomadsaml2$/
      */
     public function the_authentication_plugin_is_enabled_auth_saml($enabled = true) {
-        // If using SAML2 functionality, ensure all sessions are reset.
+        // If using IOMAD SAML2 functionality, ensure all sessions are reset.
         $this->reset_moodle_session();
 
         if (($enabled == 'disabled') || ($enabled === false)) {
             set_config('auth', '');
         } else {
             set_config('auth', 'iomadsaml2');
-            $this->initialise_saml2();
+            $this->initialise_iomadsaml2();
         }
 
         \core\session\manager::gc(); // Remove stale sessions.
@@ -107,7 +107,7 @@ class behat_auth_iomadsaml2 extends behat_base {
      * @Then /^I go to the iomadsaml2 settings page (?:again) +\# auth_iomadsaml2$/
      */
     public function i_go_to_the_samlsettings_page_auth_saml() {
-        $this->getSession()->visit($this->locate_path('/admin/settings.php?section=authsettingsaml2'));
+        $this->getSession()->visit($this->locate_path('/admin/settings.php?section=authsettingiomadsaml2'));
     }
 
     /**
@@ -166,9 +166,9 @@ class behat_auth_iomadsaml2 extends behat_base {
     }
 
     /**
-     * Initialise saml2
+     * Initialise iomadsaml2
      */
-    private function initialise_saml2() {
+    private function initialise_iomadsaml2() {
         $this->apply_defaults();
         require(__DIR__ . '/../../setup.php');
     }
@@ -358,15 +358,15 @@ EOF;
     /**
      * Visist iomadsaml2 login page.
      */
-    private function visit_saml2_login_page() {
+    private function visit_iomadsaml2_login_page() {
         $this->getSession()->visit($this->locate_path('http://simplesamlphp.test:8001/module.php/core/authenticate.php'));
     }
 
     /**
      * Reset iomadsaml2 session.
      */
-    private function reset_saml2_session() {
-        $this->visit_saml2_login_page();
+    private function reset_iomadsaml2_session() {
+        $this->visit_iomadsaml2_login_page();
         $this->getSession()->reset();
     }
 

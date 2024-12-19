@@ -1449,7 +1449,9 @@ class sqlsrv_native_moodle_database extends moodle_database {
         return $text;
     }
 
-    public function sql_concat(...$arr) {
+    public function sql_concat() {
+        $arr = func_get_args();
+
         foreach ($arr as $key => $ele) {
             $arr[$key] = $this->sql_cast_to_char($ele);
         }

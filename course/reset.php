@@ -29,9 +29,6 @@
 
 require('../config.php');
 require_once('reset_form.php');
-require_once($CFG->dirroot . '/backup/util/interfaces/checksumable.class.php');
-require_once($CFG->dirroot . '/backup/backup.class.php');
-require_once($CFG->dirroot . '/backup/util/helper/backup_helper.class.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -50,7 +47,7 @@ $strresetcourse = get_string('resetcourse');
 $strremove      = get_string('remove');
 
 $PAGE->set_title($course->fullname.': '.$strresetcourse);
-$PAGE->set_heading($course->fullname);
+$PAGE->set_heading($course->fullname.': '.$strresetcourse);
 $PAGE->set_secondary_active_tab('coursereuse');
 
 $mform = new course_reset_form();
@@ -71,7 +68,7 @@ if ($mform->is_cancelled()) {
 
     } else {
         echo $OUTPUT->header();
-        \backup_helper::print_coursereuse_selector('reset');
+        echo $OUTPUT->heading($strresetcourse);
 
         $data->reset_start_date_old = $course->startdate;
         $data->reset_end_date_old = $course->enddate;
@@ -101,9 +98,11 @@ if ($mform->is_cancelled()) {
 }
 
 echo $OUTPUT->header();
-\backup_helper::print_coursereuse_selector('reset');
+echo $OUTPUT->heading($strresetcourse);
 
 echo $OUTPUT->box(get_string('resetinfo'));
 
 $mform->display();
 echo $OUTPUT->footer();
+
+

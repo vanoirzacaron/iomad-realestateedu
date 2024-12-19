@@ -60,7 +60,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_attach_files(): void {
+    public function test_attach_files() {
         global $USER;
 
         $this->setAdminUser();

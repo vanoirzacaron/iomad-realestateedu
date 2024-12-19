@@ -41,7 +41,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * One test to check fetch and export of all drafts.
      */
-    public function test_fetch_and_exports_drafts(): void {
+    public function test_fetch_and_exports_drafts() {
         global $USER;
         $this->resetAfterTest();
 
@@ -144,7 +144,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test delete_for_all_users_in_context.
      */
-    public function test_delete_for_all_users_in_context(): void {
+    public function test_delete_for_all_users_in_context() {
         global $USER, $DB;
         $this->resetAfterTest();
 
@@ -230,7 +230,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test delete_for_all_users_in_context.
      */
-    public function test_delete_for_user_in_contexts(): void {
+    public function test_delete_for_user_in_contexts() {
         global $USER, $DB;
         $this->resetAfterTest();
 
@@ -332,7 +332,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test that user data with different contexts is fetched.
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         $this->resetAfterTest();
 
         $component = 'editor_atto';
@@ -393,7 +393,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test that data for users in approved userlist is deleted.
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         $this->resetAfterTest();
 
         $component = 'editor_atto';
@@ -513,7 +513,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * Test fetch and delete when another user has editted a draft in your
      * user context. Edge case.
      */
-    public function test_another_user_edits_you(): void {
+    public function test_another_user_edits_you() {
         global $USER, $DB;
         $this->resetAfterTest();
 
@@ -566,7 +566,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test fetch and delete when you have edited another user's context.
      */
-    public function test_another_you_edit_different_user(): void {
+    public function test_another_you_edit_different_user() {
         global $USER, $DB;
         $this->resetAfterTest();
 

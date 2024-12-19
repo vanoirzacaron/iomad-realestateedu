@@ -105,7 +105,7 @@ class store_test extends \cachestore_tests {
         return $store;
     }
 
-    public function test_has(): void {
+    public function test_has() {
         $store = $this->create_cachestore_redis();
 
         $this->assertTrue($store->set('foo', 'bar'));
@@ -113,7 +113,7 @@ class store_test extends \cachestore_tests {
         $this->assertFalse($store->has('bat'));
     }
 
-    public function test_has_any(): void {
+    public function test_has_any() {
         $store = $this->create_cachestore_redis();
 
         $this->assertTrue($store->set('foo', 'bar'));
@@ -121,7 +121,7 @@ class store_test extends \cachestore_tests {
         $this->assertFalse($store->has_any(array('bat', 'baz')));
     }
 
-    public function test_has_all(): void {
+    public function test_has_all() {
         $store = $this->create_cachestore_redis();
 
         $this->assertTrue($store->set('foo', 'bar'));
@@ -130,7 +130,7 @@ class store_test extends \cachestore_tests {
         $this->assertFalse($store->has_all(array('foo', 'bat', 'this')));
     }
 
-    public function test_lock(): void {
+    public function test_lock() {
         $store = $this->create_cachestore_redis();
 
         $this->assertTrue($store->acquire_lock('lock', '123'));

@@ -19,7 +19,7 @@ namespace Symfony\Component\DependencyInjection;
 trait ContainerAwareTrait
 {
     /**
-     * @var ContainerInterface|null
+     * @var ContainerInterface
      */
     protected $container;
 

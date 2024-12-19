@@ -44,7 +44,7 @@ class engine_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_engine_info(): void {
+    public function test_engine_info() {
         $engine = new \mock_search\engine();
 
         $this->assertEquals('mock_search', $engine->get_plugin_name());
@@ -58,7 +58,7 @@ class engine_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_engine_caches(): void {
+    public function test_engine_caches() {
         global $DB;
 
         $engine = new \mock_search\engine();
@@ -86,7 +86,7 @@ class engine_test extends \advanced_testcase {
     /**
      * Tests the core functions related to schema updates.
      */
-    public function test_engine_schema_modification(): void {
+    public function test_engine_schema_modification() {
         // Apply a schema update starting from no version.
         $engine = new \mock_search\engine();
         $engine->check_latest_schema();
@@ -117,7 +117,7 @@ class engine_test extends \advanced_testcase {
     /**
      * Tests the get_supported_orders stub function.
      */
-    public function test_get_supported_orders(): void {
+    public function test_get_supported_orders() {
         $engine = new \mock_search\engine();
         $orders = $engine->get_supported_orders(\context_system::instance());
         $this->assertCount(1, $orders);
@@ -127,7 +127,7 @@ class engine_test extends \advanced_testcase {
     /**
      * Test that search engine sets an icon before render a document.
      */
-    public function test_engine_sets_doc_icon(): void {
+    public function test_engine_sets_doc_icon() {
         $generator = self::getDataGenerator()->get_plugin_generator('core_search');
         $generator->setup();
 

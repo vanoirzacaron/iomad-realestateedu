@@ -344,82 +344,6 @@ class file_serving_exception extends moodle_exception {
 }
 
 /**
- * Get the Whoops! handler.
- *
- * @return \Whoops\Run|null
- */
-function get_whoops(): ?\Whoops\Run {
-    global $CFG;
-
-    if (CLI_SCRIPT || AJAX_SCRIPT) {
-        return null;
-    }
-
-    if (defined('PHPUNIT_TEST') && PHPUNIT_TEST) {
-        return null;
-    }
-
-    if (defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING) {
-        return null;
-    }
-
-    if (empty($CFG->debugdisplay)) {
-        return null;
-    }
-
-    if (!$CFG->debug_developer_use_pretty_exceptions) {
-        return null;
-    }
-
-    $composerautoload = "{$CFG->dirroot}/vendor/autoload.php";
-    if (file_exists($composerautoload)) {
-        require_once($composerautoload);
-    }
-
-    if (!class_exists(\Whoops\Run::class)) {
-        return null;
-    }
-
-    // We have Whoops available, use it.
-    $whoops = new \Whoops\Run();
-
-    // Append a custom handler to add some more information to the frames.
-    $whoops->appendHandler(function ($exception, $inspector, $run) {
-        $collection = $inspector->getFrames();
-
-        // Detect if the Whoops handler was immediately invoked by a call to `debugging()`.
-        // If so, we remove the top frames in the collection to avoid showing the inner
-        // workings of debugging, and the point that we trigger the error that is picked up by Whoops.
-        $isdebugging = count($collection) > 2;
-        $isdebugging = $isdebugging && str_ends_with($collection[1]->getFile(), '/lib/weblib.php');
-        $isdebugging = $isdebugging && $collection[2]->getFunction() === 'debugging';
-
-        if ($isdebugging) {
-            $remove = array_slice($collection->getArray(), 0, 2);
-            $collection->filter(function ($frame) use ($remove): bool {
-                return array_search($frame, $remove) === false;
-            });
-        } else {
-            // Moodle exceptions often have a link to the Moodle docs pages for them.
-            // Add that to the first frame in the stack.
-            $info = get_exception_info($exception);
-            if ($info->moreinfourl) {
-                $collection[0]->addComment("{$info->moreinfourl}", 'More info');
-            }
-        }
-    });
-
-    // Add the Pretty page handler. It's the bee's knees.
-    $handler = new \Whoops\Handler\PrettyPageHandler();
-    if (isset($CFG->debug_developer_editor)) {
-        $handler->setEditor($CFG->debug_developer_editor ?: null);
-    }
-    $whoops->appendHandler($handler);
-
-    return $whoops;
-}
-
-/**
  * Default exception handler.
  *
  * @param Exception $ex
@@ -441,11 +365,6 @@ function default_exception_handler($ex) {
     // If we already tried to send the header remove it, the content length
     // should be either empty or the length of the error page.
     @header_remove('Content-Length');
-
-    if ($whoops = get_whoops()) {
-        // If whoops is available we will use it. The get_whoops() function checks whether all conditions are met.
-        $whoops->handleException($ex);
-    }
 
     if (is_early_init($info->backtrace)) {
         echo bootstrap_renderer::early_error($info->message, $info->moreinfourl, $info->link, $info->backtrace, $info->debuginfo, $info->errorcode);
@@ -503,10 +422,6 @@ function default_exception_handler($ex) {
  * @return bool false means use default error handler
  */
 function default_error_handler($errno, $errstr, $errfile, $errline) {
-    if ($whoops = get_whoops()) {
-        // If whoops is available we will use it. The get_whoops() function checks whether all conditions are met.
-        $whoops->handleError($errno, $errstr, $errfile, $errline);
-    }
     if ($errno == 4096) {
         //fatal catchable error
         throw new coding_exception('PHP catchable fatal error', $errstr);
@@ -900,7 +815,7 @@ function initialise_local_config_cache() {
         copy($bootstrapsharedfile, $bootstraplocalfile);
     }
 
-    if (!empty($CFG->siteidentifier) && !file_exists($bootstrapsharedfile) && defined('SYSCONTEXTID')) {
+    if (!empty($CFG->siteidentifier) && !file_exists($bootstrapsharedfile)) {
         $contents = "<?php
 // ********** This file is generated DO NOT EDIT **********
 \$CFG->siteidentifier = " . var_export($CFG->siteidentifier, true) . ";
@@ -1559,7 +1474,7 @@ function disable_output_buffering() {
  */
 function is_major_upgrade_required() {
     global $CFG;
-    $lastmajordbchanges = 2024010400.00; // This should be the version where the breaking changes happen.
+    $lastmajordbchanges = 2022101400.03; // This should be the version where the breaking changes happen.
 
     $required = empty($CFG->version);
     $required = $required || (float)$CFG->version < $lastmajordbchanges;
@@ -1968,9 +1883,6 @@ function make_localcache_directory($directory, $exceptiononerror = true) {
         touch($timestampfile);
         @chmod($timestampfile, $CFG->filepermissions);
         clearstatcache();
-
-        // Then prewarm the local boostrap.php file as well.
-        initialise_local_config_cache();
     }
 
     if ($directory === '') {
@@ -2133,10 +2045,10 @@ class bootstrap_renderer {
      * Returns nicely formatted error message in a div box.
      * @static
      * @param string $message error message
-     * @param ?string $moreinfourl (ignored in early errors)
-     * @param ?string $link (ignored in early errors)
-     * @param ?array $backtrace
-     * @param ?string $debuginfo
+     * @param string $moreinfourl (ignored in early errors)
+     * @param string $link (ignored in early errors)
+     * @param array $backtrace
+     * @param string $debuginfo
      * @return string
      */
     public static function early_error_content($message, $moreinfourl, $link, $backtrace, $debuginfo = null) {
@@ -2178,7 +2090,7 @@ class bootstrap_renderer {
      * @param string $link (ignored in early errors)
      * @param array $backtrace
      * @param string $debuginfo extra information for developers
-     * @return ?string
+     * @return string
      */
     public static function early_error($message, $moreinfourl, $link, $backtrace, $debuginfo = null, $errorcode = null) {
         global $CFG;

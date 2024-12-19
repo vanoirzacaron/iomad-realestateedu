@@ -65,9 +65,6 @@ class quiz_settings {
     /** @var bool whether the current user has capability mod/quiz:preview. */
     protected $ispreviewuser = null;
 
-    /** @var grade_calculator|null grade calculator for this quiz. */
-    protected ?grade_calculator $gradecalculator = null;
-
     // Constructor =============================================================.
 
     /**
@@ -396,11 +393,7 @@ class quiz_settings {
      * @return grade_calculator
      */
     public function get_grade_calculator(): grade_calculator {
-        if ($this->gradecalculator === null) {
-            $this->gradecalculator = grade_calculator::create($this);
-        }
-
-        return $this->gradecalculator;
+        return grade_calculator::create($this);
     }
 
     /**
@@ -628,17 +621,5 @@ class quiz_settings {
         sort($questiontypes);
 
         return $questiontypes;
-    }
-
-    /**
-     * Returns an override manager instance with context and quiz loaded.
-     *
-     * @return \mod_quiz\local\override_manager
-     */
-    public function get_override_manager(): \mod_quiz\local\override_manager {
-        return new \mod_quiz\local\override_manager(
-            quiz: $this->quiz,
-            context: $this->context
-        );
     }
 }

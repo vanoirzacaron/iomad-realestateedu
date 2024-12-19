@@ -53,7 +53,9 @@ class base_send_notification_test extends advanced_testcase {
      */
     private function get_instance_reflection(): \ReflectionMethod {
         $rc = new \ReflectionClass(base_send_notification::class);
-        return $rc->getMethod('get_instance');
+        $rcm = $rc->getMethod('get_instance');
+        $rcm->setAccessible(true);
+        return $rcm;
     }
 
     /**

@@ -124,7 +124,7 @@ class dateselector_test extends \advanced_testcase {
     /**
      * Testcase to check exportvalue
      */
-    public function test_exportvalue(): void {
+    public function test_exportvalue() {
         global $USER;
         $testvals = $this->testvals;
 
@@ -146,7 +146,7 @@ class dateselector_test extends \advanced_testcase {
     /**
      * Testcase to check onQuickformEvent
      */
-    public function test_onquickformevent(): void {
+    public function test_onquickformevent() {
         global $USER;
         $testvals = $this->testvals;
         // Get dummy form for data.

@@ -30,7 +30,7 @@ require_once($CFG->dirroot . '/question/engine/upgrade/tests/helper.php');
  */
 final class upgrade_old_attempt_data_test extends \question_attempt_upgrader_test_base {
 
-    public function test_multichoice_deferredfeedback_history960(): void {
+    public function test_multichoice_deferredfeedback_history960() {
         $quiz = (object) array(
             'id' => '1',
             'course' => '3',
@@ -262,7 +262,7 @@ final class upgrade_old_attempt_data_test extends \question_attempt_upgrader_tes
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_history0(): void {
+    public function test_multichoice_deferredfeedback_history0() {
         $quiz = (object) array(
             'id' => '8',
             'course' => '1095',
@@ -422,7 +422,7 @@ final class upgrade_old_attempt_data_test extends \question_attempt_upgrader_tes
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_history60(): void {
+    public function test_multichoice_deferredfeedback_history60() {
         $quiz = (object) array(
             'id' => '13',
             'course' => '1416',
@@ -625,7 +625,7 @@ final class upgrade_old_attempt_data_test extends \question_attempt_upgrader_tes
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_history6220(): void {
+    public function test_multichoice_deferredfeedback_history6220() {
         $quiz = (object) array(
             'id' => '95',
             'course' => '1181',
@@ -864,7 +864,7 @@ final class upgrade_old_attempt_data_test extends \question_attempt_upgrader_tes
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_missing(): void {
+    public function test_multichoice_deferredfeedback_missing() {
         $quiz = (object) array(
             'id' => '8',
             'course' => '1095',
@@ -998,7 +998,7 @@ final class upgrade_old_attempt_data_test extends \question_attempt_upgrader_tes
         $this->compare_qas($expectedqa, $qa);
     }
 
-public function test_multichoice_deferredfeedback_qsession140(): void {
+public function test_multichoice_deferredfeedback_qsession140() {
         $quiz = (object) array(
             'id' => '58',
             'course' => '3420',
@@ -1200,7 +1200,7 @@ public function test_multichoice_deferredfeedback_qsession140(): void {
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_qsession2018195(): void {
+    public function test_multichoice_deferredfeedback_qsession2018195() {
         $quiz = (object) array(
             'id' => '1832',
             'course' => '4912',
@@ -1446,7 +1446,7 @@ public function test_multichoice_deferredfeedback_qsession140(): void {
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_qsession2653368(): void {
+    public function test_multichoice_deferredfeedback_qsession2653368() {
         $quiz = (object) array(
             'id' => '3273',
             'course' => '5862',
@@ -1671,7 +1671,7 @@ public function test_multichoice_deferredfeedback_qsession140(): void {
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_qsession3131(): void {
+    public function test_multichoice_deferredfeedback_qsession3131() {
         $quiz = (object) array(
             'id' => '10',
             'course' => '608',
@@ -1916,7 +1916,7 @@ public function test_multichoice_deferredfeedback_qsession140(): void {
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_qsession4307870(): void {
+    public function test_multichoice_deferredfeedback_qsession4307870 () {
         $quiz = (object) array(
             'id' => '4070',
             'course' => '5139',
@@ -2121,7 +2121,7 @@ public function test_multichoice_deferredfeedback_qsession140(): void {
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_qsession49446(): void {
+    public function test_multichoice_deferredfeedback_qsession49446() {
         $quiz = (object) array(
             'id' => '203',
             'course' => '2359',
@@ -2336,7 +2336,7 @@ public function test_multichoice_deferredfeedback_qsession140(): void {
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_qsession591(): void {
+    public function test_multichoice_deferredfeedback_qsession591() {
         $quiz = (object) array(
             'id' => '22',
             'course' => '272',
@@ -2545,7 +2545,7 @@ public function test_multichoice_deferredfeedback_qsession140(): void {
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_multichoice_deferredfeedback_qsession594(): void {
+    public function test_multichoice_deferredfeedback_qsession594() {
         $quiz = (object) array(
             'id' => '22',
             'course' => '272',

@@ -48,7 +48,7 @@ class cli_test extends \advanced_testcase {
     /**
      * Tests simple upload with course enrolment and group allocation
      */
-    public function test_upload_with_course_enrolment(): void {
+    public function test_upload_with_course_enrolment() {
         global $CFG;
         $this->resetAfterTest();
         set_config('passwordpolicy', 0);
@@ -85,7 +85,7 @@ class cli_test extends \advanced_testcase {
     /**
      * Test applying defaults during the user upload
      */
-    public function test_upload_with_applying_defaults(): void {
+    public function test_upload_with_applying_defaults() {
         global $CFG;
         $this->resetAfterTest();
         set_config('passwordpolicy', 0);
@@ -117,7 +117,7 @@ class cli_test extends \advanced_testcase {
     /**
      * User upload with user profile fields
      */
-    public function test_upload_with_profile_fields(): void {
+    public function test_upload_with_profile_fields() {
         global $CFG;
         $this->resetAfterTest();
         set_config('passwordpolicy', 0);
@@ -143,14 +143,14 @@ class cli_test extends \advanced_testcase {
         // Created users have data in the profile fields.
         $user1 = \core_user::get_user_by_username('reznort');
         $profilefields1 = profile_user_record($user1->id);
-        $this->assertObjectHasProperty('superfield', $profilefields1);
+        $this->assertObjectHasAttribute('superfield', $profilefields1);
         $this->assertEquals('Loves cats', $profilefields1->superfield);
     }
 
     /**
      * Testing that help for CLI does not throw errors
      */
-    public function test_cli_help(): void {
+    public function test_cli_help() {
         $this->resetAfterTest();
         $this->setAdminUser();
         $clihelper = $this->construct_helper(["--help"]);
@@ -168,7 +168,7 @@ class cli_test extends \advanced_testcase {
     /**
      * Testing skipped user when one exists
      */
-    public function test_create_when_user_exists(): void {
+    public function test_create_when_user_exists() {
         global $CFG;
         $this->resetAfterTest();
         set_config('passwordpolicy', 0);
@@ -203,7 +203,7 @@ class cli_test extends \advanced_testcase {
     /**
      * Testing update mode - do not update user records but allow enrolments
      */
-    public function test_enrolments_when_user_exists(): void {
+    public function test_enrolments_when_user_exists() {
         global $CFG;
         require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/uploaduser/locallib.php');
 
@@ -245,7 +245,7 @@ class cli_test extends \advanced_testcase {
     /**
      * Testing update mode - update user records and perform enrolments.
      */
-    public function test_udpate_user(): void {
+    public function test_udpate_user() {
         global $CFG;
         require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/uploaduser/locallib.php');
 

@@ -31,7 +31,7 @@ require_once(__DIR__.'/fixtures/lib.php');
  */
 class grade_category_test extends \grade_base_testcase {
 
-    public function test_grade_category(): void {
+    public function test_grade_category() {
         $this->sub_test_grade_category_construct();
         $this->sub_test_grade_category_build_path();
         $this->sub_test_grade_category_fetch();

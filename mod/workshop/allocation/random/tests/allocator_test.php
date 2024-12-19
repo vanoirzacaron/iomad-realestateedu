@@ -68,12 +68,12 @@ class allocator_test extends \advanced_testcase {
         parent::tearDown();
     }
 
-    public function test_self_allocation_empty_values(): void {
+    public function test_self_allocation_empty_values() {
         // fixture setup & exercise SUT & verify
         $this->assertEquals(array(), $this->allocator->self_allocation());
     }
 
-    public function test_self_allocation_equal_user_groups(): void {
+    public function test_self_allocation_equal_user_groups() {
         // fixture setup
         $authors    = array(0 => array_fill_keys(array(4, 6, 10), new \stdClass()));
         $reviewers  = array(0 => array_fill_keys(array(4, 6, 10), new \stdClass()));
@@ -83,7 +83,7 @@ class allocator_test extends \advanced_testcase {
         $this->assertEquals(array(array(4 => 4), array(6 => 6), array(10 => 10)), $newallocations);
     }
 
-    public function test_self_allocation_different_user_groups(): void {
+    public function test_self_allocation_different_user_groups() {
         // fixture setup
         $authors    = array(0 => array_fill_keys(array(1, 4, 5, 10, 13), new \stdClass()));
         $reviewers  = array(0 => array_fill_keys(array(4, 7, 10), new \stdClass()));
@@ -93,7 +93,7 @@ class allocator_test extends \advanced_testcase {
         $this->assertEquals(array(array(4 => 4), array(10 => 10)), $newallocations);
     }
 
-    public function test_self_allocation_skip_existing(): void {
+    public function test_self_allocation_skip_existing() {
         // fixture setup
         $authors        = array(0 => array_fill_keys(array(3, 4, 10), new \stdClass()));
         $reviewers      = array(0 => array_fill_keys(array(3, 4, 10), new \stdClass()));
@@ -104,14 +104,14 @@ class allocator_test extends \advanced_testcase {
         $this->assertEquals(array(array(4 => 4), array(10 => 10)), $newallocations);
     }
 
-    public function test_get_author_ids(): void {
+    public function test_get_author_ids() {
         // fixture setup
         $newallocations = array(array(1 => 3), array(2 => 1), array(3 => 1));
         // exercise SUT & verify
         $this->assertEquals(array(3, 1), $this->allocator->get_author_ids($newallocations));
     }
 
-    public function test_index_submissions_by_authors(): void {
+    public function test_index_submissions_by_authors() {
         // fixture setup
         $submissions = array(
             676 => (object)array('id' => 676, 'authorid' => 23),
@@ -126,7 +126,7 @@ class allocator_test extends \advanced_testcase {
         ), $submissions);
     }
 
-    public function test_index_submissions_by_authors_duplicate_author(): void {
+    public function test_index_submissions_by_authors_duplicate_author() {
         // fixture setup
         $submissions = array(
             14 => (object)array('id' => 676, 'authorid' => 3),
@@ -137,7 +137,7 @@ class allocator_test extends \advanced_testcase {
         $submissions = $this->allocator->index_submissions_by_authors($submissions);
     }
 
-    public function test_get_unique_allocations(): void {
+    public function test_get_unique_allocations() {
         // fixture setup
         $newallocations = array(array(4 => 5), array(6 => 6), array(1 => 16), array(4 => 5), array(16 => 1));
         // exercise SUT
@@ -146,7 +146,7 @@ class allocator_test extends \advanced_testcase {
         $this->assertEquals(array(array(4 => 5), array(6 => 6), array(1 => 16), array(16 => 1)), $newallocations);
     }
 
-    public function test_get_unkept_assessments_no_keep_selfassessments(): void {
+    public function test_get_unkept_assessments_no_keep_selfassessments() {
         // fixture setup
         $assessments = array(
             23 => (object)array('authorid' => 3, 'reviewerid' => 3),
@@ -161,7 +161,7 @@ class allocator_test extends \advanced_testcase {
         $this->assertEquals(array(23, 12), $delassessments);
     }
 
-    public function test_get_unkept_assessments_keep_selfassessments(): void {
+    public function test_get_unkept_assessments_keep_selfassessments() {
         // fixture setup
         $assessments = array(
             23 => (object)array('authorid' => 3, 'reviewerid' => 3),
@@ -180,7 +180,7 @@ class allocator_test extends \advanced_testcase {
     /**
      * Aggregates assessment info per author and per reviewer
      */
-    public function test_convert_assessments_to_links(): void {
+    public function test_convert_assessments_to_links() {
         // fixture setup
         $assessments = array(
             23 => (object)array('authorid' => 3, 'reviewerid' => 3),
@@ -197,7 +197,7 @@ class allocator_test extends \advanced_testcase {
     /**
      * Trivial case
      */
-    public function test_convert_assessments_to_links_empty(): void {
+    public function test_convert_assessments_to_links_empty() {
         // fixture setup
         $assessments = array();
         // exercise SUT
@@ -210,7 +210,7 @@ class allocator_test extends \advanced_testcase {
     /**
      * If there is a single element with the lowest workload, it should be chosen
      */
-    public function test_get_element_with_lowest_workload_deterministic(): void {
+    public function test_get_element_with_lowest_workload_deterministic() {
         // fixture setup
         $workload = array(4 => 6, 9 => 1, 10 => 2);
         // exercise SUT
@@ -222,7 +222,7 @@ class allocator_test extends \advanced_testcase {
     /**
      * If there are no elements available, must return false
      */
-    public function test_get_element_with_lowest_workload_impossible(): void {
+    public function test_get_element_with_lowest_workload_impossible() {
         // fixture setup
         $workload = array();
         // exercise SUT
@@ -234,7 +234,7 @@ class allocator_test extends \advanced_testcase {
     /**
      * If there are several elements with the lowest workload, one of them should be chosen randomly
      */
-    public function test_get_element_with_lowest_workload_random(): void {
+    public function test_get_element_with_lowest_workload_random() {
         // fixture setup
         $workload = array(4 => 6, 9 => 2, 10 => 2);
         // exercise SUT
@@ -262,7 +262,7 @@ class allocator_test extends \advanced_testcase {
      *
      * This should test
      */
-    public function test_get_element_with_lowest_workload_random_floats(): void {
+    public function test_get_element_with_lowest_workload_random_floats() {
         // fixture setup
         $workload = array(1 => 1/13, 2 => 0.0769230769231); // should be considered as the same value
         // exercise SUT
@@ -285,7 +285,7 @@ class allocator_test extends \advanced_testcase {
     /**
      * Filter new assessments so they do not contain existing
      */
-    public function test_filter_current_assessments(): void {
+    public function test_filter_current_assessments() {
         // fixture setup
         $newallocations = array(array(3 => 5), array(11 => 5), array(2 => 9), array(3 => 5));
         $assessments = array(

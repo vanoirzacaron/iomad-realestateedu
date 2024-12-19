@@ -23,7 +23,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use mod_quiz\output\attempt_summary_information;
 
 require_once(__DIR__ . '/../../config.php');
 require_once('locallib.php');
@@ -76,22 +75,29 @@ if ($attemptobj->is_own_attempt()) {
 }
 
 // Prepare summary informat about this question attempt.
-$summary = new attempt_summary_information();
+$summarydata = [];
 
 // Student name.
 $userpicture = new user_picture($student);
 $userpicture->courseid = $attemptobj->get_courseid();
-$summary->add_item('user', $userpicture,
-    new action_link(new moodle_url('/user/view.php', ['id' => $student->id, 'course' => $attemptobj->get_courseid()]),
-        fullname($student, true)));
+$summarydata['user'] = [
+    'title'   => $userpicture,
+    'content' => new action_link(new moodle_url('/user/view.php', [
+            'id' => $student->id, 'course' => $attemptobj->get_courseid()]),
+            fullname($student, true)),
+];
 
 // Quiz name.
-$summary->add_item('quizname', get_string('modulename', 'quiz'),
-    format_string($attemptobj->get_quiz_name()));
+$summarydata['quizname'] = [
+    'title'   => get_string('modulename', 'quiz'),
+    'content' => format_string($attemptobj->get_quiz_name()),
+];
 
 // Question name.
-$summary->add_item('questionname', get_string('question', 'quiz'),
-    format_string($attemptobj->get_question_name($slot)));
+$summarydata['questionname'] = [
+    'title'   => get_string('question', 'quiz'),
+    'content' => $attemptobj->get_question_name($slot),
+];
 
 // Other attempts at the quiz.
 if ($attemptobj->has_capability('mod/quiz:viewreports')) {
@@ -99,15 +105,21 @@ if ($attemptobj->has_capability('mod/quiz:viewreports')) {
     $otherattemptsurl->param('slot', $attemptobj->get_original_slot($slot));
     $attemptlist = $attemptobj->links_to_other_attempts($otherattemptsurl);
     if ($attemptlist) {
-        $summary->add_item('attemptlist', get_string('attempts', 'quiz'), $attemptlist);
+        $summarydata['attemptlist'] = [
+            'title'   => get_string('attempts', 'quiz'),
+            'content' => $attemptlist,
+        ];
     }
 }
 
 // Timestamp of this action.
 $timestamp = $attemptobj->get_question_action_time($slot);
 if ($timestamp) {
-    $summary->add_item('timestamp', get_string('completedon', 'quiz'), userdate($timestamp));
+    $summarydata['timestamp'] = [
+        'title'   => get_string('completedon', 'quiz'),
+        'content' => userdate($timestamp),
+    ];
 }
 
 echo $output->review_question_page($attemptobj, $slot, $seq,
-        $attemptobj->get_display_options(true), $summary);
+        $attemptobj->get_display_options(true), $summarydata);

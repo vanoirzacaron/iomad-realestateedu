@@ -378,8 +378,6 @@ M.mod_quiz.autosave = {
             M.mod_quiz.timer.updateEndTime(autosavedata.timeleft);
         }
 
-        this.update_saved_time_display();
-
         this.save_transaction = null;
 
         if (this.dirty) {
@@ -409,26 +407,6 @@ M.mod_quiz.autosave = {
         }
     },
 
-    /**
-     * Inform the user that their answers have been saved.
-     *
-     * @method update_saved_time_display
-     */
-    update_saved_time_display: function() {
-        // We fetch the current language's preferred time format from the language pack.
-        require(['core/user_date', 'core/notification'], function(UserDate, Notification) {
-            UserDate.get([{
-                timestamp: Math.floor(Date.now() / 1000),
-                format: M.util.get_string('strftimedatetimeshortaccurate', 'langconfig'),
-            }]).then(function(dateStrs) {
-                var infoDiv = Y.one('#mod_quiz_navblock .othernav .autosave_info');
-                infoDiv.set('text', M.util.get_string('lastautosave', 'quiz', dateStrs[0]));
-                infoDiv.show();
-                return;
-            }).catch(Notification.exception);
-        });
-    },
-
     is_time_nearly_over: function() {
         return M.mod_quiz.timer && M.mod_quiz.timer.endtime &&
                 (new Date().getTime() + 2 * this.delay) > M.mod_quiz.timer.endtime;
@@ -444,14 +422,4 @@ M.mod_quiz.autosave = {
 };
 
 
-}, '@VERSION@', {
-    "requires": [
-        "base",
-        "node",
-        "event",
-        "event-valuechange",
-        "node-event-delegate",
-        "io-form",
-        "datatype-date-format"
-    ]
-});
+}, '@VERSION@', {"requires": ["base", "node", "event", "event-valuechange", "node-event-delegate", "io-form"]});

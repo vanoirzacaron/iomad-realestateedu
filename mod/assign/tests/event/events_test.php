@@ -47,7 +47,7 @@ class events_test extends \advanced_testcase {
     /**
      * Basic tests for the submission_created() abstract class.
      */
-    public function test_base_event(): void {
+    public function test_base_event() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -74,7 +74,7 @@ class events_test extends \advanced_testcase {
     /**
      * Basic tests for the submission_created() abstract class.
      */
-    public function test_submission_created(): void {
+    public function test_submission_created() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -134,7 +134,7 @@ class events_test extends \advanced_testcase {
     /**
      * Basic tests for the submission_updated() abstract class.
      */
-    public function test_submission_updated(): void {
+    public function test_submission_updated() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -196,7 +196,7 @@ class events_test extends \advanced_testcase {
      *
      * @covers \mod_assign\event\submission_removed
      */
-    public function test_submission_removed(): void {
+    public function test_submission_removed() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -229,7 +229,7 @@ class events_test extends \advanced_testcase {
      *
      * @covers \mod_assign\event\submission_removed
      */
-    public function test_team_submission_removed(): void {
+    public function test_team_submission_removed() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -265,7 +265,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_extension_granted(): void {
+    public function test_extension_granted() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -296,7 +296,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_submission_locked(): void {
+    public function test_submission_locked() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -321,7 +321,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_identities_revealed(): void {
+    public function test_identities_revealed() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -354,7 +354,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the submission_status_viewed event.
      */
-    public function test_submission_status_viewed(): void {
+    public function test_submission_status_viewed() {
         global $PAGE;
         $this->resetAfterTest();
 
@@ -385,7 +385,7 @@ class events_test extends \advanced_testcase {
      *
      * @covers \mod_assign\event\submission_status_updated
      */
-    public function test_submission_status_updated_on_update(): void {
+    public function test_submission_status_updated_on_update() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -418,7 +418,7 @@ class events_test extends \advanced_testcase {
      *
      * @covers \mod_assign\event\submission_status_updated
      */
-    public function test_submission_status_updated_on_remove(): void {
+    public function test_submission_status_updated_on_remove() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -449,7 +449,7 @@ class events_test extends \advanced_testcase {
      *
      * @covers \mod_assign\event\submission_status_updated
      */
-    public function test_team_submission_status_updated_on_remove(): void {
+    public function test_team_submission_status_updated_on_remove() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -483,7 +483,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_marker_updated(): void {
+    public function test_marker_updated() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -510,7 +510,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_workflow_state_updated(): void {
+    public function test_workflow_state_updated() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -588,7 +588,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_submission_duplicated(): void {
+    public function test_submission_duplicated() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -617,7 +617,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_submission_unlocked(): void {
+    public function test_submission_unlocked() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -642,7 +642,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_submission_graded(): void {
+    public function test_submission_graded() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -714,7 +714,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the submission_viewed event.
      */
-    public function test_submission_viewed(): void {
+    public function test_submission_viewed() {
         global $PAGE;
 
         $this->resetAfterTest();
@@ -752,7 +752,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the feedback_viewed event.
      */
-    public function test_feedback_viewed(): void {
+    public function test_feedback_viewed() {
         global $DB, $PAGE;
 
         $this->resetAfterTest();
@@ -797,7 +797,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the grading_form_viewed event.
      */
-    public function test_grading_form_viewed(): void {
+    public function test_grading_form_viewed() {
         global $PAGE;
 
         $this->resetAfterTest();
@@ -832,7 +832,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the grading_table_viewed event.
      */
-    public function test_grading_table_viewed(): void {
+    public function test_grading_table_viewed() {
         global $PAGE;
 
         $this->resetAfterTest();
@@ -868,7 +868,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the submission_form_viewed event.
      */
-    public function test_submission_form_viewed(): void {
+    public function test_submission_form_viewed() {
         global $PAGE;
 
         $this->resetAfterTest();
@@ -899,7 +899,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the submission_form_viewed event.
      */
-    public function test_submission_confirmation_form_viewed(): void {
+    public function test_submission_confirmation_form_viewed() {
         global $PAGE;
 
         $this->resetAfterTest();
@@ -930,7 +930,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the reveal_identities_confirmation_page_viewed event.
      */
-    public function test_reveal_identities_confirmation_page_viewed(): void {
+    public function test_reveal_identities_confirmation_page_viewed() {
         global $PAGE;
         $this->resetAfterTest();
 
@@ -959,7 +959,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the statement_accepted event.
      */
-    public function test_statement_accepted(): void {
+    public function test_statement_accepted() {
         // We want to be a student so we can submit assignments.
         $this->resetAfterTest();
 
@@ -1023,7 +1023,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the batch_set_workflow_state_viewed event.
      */
-    public function test_batch_set_workflow_state_viewed(): void {
+    public function test_batch_set_workflow_state_viewed() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -1045,7 +1045,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the batch_set_marker_allocation_viewed event.
      */
-    public function test_batch_set_marker_allocation_viewed(): void {
+    public function test_batch_set_marker_allocation_viewed() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -1070,7 +1070,7 @@ class events_test extends \advanced_testcase {
      * There is no external API for creating a user override, so the unit test will simply
      * create and trigger the event and ensure the event data is returned as expected.
      */
-    public function test_user_override_created(): void {
+    public function test_user_override_created() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -1104,7 +1104,7 @@ class events_test extends \advanced_testcase {
      * There is no external API for creating a group override, so the unit test will simply
      * create and trigger the event and ensure the event data is returned as expected.
      */
-    public function test_group_override_created(): void {
+    public function test_group_override_created() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -1138,7 +1138,7 @@ class events_test extends \advanced_testcase {
      * There is no external API for updating a user override, so the unit test will simply
      * create and trigger the event and ensure the event data is returned as expected.
      */
-    public function test_user_override_updated(): void {
+    public function test_user_override_updated() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -1172,7 +1172,7 @@ class events_test extends \advanced_testcase {
      * There is no external API for updating a group override, so the unit test will simply
      * create and trigger the event and ensure the event data is returned as expected.
      */
-    public function test_group_override_updated(): void {
+    public function test_group_override_updated() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -1203,7 +1203,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the user override deleted event.
      */
-    public function test_user_override_deleted(): void {
+    public function test_user_override_deleted() {
         global $DB;
         $this->resetAfterTest();
 
@@ -1234,7 +1234,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the group override deleted event.
      */
-    public function test_group_override_deleted(): void {
+    public function test_group_override_deleted() {
         global $DB;
         $this->resetAfterTest();
 
@@ -1265,7 +1265,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the course module viewed event.
      */
-    public function test_course_module_viewed(): void {
+    public function test_course_module_viewed() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -1295,7 +1295,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test that all events generated with blindmarking enabled are anonymous
      */
-    public function test_anonymous_events(): void {
+    public function test_anonymous_events() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();

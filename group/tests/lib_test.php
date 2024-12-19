@@ -38,7 +38,7 @@ require_once($CFG->dirroot . '/lib/grouplib.php');
  */
 class lib_test extends \advanced_testcase {
 
-    public function test_member_added_event(): void {
+    public function test_member_added_event() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -61,7 +61,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_member_removed_event(): void {
+    public function test_member_removed_event() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -85,7 +85,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_group_created_event(): void {
+    public function test_group_created_event() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -104,7 +104,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_grouping_created_event(): void {
+    public function test_grouping_created_event() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -124,7 +124,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_group_updated_event(): void {
+    public function test_group_updated_event() {
         global $DB;
 
         $this->resetAfterTest();
@@ -153,7 +153,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_group_updated_event_does_not_require_names(): void {
+    public function test_group_updated_event_does_not_require_names() {
         global $DB;
 
         $this->resetAfterTest();
@@ -180,7 +180,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_grouping_updated_event(): void {
+    public function test_grouping_updated_event() {
         global $DB;
 
         $this->resetAfterTest();
@@ -211,7 +211,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_grouping_updated_event_does_not_require_names(): void {
+    public function test_grouping_updated_event_does_not_require_names() {
         global $DB;
 
         $this->resetAfterTest();
@@ -248,7 +248,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_group_deleted_event(): void {
+    public function test_group_deleted_event() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -266,7 +266,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_grouping_deleted_event(): void {
+    public function test_grouping_deleted_event() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -285,7 +285,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($url, $event->get_url());
     }
 
-    public function test_groups_delete_group_members(): void {
+    public function test_groups_delete_group_members() {
         global $DB;
         $this->resetAfterTest();
 
@@ -324,7 +324,7 @@ class lib_test extends \advanced_testcase {
         $this->assertFalse($DB->record_exists('groups_members', array('groupid' => $group1->id, 'userid' => $user2->id)));
     }
 
-    public function test_groups_remove_member(): void {
+    public function test_groups_remove_member() {
         global $DB;
         $this->resetAfterTest();
 
@@ -354,7 +354,7 @@ class lib_test extends \advanced_testcase {
         $this->assertFalse($DB->record_exists('groups_members', array('groupid' => $group2->id, 'userid' => $user1->id)));
     }
 
-    public function test_groups_delete_groupings_groups(): void {
+    public function test_groups_delete_groupings_groups() {
         global $DB;
         $this->resetAfterTest();
 
@@ -384,7 +384,7 @@ class lib_test extends \advanced_testcase {
             array('groupid' => $group1c2->id, 'groupingid' => $grouping1c2->id)));
     }
 
-    public function test_groups_delete_groups(): void {
+    public function test_groups_delete_groups() {
         global $DB;
         $this->resetAfterTest();
 
@@ -415,7 +415,7 @@ class lib_test extends \advanced_testcase {
         $this->assertFalse($DB->record_exists('groupings_groups', array('groupid' => $group1->id, 'groupingid' => $grouping1->id)));
     }
 
-    public function test_groups_delete_groupings(): void {
+    public function test_groups_delete_groupings() {
         global $DB;
         $this->resetAfterTest();
 
@@ -445,7 +445,7 @@ class lib_test extends \advanced_testcase {
      * @covers ::groups_create_group
      * @covers ::groups_get_group
      */
-    public function test_groups_with_customfield(): void {
+    public function test_groups_with_customfield() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -529,7 +529,7 @@ class lib_test extends \advanced_testcase {
         $this->assertSame('Updated input for grouping1', $customfield['value']);
     }
 
-    public function test_groups_create_autogroups(): void {
+    public function test_groups_create_autogroups () {
         global $DB;
         $this->resetAfterTest();
 
@@ -585,7 +585,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test groups_create_group enabling a group conversation.
      */
-    public function test_groups_create_group_with_conversation(): void {
+    public function test_groups_create_group_with_conversation() {
         global $DB;
 
         $this->resetAfterTest();
@@ -623,7 +623,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test groups_update_group enabling and disabling a group conversation.
      */
-    public function test_groups_update_group_conversation(): void {
+    public function test_groups_update_group_conversation() {
         global $DB;
 
         $this->resetAfterTest();
@@ -681,7 +681,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test groups_add_member to conversation.
      */
-    public function test_groups_add_member_conversation(): void {
+    public function test_groups_add_member_conversation() {
         global $DB;
         $this->resetAfterTest();
 
@@ -723,7 +723,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test groups_remove_member to conversation.
      */
-    public function test_groups_remove_member_conversation(): void {
+    public function test_groups_remove_member_conversation() {
         global $DB;
 
         $this->resetAfterTest();
@@ -770,7 +770,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test if you enable group messaging in a group with members these are added to the conversation.
      */
-    public function test_add_members_group_updated_conversation_enabled(): void {
+    public function test_add_members_group_updated_conversation_enabled() {
         global $DB;
 
         $this->resetAfterTest();
@@ -885,7 +885,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers \core_group::set_groups_messaging
      */
-    public function test_set_groups_messaging(): void {
+    public function test_set_groups_messaging() {
         $this->resetAfterTest();
         $this->setAdminUser();
         $dg = $this->getDataGenerator();
@@ -925,7 +925,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers \core_group::set_groups_messaging
      */
-    public function test_set_groups_messaging_doesnt_exist(): void {
+    public function test_set_groups_messaging_doesnt_exist() {
         $this->resetAfterTest();
         $this->setAdminUser();
 

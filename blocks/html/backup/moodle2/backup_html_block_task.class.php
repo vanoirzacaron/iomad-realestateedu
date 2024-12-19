@@ -43,7 +43,7 @@ class backup_html_block_task extends backup_block_task {
         return array('text'); // We need to encode some attrs in configdata
     }
 
-    public static function encode_content_links($content) {
+    static public function encode_content_links($content) {
         return $content; // No special encoding of links
     }
 }

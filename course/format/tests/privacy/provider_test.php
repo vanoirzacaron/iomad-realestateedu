@@ -32,7 +32,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::test_export_user_preferences().
      */
-    public function test_export_user_preferences(): void {
+    public function test_export_user_preferences() {
         $this->resetAfterTest();
 
         // Test setup.

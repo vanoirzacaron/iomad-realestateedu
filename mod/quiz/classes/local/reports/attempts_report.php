@@ -64,7 +64,7 @@ abstract class attempts_report extends report_base {
     /** @var boolean caches the results of {@see should_show_grades()}. */
     protected $showgrades = null;
 
-    /** @var quiz_settings|null quiz settings object. Set in {@see init()}. */
+    /** @var quiz_settings|null quiz settings object. Set in the init method. */
     protected $quizobj = null;
 
     /**
@@ -271,8 +271,8 @@ abstract class attempts_report extends report_base {
     }
 
     /**
-     * Add a column for the overall quiz grade and the overall feedback, if applicable.
-     *
+     * Add all the grade and feedback columns, if applicable, to the $columns
+     * and $headers arrays.
      * @param stdClass $quiz the quiz settings.
      * @param bool $usercanseegrades whether the user is allowed to see grades for this quiz.
      * @param array $columns the list of columns. Added to.
@@ -282,7 +282,7 @@ abstract class attempts_report extends report_base {
     protected function add_grade_columns($quiz, $usercanseegrades, &$columns, &$headers, $includefeedback = true) {
         if ($usercanseegrades) {
             $columns[] = 'sumgrades';
-            $headers[] = get_string('gradenoun') . '/' .
+            $headers[] = get_string('grade', 'quiz') . '/' .
                     quiz_format_grade($quiz, $quiz->grade);
         }
 
@@ -293,32 +293,8 @@ abstract class attempts_report extends report_base {
     }
 
     /**
-     * Add columns for any extra quiz grade items, if applicable.
-     *
-     * @param bool $usercanseegrades whether the user is allowed to see grades for this quiz.
-     * @param array $columns the list of columns. Added to.
-     * @param array $headers the columns headings. Added to.
-     */
-    protected function add_grade_item_columns(bool $usercanseegrades, array &$columns, array &$headers) {
-        if (!$usercanseegrades) {
-            return;
-        }
-
-        $gradeitems = $this->quizobj->get_grade_calculator()->get_grade_items();
-        if (!$gradeitems) {
-            return;
-        }
-
-        foreach ($gradeitems as $gradeitem) {
-            $columns[] = 'marks' . $gradeitem->id;
-            $headers[] = format_string($gradeitem->name) . '/' .
-                quiz_format_grade($this->quizobj->get_quiz(), $gradeitem->maxmark);
-        }
-    }
-
-    /**
      * Set up the table.
-     * @param attempts_report_table $table the table being constructed.
+     * @param table_sql $table the table being constructed.
      * @param array $columns the list of columns.
      * @param array $headers the columns headings.
      * @param moodle_url $reporturl the URL of this report.
@@ -327,7 +303,6 @@ abstract class attempts_report extends report_base {
      */
     protected function set_up_table_columns($table, $columns, $headers, $reporturl,
             attempts_report_options $options, $collapsible) {
-        $table->set_quiz_setting($this->quizobj);
         $table->define_columns($columns);
         $table->define_headers($headers);
         $table->sortable(true, 'uniqueid');

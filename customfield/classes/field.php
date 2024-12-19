@@ -37,7 +37,7 @@ class field extends persistent {
      *
      * @return array
      */
-    protected static function define_properties(): array {
+    protected static function define_properties() : array {
         return array(
                 'name' => [
                         'type' => PARAM_TEXT,
@@ -83,7 +83,7 @@ class field extends persistent {
      *
      * @return array
      */
-    protected function get_configdata(): array {
+    protected function get_configdata() : array {
         return json_decode($this->raw_get('configdata') ?? '', true) ?? array();
     }
 }

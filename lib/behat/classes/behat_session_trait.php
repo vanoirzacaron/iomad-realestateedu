@@ -555,7 +555,7 @@ trait behat_session_trait {
      *
      * @return bool True if it's in the app
      */
-    protected function is_in_app(): bool {
+    protected function is_in_app() : bool {
         // Cannot be in the app if there's no @app tag on scenario.
         if (!$this->has_tag('app')) {
             return false;
@@ -730,7 +730,7 @@ trait behat_session_trait {
      * @param string $tag Tag to check
      * @return bool True if the tag exists in scenario or feature
      */
-    public function has_tag(string $tag): bool {
+    public function has_tag(string $tag) : bool {
         return array_key_exists($tag, behat_hooks::get_tags_for_scenario());
     }
 
@@ -1021,35 +1021,6 @@ EOF;
     }
 
     /**
-     * Internal step definition to find deprecated styles.
-     *
-     * Part of behat_hooks class as is part of the testing framework, is auto-executed
-     * after each step so no features will splicitly use it.
-     *
-     * @throws Exception Unknown type, depending on what we caught in the hook or basic \Exception.
-     * @see Moodle\BehatExtension\Tester\MoodleStepTester
-     */
-    public function look_for_deprecated_styles() {
-        if (!behat_config_manager::get_behat_run_config_value('scss-deprecations')) {
-            return;
-        }
-
-        if (!$this->running_javascript()) {
-            return;
-        }
-
-        // Look for any DOM element with deprecated message in before pseudo-element.
-        $js = <<<EOF
-            [...document.querySelectorAll('*')].some(
-                el => window.getComputedStyle(el, ':before').content === '"Deprecated style in use"'
-            );
-        EOF;
-        if ($this->evaluate_script($js)) {
-            throw new \Exception(html_entity_decode("Deprecated style in use", ENT_COMPAT));
-        }
-    }
-
-    /**
      * Converts HTML tags to line breaks to display the info in CLI
      *
      * @param string $html
@@ -1087,9 +1058,6 @@ EOF;
 
         // Look for exceptions.
         $this->look_for_exceptions();
-
-        // Look for deprecated styles.
-        $this->look_for_deprecated_styles();
     }
 
     /**
@@ -1308,7 +1276,7 @@ EOF;
      * @param int $timeout One of the TIMEOUT constants
      * @return int Actual timeout (in seconds)
      */
-    protected static function get_real_timeout(int $timeout): int {
+    protected static function get_real_timeout(int $timeout) : int {
         global $CFG;
         if (!empty($CFG->behat_increasetimeout)) {
             return $timeout * $CFG->behat_increasetimeout;
@@ -1324,7 +1292,7 @@ EOF;
      *
      * @return int Timeout in seconds
      */
-    public static function get_timeout(): int {
+    public static function get_timeout() : int {
         return self::get_real_timeout(6);
     }
 
@@ -1337,7 +1305,7 @@ EOF;
      *
      * @return int Timeout in seconds
      */
-    public static function get_reduced_timeout(): int {
+    public static function get_reduced_timeout() : int {
         return self::get_real_timeout(2);
     }
 
@@ -1348,7 +1316,7 @@ EOF;
      *
      * @return int Timeout in seconds
      */
-    public static function get_extended_timeout(): int {
+    public static function get_extended_timeout() : int {
         return self::get_real_timeout(10);
     }
 

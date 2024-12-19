@@ -148,9 +148,7 @@ export const init = initialized => {
                 targetColumnPosition--;
             }
 
-            // Re-order column, giving drop event transition time to finish.
-            const reorderPromise = reorderColumn(reportElement.dataset.reportId, columnId, targetColumnPosition);
-            Promise.all([reorderPromise, new Promise(resolve => setTimeout(resolve, 1000))])
+            reorderColumn(reportElement.dataset.reportId, columnId, targetColumnPosition)
                 .then(() => getString('columnmoved', 'core_reportbuilder', columnName))
                 .then(addToast)
                 .then(() => {

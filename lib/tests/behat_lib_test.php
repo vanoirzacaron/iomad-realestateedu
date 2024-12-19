@@ -58,7 +58,7 @@ class behat_lib_test extends advanced_testcase {
      * @param bool   $expectedvalue Expected value returned by behat_is_requested_url() function.
      * @param array  $environment   Values to override $_SERVER global variable.
      */
-    public function test_behat_is_requested_url($url, $expectedvalue, $environment): void {
+    public function test_behat_is_requested_url($url, $expectedvalue, $environment) {
         // Save $_SERVER variable.
         $server = $_SERVER;
 
@@ -77,7 +77,7 @@ class behat_lib_test extends advanced_testcase {
      *
      * @return array Array of values to test behat_is_requested_url() function.
      */
-    public function url_provider() {
+    public static function url_provider(): array {
         return [
             // Tests for common ports.
             ['http://behat.moodle.org', true, ['behat.moodle.org', 80, '']],

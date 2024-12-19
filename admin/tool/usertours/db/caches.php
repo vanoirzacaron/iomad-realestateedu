@@ -24,19 +24,19 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$definitions = [
-    'tourdata' => [
+$definitions = array(
+    'tourdata' => array(
         'mode' => cache_store::MODE_APPLICATION,
         'simplekeys' => true,
         'simpledata' => true,
         'staticacceleration' => true,
         'staticaccelerationsize' => 1,
-    ],
-    'stepdata' => [
+    ),
+    'stepdata' => array(
         'mode' => cache_store::MODE_APPLICATION,
         'simplekeys' => true,
         'simpledata' => true,
         'staticacceleration' => true,
         'staticaccelerationsize' => 1,
-    ],
-];
+    ),
+);

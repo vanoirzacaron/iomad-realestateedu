@@ -107,6 +107,7 @@ class manage_badge_action_bar extends base_action_bar {
             ],
             'bawards' => [
                 'url' => '/badges/recipients.php',
+                'additionalparams' => ['sort' => 'dateissued', 'dir' => 'DESC'],
                 'capability' => 'moodle/badges:viewawarded'
             ],
             'bendorsement' => [

@@ -32,7 +32,7 @@ class base_block_test extends \advanced_testcase {
     /**
      * Tests getting the name out of the class name.
      */
-    public function test_get_block_name(): void {
+    public function test_get_block_name() {
         $area = new \block_mockblock\search\area();
         $this->assertEquals('mockblock', $area->get_block_name());
     }
@@ -40,7 +40,7 @@ class base_block_test extends \advanced_testcase {
     /**
      * Tests getting the recordset.
      */
-    public function test_get_document_recordset(): void {
+    public function test_get_document_recordset() {
         global $DB, $USER;
 
         $this->resetAfterTest();
@@ -245,7 +245,7 @@ class base_block_test extends \advanced_testcase {
     /**
      * Tests the get_doc_url function.
      */
-    public function test_get_doc_url(): void {
+    public function test_get_doc_url() {
         global $DB;
 
         $this->resetAfterTest();
@@ -327,7 +327,7 @@ class base_block_test extends \advanced_testcase {
     /**
      * Tests the check_access function.
      */
-    public function test_check_access(): void {
+    public function test_check_access() {
         global $DB;
 
         $this->resetAfterTest();
@@ -382,7 +382,7 @@ class base_block_test extends \advanced_testcase {
      * Tests the block version of get_contexts_to_reindex, which is supposed to return all the
      * block contexts in order of date added.
      */
-    public function test_get_contexts_to_reindex(): void {
+    public function test_get_contexts_to_reindex() {
         global $DB;
 
         $this->resetAfterTest();
@@ -442,7 +442,7 @@ class base_block_test extends \advanced_testcase {
     /**
      * Test document icon.
      */
-    public function test_get_doc_icon(): void {
+    public function test_get_doc_icon() {
         $baseblock = $this->getMockBuilder('\core_search\base_block')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();

@@ -34,4 +34,4 @@ $key = get_config('enrol_lti', 'lti_13_kid');
 $keyendpoint = JwksEndpoint::new([$key => $privatekey]);
 
 @header('Content-Type: application/json; charset=utf-8');
-echo json_encode($keyendpoint->getPublicJwks());
+$keyendpoint->outputJwks();

@@ -24,7 +24,7 @@
 
 namespace auth_iomadsaml2;
 
-use auth_iomadsaml2\admin\saml2_settings;
+use auth_iomadsaml2\admin\iomadsaml2_settings;
 
 /**
  * Auto-login class.
@@ -57,7 +57,7 @@ class auto_login {
         // Do not apply this code in auth or login scripts, because those are likely to be already
         // handling login (either auto-login or not). Users do not need to start auto-login from
         // these pages, only from 'normal' Moodle pages they are trying to access.
-        if (isset($SCRIPT) && preg_match('~^(/auth/|/login/)~', $SCRIPT)) {
+        if (preg_match('~^(/auth/|/login/)~', $SCRIPT)) {
             return;
         }
 

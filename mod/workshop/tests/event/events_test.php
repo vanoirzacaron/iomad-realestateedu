@@ -74,7 +74,7 @@ class events_test extends \advanced_testcase {
     /**
      * This event is triggered in view.php and workshop/lib.php through the function workshop_cron().
      */
-    public function test_phase_switched_event(): void {
+    public function test_phase_switched_event() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -99,7 +99,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_assessment_evaluated(): void {
+    public function test_assessment_evaluated() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -125,7 +125,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_assessment_reevaluated(): void {
+    public function test_assessment_reevaluated() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -154,7 +154,7 @@ class events_test extends \advanced_testcase {
     /**
      * There is no api involved so the best we can do is test legacy data by triggering event manually.
      */
-    public function test_aggregate_grades_reset_event(): void {
+    public function test_aggregate_grades_reset_event() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -176,7 +176,7 @@ class events_test extends \advanced_testcase {
     /**
      * There is no api involved so the best we can do is test legacy data by triggering event manually.
      */
-    public function test_instances_list_viewed_event(): void {
+    public function test_instances_list_viewed_event() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -198,7 +198,7 @@ class events_test extends \advanced_testcase {
     /**
      * There is no api involved so the best we can do is test legacy data by triggering event manually.
      */
-    public function test_submission_created_event(): void {
+    public function test_submission_created_event() {
         $this->resetAfterTest();
         $this->setAdminUser();
 

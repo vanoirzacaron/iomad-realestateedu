@@ -77,12 +77,8 @@ class users_test extends core_reportbuilder_testcase {
             'idnumber' => 'U0001',
             'city' => 'London',
             'country' => 'GB',
-            'theme' => 'boost',
             'interests' => ['Horses'],
         ]);
-
-        $cohort = $this->getDataGenerator()->create_cohort(['name' => 'My cohort']);
-        cohort_add_member($cohort->id, $user->id);
 
         /** @var core_reportbuilder_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_reportbuilder');
@@ -112,103 +108,51 @@ class users_test extends core_reportbuilder_testcase {
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:lastaccess']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:suspended']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:confirmed']);
-        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:auth']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:moodlenetprofile']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:timecreated']);
-        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:timemodified']);
-        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:lastip']);
-        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'user:theme']);
 
         // Tags.
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'tag:name']);
-
-        // Cohort.
-        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'cohort:name']);
+        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'tag:namewithlink']);
 
         $content = $this->get_custom_report_content($report->get('id'));
         $this->assertCount(2, $content);
 
-        // Admin row.
-        [
-            $fullnamewithlink,
-            $fullnamewithpicture,
-            $fullnamewithpicturelink,
-            $picture,
-            $lastname,
-            $firstname,
-        ] = array_values($content[0]);
+        [$adminrow, $userrow] = array_map('array_values', $content);
 
-        $this->assertStringContainsString('Admin User', $fullnamewithlink);
-        $this->assertStringContainsString('Admin User', $fullnamewithpicture);
-        $this->assertStringContainsString('Admin User', $fullnamewithpicturelink);
-        $this->assertNotEmpty($picture);
-        $this->assertEquals('Admin', $lastname);
-        $this->assertEquals('User', $firstname);
+        $this->assertStringContainsString('Admin User', $adminrow[0]);
+        $this->assertStringContainsString('Admin User', $adminrow[1]);
+        $this->assertStringContainsString('Admin User', $adminrow[2]);
+        $this->assertNotEmpty($adminrow[3]);
+        $this->assertEquals('Admin', $adminrow[4]);
+        $this->assertEquals('User', $adminrow[5]);
 
-        // User row.
-        [
-            $fullnamewithlink,
-            $fullnamewithpicture,
-            $fullnamewithpicturelink,
-            $picture,
-            $firstname,
-            $lastname,
-            $city,
-            $country,
-            $description,
-            $firstnamephonetic,
-            $lastnamephonetic,
-            $middlename,
-            $alternatename,
-            $idnumber,
-            $institution,
-            $department,
-            $phone1,
-            $phone2,
-            $address,
-            $lastaccess,
-            $suspended,
-            $confirmed,
-            $auth,
-            $moodlenetprofile,
-            $timecreated,
-            $timemodified,
-            $lastip,
-            $theme,
-            $tag,
-            $cohortname,
-        ] = array_values($content[1]);
-
-        $this->assertStringContainsString(fullname($user), $fullnamewithlink);
-        $this->assertStringContainsString(fullname($user), $fullnamewithpicture);
-        $this->assertStringContainsString(fullname($user), $fullnamewithpicturelink);
-        $this->assertNotEmpty($picture);
-        $this->assertEquals($user->firstname, $firstname);
-        $this->assertEquals($user->lastname, $lastname);
-        $this->assertEquals($user->city, $city);
-        $this->assertEquals('United Kingdom', $country);
-        $this->assertEquals($user->description, $description);
-        $this->assertEquals($user->firstnamephonetic, $firstnamephonetic);
-        $this->assertEquals($user->lastnamephonetic, $lastnamephonetic);
-        $this->assertEquals($user->middlename, $middlename);
-        $this->assertEquals($user->alternatename, $alternatename);
-        $this->assertEquals($user->idnumber, $idnumber);
-        $this->assertEquals($user->institution, $institution);
-        $this->assertEquals($user->department, $department);
-        $this->assertEquals($user->phone1, $phone1);
-        $this->assertEquals($user->phone2, $phone2);
-        $this->assertEquals($user->address, $address);
-        $this->assertEmpty($lastaccess);
-        $this->assertEquals('No', $suspended);
-        $this->assertEquals('Yes', $confirmed);
-        $this->assertEquals('Manual accounts', $auth);
-        $this->assertEquals($user->moodlenetprofile, $moodlenetprofile);
-        $this->assertNotEmpty($timecreated);
-        $this->assertNotEmpty($timemodified);
-        $this->assertEquals('0.0.0.0', $lastip);
-        $this->assertEquals('Boost', $theme);
-        $this->assertEquals('Horses', $tag);
-        $this->assertEquals($cohort->name, $cohortname);
+        $this->assertStringContainsString(fullname($user), $userrow[0]);
+        $this->assertStringContainsString(fullname($user), $userrow[1]);
+        $this->assertStringContainsString(fullname($user), $userrow[2]);
+        $this->assertNotEmpty($userrow[3]);
+        $this->assertEquals($user->firstname, $userrow[4]);
+        $this->assertEquals($user->lastname, $userrow[5]);
+        $this->assertEquals($user->city, $userrow[6]);
+        $this->assertEquals('United Kingdom', $userrow[7]);
+        $this->assertEquals($user->description, $userrow[8]);
+        $this->assertEquals($user->firstnamephonetic, $userrow[9]);
+        $this->assertEquals($user->lastnamephonetic, $userrow[10]);
+        $this->assertEquals($user->middlename, $userrow[11]);
+        $this->assertEquals($user->alternatename, $userrow[12]);
+        $this->assertEquals($user->idnumber, $userrow[13]);
+        $this->assertEquals($user->institution, $userrow[14]);
+        $this->assertEquals($user->department, $userrow[15]);
+        $this->assertEquals($user->phone1, $userrow[16]);
+        $this->assertEquals($user->phone2, $userrow[17]);
+        $this->assertEquals($user->address, $userrow[18]);
+        $this->assertEmpty($userrow[19]);
+        $this->assertEquals('No', $userrow[20]);
+        $this->assertEquals('Yes', $userrow[21]);
+        $this->assertEquals($user->moodlenetprofile, $userrow[22]);
+        $this->assertNotEmpty($userrow[23]);
+        $this->assertEquals('Horses', $userrow[24]);
+        $this->assertStringContainsString('Horses', $userrow[25]);
     }
 
     /**
@@ -311,6 +255,7 @@ class users_test extends core_reportbuilder_testcase {
                 'user:address_operator' => text::IS_EQUAL_TO,
                 'user:address_value' => 'Small Farm',
             ], false],
+
             'Filter city' => ['user:city', [
                 'user:city_operator' => text::IS_EQUAL_TO,
                 'user:city_value' => 'Barcelona',
@@ -326,14 +271,6 @@ class users_test extends core_reportbuilder_testcase {
             'Filter country (no match)' => ['user:country', [
                 'user:country_operator' => select::EQUAL_TO,
                 'user:country_value' => 'AU',
-            ], false],
-            'Filter theme' => ['user:theme', [
-                'user:theme_operator' => select::EQUAL_TO,
-                'user:theme_value' => 'boost',
-            ], true],
-            'Filter theme (no match)' => ['user:theme', [
-                'user:theme_operator' => select::EQUAL_TO,
-                'user:theme_value' => 'classic',
             ], false],
             'Filter description' => ['user:description', [
                 'user:description_operator' => text::CONTAINS,
@@ -412,14 +349,6 @@ class users_test extends core_reportbuilder_testcase {
                 'user:timecreated_from' => 1619823600,
                 'user:timecreated_to' => 1622502000,
             ], false],
-            'Filter timemodified' => ['user:timemodified', [
-                'user:timemodified_operator' => date::DATE_RANGE,
-                'user:timemodified_from' => 1622502000,
-            ], true],
-            'Filter timemodified (no match)' => ['user:timemodified', [
-                'user:timemodified_operator' => date::DATE_RANGE,
-                'user:timemodified_to' => 1622502000,
-            ], false],
             'Filter lastaccess' => ['user:lastaccess', [
                 'user:lastaccess_operator' => date::DATE_EMPTY,
             ], true],
@@ -427,14 +356,6 @@ class users_test extends core_reportbuilder_testcase {
                 'user:lastaccess_operator' => date::DATE_RANGE,
                 'user:lastaccess_from' => 1619823600,
                 'user:lastaccess_to' => 1622502000,
-            ], false],
-            'Filter lastip' => ['user:lastip', [
-                'user:lastip_operator' => text::IS_EQUAL_TO,
-                'user:lastip_value' => '0.0.0.0',
-            ], true],
-            'Filter lastip (no match)' => ['user:lastip', [
-                'user:lastip_operator' => text::IS_EQUAL_TO,
-                'user:lastip_value' => '1.2.3.4',
             ], false],
 
             // Tags.
@@ -445,16 +366,6 @@ class users_test extends core_reportbuilder_testcase {
             'Filter tag name not empty' => ['tag:name', [
                 'tag:name_operator' => tags::NOT_EMPTY,
             ], true],
-
-            // Cohort.
-            'Filter cohort name' => ['cohort:name', [
-                'cohort:name_operator' => text::IS_EQUAL_TO,
-                'cohort:name_value' => 'My cohort',
-            ], true],
-            'Filter cohort name (no match)' => ['cohort:name', [
-                'cohort:name_operator' => text::IS_EQUAL_TO,
-                'cohort:name_value' => 'Not my cohort',
-            ], false],
         ];
     }
 
@@ -487,15 +398,10 @@ class users_test extends core_reportbuilder_testcase {
             'address' => 'Big Farm',
             'city' => 'Barcelona',
             'country' => 'ES',
-            'theme' => 'boost',
             'description' => 'Hello there',
             'moodlenetprofile' => '@zoe1@example.com',
             'interests' => ['Horses'],
-            'lastip' => '0.0.0.0',
         ]);
-
-        $cohort = $this->getDataGenerator()->create_cohort(['name' => 'My cohort']);
-        cohort_add_member($cohort->id, $user->id);
 
         /** @var core_reportbuilder_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_reportbuilder');

@@ -51,14 +51,14 @@ class flatfile_test extends \advanced_testcase {
         set_config('enrol_plugins_enabled', implode(',', $enabled));
     }
 
-    public function test_basics(): void {
+    public function test_basics() {
         $this->assertFalse(enrol_is_enabled('flatfile'));
         $plugin = enrol_get_plugin('flatfile');
         $this->assertInstanceOf('enrol_flatfile_plugin', $plugin);
         $this->assertEquals(ENROL_EXT_REMOVED_SUSPENDNOROLES, get_config('enrol_flatfile', 'expiredaction'));
     }
 
-    public function test_sync_nothing(): void {
+    public function test_sync_nothing() {
         $this->resetAfterTest();
 
         $this->disable_plugin();
@@ -70,7 +70,7 @@ class flatfile_test extends \advanced_testcase {
         $flatfileplugin->sync(new \null_progress_trace());
     }
 
-    public function test_sync(): void {
+    public function test_sync() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -277,7 +277,7 @@ class flatfile_test extends \advanced_testcase {
         $this->assertTrue($DB->record_exists('user_enrolments', array('userid'=>$user1->id, 'enrolid'=>$maninstance1->id)));
     }
 
-    public function test_notification(): void {
+    public function test_notification() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -364,7 +364,7 @@ class flatfile_test extends \advanced_testcase {
         $this->assertEquals($admin->id, $messages[4]->useridfrom);
     }
 
-    public function test_expired(): void {
+    public function test_expired() {
         global $DB;
         $this->resetAfterTest();
 
@@ -480,7 +480,7 @@ class flatfile_test extends \advanced_testcase {
     /**
      * Flatfile enrolment sync task test.
      */
-    public function test_flatfile_sync_task(): void {
+    public function test_flatfile_sync_task() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -511,7 +511,7 @@ class flatfile_test extends \advanced_testcase {
     /**
      * Test for getting user enrolment actions.
      */
-    public function test_get_user_enrolment_actions(): void {
+    public function test_get_user_enrolment_actions() {
         global $CFG, $PAGE;
         $this->resetAfterTest();
 

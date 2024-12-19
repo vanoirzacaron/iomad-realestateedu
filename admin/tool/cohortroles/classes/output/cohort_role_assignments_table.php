@@ -210,13 +210,13 @@ class cohort_role_assignments_table extends table_sql {
     }
 
     /**
-     * Override the default implementation to set a notification.
+     * Override the default implementation to set a decent heading level.
      */
     public function print_nothing_to_display() {
         global $OUTPUT;
         echo $this->render_reset_button();
         $this->print_initials_bar();
-        echo $OUTPUT->notification(get_string('nothingtodisplay'), 'info', false);
+        echo $OUTPUT->heading(get_string('nothingtodisplay'), 4);
     }
 
     /**

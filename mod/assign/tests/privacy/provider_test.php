@@ -79,7 +79,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that getting the contexts for a user works.
      */
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         global $DB;
         $this->resetAfterTest();
 
@@ -151,7 +151,7 @@ class provider_test extends provider_testcase {
     /**
      * Test returning a list of user IDs related to a context (assign).
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         global $DB;
 
         $this->resetAfterTest();
@@ -240,7 +240,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that a student with multiple submissions and grades is returned with the correct data.
      */
-    public function test_export_user_data_student(): void {
+    public function test_export_user_data_student() {
         global $DB;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -335,7 +335,7 @@ class provider_test extends provider_testcase {
     /**
      * Tests the data returned for a teacher.
      */
-    public function test_export_user_data_teacher(): void {
+    public function test_export_user_data_teacher() {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
         $coursecontext = \context_course::instance($course->id);
@@ -444,7 +444,7 @@ class provider_test extends provider_testcase {
     /**
      * A test for deleting all user data for a given context.
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -547,7 +547,7 @@ class provider_test extends provider_testcase {
     /**
      * A test for deleting all user data for one user.
      */
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -672,7 +672,7 @@ class provider_test extends provider_testcase {
     /**
      * A test for deleting all user data for a bunch of users.
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
 
         $this->resetAfterTest();

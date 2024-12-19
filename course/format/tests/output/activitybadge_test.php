@@ -35,7 +35,7 @@ class activitybadge_test extends \advanced_testcase {
      * @covers ::export_for_template
      * @covers ::create_instance
      */
-    public function test_activitybadge_export_for_template(): void {
+    public function test_activitybadge_export_for_template() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -64,7 +64,7 @@ class activitybadge_test extends \advanced_testcase {
         // The activitybadge for a forum with unread messages shouldn't be empty.
         $class = activitybadge::create_instance($data->forumunread);
         $result = $class->export_for_template($renderer);
-        $this->check_activitybadge($result, '1 unread post', 'bg-dark text-white');
+        $this->check_activitybadge($result, '1 unread post', 'badge-dark');
 
         // The activitybadge for a forum without unread messages should be empty.
         $class = activitybadge::create_instance($data->forumread);
@@ -176,31 +176,31 @@ class activitybadge_test extends \advanced_testcase {
         ?array $extra = null
     ): void {
         if (is_null($content)) {
-            $this->assertObjectNotHasProperty('badgecontent', $result);
+            $this->assertObjectNotHasAttribute('badgecontent', $result);
         } else {
             $this->assertEquals($content, $result->badgecontent);
         }
 
         if (is_null($style)) {
-            $this->assertObjectNotHasProperty('badgestyle', $result);
+            $this->assertObjectNotHasAttribute('badgestyle', $result);
         } else {
             $this->assertEquals($style, $result->badgestyle);
         }
 
         if (is_null($url)) {
-            $this->assertObjectNotHasProperty('badgeurl', $result);
+            $this->assertObjectNotHasAttribute('badgeurl', $result);
         } else {
             $this->assertEquals($url, $result->badgeurl);
         }
 
         if (is_null($elementid)) {
-            $this->assertObjectNotHasProperty('badgeelementid', $result);
+            $this->assertObjectNotHasAttribute('badgeelementid', $result);
         } else {
             $this->assertEquals($elementid, $result->badgeelementid);
         }
 
         if (is_null($extra)) {
-            $this->assertObjectNotHasProperty('badgeextraattributes', $result);
+            $this->assertObjectNotHasAttribute('badgeextraattributes', $result);
         } else {
             $this->assertEquals($extra, $result->badgeextraattributes);
         }

@@ -124,7 +124,7 @@ EOD;
     /**
      * Test for checking the length of the content
      */
-    public function test_check(): void {
+    public function test_check() {
         $results = $this->get_checker_results($this->htmlfail);
         $this->assertTrue($results[0]->message == '<p id=\'wc\'>Word Count: 578</p>');
 

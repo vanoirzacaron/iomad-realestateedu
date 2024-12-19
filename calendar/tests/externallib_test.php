@@ -134,7 +134,7 @@ class externallib_test extends externallib_advanced_testcase {
         return $event->create($prop);
     }
 
-    public function test_create_calendar_events(): void {
+    public function test_create_calendar_events () {
         global $DB, $USER;
 
         $this->setAdminUser();
@@ -162,7 +162,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test delete_calendar_events
      */
-    public function test_delete_calendar_events(): void {
+    public function test_delete_calendar_events() {
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -291,7 +291,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_calendar_events
      */
-    public function test_get_calendar_events(): void {
+    public function test_get_calendar_events() {
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -548,7 +548,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_calendar_events with mathjax in the name.
      */
-    public function test_get_calendar_events_with_mathjax(): void {
+    public function test_get_calendar_events_with_mathjax() {
         global $USER;
 
         $this->resetAfterTest(true);
@@ -584,7 +584,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test core_calendar_external::create_calendar_events
      */
-    public function test_core_create_calendar_events(): void {
+    public function test_core_create_calendar_events() {
         global $DB, $USER, $SITE;
 
         $this->resetAfterTest(true);
@@ -668,7 +668,7 @@ class externallib_test extends externallib_advanced_testcase {
      * If there are no events on or after the given time then an empty result set should
      * be returned.
      */
-    public function test_get_calendar_action_events_by_timesort_after_time(): void {
+    public function test_get_calendar_action_events_by_timesort_after_time() {
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
         $generator = $this->getDataGenerator()->get_plugin_generator('mod_assign');
@@ -745,7 +745,7 @@ class externallib_test extends externallib_advanced_testcase {
      * If there are no events before the given time then an empty result set should be
      * returned.
      */
-    public function test_get_calendar_action_events_by_timesort_before_time(): void {
+    public function test_get_calendar_action_events_by_timesort_before_time() {
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
         $generator = $this->getDataGenerator()->get_plugin_generator('mod_assign');
@@ -818,7 +818,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test retrieving event that was overridden for a user
      */
-    public function test_get_calendar_events_override(): void {
+    public function test_get_calendar_events_override() {
         $user = $this->getDataGenerator()->create_user();
         $user2 = $this->getDataGenerator()->create_user();
         $teacher = $this->getDataGenerator()->create_user();
@@ -888,7 +888,7 @@ class externallib_test extends externallib_advanced_testcase {
      * If there are no events in the given time range then an empty result set should be
      * returned.
      */
-    public function test_get_calendar_action_events_by_timesort_time_range(): void {
+    public function test_get_calendar_action_events_by_timesort_time_range() {
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
         $generator = $this->getDataGenerator()->get_plugin_generator('mod_assign');
@@ -948,7 +948,7 @@ class externallib_test extends externallib_advanced_testcase {
      * If there are no events in the given time range then an empty result set should be
      * returned.
      */
-    public function test_get_calendar_action_events_by_timesort_time_limit_offset(): void {
+    public function test_get_calendar_action_events_by_timesort_time_limit_offset() {
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
         $generator = $this->getDataGenerator()->get_plugin_generator('mod_assign');
@@ -1014,7 +1014,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Check that it is possible to restrict the calendar events to events where the user is not suspended in the course.
      */
-    public function test_get_calendar_action_events_by_timesort_suspended_course(): void {
+    public function test_get_calendar_action_events_by_timesort_suspended_course() {
         $this->resetAfterTest();
         $user1 = $this->getDataGenerator()->create_user();
         $user2 = $this->getDataGenerator()->create_user();
@@ -1042,7 +1042,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Check that it is possible to get other user's events without the permission.
      */
-    public function test_get_calendar_action_events_by_timesort_for_other_users(): void {
+    public function test_get_calendar_action_events_by_timesort_for_other_users() {
         $this->resetAfterTest();
         // Create test users.
         $user1 = $this->getDataGenerator()->create_user(['email' => 'student1@localhost.com']);
@@ -1095,7 +1095,7 @@ class externallib_test extends externallib_advanced_testcase {
      * If there are no events on or after the given time then an empty result set should
      * be returned.
      */
-    public function test_get_calendar_action_events_by_course_after_time(): void {
+    public function test_get_calendar_action_events_by_course_after_time() {
         $user = $this->getDataGenerator()->create_user();
         $course1 = $this->getDataGenerator()->create_course();
         $course2 = $this->getDataGenerator()->create_course();
@@ -1159,7 +1159,7 @@ class externallib_test extends externallib_advanced_testcase {
      * If there are no events before the given time then an empty result set should be
      * returned.
      */
-    public function test_get_calendar_action_events_by_course_before_time(): void {
+    public function test_get_calendar_action_events_by_course_before_time() {
         $user = $this->getDataGenerator()->create_user();
         $course1 = $this->getDataGenerator()->create_course();
         $course2 = $this->getDataGenerator()->create_course();
@@ -1223,7 +1223,7 @@ class externallib_test extends externallib_advanced_testcase {
      * If there are no events in the given time range then an empty result set should be
      * returned.
      */
-    public function test_get_calendar_action_events_by_course_time_range(): void {
+    public function test_get_calendar_action_events_by_course_time_range() {
         $user = $this->getDataGenerator()->create_user();
         $course1 = $this->getDataGenerator()->create_course();
         $course2 = $this->getDataGenerator()->create_course();
@@ -1288,7 +1288,7 @@ class externallib_test extends externallib_advanced_testcase {
      * If there are no events in the given time range then an empty result set should be
      * returned.
      */
-    public function test_get_calendar_action_events_by_course_time_limit_offset(): void {
+    public function test_get_calendar_action_events_by_course_time_limit_offset() {
         $user = $this->getDataGenerator()->create_user();
         $course1 = $this->getDataGenerator()->create_course();
         $course2 = $this->getDataGenerator()->create_course();
@@ -1359,7 +1359,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_calendar_action_events_by_course with search feature
      */
-    public function test_get_calendar_action_events_by_course_with_search(): void {
+    public function test_get_calendar_action_events_by_course_with_search() {
         // Generate data.
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
@@ -1425,7 +1425,7 @@ class externallib_test extends externallib_advanced_testcase {
      * Test that get_action_events_by_courses will return a list of events for each
      * course you provided as long as the user is enrolled in the course.
      */
-    public function test_get_action_events_by_courses(): void {
+    public function test_get_action_events_by_courses() {
         $user = $this->getDataGenerator()->create_user();
         $course1 = $this->getDataGenerator()->create_course();
         $course2 = $this->getDataGenerator()->create_course();
@@ -1558,7 +1558,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_action_events_by_courses with search feature
      */
-    public function test_get_action_events_by_courses_with_search(): void {
+    public function test_get_action_events_by_courses_with_search() {
         // Generate data.
         $user = $this->getDataGenerator()->create_user();
         $course1 = $this->getDataGenerator()->create_course();
@@ -1664,7 +1664,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test for deleting module events.
      */
-    public function test_delete_calendar_events_for_modules(): void {
+    public function test_delete_calendar_events_for_modules() {
         $this->resetAfterTest();
         $this->setAdminUser();
         $course = $this->getDataGenerator()->create_course();
@@ -1688,7 +1688,7 @@ class externallib_test extends externallib_advanced_testcase {
      * Updating the event start day should change the date value but leave
      * the time of day unchanged.
      */
-    public function test_update_event_start_day(): void {
+    public function test_update_event_start_day() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $roleid = $generator->create_role();
@@ -1728,7 +1728,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user should not be able to edit an event that they don't have
      * capabilities for.
      */
-    public function test_update_event_start_day_no_permission(): void {
+    public function test_update_event_start_day_no_permission() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $roleid = $generator->create_role();
@@ -1767,7 +1767,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * A user should not be able to update a module event.
      */
-    public function test_update_event_start_day_module_event(): void {
+    public function test_update_event_start_day_module_event() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $course = $generator->create_course();
@@ -1812,7 +1812,7 @@ class externallib_test extends externallib_advanced_testcase {
      * Submit a request where the time duration until is earlier than the time
      * start in order to get a validation error from the server.
      */
-    public function test_submit_create_update_form_validation_error(): void {
+    public function test_submit_create_update_form_validation_error() {
         $user = $this->getDataGenerator()->create_user();
         $timestart = new \DateTime();
         $interval = new \DateInterval("P1D"); // One day.
@@ -1867,7 +1867,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user with the moodle/calendar:manageownentries capability at the
      * system context should be able to create a user event.
      */
-    public function test_submit_create_update_form_create_user_event(): void {
+    public function test_submit_create_update_form_create_user_event() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $roleid = $generator->create_role();
@@ -1932,7 +1932,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user without the moodle/calendar:manageownentries capability at the
      * system context should not be able to create a user event.
      */
-    public function test_submit_create_update_form_create_user_event_no_permission(): void {
+    public function test_submit_create_update_form_create_user_event_no_permission() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $roleid = $generator->create_role();
@@ -1993,7 +1993,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user with the moodle/calendar:manageentries capability at the
      * site course context should be able to create a site event.
      */
-    public function test_submit_create_update_form_create_site_event(): void {
+    public function test_submit_create_update_form_create_site_event() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $context = \context_system::instance();
@@ -2059,7 +2059,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user without the moodle/calendar:manageentries capability at the
      * site course context should not be able to create a site event.
      */
-    public function test_submit_create_update_form_create_site_event_no_permission(): void {
+    public function test_submit_create_update_form_create_site_event_no_permission() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $context = \context_course::instance(SITEID);
@@ -2121,7 +2121,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user that has the moodle/calendar:manageentries in a course that they
      * are enrolled in should be able to create a course event in that course.
      */
-    public function test_submit_create_update_form_create_course_event(): void {
+    public function test_submit_create_update_form_create_course_event() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $course = $generator->create_course();
@@ -2191,7 +2191,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user without the moodle/calendar:manageentries capability in a course
      * that they are enrolled in should not be able to create a course event in that course.
      */
-    public function test_submit_create_update_form_create_course_event_no_permission(): void {
+    public function test_submit_create_update_form_create_course_event_no_permission() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $course = $generator->create_course();
@@ -2256,7 +2256,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user should not be able to create an event for a course that they are
      * not enrolled in.
      */
-    public function test_submit_create_update_form_create_course_event_not_enrolled(): void {
+    public function test_submit_create_update_form_create_course_event_not_enrolled() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $course = $generator->create_course();
@@ -2322,7 +2322,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user should be able to create an event for a group that they are a member of in
      * a course in which they are enrolled and have the moodle/calendar:manageentries capability.
      */
-    public function test_submit_create_update_form_create_group_event_group_member_manage_course(): void {
+    public function test_submit_create_update_form_create_group_event_group_member_manage_course() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $course = $generator->create_course();
@@ -2395,7 +2395,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user should be able to create an event for a group that they are a member of in
      * a course in which they are enrolled and have the moodle/calendar:managegroupentries capability.
      */
-    public function test_submit_create_update_form_create_group_event_group_member_manage_group_entries(): void {
+    public function test_submit_create_update_form_create_group_event_group_member_manage_group_entries() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $course = $generator->create_course();
@@ -2469,7 +2469,7 @@ class externallib_test extends externallib_advanced_testcase {
      * A user should be able to create an event for any group in a course in which
      * they are enrolled and have the moodle/site:accessallgroups capability.
      */
-    public function test_submit_create_update_form_create_group_event_access_all_groups(): void {
+    public function test_submit_create_update_form_create_group_event_access_all_groups() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $course = $generator->create_course();
@@ -2543,7 +2543,7 @@ class externallib_test extends externallib_advanced_testcase {
      * member of in a course in which they are enrolled but don't have the
      * moodle/site:accessallgroups capability.
      */
-    public function test_submit_create_update_form_create_group_event_non_member_no_permission(): void {
+    public function test_submit_create_update_form_create_group_event_non_member_no_permission() {
         $generator = $this->getDataGenerator();
         $user = $generator->create_user();
         $course = $generator->create_course();
@@ -2610,7 +2610,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * A user should not be able load the calendar monthly view for a course they cannot access.
      */
-    public function test_get_calendar_monthly_view_no_course_permission(): void {
+    public function test_get_calendar_monthly_view_no_course_permission() {
         global $USER;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -2654,7 +2654,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_calendar_monthly_view when a day parameter is provided.
      */
-    public function test_get_calendar_monthly_view_with_day_provided(): void {
+    public function test_get_calendar_monthly_view_with_day_provided() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -2670,7 +2670,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * A user should not be able load the calendar day view for a course they cannot access.
      */
-    public function test_get_calendar_day_view_no_course_permission(): void {
+    public function test_get_calendar_day_view_no_course_permission() {
         global $USER;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -2714,7 +2714,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * A user should not be able load the calendar upcoming view for a course they cannot access.
      */
-    public function test_get_calendar_upcoming_view_no_course_permission(): void {
+    public function test_get_calendar_upcoming_view_no_course_permission() {
         global $USER;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -2754,7 +2754,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * A user should not be able load the calendar event for a course they cannot access.
      */
-    public function test_get_calendar_event_by_id_no_course_permission(): void {
+    public function test_get_calendar_event_by_id_no_course_permission() {
         global $USER;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -2796,7 +2796,7 @@ class externallib_test extends externallib_advanced_testcase {
      *
      * @return array
      */
-    public function get_calendar_event_by_id_prevent_read_other_users_events_data_provider(): array {
+    public static function get_calendar_event_by_id_prevent_read_other_users_events_data_provider(): array {
         $syscontext = \context_system::instance();
         $managerrole = 'manager';
         return [
@@ -2821,7 +2821,7 @@ class externallib_test extends externallib_advanced_testcase {
      */
     public function test_get_calendar_event_by_id_prevent_read_other_users_events(
             bool $isadminevent, bool $isadmin, ?\stdClass $readerrolecontext,
-            ?string $readerrolename, bool $expectexception): void {
+            ?string $readerrolename, bool $expectexception) {
         global $USER, $DB;
 
         $this->resetAfterTest();
@@ -2867,7 +2867,7 @@ class externallib_test extends externallib_advanced_testcase {
      *
      * @return array
      */
-    public function edit_or_delete_other_users_events_data_provider(): array {
+    public static function edit_or_delete_other_users_events_data_provider(): array {
         $syscontext = \context_system::instance();
         $managerrole = 'manager';
         return [
@@ -2890,7 +2890,7 @@ class externallib_test extends externallib_advanced_testcase {
      * @param bool          $expectexception Whether the test should throw an exception or not.
      */
     public function test_delete_other_users_events(bool $isadmin, bool $isadminevent,
-            ?\stdClass $writerrolecontext, ?string $writerrolename, bool $expectexception): void {
+            ?\stdClass $writerrolecontext, ?string $writerrolename, bool $expectexception) {
         global $DB, $USER;
 
         $this->resetAfterTest();
@@ -2937,7 +2937,7 @@ class externallib_test extends externallib_advanced_testcase {
      * @param bool          $expectexception Whether the test should throw an exception or not.
      */
     public function test_edit_other_users_events(bool $isadmin, bool $isadminevent,
-            ?\stdClass $writerrolecontext, ?string $writerrolename, bool $expectexception): void {
+            ?\stdClass $writerrolecontext, ?string $writerrolename, bool $expectexception) {
         global $DB, $USER;
 
         $this->resetAfterTest();
@@ -2998,7 +2998,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * A user should not be able load the calendar events for a category they cannot see.
      */
-    public function test_get_calendar_events_hidden_category(): void {
+    public function test_get_calendar_events_hidden_category() {
         global $USER;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -3034,7 +3034,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_calendar_access_information for admins.
      */
-    public function test_get_calendar_access_information_for_admins(): void {
+    public function test_get_calendar_access_information_for_admins() {
         global $CFG;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -3053,7 +3053,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_calendar_access_information for authenticated users.
      */
-    public function test_get_calendar_access_information_for_authenticated_users(): void {
+    public function test_get_calendar_access_information_for_authenticated_users() {
         $this->resetAfterTest(true);
         $this->setUser($this->getDataGenerator()->create_user());
 
@@ -3069,7 +3069,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_calendar_access_information for student users.
      */
-    public function test_get_calendar_access_information_for_student_users(): void {
+    public function test_get_calendar_access_information_for_student_users() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -3092,7 +3092,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_calendar_access_information for teacher users.
      */
-    public function test_get_calendar_access_information_for_teacher_users(): void {
+    public function test_get_calendar_access_information_for_teacher_users() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -3116,7 +3116,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_allowed_event_types for admins.
      */
-    public function test_get_allowed_event_types_for_admins(): void {
+    public function test_get_allowed_event_types_for_admins() {
         global $CFG;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -3130,7 +3130,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_allowed_event_types for authenticated users.
      */
-    public function test_get_allowed_event_types_for_authenticated_users(): void {
+    public function test_get_allowed_event_types_for_authenticated_users() {
         $this->resetAfterTest(true);
         $this->setUser($this->getDataGenerator()->create_user());
         $data = external_api::clean_returnvalue(
@@ -3142,7 +3142,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_allowed_event_types for student users.
      */
-    public function test_get_allowed_event_types_for_student_users(): void {
+    public function test_get_allowed_event_types_for_student_users() {
         global $DB;
         $this->resetAfterTest(true);
         $user = $this->getDataGenerator()->create_user();
@@ -3159,7 +3159,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_allowed_event_types for teacher users.
      */
-    public function test_get_allowed_event_types_for_teacher_users(): void {
+    public function test_get_allowed_event_types_for_teacher_users() {
         global $DB;
         $this->resetAfterTest(true);
         $user = $this->getDataGenerator()->create_user();
@@ -3178,7 +3178,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_timestamps with string keys, with and without optional hour/minute values.
      */
-    public function test_get_timestamps_string_keys(): void {
+    public function test_get_timestamps_string_keys() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -3221,7 +3221,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_timestamps with no keys specified, with and without optional hour/minute values.
      */
-    public function test_get_timestamps_no_keys(): void {
+    public function test_get_timestamps_no_keys() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -3256,40 +3256,5 @@ class externallib_test extends externallib_advanced_testcase {
         foreach ($result['timestamps'] as $data) {
             $this->assertEquals($expectedtimestamps[$data['key']], $data['timestamp']);
         }
-    }
-
-    /**
-     * Test for checking if we receive the correct icon branding.
-     *
-     * @covers \core_calendar_external::get_calendar_action_events_by_timesort
-     */
-    public function test_get_calendar_event_branded(): void {
-
-        $this->resetAfterTest(true);
-
-        $user = $this->getDataGenerator()->create_user();
-        $course = $this->getDataGenerator()->create_course();
-        $this->getDataGenerator()->enrol_user($user->id, $course->id);
-
-        $this->setUser($user);
-        $generator = $this->getDataGenerator()->get_plugin_generator('mod_assign');
-        $assign = $generator->create_instance(['course' => $course->id]);
-
-        $params = [
-            'type' => CALENDAR_EVENT_TYPE_ACTION,
-            'instance' => $assign->id,
-            'courseid' => $course->id,
-            'modulename' => 'assign',
-            'timesort' => 1,
-        ];
-        $event1 = $this->create_calendar_event('Event 1', $user->id, 'user', 0, 1, $params);
-        $result = core_calendar_external::get_calendar_action_events_by_timesort(0);
-        $result = external_api::clean_returnvalue(
-            core_calendar_external::get_calendar_action_events_by_timesort_returns(),
-            $result
-        );
-
-        $this->assertCount(1, $result['events']);
-        $this->assertFalse($result['events'][0]['branded']);
     }
 }

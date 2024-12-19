@@ -33,7 +33,7 @@ namespace filter_activitynames;
  */
 class filter_test extends \advanced_testcase {
 
-    public function test_links(): void {
+    public function test_links() {
         $this->resetAfterTest(true);
 
         // Create a test course.
@@ -71,7 +71,7 @@ class filter_test extends \advanced_testcase {
         $this->assertEquals($page2->name, $matches[3][1]);
     }
 
-    public function test_links_activity_named_hyphen(): void {
+    public function test_links_activity_named_hyphen() {
         $this->resetAfterTest(true);
 
         // Create a test course.
@@ -100,7 +100,7 @@ class filter_test extends \advanced_testcase {
         $this->assertEquals($page->name, $matches[3][0]);
     }
 
-    public function test_cache(): void {
+    public function test_cache() {
         $this->resetAfterTest(true);
 
         // Create a test courses.

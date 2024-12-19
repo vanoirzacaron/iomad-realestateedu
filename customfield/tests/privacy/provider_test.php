@@ -97,7 +97,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::get_metadata()
      */
-    public function test_get_metadata(): void {
+    public function test_get_metadata() {
         $collection = new \core_privacy\local\metadata\collection('core_customfield');
         $collection = provider::get_metadata($collection);
         $this->assertNotEmpty($collection);
@@ -106,7 +106,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::get_customfields_data_contexts
      */
-    public function test_get_customfields_data_contexts(): void {
+    public function test_get_customfields_data_contexts() {
         global $DB;
         [
             'cffields' => $cffields,
@@ -125,7 +125,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::get_customfields_configuration_contexts()
      */
-    public function test_get_customfields_configuration_contexts(): void {
+    public function test_get_customfields_configuration_contexts() {
         $this->generate_test_data();
 
         $r = provider::get_customfields_configuration_contexts('core_course', 'course');
@@ -135,7 +135,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::export_customfields_data()
      */
-    public function test_export_customfields_data(): void {
+    public function test_export_customfields_data() {
         global $USER, $DB;
         $this->resetAfterTest();
         [
@@ -177,7 +177,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_customfields_data()
      */
-    public function test_delete_customfields_data(): void {
+    public function test_delete_customfields_data() {
         global $USER, $DB;
         $this->resetAfterTest();
         [
@@ -195,7 +195,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_customfields_configuration()
      */
-    public function test_delete_customfields_configuration(): void {
+    public function test_delete_customfields_configuration() {
         global $USER, $DB;
         $this->resetAfterTest();
         [
@@ -232,7 +232,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_customfields_configuration_for_context()
      */
-    public function test_delete_customfields_configuration_for_context(): void {
+    public function test_delete_customfields_configuration_for_context() {
         global $USER, $DB;
         $this->resetAfterTest();
         [
@@ -269,7 +269,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_customfields_data_for_context()
      */
-    public function test_delete_customfields_data_for_context(): void {
+    public function test_delete_customfields_data_for_context() {
         global $DB;
         $this->resetAfterTest();
         [

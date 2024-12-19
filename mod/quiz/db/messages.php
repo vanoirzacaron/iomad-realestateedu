@@ -27,19 +27,13 @@ defined('MOODLE_INTERNAL') || die();
 $messageproviders = [
     // Notify teacher that a student has submitted a quiz attempt.
     'submission' => [
-        'capability' => 'mod/quiz:emailnotifysubmission',
-        'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ],
+        'capability' => 'mod/quiz:emailnotifysubmission'
     ],
 
     // Confirm a student's quiz attempt.
     'confirmation' => [
         'capability' => 'mod/quiz:emailconfirmsubmission',
         'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'airnotifier' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         ],
     ],
@@ -49,8 +43,6 @@ $messageproviders = [
     'attempt_overdue' => [
         'capability' => 'mod/quiz:emailwarnoverdue',
         'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'airnotifier' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         ],
     ],
@@ -58,8 +50,6 @@ $messageproviders = [
     'attempt_grading_complete' => [
         'capability' => 'mod/quiz:emailnotifyattemptgraded',
         'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'airnotifier' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         ],
     ],

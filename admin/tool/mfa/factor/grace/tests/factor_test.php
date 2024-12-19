@@ -32,7 +32,7 @@ class factor_test extends \advanced_testcase {
      * @covers ::get_affecting_factors
      * @return void
      */
-    public function test_affecting_factors(): void {
+    public function test_affecting_factors() {
         $this->resetAfterTest(true);
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);

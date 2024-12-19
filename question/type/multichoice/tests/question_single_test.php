@@ -38,12 +38,12 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
  */
 class question_single_test extends \advanced_testcase {
 
-    public function test_get_expected_data(): void {
+    public function test_get_expected_data() {
         $question = \test_question_maker::make_a_multichoice_single_question();
         $this->assertEquals(array('answer' => PARAM_INT), $question->get_expected_data());
     }
 
-    public function test_is_complete_response(): void {
+    public function test_is_complete_response() {
         $question = \test_question_maker::make_a_multichoice_single_question();
 
         $this->assertFalse($question->is_complete_response(array()));
@@ -53,7 +53,7 @@ class question_single_test extends \advanced_testcase {
         $this->assertFalse($question->is_complete_response(array('answer' => -1)));
     }
 
-    public function test_is_gradable_response(): void {
+    public function test_is_gradable_response() {
         $question = \test_question_maker::make_a_multichoice_single_question();
 
         $this->assertFalse($question->is_gradable_response(array()));
@@ -62,7 +62,7 @@ class question_single_test extends \advanced_testcase {
         $this->assertFalse($question->is_gradable_response(array('answer' => '-1')));
     }
 
-    public function test_is_same_response(): void {
+    public function test_is_same_response() {
         $question = \test_question_maker::make_a_multichoice_single_question();
         $question->start_attempt(new question_attempt_step(), 1);
 
@@ -103,7 +103,7 @@ class question_single_test extends \advanced_testcase {
                 array('answer' => '-1')));
     }
 
-    public function test_grading(): void {
+    public function test_grading() {
         $question = \test_question_maker::make_a_multichoice_single_question();
         $question->start_attempt(new question_attempt_step(), 1);
 
@@ -115,7 +115,7 @@ class question_single_test extends \advanced_testcase {
                 $question->grade_response($question->prepare_simulated_post_data(array('answer' => 'C'))));
     }
 
-    public function test_grading_rounding_three_right(): void {
+    public function test_grading_rounding_three_right() {
         question_bank::load_question_definition_classes('multichoice');
         $mc = new qtype_multichoice_multi_question();
         \test_question_maker::initialise_a_question($mc);
@@ -145,14 +145,14 @@ class question_single_test extends \advanced_testcase {
         $this->assertEquals(question_state::$gradedright, $state);
     }
 
-    public function test_get_correct_response(): void {
+    public function test_get_correct_response() {
         $question = \test_question_maker::make_a_multichoice_single_question();
         $question->start_attempt(new question_attempt_step(), 1);
 
         $this->assertEquals($question->prepare_simulated_post_data(array('answer' => 'A')), $question->get_correct_response());
     }
 
-    public function test_summarise_response(): void {
+    public function test_summarise_response() {
         $mc = \test_question_maker::make_a_multichoice_single_question();
         $mc->start_attempt(new question_attempt_step(), 1);
 
@@ -165,7 +165,7 @@ class question_single_test extends \advanced_testcase {
         $this->assertNull($mc->summarise_response(['answer' => '-1']));
     }
 
-    public function test_un_summarise_response(): void {
+    public function test_un_summarise_response() {
         $mc = \test_question_maker::make_a_multichoice_single_question();
         $mc->shuffleanswers = false;
         $mc->start_attempt(new question_attempt_step(), 1);
@@ -175,7 +175,7 @@ class question_single_test extends \advanced_testcase {
         $this->assertEquals([], $mc->un_summarise_response(''));
     }
 
-    public function test_classify_response(): void {
+    public function test_classify_response() {
         $mc = \test_question_maker::make_a_multichoice_single_question();
         $mc->start_attempt(new question_attempt_step(), 1);
 
@@ -191,7 +191,7 @@ class question_single_test extends \advanced_testcase {
         ), $mc->classify_response(array('answer' => '-1')));
     }
 
-    public function test_make_html_inline(): void {
+    public function test_make_html_inline() {
         $mc = \test_question_maker::make_a_multichoice_single_question();
         $this->assertEquals('Frog', $mc->make_html_inline('<p>Frog</p>'));
         $this->assertEquals('Frog<br />Toad', $mc->make_html_inline("<p>Frog</p>\n<p>Toad</p>"));
@@ -205,7 +205,7 @@ class question_single_test extends \advanced_testcase {
         $this->assertEquals('Frog<br />†', $mc->make_html_inline('<p>Frog</p><p>†</p>'));
     }
 
-    public function test_simulated_post_data(): void {
+    public function test_simulated_post_data() {
         $mc = \test_question_maker::make_a_multichoice_single_question();
         $mc->shuffleanswers = false;
         $mc->answers[13]->answer = '<p>A</p>';
@@ -222,7 +222,7 @@ class question_single_test extends \advanced_testcase {
         $this->assertEquals($originalresponse, $reconstucted);
     }
 
-    public function test_validate_can_regrade_with_other_version_bad(): void {
+    public function test_validate_can_regrade_with_other_version_bad() {
         $mc = \test_question_maker::make_a_multichoice_single_question();
 
         $newmc = clone($mc);
@@ -235,7 +235,7 @@ class question_single_test extends \advanced_testcase {
                 $newmc->validate_can_regrade_with_other_version($mc));
     }
 
-    public function test_validate_can_regrade_with_other_version_ok(): void {
+    public function test_validate_can_regrade_with_other_version_ok() {
         $mc = \test_question_maker::make_a_multichoice_single_question();
 
         $newmc = clone($mc);
@@ -248,7 +248,7 @@ class question_single_test extends \advanced_testcase {
         $this->assertNull($newmc->validate_can_regrade_with_other_version($mc));
     }
 
-    public function test_update_attempt_state_date_from_old_version_bad(): void {
+    public function test_update_attempt_state_date_from_old_version_bad() {
         $mc = \test_question_maker::make_a_multichoice_single_question();
 
         $newmc = clone($mc);
@@ -263,7 +263,7 @@ class question_single_test extends \advanced_testcase {
         $newmc->update_attempt_state_data_for_new_version($oldstep, $mc);
     }
 
-    public function test_update_attempt_state_date_from_old_version_ok(): void {
+    public function test_update_attempt_state_date_from_old_version_ok() {
         $mc = \test_question_maker::make_a_multichoice_single_question();
 
         $newmc = clone($mc);

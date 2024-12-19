@@ -53,7 +53,7 @@ abstract class assign_plugin {
      * @param assign $assignment
      * @param string $type
      */
-    final public function __construct(assign $assignment, $type) {
+    public final function __construct(assign $assignment, $type) {
         $this->assignment = $assignment;
         $this->type = $type;
     }
@@ -63,7 +63,7 @@ abstract class assign_plugin {
      *
      * @return bool
      */
-    final public function is_first() {
+    public final function is_first() {
         $order = get_config($this->get_subtype() . '_' . $this->get_type(), 'sortorder');
 
         if ($order == 0) {
@@ -77,7 +77,7 @@ abstract class assign_plugin {
      *
      * @return bool
      */
-    final public function is_last() {
+    public final function is_last() {
         $lastindex = count(core_component::get_plugin_list($this->get_subtype()))-1;
         $currentindex = get_config($this->get_subtype() . '_' . $this->get_type(), 'sortorder');
         if ($lastindex == $currentindex) {
@@ -123,7 +123,7 @@ abstract class assign_plugin {
      *
      * @param string $msg - the error description
      */
-    final protected function set_error($msg) {
+    protected final function set_error($msg) {
         $this->error = $msg;
     }
 
@@ -132,7 +132,7 @@ abstract class assign_plugin {
      *
      * @return string
      */
-    final public function get_error() {
+    public final function get_error() {
         return $this->error;
     }
 
@@ -141,21 +141,21 @@ abstract class assign_plugin {
      *
      * @return string - the name
      */
-    abstract public function get_name();
+    public abstract function get_name();
 
     /**
      * Should return the subtype of this plugin.
      *
      * @return string - either 'assignsubmission' or 'feedback'
      */
-    abstract public function get_subtype();
+    public abstract function get_subtype();
 
     /**
      * Should return the type of this plugin.
      *
      * @return string - the type
      */
-    final public function get_type() {
+    public final function get_type() {
         return $this->type;
     }
 
@@ -164,7 +164,7 @@ abstract class assign_plugin {
      *
      * @return string
      */
-    final public function get_version() {
+    public final function get_version() {
         $version = get_config($this->get_subtype() . '_' . $this->get_type(), 'version');
         if ($version) {
             return $version;
@@ -178,7 +178,7 @@ abstract class assign_plugin {
      *
      * @return string
      */
-    final public function get_requires() {
+    public final function get_requires() {
         $requires = get_config($this->get_subtype() . '_' . $this->get_type(), 'requires');
         if ($requires) {
             return $requires;
@@ -205,7 +205,7 @@ abstract class assign_plugin {
      *
      * @return bool
      */
-    final public function enable() {
+    public final function enable() {
         $this->enabledcache = true;
         return $this->set_config('enabled', 1);
     }
@@ -215,7 +215,7 @@ abstract class assign_plugin {
      *
      * @return bool
      */
-    final public function disable() {
+    public final function disable() {
         $this->enabledcache = false;
         return $this->set_config('enabled', 0);
     }
@@ -279,7 +279,7 @@ abstract class assign_plugin {
      *
      * @return int
      */
-    final public function get_sort_order() {
+    public final function get_sort_order() {
         $order = get_config($this->get_subtype() . '_' . $this->get_type(), 'sortorder');
         return $order?$order:0;
     }
@@ -289,7 +289,7 @@ abstract class assign_plugin {
      *
      * @return bool
      */
-    final public function is_visible() {
+    public final function is_visible() {
         if ($this->visiblecache === null) {
             $disabled = get_config($this->get_subtype() . '_' . $this->get_type(), 'disabled');
             $this->visiblecache = !$disabled;
@@ -303,7 +303,7 @@ abstract class assign_plugin {
      *
      * @return bool
      */
-    final public function has_admin_settings() {
+    public final function has_admin_settings() {
         global $CFG;
 
         $pluginroot = $CFG->dirroot . '/mod/assign/' . substr($this->get_subtype(), strlen('assign')) . '/' . $this->get_type();
@@ -318,7 +318,7 @@ abstract class assign_plugin {
      * @param string $value The config value
      * @return bool
      */
-    final public function set_config($name, $value) {
+    public final function set_config($name, $value) {
         global $DB;
 
         $dbparams = array('assignment'=>$this->assignment->get_instance()->id,
@@ -348,7 +348,7 @@ abstract class assign_plugin {
      * @param mixed $setting The config key (string) or null
      * @return mixed string | false
      */
-    final public function get_config($setting = null) {
+    public final function get_config($setting = null) {
         global $DB;
 
         if ($setting) {

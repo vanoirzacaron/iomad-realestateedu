@@ -16,6 +16,7 @@
 
 namespace core_user\hook;
 
+use core\hook\described_hook;
 use core\hook\stoppable_trait;
 
 /**
@@ -25,10 +26,19 @@ use core\hook\stoppable_trait;
  * @copyright  2024 Juan Leyva
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[\core\attribute\label('Allow plugins to callback as soon possible after user has completed login.')]
-#[\core\attribute\tags('user', 'login')]
 class after_login_completed implements
+    described_hook,
     \Psr\EventDispatcher\StoppableEventInterface
 {
     use stoppable_trait;
+    public static function get_hook_description(): string {
+        return 'Allow plugins to callback as soon possible after user has completed login.';
+    }
+
+    public static function get_hook_tags(): array {
+        return [
+            'login',
+            'user',
+        ];
+    }
 }

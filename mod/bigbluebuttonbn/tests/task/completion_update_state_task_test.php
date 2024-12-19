@@ -28,7 +28,7 @@ use mod_bigbluebuttonbn\task\completion_update_state;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers    \mod_bigbluebuttonbn\task\completion_update_state
  */
-final class completion_update_state_task_test extends advanced_testcase {
+class completion_update_state_task_test extends advanced_testcase {
 
     /**
      * Providers data to test_invalid_customdata test

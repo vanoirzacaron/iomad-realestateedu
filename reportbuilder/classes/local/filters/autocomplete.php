@@ -70,7 +70,8 @@ class autocomplete extends base {
             return ['', []];
         }
 
-        [$insql, $inparams] = $DB->get_in_or_equal($invalues, SQL_PARAMS_NAMED, database::generate_param_name('_'));
+        $paramprefix = database::generate_param_name() . '_';
+        [$insql, $inparams] = $DB->get_in_or_equal($invalues, SQL_PARAMS_NAMED, $paramprefix);
 
         return ["{$fieldsql} $insql", array_merge($params, $inparams)];
     }

@@ -1185,7 +1185,11 @@ EOF;
             throw new DriverException('Unable to obtain task lock for scheduled task');
         }
         $task->set_lock($lock);
-        $cronlock->release();
+        if (!$task->is_blocking()) {
+            $cronlock->release();
+        } else {
+            $task->set_cron_lock($cronlock);
+        }
 
         try {
             // Prepare the renderer.

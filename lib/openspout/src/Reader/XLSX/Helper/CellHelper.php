@@ -27,7 +27,7 @@ final class CellHelper
      *
      * @param string $cellIndex The Excel cell index ('A1', 'BC13', ...)
      *
-     * @throws InvalidArgumentException When the given cell index is invalid
+     * @throws \OpenSpout\Common\Exception\InvalidArgumentException When the given cell index is invalid
      */
     public static function getColumnIndexFromCellIndex(string $cellIndex): int
     {

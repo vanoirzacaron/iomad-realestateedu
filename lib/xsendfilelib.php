@@ -17,16 +17,17 @@
 /**
  * X-Sendfile support
  *
- * @package   core
+ * @package   core_files
  * @copyright 2012 Petr Skoda {@link http://skodak.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+//NOTE: do not verify MOODLE_INTERNAL here, this is used from themes too
+
 /**
- * Serve files using the X-Sendfile header.
- *
- * This needs special server module or configuration.
- * Please make sure that all headers are already sent and the all access control checks passed.
+ * Serve file using X-Sendfile header, this needs special server module
+ * or configuration. Please make sure that all headers are already sent
+ * and the all access control checks passed.
  *
  * @param string $filepath
  * @return bool success
@@ -56,18 +57,18 @@ function xsendfile($filepath) {
     }
 
     $aliased = false;
-    if (!empty($CFG->xsendfilealiases) && is_array($CFG->xsendfilealiases)) {
-        foreach ($CFG->xsendfilealiases as $alias => $dir) {
+    if (!empty($CFG->xsendfilealiases) and is_array($CFG->xsendfilealiases)) {
+        foreach ($CFG->xsendfilealiases as $alias=>$dir) {
             $dir = realpath($dir);
             if ($dir === false) {
                 continue;
             }
             if (substr($dir, -1) !== DIRECTORY_SEPARATOR) {
-                // Add trailing dir separator.
+                // add trailing dir separator
                 $dir .= DIRECTORY_SEPARATOR;
             }
-            if (str_starts_with($filepath, $dir)) {
-                $filepath = $alias . substr($filepath, strlen($dir));
+            if (strpos($filepath, $dir) === 0) {
+                $filepath = $alias.substr($filepath, strlen($dir));
                 $aliased = true;
                 break;
             }
@@ -75,12 +76,12 @@ function xsendfile($filepath) {
     }
 
     if ($CFG->xsendfile === 'X-LIGHTTPD-send-file') {
-        // Version 1.4.40 and earlier do not support byte serving.
-        // See http://redmine.lighttpd.net/projects/lighttpd/wiki/X-LIGHTTPD-send-file for more information.
+        // http://redmine.lighttpd.net/projects/lighttpd/wiki/X-LIGHTTPD-send-file says 1.4 it does not support byteserving
         header('Accept-Ranges: none');
+
     } else if ($CFG->xsendfile === 'X-Accel-Redirect') {
+        // http://wiki.nginx.org/XSendfile
         // Nginx requires paths relative to aliases, you need to specify them in config.php
-        // See http://wiki.nginx.org/XSendfile for more information.
         if (!$aliased) {
             return false;
         }

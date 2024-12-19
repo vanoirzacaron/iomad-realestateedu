@@ -1,5 +1,5 @@
 <?php
-// This file is part of SAML2 Authentication Plugin
+// This file is part of IOMAD SAML2 Authentication Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ class auth_iomadsaml2_test extends \advanced_testcase {
         parent::tearDown();
         unset($SESSION->notifications);
         unset($SESSION->saml);
-        unset($_GET['iomadsaml']);
+        unset($_GET['saml']);
     }
 
     /**
@@ -283,7 +283,7 @@ class auth_iomadsaml2_test extends \advanced_testcase {
         $this->assertEquals(md5($entity1->entityid), $url->get_param('idp'));
         $this->assertEquals('off', $url->get_param('passive'));
 
-        // Wantsurl is pointing to auth/saml2/login.php.
+        // Wantsurl is pointing to auth/iomadsaml2/login.php.
         $list = $auth->loginpage_idp_list('/auth/iomadsaml2/login.php');
         $url = $list[0]['url'];
         $this->assertInstanceOf(\moodle_url::class, $url);
@@ -772,14 +772,14 @@ class auth_iomadsaml2_test extends \advanced_testcase {
 
         $SESSION->saml = $session;
 
-        // HTML get param optional_param('iomadsaml', 0, PARAM_BOOL).
+        // HTML get param optional_param('saml', 0, PARAM_BOOL).
         if ($param !== null) {
             if ($param == 'error') {
                 $_GET['SimpleSAML_Auth_State_exceptionId'] = '...';
             } else if ($param == 'post') {
                 $_SERVER['REQUEST_METHOD'] = 'POST';
             } else {
-                $_GET['iomadsaml'] = $param;
+                $_GET['saml'] = $param;
             }
         }
 
@@ -787,9 +787,6 @@ class auth_iomadsaml2_test extends \advanced_testcase {
         if ($multiidp === true) {
             $_GET['multiidp'] = true;
         }
-
-        // Setting an ip to use for testing against different configs.
-        $_SERVER['REMOTE_ADDR'] = '1.2.3.4';
 
         /** @var auth_plugin_iomadsaml2 $auth */
         $auth = get_auth_plugin('iomadsaml2');
@@ -869,7 +866,7 @@ class auth_iomadsaml2_test extends \advanced_testcase {
                 'on', false, true,
                 true],
 
-            // For passive mode always redirect, SAML2 will redirect back if not logged in.
+            // For passive mode always redirect, IOMAD SAML2 will redirect back if not logged in.
             "10. dual: p, param: null, multiidp: false, session: true" => [
                 [],
                 ['duallogin' => 'passive'],
@@ -937,55 +934,6 @@ class auth_iomadsaml2_test extends \advanced_testcase {
                 ['duallogin' => true],
                 'on', true, false,
                 $midp],
-
-            // Restrict noredirect flags by ip.
-            // IP restrictions for ?saml=off should only take effect when dual is off.
-            "21. dual: y, ips: no match, param: off, multiidp: false, session: false" => [
-                [],
-                ['duallogin' => true, 'noredirectips' => '4.3.2.1'],
-                'off', false, false,
-                false],
-
-            // Ignore ?saml=off when ip restrictions are set and there's no matching ip.
-            "22. dual: n, ips: no match, param: off, multiidp: false, session: false" => [
-                [],
-                ['duallogin' => false, 'noredirectips' => '4.3.2.1'],
-                'off', false, false,
-                true],
-
-            // Allow ?saml=off when ip restrictions are set and there's a matching ip.
-            "23. dual: n, ips: match, param: off, multiidp: false, session: false" => [
-                [],
-                ['duallogin' => false, 'noredirectips' => '1.2.3.4'],
-                'off', false, false,
-                false],
-
-            // Matching ip subsets.
-            "24. dual: n, ips: match subset, param: off, multiidp: false, session: false" => [
-                [],
-                ['duallogin' => false, 'noredirectips' => '1.2'],
-                'off', false, false,
-                false],
-
-            // Multiple lines.
-            "25. dual: n, ips: match line, param: off, multiidp: false, session: false" => [
-                [],
-                ['duallogin' => false, 'noredirectips' => '4.3.2.1' . PHP_EOL . '1.2.3.4'],
-                'off', false, false,
-                false],
-
-            // Confirm this works the same for sessions.
-            "26. dual: n, ips: no match, param: off, multiidp: false, session: true" => [
-                [],
-                ['duallogin' => false, 'noredirectips' => '4.3.2.1'],
-                'off', false, true,
-                true],
-
-            "27. dual: n, ips: match, param: off, multiidp: false, session: true" => [
-                [],
-                ['duallogin' => false, 'noredirectips' => '1.2.3.4'],
-                'off', false, true,
-                false],
         ];
     }
 
@@ -993,12 +941,12 @@ class auth_iomadsaml2_test extends \advanced_testcase {
      * Test test_check_whitelisted_ip_redirect
      *
      * @dataProvider provider_check_whitelisted_ip_redirect
-     * @param string $iomadsaml
+     * @param string $saml
      * @param string $remoteip
      * @param string $whitelist
      * @param bool $expected The expected return value
      */
-    public function test_check_whitelisted_ip_redirect($iomadsaml, $remoteip, $whitelist, $expected): void {
+    public function test_check_whitelisted_ip_redirect($saml, $remoteip, $whitelist, $expected): void {
         // Setting an address here as getremoteaddr() will return default 0.0.0.0 which then is ignored by the address_in_subnet
         // function.
         $_SERVER['REMOTE_ADDR'] = $remoteip;
@@ -1006,8 +954,8 @@ class auth_iomadsaml2_test extends \advanced_testcase {
         $this->get_generator()->create_idp_entity(['whitelist' => $whitelist]);
         $auth = get_auth_plugin('iomadsaml2');
 
-        if ($iomadsaml !== null) {
-            $_GET['iomadsaml'] = $iomadsaml;
+        if ($saml !== null) {
+            $_GET['saml'] = $saml;
         }
 
         $result = $auth->should_login_redirect();

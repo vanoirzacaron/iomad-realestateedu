@@ -32,7 +32,6 @@ $functions = [
         'capabilities'  => '',
         'ajax'          => true,
         'loginrequired' => true,
-        'services'      => [MOODLE_OFFICIAL_MOBILE_SERVICE],
     ],
     'tool_dataprivacy_contact_dpo' => [
         'classname'     => 'tool_dataprivacy\external',
@@ -43,7 +42,6 @@ $functions = [
         'capabilities'  => '',
         'ajax'          => true,
         'loginrequired' => true,
-        'services'      => [MOODLE_OFFICIAL_MOBILE_SERVICE],
     ],
     'tool_dataprivacy_mark_complete' => [
         'classname'     => 'tool_dataprivacy\external',
@@ -242,23 +240,5 @@ $functions = [
         'capabilities'  => 'tool/dataprivacy:managedataregistry',
         'ajax'          => true,
         'loginrequired' => true,
-    ],
-    'tool_dataprivacy_get_access_information' => [
-        'classname'     => '\tool_dataprivacy\external\get_access_information',
-        'description'   => 'Retrieving privacy API access (permissions) information for the current user.',
-        'type'          => 'read',
-        'services'      => [MOODLE_OFFICIAL_MOBILE_SERVICE],
-    ],
-    'tool_dataprivacy_create_data_request' => [
-        'classname'     => '\tool_dataprivacy\external\create_data_request',
-        'description'   => 'Creates a data request.',
-        'type'          => 'write',
-        'services'      => [MOODLE_OFFICIAL_MOBILE_SERVICE],
-    ],
-    'tool_dataprivacy_get_data_requests' => [
-        'classname'     => '\tool_dataprivacy\external\get_data_requests',
-        'description'   => 'Gets data request.',
-        'type'          => 'read',
-        'services'      => [MOODLE_OFFICIAL_MOBILE_SERVICE],
     ],
 ];

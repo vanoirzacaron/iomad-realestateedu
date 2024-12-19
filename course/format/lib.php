@@ -131,7 +131,7 @@ class format_site extends course_format {
      *
      * @return int
      */
-    public function get_sectionnum(): int {
+    public function get_section_number(): int {
         return 1;
     }
 }
@@ -144,7 +144,7 @@ class format_site extends course_format {
  * @param array $option The definition structure of the option.
  * @param string $optionname The name of the option, as provided in the definition.
  */
-function contract_value(array &$dest, array $source, array $option, string $optionname): void {
+function contract_value(array &$dest, array $source, array $option, string $optionname) : void {
     if (substr($optionname, -7) == '_editor') { // Suffix '_editor' indicates that the element is an editor.
         $name = substr($optionname, 0, -7);
         if (isset($source[$name])) {
@@ -184,7 +184,7 @@ function clean_param_if_not_null($param, string $type = PARAM_RAW) {
  * @param array $option The definition structure of the option.
  * @param string $optionname The name of the option, as provided in the definition.
  */
-function expand_value(array &$dest, array $source, array $option, string $optionname): void {
+function expand_value(array &$dest, array $source, array $option, string $optionname) : void {
     if (substr($optionname, -7) == '_editor') { // Suffix '_editor' indicates that the element is an editor.
         $name = substr($optionname, 0, -7);
         if (is_string($source[$optionname])) {
@@ -219,8 +219,8 @@ function core_courseformat_output_fragment_cmitem($args): string {
     }
 
     $format = course_get_format($course);
-    if (!is_null($args['sr'])) {
-        $format->set_sectionnum($args['sr']);
+    if (!empty($args['sr'])) {
+        $format->set_section_number($args['sr']);
     }
     $renderer = $format->get_renderer($PAGE);
     $section = $cm->get_section_info();
@@ -246,8 +246,8 @@ function core_courseformat_output_fragment_section($args): string {
     }
 
     $format = course_get_format($course);
-    if (!is_null($args['sr'])) {
-        $format->set_sectionnum($args['sr']);
+    if (!empty($args['sr'])) {
+        $format->set_section_number($args['sr']);
     }
 
     $modinfo = $format->get_modinfo();

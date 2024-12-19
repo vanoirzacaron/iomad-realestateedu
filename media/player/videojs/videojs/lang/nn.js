@@ -68,7 +68,7 @@ videojs.addLanguage('nn', {
   "Raised": "Utheva",
   "Depressed": "Nedtrykt",
   "Uniform": "Enkel",
-  "Drop shadow": "Skugge",
+  "Dropshadow": "Skugge",
   "Font Family": "Skrifttype",
   "Proportional Sans-Serif": "Proporsjonal skrift utan seriffar",
   "Monospace Sans-Serif": "Fastbreddeskrift utan seriffar",

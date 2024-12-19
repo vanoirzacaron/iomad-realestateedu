@@ -57,7 +57,7 @@ class plugin_test extends \advanced_testcase {
      * in core accesslib was changed, but it is possible that only this test
      * is affected, nto the plugin itself...
      */
-    public function test_utils(): void {
+    public function test_utils() {
         global $DB;
 
         $this->resetAfterTest();
@@ -84,7 +84,7 @@ class plugin_test extends \advanced_testcase {
         $this->assertEmpty($roles);
     }
 
-    public function test_handler_sync(): void {
+    public function test_handler_sync() {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/enrol/category/locallib.php');
 
@@ -157,7 +157,7 @@ class plugin_test extends \advanced_testcase {
 
     }
 
-    public function test_sync_course(): void {
+    public function test_sync_course() {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/enrol/category/locallib.php');
 
@@ -251,7 +251,7 @@ class plugin_test extends \advanced_testcase {
         $this->assertEquals(0, $DB->count_records('enrol', array('enrol'=>'category')));
     }
 
-    public function test_sync_full(): void {
+    public function test_sync_full() {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/enrol/category/locallib.php');
 

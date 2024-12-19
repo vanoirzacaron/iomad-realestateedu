@@ -66,7 +66,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test to ensure that event data is being stored correctly.
      */
-    public function test_answer_created(): void {
+    public function test_answer_created() {
         global $DB;
         // Generate user data.
         $user = $this->getDataGenerator()->create_user();
@@ -95,7 +95,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test to ensure that event data is being stored correctly.
      */
-    public function test_answer_submitted_by_another_user(): void {
+    public function test_answer_submitted_by_another_user() {
         global $DB, $USER;
         // Generate user data.
         $user = $this->getDataGenerator()->create_user();
@@ -123,7 +123,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test to ensure that multiple choice data is being stored correctly.
      */
-    public function test_answer_created_multiple(): void {
+    public function test_answer_created_multiple() {
         global $DB;
 
         // Generate user data.
@@ -171,7 +171,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test custom validations.
      */
-    public function test_answer_created_other_exception(): void {
+    public function test_answer_created_other_exception() {
         // Generate user data.
         $user = $this->getDataGenerator()->create_user();
 
@@ -192,7 +192,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test to ensure that event data is being stored correctly.
      */
-    public function test_answer_updated(): void {
+    public function test_answer_updated() {
         global $DB;
         // Generate user data.
         $user = $this->getDataGenerator()->create_user();
@@ -236,7 +236,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test to ensure that event data is being stored correctly.
      */
-    public function test_answer_deleted(): void {
+    public function test_answer_deleted() {
         global $DB, $USER;
         // Generate user data.
         $user = $this->getDataGenerator()->create_user();
@@ -272,7 +272,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test to ensure that event data is being stored correctly.
      */
-    public function test_report_viewed(): void {
+    public function test_report_viewed() {
         global $USER;
 
         $this->resetAfterTest();
@@ -305,7 +305,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test to ensure that event data is being stored correctly.
      */
-    public function test_report_downloaded(): void {
+    public function test_report_downloaded() {
         global $USER;
 
         $this->resetAfterTest();
@@ -342,7 +342,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test to ensure that event data is being stored correctly.
      */
-    public function test_course_module_viewed(): void {
+    public function test_course_module_viewed() {
         global $USER;
 
         // Generate user data.
@@ -373,7 +373,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test to ensure that event data is being stored correctly.
      */
-    public function test_course_module_instance_list_viewed_viewed(): void {
+    public function test_course_module_instance_list_viewed_viewed() {
         global $USER;
 
         // Not much can be tested here as the event is only triggered on a page load,

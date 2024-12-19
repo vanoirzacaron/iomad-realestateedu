@@ -39,7 +39,7 @@ require_once($CFG->dirroot . '/mod/imscp/lib.php');
  */
 class lib_test extends \advanced_testcase {
 
-    public function test_export_contents(): void {
+    public function test_export_contents() {
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -69,7 +69,7 @@ class lib_test extends \advanced_testcase {
      * Test imscp_view
      * @return void
      */
-    public function test_imscp_view(): void {
+    public function test_imscp_view() {
         global $CFG;
 
         $CFG->enablecompletion = 1;
@@ -107,7 +107,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals(1, $completiondata->completionstate);
     }
 
-    public function test_imscp_core_calendar_provide_event_action(): void {
+    public function test_imscp_core_calendar_provide_event_action() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -133,7 +133,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_imscp_core_calendar_provide_event_action_for_user(): void {
+    public function test_imscp_core_calendar_provide_event_action_for_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -170,7 +170,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_imscp_core_calendar_provide_event_action_as_non_user(): void {
+    public function test_imscp_core_calendar_provide_event_action_as_non_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -198,7 +198,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_imscp_core_calendar_provide_event_action_in_hidden_section(): void {
+    public function test_imscp_core_calendar_provide_event_action_in_hidden_section() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -234,7 +234,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_imscp_core_calendar_provide_event_action_already_completed(): void {
+    public function test_imscp_core_calendar_provide_event_action_already_completed() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -268,7 +268,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_imscp_core_calendar_provide_event_action_already_completed_for_user(): void {
+    public function test_imscp_core_calendar_provide_event_action_already_completed_for_user() {
         global $CFG;
 
         $this->resetAfterTest();

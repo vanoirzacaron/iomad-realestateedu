@@ -52,7 +52,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         return new \question_contains_tag_with_attributes('div', $expectedattrs);
     }
 
-    public function test_interactive_behaviour(): void {
+    public function test_interactive_behaviour() {
 
         // Create a drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext');
@@ -189,7 +189,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_mark(8);
     }
 
-    public function test_deferred_feedback(): void {
+    public function test_deferred_feedback() {
 
         // Create a drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext');
@@ -292,7 +292,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_mark(9);
     }
 
-    public function test_deferred_feedback_unanswered(): void {
+    public function test_deferred_feedback_unanswered() {
 
         // Create a drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext');
@@ -355,7 +355,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
             $this->get_contains_drag_image_home_expectation(4, 2, 2));
     }
 
-    public function test_deferred_feedback_partial_answer(): void {
+    public function test_deferred_feedback_partial_answer() {
 
         // Create a drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext');
@@ -417,7 +417,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
             $this->get_contains_partcorrect_expectation());
     }
 
-    public function test_interactive_grading(): void {
+    public function test_interactive_grading() {
 
         // Create a drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext');
@@ -597,7 +597,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
             $this->get_contains_standard_correct_combined_feedback_expectation());
     }
 
-    public function test_interactive_correct_no_submit(): void {
+    public function test_interactive_correct_no_submit() {
 
         // Create a drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext');
@@ -657,7 +657,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_mark(3);
     }
 
-    public function test_interactive_partial_no_submit(): void {
+    public function test_interactive_partial_no_submit() {
 
         // Create a drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext');
@@ -719,7 +719,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_mark(1);
     }
 
-    public function test_interactive_no_right_clears(): void {
+    public function test_interactive_no_right_clears() {
 
         // Create a drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext');
@@ -796,7 +796,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
             $this->get_no_hint_visible_expectation());
     }
 
-    public function test_display_of_right_answer_when_shuffled(): void {
+    public function test_display_of_right_answer_when_shuffled() {
 
         // Create a drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext');
@@ -853,7 +853,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->check_current_mark(3);
     }
 
-    public function test_mixed_lang_rendering(): void {
+    public function test_mixed_lang_rendering() {
 
         // Create a mixe drag-and-drop question.
         $dd = \test_question_maker::make_question('ddimageortext', 'mixedlang');

@@ -44,7 +44,7 @@ class basenestedelement_test extends \basic_testcase {
     /**
      * Correct creation tests (attributes and final elements)
      */
-    public function test_creation(): void {
+    public function test_creation() {
         // Create instance with name, attributes and values and check all them
         $instance = new mock_base_nested_element('NAME', array('ATTR1', 'ATTR2'), array('VAL1', 'VAL2', 'VAL3'));
         $this->assertInstanceOf('base_nested_element', $instance);
@@ -182,7 +182,7 @@ class basenestedelement_test extends \basic_testcase {
     /**
      * Incorrect creation tests (attributes and final elements)
      */
-    function test_wrong_creation(): void {
+    function test_wrong_creation() {
 
         // Create instance with invalid name
         try {
@@ -251,7 +251,7 @@ class basenestedelement_test extends \basic_testcase {
     /**
      * Correct tree tests (children stuff)
      */
-    function test_tree(): void {
+    function test_tree() {
 
         // Create parent and child instances, tree-ing them
         $parent = new mock_base_nested_element('PARENT');
@@ -305,7 +305,7 @@ class basenestedelement_test extends \basic_testcase {
     /**
      * Incorrect tree tests (children stuff)
      */
-    function test_wrong_tree(): void {
+    function test_wrong_tree() {
 
         // Add null object child
         $parent = new mock_base_nested_element('PARENT');

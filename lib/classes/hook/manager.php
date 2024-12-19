@@ -16,7 +16,6 @@
 
 namespace core\hook;
 
-use core\attribute_helper;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
@@ -45,6 +44,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 final class manager implements
     EventDispatcherInterface,
     ListenerProviderInterface {
+
     /** @var ?manager the one instance of listener provider and dispatcher */
     private static $instance = null;
 
@@ -85,8 +85,6 @@ final class manager implements
     /**
      * Factory method for testing of hook manager in PHPUnit tests.
      *
-     * Please note that the result of this method should typically be passed to \core\di::set().
-     *
      * @param array $componentfiles list of hook callback files for each component.
      * @return self
      */
@@ -121,6 +119,7 @@ final class manager implements
      *
      * @param string $hookname
      * @param callable $callback
+     * @return void
      */
     public function phpunit_redirect_hook(string $hookname, callable $callback): void {
         if (!PHPUNIT_TEST) {
@@ -131,6 +130,8 @@ final class manager implements
 
     /**
      * Cancel all redirections of hook callbacks.
+     *
+     * @return void
      */
     public function phpunit_stop_redirections(): void {
         if (!PHPUNIT_TEST) {
@@ -170,7 +171,7 @@ final class manager implements
      *   callable MUST be type-compatible with $event.
      *   Please note that in Moodle the callable must be a string.
      */
-    public function getListenersForEvent(object $event): iterable { // phpcs:ignore
+    public function getListenersForEvent(object $event): iterable {
         // Callbacks are sorted by priority, highest first at load-time.
         $hookclassname = get_class($event);
         $callbacks = $this->get_callbacks_for_hook($hookclassname);
@@ -190,30 +191,6 @@ final class manager implements
                 yield $callback;
             }
         }
-    }
-
-    /**
-     * Get the list of callbacks that the given hook class replaces (if any).
-     *
-     * @param string $hookclassname
-     * @return array
-     */
-    public static function get_replaced_callbacks(string $hookclassname): array {
-        if (!class_exists($hookclassname)) {
-            return [];
-        }
-        if (is_subclass_of($hookclassname, \core\hook\deprecated_callback_replacement::class)) {
-            return $hookclassname::get_deprecated_plugin_callbacks();
-        }
-
-        // Ensure that the replaces_callbacks attribute is loaded.
-        // TODO MDL-81134 Remove after LTS+1.
-        require_once(dirname(__DIR__) . '/attribute/hook/replaces_callbacks.php');
-        if ($replaces = attribute_helper::instance($hookclassname, \core\attribute\hook\replaces_callbacks::class)) {
-            return $replaces->callbacks;
-        }
-
-        return [];
     }
 
     /**
@@ -257,7 +234,7 @@ final class manager implements
             debugging(
                 "Cannot execute callback '$callablename' from '$component'" .
                     "Callback method not callable.",
-                DEBUG_DEVELOPER,
+                DEBUG_DEVELOPER
             );
             return false;
         }
@@ -327,6 +304,8 @@ final class manager implements
 
     /**
      * Initialise list of all callbacks for each hook.
+     *
+     * @return void
      */
     private function init_standard_callbacks(): void {
         global $CFG;
@@ -381,6 +360,7 @@ final class manager implements
      * Load callbacks from component db/hooks.php files.
      *
      * @param array $componentfiles list of all components with their callback files
+     * @return void
      */
     private function load_callbacks(array $componentfiles): void {
         $this->allcallbacks = [];
@@ -492,9 +472,20 @@ final class manager implements
     private function fetch_deprecated_callbacks(): void {
         $candidates = self::discover_known_hooks();
 
+        /** @var class-string<deprecated_callback_replacement> $hookclassname */
         foreach (array_keys($candidates) as $hookclassname) {
-            foreach (self::get_replaced_callbacks($hookclassname) as $replacedcallback) {
-                $this->alldeprecations[$replacedcallback][] = $hookclassname;
+            if (!class_exists($hookclassname)) {
+                continue;
+            }
+            if (!is_subclass_of($hookclassname, \core\hook\deprecated_callback_replacement::class)) {
+                continue;
+            }
+            $deprecations = $hookclassname::get_deprecated_plugin_callbacks();
+            if (!$deprecations) {
+                continue;
+            }
+            foreach ($deprecations as $deprecation) {
+                $this->alldeprecations[$deprecation][] = $hookclassname;
             }
         }
     }
@@ -504,13 +495,14 @@ final class manager implements
      *
      * @param string $component component where hook callbacks are defined
      * @param string $hookfile file with list of all callbacks for component
+     * @return void
      */
     private function add_component_callbacks(string $component, string $hookfile): void {
         if (!file_exists($hookfile)) {
             return;
         }
 
-        $parsecallbacks = function ($hookfile) {
+        $parsecallbacks = function($hookfile) {
             $callbacks = [];
             include($hookfile);
             return $callbacks;
@@ -562,13 +554,6 @@ final class manager implements
             return null;
         }
         $classmethod = $callback['callback'];
-        if (is_array($classmethod)) {
-            if (count($classmethod) !== 2) {
-                debugging("Hook callback definition contains invalid 'callback' array in '$component'", DEBUG_DEVELOPER);
-                return null;
-            }
-            $classmethod = implode('::', $classmethod);
-        }
         if (!is_string($classmethod)) {
             debugging("Hook callback definition contains invalid 'callback' string in '$component'", DEBUG_DEVELOPER);
             return null;
@@ -576,7 +561,7 @@ final class manager implements
         if (!str_contains($classmethod, '::')) {
             debugging(
                 "Hook callback definition contains invalid 'callback' static class method string in '$component'",
-                DEBUG_DEVELOPER,
+                DEBUG_DEVELOPER
             );
             return null;
         }
@@ -592,25 +577,9 @@ final class manager implements
      *
      * @param string $plugincallback short callback name without the component prefix
      * @return bool
-     * @deprecated in favour of get_hooks_deprecating_plugin_callback since Moodle 4.4.
-     * @todo Remove in Moodle 4.8 (MDL-80327).
      */
     public function is_deprecated_plugin_callback(string $plugincallback): bool {
-        debugging(
-            'is_deprecated_plugin_callback method is deprecated, use get_hooks_deprecating_plugin_callback instead.',
-            DEBUG_DEVELOPER,
-        );
-        return (bool)$this->get_hooks_deprecating_plugin_callback($plugincallback);
-    }
-
-    /**
-     * If the plugin callback from lib.php is deprecated by any hooks, return the hooks' classnames.
-     *
-     * @param string $plugincallback short callback name without the component prefix
-     * @return ?array
-     */
-    public function get_hooks_deprecating_plugin_callback(string $plugincallback): ?array {
-        return $this->alldeprecations[$plugincallback] ?? null;
+        return isset($this->alldeprecations[$plugincallback]);
     }
 
     /**

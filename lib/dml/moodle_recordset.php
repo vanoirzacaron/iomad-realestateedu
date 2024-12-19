@@ -73,5 +73,5 @@ abstract class moodle_recordset implements Iterator {
      * Free resources and connections, recordset can not be used anymore.
      * @return void
      */
-    abstract public function close();
+    public abstract function close();
 }

@@ -40,7 +40,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test view_page
      */
-    public function test_view_page(): void {
+    public function test_view_page() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -110,7 +110,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test test_mod_page_get_pages_by_courses
      */
-    public function test_mod_page_get_pages_by_courses(): void {
+    public function test_mod_page_get_pages_by_courses() {
         global $DB;
 
         $this->resetAfterTest(true);

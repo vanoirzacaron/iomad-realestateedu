@@ -39,7 +39,7 @@ class async_helper_test extends \advanced_testcase {
     /**
      * Tests sending message for asynchronous backup.
      */
-    public function test_send_message(): void {
+    public function test_send_message() {
         global $DB, $USER;
         $this->preventResetByRollback();
         $this->resetAfterTest(true);
@@ -93,7 +93,7 @@ class async_helper_test extends \advanced_testcase {
     /**
      * Tests getting the asynchronous backup table items.
      */
-    public function test_get_async_backups(): void {
+    public function test_get_async_backups() {
         global $DB, $CFG, $USER, $PAGE;
 
         $this->resetAfterTest(true);
@@ -150,7 +150,7 @@ class async_helper_test extends \advanced_testcase {
     /**
      * Tests getting the backup record.
      */
-    public function test_get_backup_record(): void {
+    public function test_get_backup_record() {
         global $USER;
 
         $this->resetAfterTest();
@@ -172,7 +172,7 @@ class async_helper_test extends \advanced_testcase {
     /**
      * Tests is async pending conditions.
      */
-    public function test_is_async_pending(): void {
+    public function test_is_async_pending() {
         global $USER;
 
         $this->resetAfterTest();
@@ -203,7 +203,7 @@ class async_helper_test extends \advanced_testcase {
     /**
      * Tests is async pending conditions for course copies.
      */
-    public function test_is_async_pending_copy(): void {
+    public function test_is_async_pending_copy() {
         global $USER;
 
         $this->resetAfterTest();

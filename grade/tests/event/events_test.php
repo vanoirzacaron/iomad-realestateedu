@@ -61,7 +61,7 @@ class events_test extends \advanced_testcase {
      * There is no external API for triggering this event, so the unit test will simply
      * create and trigger the event and ensure the data is returned as expected.
      */
-    public function test_grade_letter_created(): void {
+    public function test_grade_letter_created() {
         // Create a grade letter created event.
         $event = \core\event\grade_letter_created::create(array(
             'objectid' => 10,
@@ -85,7 +85,7 @@ class events_test extends \advanced_testcase {
      * There is no external API for triggering this event, so the unit test will simply
      * create and trigger the event and ensure the data is returned as expected.
      */
-    public function test_grade_letter_deleted(): void {
+    public function test_grade_letter_deleted() {
         // Create a grade letter deleted event.
         $event = \core\event\grade_letter_deleted::create(array(
             'objectid' => 10,
@@ -109,7 +109,7 @@ class events_test extends \advanced_testcase {
      * There is no external API for triggering this event, so the unit test will simply
      * create and trigger the event and ensure the data is returned as expected.
      */
-    public function test_grade_letter_updated(): void {
+    public function test_grade_letter_updated() {
         // Create a grade letter updated event.
         $event = \core\event\grade_letter_updated::create(array(
             'objectid' => 10,
@@ -130,7 +130,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the scale created event.
      */
-    public function test_scale_created(): void {
+    public function test_scale_created() {
         $gradescale = new \grade_scale();
         $gradescale->name        = 'unittestscale3';
         $gradescale->courseid    = $this->course->id;
@@ -156,7 +156,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the scale deleted event.
      */
-    public function test_scale_deleted(): void {
+    public function test_scale_deleted() {
         $gradescale = new \grade_scale();
         $gradescale->name        = 'unittestscale3';
         $gradescale->courseid    = $this->course->id;
@@ -179,7 +179,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the scale updated event.
      */
-    public function test_scale_updated(): void {
+    public function test_scale_updated() {
         $gradescale = new \grade_scale();
         $gradescale->name        = 'unittestscale3';
         $gradescale->courseid    = $this->course->id;

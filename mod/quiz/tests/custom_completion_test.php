@@ -139,7 +139,7 @@ class custom_completion_test extends advanced_testcase {
      * Test checking the completion state of a quiz base on core's completionpassgrade criteria.
      * The quiz requires a passing grade to be completed.
      */
-    public function test_completionpass(): void {
+    public function test_completionpass() {
         list($students, $quiz, $cm) = $this->setup_quiz_for_testing_completion([
             'nbstudents' => 2,
             'qtype' => 'numerical',
@@ -194,7 +194,7 @@ class custom_completion_test extends advanced_testcase {
      * @covers ::get_state
      * @covers ::get_custom_rule_descriptions
      */
-    public function test_completionexhausted(): void {
+    public function test_completionexhausted() {
         list($students, $quiz, $cm) = $this->setup_quiz_for_testing_completion([
             'nbstudents' => 2,
             'qtype' => 'numerical',
@@ -272,7 +272,7 @@ class custom_completion_test extends advanced_testcase {
      * @covers ::get_state
      * @covers ::get_custom_rule_descriptions
      */
-    public function test_completionminattempts(): void {
+    public function test_completionminattempts() {
         list($students, $quiz, $cm) = $this->setup_quiz_for_testing_completion([
             'nbstudents' => 1,
             'qtype' => 'essay',
@@ -324,7 +324,7 @@ class custom_completion_test extends advanced_testcase {
      *
      * @covers ::get_defined_custom_rules
      */
-    public function test_get_defined_custom_rules(): void {
+    public function test_get_defined_custom_rules() {
         $rules = custom_completion::get_defined_custom_rules();
         $this->assertCount(2, $rules);
         $this->assertEquals(
@@ -338,7 +338,7 @@ class custom_completion_test extends advanced_testcase {
      *
      * @covers \update_moduleinfo
      */
-    public function test_update_moduleinfo(): void {
+    public function test_update_moduleinfo() {
         $this->setAdminUser();
         // We need lite cm object not a full cm because update_moduleinfo is not allow some properties to be updated.
         list($students, $quiz, $cm, $litecm) = $this->setup_quiz_for_testing_completion([

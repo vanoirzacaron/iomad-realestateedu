@@ -65,6 +65,6 @@ $capabilities = [
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         ),
-        'clonepermissionsfrom' => 'moodle/grade:viewall',
+        'clonepermissionsfrom' => 'moodle/grade:manage'
     ),
 ];

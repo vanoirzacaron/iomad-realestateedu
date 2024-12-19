@@ -42,7 +42,7 @@ class lib_test extends \advanced_testcase {
      * @param int $section
      * @param string $expected
      */
-    public function test_generate_mnet_endpoint($profileurl, $course, $section, $expected): void {
+    public function test_generate_mnet_endpoint($profileurl, $course, $section, $expected) {
         $endpoint = generate_mnet_endpoint($profileurl, $course, $section);
         $this->assertEquals($expected, $endpoint);
     }
@@ -52,7 +52,7 @@ class lib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function get_endpoints_provider() {
+    public static function get_endpoints_provider(): array {
         global $CFG;
         return [
             [

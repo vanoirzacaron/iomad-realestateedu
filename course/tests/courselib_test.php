@@ -30,7 +30,6 @@ use context_course;
 use context_module;
 use context_system;
 use context_coursecat;
-use core\event\section_viewed;
 use core_completion_external;
 use core_external;
 use core_tag_index_builder;
@@ -399,7 +398,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test create_module() for multiple modules defined in the $modules array (first declaration of the function).
      */
-    public function test_create_module(): void {
+    public function test_create_module() {
         // Add the module name you want to test here.
         // Create the match MODULENAME_create_set_values() and MODULENAME_create_run_asserts().
         $modules = array('forum', 'assign');
@@ -412,7 +411,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test update_module() for multiple modules defined in the $modules array (first declaration of the function).
      */
-    public function test_update_module(): void {
+    public function test_update_module() {
         // Add the module name you want to test here.
         // Create the match MODULENAME_update_set_values() and MODULENAME_update_run_asserts().
         $modules = array('forum');
@@ -637,7 +636,7 @@ class courselib_test extends advanced_testcase {
      *
      * @return array An array of arrays contain test data
      */
-    public function provider_course_delete_module() {
+    public static function provider_course_delete_module(): array {
         $data = array();
 
         $data['assign'] = array('assign', array('duedate' => time()));
@@ -649,7 +648,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the create_course function
      */
-    public function test_create_course(): void {
+    public function test_create_course() {
         global $DB;
         $this->resetAfterTest(true);
         $defaultcategory = $DB->get_field_select('course_categories', "MIN(id)", "parent=0");
@@ -693,7 +692,7 @@ class courselib_test extends advanced_testcase {
         }
     }
 
-    public function test_create_course_with_generator(): void {
+    public function test_create_course_with_generator() {
         global $DB;
         $this->resetAfterTest(true);
         $course = $this->getDataGenerator()->create_course();
@@ -703,7 +702,7 @@ class courselib_test extends advanced_testcase {
         $this->assertTrue($sectioncreated);
     }
 
-    public function test_create_course_sections(): void {
+    public function test_create_course_sections() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -729,7 +728,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals(range(0, $numsections + 1), $sectionscreated);
     }
 
-    public function test_update_course(): void {
+    public function test_update_course() {
         global $DB;
 
         $this->resetAfterTest();
@@ -776,33 +775,25 @@ class courselib_test extends advanced_testcase {
         }
     }
 
-    public function test_update_course_section_time_modified(): void {
+    public function test_update_course_section_time_modified() {
         global $DB;
 
         $this->resetAfterTest();
 
         // Create the course with sections.
-        $course = $this->getDataGenerator()->create_course(
-            ['numsections' => 10],
-            ['createsections' => true]
-        );
-        $sections = $DB->get_records('course_sections', ['course' => $course->id]);
+        $course = $this->getDataGenerator()->create_course(array('numsections' => 10), array('createsections' => true));
+        $sections = $DB->get_records('course_sections', array('course' => $course->id));
 
         // Get the last section's time modified value.
         $section = array_pop($sections);
         $oldtimemodified = $section->timemodified;
 
-        // Ensuring that the section update occurs at a different timestamp.
-        $this->waitForSecond();
+        // Update the section.
+        $this->waitForSecond(); // Ensuring that the section update occurs at a different timestamp.
+        course_update_section($course, $section, array());
 
-        // The timemodified should only be updated if the section is actually updated.
-        course_update_section($course, $section, []);
-        $sectionrecord = $DB->get_record('course_sections', ['id' => $section->id]);
-        $this->assertEquals($oldtimemodified, $sectionrecord->timemodified);
-
-        // Now update something to prove timemodified changes.
-        course_update_section($course, $section, ['name' => 'New name']);
-        $section = $DB->get_record('course_sections', ['id' => $section->id]);
+        // Check that the time has changed.
+        $section = $DB->get_record('course_sections', array('id' => $section->id));
         $newtimemodified = $section->timemodified;
         $this->assertGreaterThan($oldtimemodified, $newtimemodified);
     }
@@ -810,7 +801,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Relative dates mode settings provider for course creation.
      */
-    public function create_course_relative_dates_provider() {
+    public static function create_course_relative_dates_provider(): array {
         return [
             [0, 0, 0],
             [0, 1, 0],
@@ -827,7 +818,7 @@ class courselib_test extends advanced_testcase {
      * @param int $mode The value for the course's 'relativedatesmode' field.
      * @param int $expectedvalue The expected value of the 'relativedatesmode' field after course creation.
      */
-    public function test_relative_dates_mode_for_course_creation($setting, $mode, $expectedvalue): void {
+    public function test_relative_dates_mode_for_course_creation($setting, $mode, $expectedvalue) {
         global $DB;
 
         $this->resetAfterTest();
@@ -845,7 +836,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test update_course by attempting to change the relative dates mode.
      */
-    public function test_relative_dates_mode_for_course_update(): void {
+    public function test_relative_dates_mode_for_course_update() {
         global $DB;
 
         $this->resetAfterTest();
@@ -864,7 +855,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals(1, $relativedatesmode);
     }
 
-    public function test_course_add_cm_to_section(): void {
+    public function test_course_add_cm_to_section() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -915,7 +906,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals($cmids[3] . ',' . $cmids[2], $sequence);
     }
 
-    public function test_reorder_sections(): void {
+    public function test_reorder_sections() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -953,7 +944,7 @@ class courselib_test extends advanced_testcase {
         $this->assertFalse($neworder);
     }
 
-    public function test_move_section_down(): void {
+    public function test_move_section_down() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -982,7 +973,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals($oldsections[6], $sections[6]);
     }
 
-    public function test_move_section_up(): void {
+    public function test_move_section_up() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1011,7 +1002,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals($oldsections[6], $sections[4]);
     }
 
-    public function test_move_section_marker(): void {
+    public function test_move_section_marker() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1070,20 +1061,18 @@ class courselib_test extends advanced_testcase {
         rebuild_course_cache($course->id, true);
 
         // Build course cache.
-        $modinfo = get_fast_modinfo($course->id);
+        get_fast_modinfo($course->id);
         // Get the course modinfo cache.
         $coursemodinfo = $cache->get_versioned($course->id, $course->cacherev);
         // Get the section cache.
         $sectioncaches = $coursemodinfo->sectioncache;
 
-        $numberedsections = $modinfo->get_section_info_all();
-
         // Make sure that we will have 4 section caches here.
         $this->assertCount(4, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[0]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[1]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[2]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[3]->id, $sectioncaches);
+        $this->assertArrayHasKey(0, $sectioncaches);
+        $this->assertArrayHasKey(1, $sectioncaches);
+        $this->assertArrayHasKey(2, $sectioncaches);
+        $this->assertArrayHasKey(3, $sectioncaches);
 
         // Move section.
         move_section_to($course, 2, 3);
@@ -1094,10 +1083,10 @@ class courselib_test extends advanced_testcase {
 
         // Make sure that we will have 2 section caches left.
         $this->assertCount(2, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[0]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[1]->id, $sectioncaches);
-        $this->assertArrayNotHasKey($numberedsections[2]->id, $sectioncaches);
-        $this->assertArrayNotHasKey($numberedsections[3]->id, $sectioncaches);
+        $this->assertArrayHasKey(0, $sectioncaches);
+        $this->assertArrayHasKey(1, $sectioncaches);
+        $this->assertArrayNotHasKey(2, $sectioncaches);
+        $this->assertArrayNotHasKey(3, $sectioncaches);
     }
 
     /**
@@ -1129,7 +1118,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals(4, $sectionmovequerycount);
     }
 
-    public function test_course_can_delete_section(): void {
+    public function test_course_can_delete_section() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1191,7 +1180,7 @@ class courselib_test extends advanced_testcase {
         $this->assertFalse(course_can_delete_section($coursesingleactivity, 1));
     }
 
-    public function test_course_delete_section(): void {
+    public function test_course_delete_section() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1245,7 +1234,7 @@ class courselib_test extends advanced_testcase {
         $this->assertFalse(course_get_format($course)->is_section_current(1));
     }
 
-    public function test_get_course_display_name_for_list(): void {
+    public function test_get_course_display_name_for_list() {
         global $CFG;
         $this->resetAfterTest(true);
 
@@ -1258,7 +1247,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals('FROG101 Introduction to pond life', get_course_display_name_for_list($course));
     }
 
-    public function test_move_module_in_course(): void {
+    public function test_move_module_in_course() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1321,7 +1310,7 @@ class courselib_test extends advanced_testcase {
         $this->assertTrue(in_array($cm->id, $newsequences));
     }
 
-    public function test_module_visibility(): void {
+    public function test_module_visibility() {
         $this->setAdminUser();
         $this->resetAfterTest(true);
 
@@ -1391,7 +1380,7 @@ class courselib_test extends advanced_testcase {
         }
     }
 
-    public function test_section_visibility_events(): void {
+    public function test_section_visibility_events() {
         $this->setAdminUser();
         $this->resetAfterTest(true);
 
@@ -1417,7 +1406,7 @@ class courselib_test extends advanced_testcase {
         $sink->close();
     }
 
-    public function test_section_visibility(): void {
+    public function test_section_visibility() {
         $this->setAdminUser();
         $this->resetAfterTest(true);
 
@@ -1521,7 +1510,7 @@ class courselib_test extends advanced_testcase {
         }
     }
 
-    public function test_course_page_type_list(): void {
+    public function test_course_page_type_list() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1573,7 +1562,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals($pagetypelist, $testpagetypelist1);
     }
 
-    public function test_compare_activities_by_time_desc(): void {
+    public function test_compare_activities_by_time_desc() {
 
         // Let's create some test data.
         $activitiesivities = array();
@@ -1617,7 +1606,7 @@ class courselib_test extends advanced_testcase {
         }
     }
 
-    public function test_compare_activities_by_time_asc(): void {
+    public function test_compare_activities_by_time_asc() {
 
         // Let's create some test data.
         $activities = array();
@@ -1666,7 +1655,7 @@ class courselib_test extends advanced_testcase {
      * verifies that the course/module visiblity seettings are
      * retained.
      */
-    public function test_moveto_module_between_hidden_sections(): void {
+    public function test_moveto_module_between_hidden_sections() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1748,7 +1737,7 @@ class courselib_test extends advanced_testcase {
      * Tests moving a module around in the same section. moveto_module()
      * is called this way in modduplicate.
      */
-    public function test_moveto_module_in_same_section(): void {
+    public function test_moveto_module_in_same_section() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1792,7 +1781,7 @@ class courselib_test extends advanced_testcase {
      * @param array $options The options for the module creation
      * @dataProvider provider_course_delete_module
      */
-    public function test_course_delete_module($type, $options): void {
+    public function test_course_delete_module($type, $options) {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1899,7 +1888,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_created event works as expected.
      */
-    public function test_course_created_event(): void {
+    public function test_course_created_event() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1964,7 +1953,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_updated event works as expected.
      */
-    public function test_course_updated_event(): void {
+    public function test_course_updated_event() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2033,7 +2022,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_updated event logs changes.
      */
-    public function test_course_updated_event_with_changes(): void {
+    public function test_course_updated_event_with_changes() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2066,7 +2055,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_deleted event works as expected.
      */
-    public function test_course_deleted_event(): void {
+    public function test_course_deleted_event() {
         $this->resetAfterTest();
 
         // Create the course.
@@ -2107,7 +2096,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_content_deleted event works as expected.
      */
-    public function test_course_content_deleted_event(): void {
+    public function test_course_content_deleted_event() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2144,7 +2133,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_category_deleted event works as expected.
      */
-    public function test_course_category_deleted_event(): void {
+    public function test_course_category_deleted_event() {
         $this->resetAfterTest();
 
         // Create a category.
@@ -2211,7 +2200,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_backup_created event works as expected.
      */
-    public function test_course_backup_created_event(): void {
+    public function test_course_backup_created_event() {
         global $CFG;
 
         // Get the necessary files to perform backup and restore.
@@ -2257,7 +2246,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_restored event works as expected.
      */
-    public function test_course_restored_event(): void {
+    public function test_course_restored_event() {
         global $CFG;
 
         // Get the necessary files to perform backup and restore.
@@ -2314,7 +2303,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_section_updated event works as expected.
      */
-    public function test_course_section_updated_event(): void {
+    public function test_course_section_updated_event() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2369,7 +2358,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that triggering a course_section_deleted event works as expected.
      */
-    public function test_course_section_deleted_event(): void {
+    public function test_course_section_deleted_event() {
         global $USER, $DB;
         $this->resetAfterTest();
         $sink = $this->redirectEvents();
@@ -2399,7 +2388,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEventContextNotUsed($event);
     }
 
-    public function test_course_integrity_check(): void {
+    public function test_course_integrity_check() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -2522,7 +2511,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests for event related to course module creation.
      */
-    public function test_course_module_created_event(): void {
+    public function test_course_module_created_event() {
         global $USER;
 
         $this->resetAfterTest();
@@ -2580,7 +2569,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests for event validations related to course module creation.
      */
-    public function test_course_module_created_event_exceptions(): void {
+    public function test_course_module_created_event_exceptions() {
 
         $this->resetAfterTest();
 
@@ -2645,7 +2634,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests for event related to course module updates.
      */
-    public function test_course_module_updated_event(): void {
+    public function test_course_module_updated_event() {
         global $USER, $DB;
         $this->resetAfterTest();
 
@@ -2680,7 +2669,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests for create_from_cm method.
      */
-    public function test_course_module_create_from_cm(): void {
+    public function test_course_module_create_from_cm() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -2718,7 +2707,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests for event validations related to course module update.
      */
-    public function test_course_module_updated_event_exceptions(): void {
+    public function test_course_module_updated_event_exceptions() {
 
         $this->resetAfterTest();
 
@@ -2783,7 +2772,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests for event related to course module delete.
      */
-    public function test_course_module_deleted_event(): void {
+    public function test_course_module_deleted_event() {
         global $USER, $DB;
         $this->resetAfterTest();
 
@@ -2808,7 +2797,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests for event validations related to course module deletion.
      */
-    public function test_course_module_deleted_event_exceptions(): void {
+    public function test_course_module_deleted_event_exceptions() {
 
         $this->resetAfterTest();
 
@@ -2878,7 +2867,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test course move after course.
      */
-    public function test_course_change_sortorder_after_course(): void {
+    public function test_course_change_sortorder_after_course() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -2927,7 +2916,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests changing the visibility of a course.
      */
-    public function test_course_change_visibility(): void {
+    public function test_course_change_visibility() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -2953,7 +2942,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests moving the course up and down by one.
      */
-    public function test_course_change_sortorder_by_one(): void {
+    public function test_course_change_sortorder_by_one() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -3009,7 +2998,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals(array_keys($dbcourses), array_keys($courses));
     }
 
-    public function test_view_resources_list(): void {
+    public function test_view_resources_list() {
         $this->resetAfterTest();
 
         $course = self::getDataGenerator()->create_course();
@@ -3034,7 +3023,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test duplicate_module()
      */
-    public function test_duplicate_module(): void {
+    public function test_duplicate_module() {
         $this->setAdminUser();
         $this->resetAfterTest();
         $course = self::getDataGenerator()->create_course();
@@ -3137,7 +3126,7 @@ class courselib_test extends advanced_testcase {
      * are present but set to an empty tree, availability is set to null in
      * database.
      */
-    public function test_empty_availability_settings(): void {
+    public function test_empty_availability_settings() {
         global $DB;
         $this->setAdminUser();
         $this->resetAfterTest();
@@ -3174,7 +3163,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test update_inplace_editable()
      */
-    public function test_update_module_name_inplace(): void {
+    public function test_update_module_name_inplace() {
         global $CFG, $DB, $PAGE;
         require_once($CFG->dirroot . '/lib/external/externallib.php');
 
@@ -3204,7 +3193,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Testing function course_get_tagged_course_modules - search tagged course modules
      */
-    public function test_course_get_tagged_course_modules(): void {
+    public function test_course_get_tagged_course_modules() {
         global $DB;
         $this->resetAfterTest();
         $course3 = $this->getDataGenerator()->create_course();
@@ -3317,7 +3306,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test course_get_user_navigation_options for frontpage.
      */
-    public function test_course_get_user_navigation_options_for_frontpage(): void {
+    public function test_course_get_user_navigation_options_for_frontpage() {
         global $CFG, $SITE, $DB;
         $this->resetAfterTest();
         $context = context_system::instance();
@@ -3360,7 +3349,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test course_get_user_navigation_options for managers in a normal course.
      */
-    public function test_course_get_user_navigation_options_for_managers(): void {
+    public function test_course_get_user_navigation_options_for_managers() {
         global $CFG;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -3377,7 +3366,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test course_get_user_navigation_options for students in a normal course.
      */
-    public function test_course_get_user_navigation_options_for_students(): void {
+    public function test_course_get_user_navigation_options_for_students() {
         global $DB, $CFG;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -3418,7 +3407,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test course_get_user_administration_options for frontpage.
      */
-    public function test_course_get_user_administration_options_for_frontpage(): void {
+    public function test_course_get_user_administration_options_for_frontpage() {
         global $CFG, $SITE;
         $this->resetAfterTest();
         $course = clone $SITE;
@@ -3451,7 +3440,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test course_get_user_administration_options for managers in a normal course.
      */
-    public function test_course_get_user_administration_options_for_managers(): void {
+    public function test_course_get_user_administration_options_for_managers() {
         global $CFG;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -3477,7 +3466,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test course_get_user_administration_options for students in a normal course.
      */
-    public function test_course_get_user_administration_options_for_students(): void {
+    public function test_course_get_user_administration_options_for_students() {
         global $DB, $CFG;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -3512,7 +3501,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test test_update_course_frontpage_category.
      */
-    public function test_update_course_frontpage_category(): void {
+    public function test_update_course_frontpage_category() {
         // Fetch front page course.
         $course = get_course(SITEID);
         // Test update information on front page course.
@@ -3530,7 +3519,7 @@ class courselib_test extends advanced_testcase {
      * @param int $enddate
      * @param string $errorcode
      */
-    public function test_course_enddate($startdate, $enddate, $errorcode): void {
+    public function test_course_enddate($startdate, $enddate, $errorcode) {
 
         $this->resetAfterTest(true);
 
@@ -3559,7 +3548,7 @@ class courselib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function course_enddate_provider() {
+    public static function course_enddate_provider(): array {
         // Each provided example contains startdate, enddate and the expected exception error code if there is any.
         return [
             [
@@ -3594,7 +3583,7 @@ class courselib_test extends advanced_testcase {
      * @param int $resultingstartdate
      * @param int $resultingenddate
      */
-    public function test_course_dates_reset($startdate, $enddate, $resetstartdate, $resetenddate, $resultingstartdate, $resultingenddate): void {
+    public function test_course_dates_reset($startdate, $enddate, $resetstartdate, $resetenddate, $resultingstartdate, $resultingenddate) {
         global $CFG, $DB;
 
         require_once($CFG->dirroot.'/completion/criteria/completion_criteria_date.php');
@@ -3641,7 +3630,7 @@ class courselib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function course_dates_reset_provider() {
+    public static function course_dates_reset_provider(): array {
 
         // Each example contains the following:
         // - course startdate
@@ -3705,7 +3694,7 @@ class courselib_test extends advanced_testcase {
      *    - with reset_roles_overrides enabled
      *    - with selective role unenrolments
      */
-    public function test_course_roles_reset(): void {
+    public function test_course_roles_reset() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -3769,7 +3758,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEmpty($usersroles);
     }
 
-    public function test_course_check_module_updates_since(): void {
+    public function test_course_check_module_updates_since() {
         global $CFG, $DB, $USER;
         require_once($CFG->dirroot . '/mod/glossary/lib.php');
         require_once($CFG->dirroot . '/rating/lib.php');
@@ -3857,7 +3846,7 @@ class courselib_test extends advanced_testcase {
         $this->assertFalse($updates->outcomes->updated);
     }
 
-    public function test_async_module_deletion_hook_implemented(): void {
+    public function test_async_module_deletion_hook_implemented() {
         // Async module deletion depends on the 'true' being returned by at least one plugin implementing the hook,
         // 'course_module_adhoc_deletion_recommended'. In core, is implemented by the course recyclebin, which will only return
         // true if the recyclebin plugin is enabled. To make sure async deletion occurs, this test force-enables the recyclebin.
@@ -3924,7 +3913,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEmpty($cmcount);
     }
 
-    public function test_async_module_deletion_hook_not_implemented(): void {
+    public function test_async_module_deletion_hook_not_implemented() {
         // Only proceed if we are sure that no plugin is going to advocate async removal of a module. I.e. no plugin returns
         // 'true' from the 'course_module_adhoc_deletion_recommended' hook.
         // In the case of core, only recyclebin implements this hook, and it will only return true if enabled, so disable it.
@@ -3979,7 +3968,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEmpty($cmcount);
     }
 
-    public function test_async_section_deletion_hook_implemented(): void {
+    public function test_async_section_deletion_hook_implemented() {
         // Async section deletion (provided section contains modules), depends on the 'true' being returned by at least one plugin
         // implementing the 'course_module_adhoc_deletion_recommended' hook. In core, is implemented by the course recyclebin,
         // which will only return true if the plugin is enabled. To make sure async deletion occurs, this test enables recyclebin.
@@ -4067,7 +4056,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals(3, $count);
     }
 
-    public function test_async_section_deletion_hook_not_implemented(): void {
+    public function test_async_section_deletion_hook_not_implemented() {
         // If no plugins advocate async removal, then normal synchronous removal will take place.
         // Only proceed if we are sure that no plugin is going to advocate async removal of a module. I.e. no plugin returns
         // 'true' from the 'course_module_adhoc_deletion_recommended' hook.
@@ -4143,7 +4132,7 @@ class courselib_test extends advanced_testcase {
         $this->assertEquals(2, $count);
     }
 
-    public function test_classify_course_for_timeline(): void {
+    public function test_classify_course_for_timeline() {
         global $DB, $CFG;
 
         require_once($CFG->dirroot.'/completion/criteria/completion_criteria_self.php');
@@ -4204,7 +4193,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the main function for updating all calendar events for a module.
      */
-    public function test_course_module_calendar_event_update_process(): void {
+    public function test_course_module_calendar_event_update_process() {
         global $DB;
 
         $this->resetAfterTest();
@@ -4265,7 +4254,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the higher level checks for updating calendar events for an instance.
      */
-    public function test_course_module_update_calendar_events(): void {
+    public function test_course_module_update_calendar_events() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -4294,7 +4283,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the higher level checks for updating calendar events for a module.
      */
-    public function test_course_module_bulk_update_calendar_events(): void {
+    public function test_course_module_bulk_update_calendar_events() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -4322,7 +4311,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that a student can view participants in a course they are enrolled in.
      */
-    public function test_course_can_view_participants_as_student(): void {
+    public function test_course_can_view_participants_as_student() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -4339,7 +4328,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that a student in a course can not view participants on the site.
      */
-    public function test_course_can_view_participants_as_student_on_site(): void {
+    public function test_course_can_view_participants_as_student_on_site() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -4355,7 +4344,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test that an admin can view participants on the site.
      */
-    public function test_course_can_view_participants_as_admin_on_site(): void {
+    public function test_course_can_view_participants_as_admin_on_site() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -4366,7 +4355,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test teachers can view participants in a course they are enrolled in.
      */
-    public function test_course_can_view_participants_as_teacher(): void {
+    public function test_course_can_view_participants_as_teacher() {
         global $DB;
 
         $this->resetAfterTest();
@@ -4386,7 +4375,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Check the teacher can still view the participants page without the 'viewparticipants' cap.
      */
-    public function test_course_can_view_participants_as_teacher_without_view_participants_cap(): void {
+    public function test_course_can_view_participants_as_teacher_without_view_participants_cap() {
         global $DB;
 
         $this->resetAfterTest();
@@ -4410,7 +4399,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Check the teacher can still view the participants page without the 'moodle/course:enrolreview' cap.
      */
-    public function test_course_can_view_participants_as_teacher_without_enrol_review_cap(): void {
+    public function test_course_can_view_participants_as_teacher_without_enrol_review_cap() {
         global $DB;
 
         $this->resetAfterTest();
@@ -4434,7 +4423,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Check the teacher can not view the participants page without the required caps.
      */
-    public function test_course_can_view_participants_as_teacher_without_required_caps(): void {
+    public function test_course_can_view_participants_as_teacher_without_required_caps() {
         global $DB;
 
         $this->resetAfterTest();
@@ -4458,7 +4447,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Check that an exception is not thrown if we can view the participants page.
      */
-    public function test_course_require_view_participants(): void {
+    public function test_course_require_view_participants() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -4475,7 +4464,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Check that an exception is thrown if we can't view the participants page.
      */
-    public function test_course_require_view_participants_as_student_on_site(): void {
+    public function test_course_require_view_participants_as_student_on_site() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -4492,7 +4481,7 @@ class courselib_test extends advanced_testcase {
     /**
      *  Testing the can_download_from_backup_filearea fn.
      */
-    public function test_can_download_from_backup_filearea(): void {
+    public function test_can_download_from_backup_filearea() {
         global $DB;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -4542,7 +4531,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test cases for the course_classify_courses_for_timeline test.
      */
-    public function get_course_classify_courses_for_timeline_test_cases() {
+    public static function get_course_classify_courses_for_timeline_test_cases(): array {
         $now = time();
         $day = 86400;
 
@@ -4653,11 +4642,11 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course_classify_courses_for_timeline function.
      *
-     * @dataProvider get_course_classify_courses_for_timeline_test_cases()
+     * @dataProvider get_course_classify_courses_for_timeline_test_cases
      * @param array $coursesdata Courses to create
      * @param array $expected Expected test results.
      */
-    public function test_course_classify_courses_for_timeline($coursesdata, $expected): void {
+    public function test_course_classify_courses_for_timeline($coursesdata, $expected) {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
 
@@ -4695,7 +4684,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test cases for the course_get_enrolled_courses_for_logged_in_user tests.
      */
-    public function get_course_get_enrolled_courses_for_logged_in_user_test_cases() {
+    public static function get_course_get_enrolled_courses_for_logged_in_user_test_cases(): array {
         $buildexpectedresult = function($limit, $offset) {
             $result = [];
             for ($i = $offset; $i < $offset + $limit; $i++) {
@@ -4783,7 +4772,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course_get_enrolled_courses_for_logged_in_user function.
      *
-     * @dataProvider get_course_get_enrolled_courses_for_logged_in_user_test_cases()
+     * @dataProvider get_course_get_enrolled_courses_for_logged_in_user_test_cases
      * @param int $dbquerylimit Number of records to load per DB request
      * @param int $totalcourses Number of courses to create
      * @param int $limit Maximum number of results to get.
@@ -4798,7 +4787,7 @@ class courselib_test extends advanced_testcase {
         $offset,
         $expecteddbqueries,
         $expectedresult
-    ): void {
+    ) {
         global $DB;
 
         $this->resetAfterTest();
@@ -4831,7 +4820,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test cases for the course_filter_courses_by_timeline_classification tests.
      */
-    public function get_course_filter_courses_by_timeline_classification_test_cases() {
+    public static function get_course_filter_courses_by_timeline_classification_test_cases(): array {
         $now = time();
         $day = 86400;
 
@@ -4983,7 +4972,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course_get_enrolled_courses_for_logged_in_user_from_search function.
      */
-    public function test_course_get_enrolled_courses_for_logged_in_user_from_search(): void {
+    public function test_course_get_enrolled_courses_for_logged_in_user_from_search() {
         global $DB;
 
         // Set up.
@@ -5081,7 +5070,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course_filter_courses_by_timeline_classification function.
      *
-     * @dataProvider get_course_filter_courses_by_timeline_classification_test_cases()
+     * @dataProvider get_course_filter_courses_by_timeline_classification_test_cases
      * @param array $coursedata Course test data to create.
      * @param string $classification Timeline classification.
      * @param int $limit Maximum number of results to return.
@@ -5096,7 +5085,7 @@ class courselib_test extends advanced_testcase {
         $offset,
         $expectedcourses,
         $expectedprocessedcount
-    ): void {
+    ) {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
 
@@ -5130,7 +5119,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test cases for the course_filter_courses_by_timeline_classification tests.
      */
-    public function get_course_filter_courses_by_customfield_test_cases() {
+    public static function get_course_filter_courses_by_customfield_test_cases(): array {
         global $CFG;
         require_once($CFG->dirroot.'/blocks/myoverview/lib.php');
         $coursedata = [
@@ -5300,7 +5289,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course_filter_courses_by_customfield function.
      *
-     * @dataProvider get_course_filter_courses_by_customfield_test_cases()
+     * @dataProvider get_course_filter_courses_by_customfield_test_cases
      * @param array $coursedata Course test data to create.
      * @param string $customfield Shortname of the customfield.
      * @param string $customfieldvalue the value to filter by.
@@ -5317,7 +5306,7 @@ class courselib_test extends advanced_testcase {
         $offset,
         $expectedcourses,
         $expectedprocessedcount
-    ): void {
+    ) {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
 
@@ -5386,7 +5375,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test cases for the course_filter_courses_by_timeline_classification w/ hidden courses tests.
      */
-    public function get_course_filter_courses_by_timeline_classification_hidden_courses_test_cases() {
+    public static function get_course_filter_courses_by_timeline_classification_hidden_courses_test_cases(): array {
         $now = time();
         $day = 86400;
 
@@ -5545,7 +5534,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course_filter_courses_by_timeline_classification function hidden courses.
      *
-     * @dataProvider get_course_filter_courses_by_timeline_classification_hidden_courses_test_cases()
+     * @dataProvider get_course_filter_courses_by_timeline_classification_hidden_courses_test_cases
      * @param array $coursedata Course test data to create.
      * @param string $classification Timeline classification.
      * @param int $limit Maximum number of results to return.
@@ -5562,7 +5551,7 @@ class courselib_test extends advanced_testcase {
         $expectedcourses,
         $expectedprocessedcount,
         $hiddencourse
-    ): void {
+    ) {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
         $student = $generator->create_user();
@@ -5599,7 +5588,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Testing core_course_core_calendar_get_valid_event_timestart_range when the course has no end date.
      */
-    public function test_core_course_core_calendar_get_valid_event_timestart_range_no_enddate(): void {
+    public function test_core_course_core_calendar_get_valid_event_timestart_range_no_enddate() {
         global $CFG;
         require_once($CFG->dirroot . "/calendar/lib.php");
 
@@ -5624,7 +5613,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Testing core_course_core_calendar_get_valid_event_timestart_range when the course has end date.
      */
-    public function test_core_course_core_calendar_get_valid_event_timestart_range_with_enddate(): void {
+    public function test_core_course_core_calendar_get_valid_event_timestart_range_with_enddate() {
         global $CFG;
         require_once($CFG->dirroot . "/calendar/lib.php");
 
@@ -5649,7 +5638,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course_get_recent_courses function.
      */
-    public function test_course_get_recent_courses(): void {
+    public function test_course_get_recent_courses() {
         global $DB;
 
         $this->resetAfterTest();
@@ -5738,7 +5727,7 @@ class courselib_test extends advanced_testcase {
      * @param string $sort The sort value
      * @param string $expectedexceptionmsg The expected exception message
      */
-    public function test_course_get_recent_courses_sort_validation(string $sort, string $expectedexceptionmsg): void {
+    public function test_course_get_recent_courses_sort_validation(string $sort, string $expectedexceptionmsg) {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
@@ -5755,7 +5744,7 @@ class courselib_test extends advanced_testcase {
      *
      * @return array
      */
-    function course_get_recent_courses_sort_validation_provider() {
+    public static function course_get_recent_courses_sort_validation_provider(): array {
         return [
             'Invalid sort format (SQL injection attempt)' =>
                 [
@@ -5785,7 +5774,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course_get_recent_courses function.
      */
-    public function test_course_get_recent_courses_with_guest(): void {
+    public function test_course_get_recent_courses_with_guest() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -5829,7 +5818,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test cases for the course_get_course_dates_for_user_ids tests.
      */
-    public function get_course_get_course_dates_for_user_ids_test_cases() {
+    public static function get_course_get_course_dates_for_user_ids_test_cases(): array {
         $now = time();
         $pastcoursestart = $now - 100;
         $futurecoursestart = $now + 100;
@@ -7043,7 +7032,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course_get_course_dates_for_user_ids function.
      *
-     * @dataProvider get_course_get_course_dates_for_user_ids_test_cases()
+     * @dataProvider get_course_get_course_dates_for_user_ids_test_cases
      * @param bool $relativedatemode Set the course to relative dates mode
      * @param int $coursestart Course start date
      * @param int $usercount Number of users to create
@@ -7058,7 +7047,7 @@ class courselib_test extends advanced_testcase {
         $enrolmentmethods,
         $enrolled,
         $expected
-    ): void {
+    ) {
         global $DB;
         $this->resetAfterTest();
 
@@ -7104,7 +7093,7 @@ class courselib_test extends advanced_testcase {
      * Test that calling course_get_course_dates_for_user_ids multiple times in the
      * same request fill fetch the correct data for the user.
      */
-    public function test_course_get_course_dates_for_user_ids_multiple_calls(): void {
+    public function test_course_get_course_dates_for_user_ids_multiple_calls() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -7136,7 +7125,7 @@ class courselib_test extends advanced_testcase {
      *
      * @return array An array of arrays contain test data
      */
-    public function provider_course_modules_pending_deletion() {
+    public static function provider_course_modules_pending_deletion(): array {
         return [
             'Non-gradable activity, check all'              => [['forum'], 0, false, true],
             'Gradable activity, check all'                  => [['assign'], 0, false, true],
@@ -7158,7 +7147,7 @@ class courselib_test extends advanced_testcase {
      * @param bool $expected The expected result
      * @dataProvider provider_course_modules_pending_deletion
      */
-    public function test_course_modules_pending_deletion(array $modules, int $indextodelete, bool $gradable, bool $expected): void {
+    public function test_course_modules_pending_deletion(array $modules, int $indextodelete, bool $gradable, bool $expected) {
         $this->resetAfterTest();
 
         // Ensure recyclebin is enabled.
@@ -7180,7 +7169,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests for the course_request::can_request
      */
-    public function test_can_request_course(): void {
+    public function test_can_request_course() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -7244,7 +7233,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Tests for the course_request::can_approve
      */
-    public function test_can_approve_course_request(): void {
+    public function test_can_approve_course_request() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -7286,7 +7275,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the course allowed module method.
      */
-    public function test_course_allowed_module(): void {
+    public function test_course_allowed_module() {
         $this->resetAfterTest();
         global $DB;
 
@@ -7308,7 +7297,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the {@link average_number_of_participants()} function.
      */
-    public function test_average_number_of_participants(): void {
+    public function test_average_number_of_participants() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -7381,7 +7370,7 @@ class courselib_test extends advanced_testcase {
     /**
      * Test the set_downloadcontent() function.
      */
-    public function test_set_downloadcontent(): void {
+    public function test_set_downloadcontent() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -7472,34 +7461,32 @@ class courselib_test extends advanced_testcase {
     }
 
     /**
-     * Test course_section_view() function
+     * Test the course_update_communication_instance_data() function.
      *
-     * @covers ::course_section_view
+     * @covers ::course_update_communication_instance_data
      */
-    public function test_course_section_view(): void {
-
+    public function test_course_update_communication_instance_data(): void {
         $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
 
-        // Course without sections.
-        $course = $this->getDataGenerator()->create_course(['numsections' => 5], ['createsections' => true]);
-        $coursecontext = context_course::instance($course->id);
-        $format = course_get_format($course->id);
-        $sections = $format->get_sections();
-        $section = reset($sections);
+        // Set some data to update with.
+        $data = new stdClass();
+        $data->instanceid = $course->id;
+        $data->fullname = 'newname';
 
-        // Redirect events to the sink, so we can recover them later.
-        $sink = $this->redirectEvents();
+        // These should not be the same yet.
+        $this->assertNotEquals($course->fullname, $data->fullname);
 
-        course_section_view($coursecontext, $section->id);
+        // Use the callback function to update the course with the data.
+        component_callback(
+            'core_course',
+            'update_communication_instance_data',
+            [$data]
+        );
 
-        $events = $sink->get_events();
-        $event = reset($events);
-
-        // Check the event details are correct.
-        $this->assertInstanceOf('\core\event\section_viewed', $event);
-        $this->assertEquals(context_course::instance($course->id), $event->get_context());
-        $this->assertEquals('course_sections', $event->objecttable);
-        $this->assertEquals($section->id, $event->objectid);
+        // Get the course and check it was updated.
+        $course = get_course($course->id);
+        $this->assertEquals($course->fullname, $data->fullname);
     }
 
     /**
@@ -7519,13 +7506,13 @@ class courselib_test extends advanced_testcase {
             'name' => 'version',
             'value' => '20240916',
         ]);
-        \core\plugin_manager::reset_caches();
+        \core_plugin_manager::reset_caches();
         $formats = get_sorted_course_formats();
         $this->assertContains('frogs', $formats);
 
         // If one of the formats is not installed yet, we still return it.
         $DB->delete_records('config_plugins', ['plugin' => 'format_weeks']);
-        \core\plugin_manager::reset_caches();
+        \core_plugin_manager::reset_caches();
         $formats = get_sorted_course_formats();
         $this->assertContains('weeks', $formats);
     }

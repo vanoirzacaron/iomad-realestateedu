@@ -27,6 +27,5 @@ From the root of the plugin (e.g lib/editor/tiny/plugins/html), run:
 cd amd
 grunt
 
-The build.sh script should display the latest versions of the libraries in order to
-update thirdpartylibs.xml with the new version numbers.
+Once the process is complete update thirdpartylibs.xml with the new version numbers.
 

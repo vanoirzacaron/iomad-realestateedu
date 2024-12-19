@@ -63,7 +63,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals($testarray, $sortedfilters);
     }
 
-    public function test_set_filter_globally_on(): void {
+    public function test_set_filter_globally_on() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -73,7 +73,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_only_one_filter_globally('name', TEXTFILTER_ON);
     }
 
-    public function test_set_filter_globally_off(): void {
+    public function test_set_filter_globally_off() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -83,7 +83,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_only_one_filter_globally('name', TEXTFILTER_OFF);
     }
 
-    public function test_set_filter_globally_disabled(): void {
+    public function test_set_filter_globally_disabled() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -93,13 +93,13 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_only_one_filter_globally('name', TEXTFILTER_DISABLED);
     }
 
-    public function test_global_config_exception_on_invalid_state(): void {
+    public function test_global_config_exception_on_invalid_state() {
         $this->resetAfterTest();
         $this->expectException(\coding_exception::class);
         filter_set_global_state('name', 0);
     }
 
-    public function test_auto_sort_order(): void {
+    public function test_auto_sort_order() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -110,7 +110,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_global_sort_order(array('one', 'two'));
     }
 
-    public function test_auto_sort_order_enabled(): void {
+    public function test_auto_sort_order_enabled() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -121,7 +121,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_global_sort_order(array('one', 'two'));
     }
 
-    public function test_update_existing_dont_duplicate(): void {
+    public function test_update_existing_dont_duplicate() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -132,7 +132,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_only_one_filter_globally('name', TEXTFILTER_OFF);
     }
 
-    public function test_update_reorder_down(): void {
+    public function test_update_reorder_down() {
         global $DB;
 
         $this->resetAfterTest();
@@ -155,7 +155,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals('one, two, three', $log->oldvalue);
     }
 
-    public function test_update_reorder_up(): void {
+    public function test_update_reorder_up() {
         global $DB;
 
         $this->resetAfterTest();
@@ -179,7 +179,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals('one, two, three, four', $log->oldvalue);
     }
 
-    public function test_auto_sort_order_change_to_enabled(): void {
+    public function test_auto_sort_order_change_to_enabled() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -192,7 +192,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_global_sort_order(array('one', 'three', 'two'));
     }
 
-    public function test_auto_sort_order_change_to_disabled(): void {
+    public function test_auto_sort_order_change_to_disabled() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -205,7 +205,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_global_sort_order(array('two', 'one', 'three'));
     }
 
-    public function test_filter_get_global_states(): void {
+    public function test_filter_get_global_states() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -241,7 +241,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals(0, $DB->count_records('filter_active'));
     }
 
-    public function test_local_on(): void {
+    public function test_local_on() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Exercise SUT.
@@ -250,7 +250,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_only_one_local_setting('name', 123, TEXTFILTER_ON);
     }
 
-    public function test_local_off(): void {
+    public function test_local_off() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Exercise SUT.
@@ -259,7 +259,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_only_one_local_setting('name', 123, TEXTFILTER_OFF);
     }
 
-    public function test_local_inherit(): void {
+    public function test_local_inherit() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Exercise SUT.
@@ -268,21 +268,21 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_no_local_setting();
     }
 
-    public function test_local_invalid_state_throws_exception(): void {
+    public function test_local_invalid_state_throws_exception() {
         $this->resetAfterTest();
         // Exercise SUT.
         $this->expectException(\coding_exception::class);
         filter_set_local_state('name', 123, -9999);
     }
 
-    public function test_throws_exception_when_setting_global(): void {
+    public function test_throws_exception_when_setting_global() {
         $this->resetAfterTest();
         // Exercise SUT.
         $this->expectException(\coding_exception::class);
         filter_set_local_state('name', \context_system::instance()->id, TEXTFILTER_INHERIT);
     }
 
-    public function test_local_inherit_deletes_existing(): void {
+    public function test_local_inherit_deletes_existing() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -307,7 +307,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals($expectedrec, $rec);
     }
 
-    public function test_set_new_config(): void {
+    public function test_set_new_config() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Exercise SUT.
@@ -316,7 +316,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_only_one_config('name', 123, 'settingname', 'An arbitrary value');
     }
 
-    public function test_update_existing_config(): void {
+    public function test_update_existing_config() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         // Setup fixture.
@@ -327,7 +327,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_only_one_config('name', 123, 'settingname', 'A changed value');
     }
 
-    public function test_filter_get_local_config(): void {
+    public function test_filter_get_local_config() {
         $this->resetAfterTest();
         // Setup fixture.
         filter_set_local_config('name', 123, 'setting1', 'An arbitrary value');
@@ -364,7 +364,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEqualsCanonicalizing($expectedfilters, array_keys($filters));
     }
 
-    public function test_globally_on_is_returned(): void {
+    public function test_globally_on_is_returned() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         [
@@ -380,7 +380,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals(array(), $filters['name']);
     }
 
-    public function test_globally_off_not_returned(): void {
+    public function test_globally_off_not_returned() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         [
@@ -394,7 +394,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_filter_list(array(), $filters);
     }
 
-    public function test_globally_off_overridden(): void {
+    public function test_globally_off_overridden() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         [
@@ -410,7 +410,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_filter_list(array('name'), $filters);
     }
 
-    public function test_globally_on_overridden(): void {
+    public function test_globally_on_overridden() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         [
@@ -426,7 +426,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_filter_list(array(), $filters);
     }
 
-    public function test_globally_disabled_not_overridden(): void {
+    public function test_globally_disabled_not_overridden() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         [
@@ -442,7 +442,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_filter_list(array(), $filters);
     }
 
-    public function test_single_config_returned(): void {
+    public function test_single_config_returned() {
         $this->resetAfterTest();
         [
             'childcontext' => $childcontext
@@ -456,7 +456,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals(array('settingname' => 'A value'), $filters['name']);
     }
 
-    public function test_multi_config_returned(): void {
+    public function test_multi_config_returned() {
         $this->resetAfterTest();
         [
             'childcontext' => $childcontext
@@ -471,7 +471,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals(array('settingname' => 'A value', 'anothersettingname' => 'Another value'), $filters['name']);
     }
 
-    public function test_config_from_other_context_not_returned(): void {
+    public function test_config_from_other_context_not_returned() {
         $this->resetAfterTest();
         [
             'childcontext' => $childcontext,
@@ -487,7 +487,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals(array('anothersettingname' => 'Another value'), $filters['name']);
     }
 
-    public function test_config_from_other_filter_not_returned(): void {
+    public function test_config_from_other_filter_not_returned() {
         $this->resetAfterTest();
         [
             'childcontext' => $childcontext
@@ -513,7 +513,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals($expectedrec, $rec);
     }
 
-    public function test_available_in_context_localoverride(): void {
+    public function test_available_in_context_localoverride() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         [
@@ -528,7 +528,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_one_available_filter('name', TEXTFILTER_OFF, TEXTFILTER_ON, $filters);
     }
 
-    public function test_available_in_context_nolocaloverride(): void {
+    public function test_available_in_context_nolocaloverride() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         [
@@ -544,7 +544,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_one_available_filter('name', TEXTFILTER_INHERIT, TEXTFILTER_OFF, $filters);
     }
 
-    public function test_available_in_context_disabled_not_returned(): void {
+    public function test_available_in_context_disabled_not_returned() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         [
@@ -559,7 +559,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals(array(), $filters);
     }
 
-    public function test_available_in_context_exception_with_syscontext(): void {
+    public function test_available_in_context_exception_with_syscontext() {
         $this->resetAfterTest();
         [
             'syscontext' => $syscontext
@@ -615,7 +615,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals($plfilters2, $filters2);
     }
 
-    public function test_preload(): void {
+    public function test_preload() {
         $this->resetAfterTest();
         [
             'catcontext' => $catcontext,
@@ -675,7 +675,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assert_matches($modinfo, $activity1context, $activity2context);
     }
 
-    public function test_filter_delete_all_for_filter(): void {
+    public function test_filter_delete_all_for_filter() {
         global $DB;
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
@@ -700,7 +700,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals(get_config('filter_name'), new \stdClass());
     }
 
-    public function test_filter_delete_all_for_context(): void {
+    public function test_filter_delete_all_for_context() {
         global $DB;
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
@@ -720,7 +720,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertTrue($DB->record_exists('filter_config', array('filter' => 'other')));
     }
 
-    public function test_set(): void {
+    public function test_set() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -746,7 +746,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals(1, $CFG->filterall);
     }
 
-    public function test_unset_to_empty(): void {
+    public function test_unset_to_empty() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -762,7 +762,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals('', $CFG->filterall);
     }
 
-    public function test_unset_multi(): void {
+    public function test_unset_multi() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -780,7 +780,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals(1, $CFG->filterall);
     }
 
-    public function test_filter_manager_instance(): void {
+    public function test_filter_manager_instance() {
         $this->resetAfterTest();
 
         set_config('perfdebug', 7);
@@ -796,7 +796,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertInstanceOf('performance_measuring_filter_manager', $filterman);
     }
 
-    public function test_filter_get_active_state_contextid_parameter(): void {
+    public function test_filter_get_active_state_contextid_parameter() {
         $this->resetAfterTest();
 
         filter_set_global_state('glossary', TEXTFILTER_ON);
@@ -819,7 +819,7 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals($active, TEXTFILTER_ON);
     }
 
-    public function test_filter_get_active_state_filtername_parameter(): void {
+    public function test_filter_get_active_state_filtername_parameter() {
         $this->resetAfterTest();
 
         filter_set_global_state('glossary', TEXTFILTER_ON);
@@ -832,7 +832,7 @@ class filterlib_test extends \advanced_testcase {
         $active = filter_get_active_state('mod/glossary');
     }
 
-    public function test_filter_get_active_state_after_change(): void {
+    public function test_filter_get_active_state_after_change() {
         $this->resetAfterTest();
 
         filter_set_global_state('glossary', TEXTFILTER_ON);
@@ -851,20 +851,20 @@ class filterlib_test extends \advanced_testcase {
         $this->assertEquals($active, TEXTFILTER_DISABLED);
     }
 
-    public function test_filter_get_globally_enabled_default(): void {
+    public function test_filter_get_globally_enabled_default() {
         $this->resetAfterTest();
         $enabledfilters = filter_get_globally_enabled();
         $this->assertArrayNotHasKey('glossary', $enabledfilters);
     }
 
-    public function test_filter_get_globally_enabled_after_change(): void {
+    public function test_filter_get_globally_enabled_after_change() {
         $this->resetAfterTest();
         filter_set_global_state('glossary', TEXTFILTER_ON);
         $enabledfilters = filter_get_globally_enabled();
         $this->assertArrayHasKey('glossary', $enabledfilters);
     }
 
-    public function test_filter_get_globally_enabled_filters_with_config(): void {
+    public function test_filter_get_globally_enabled_filters_with_config() {
         $this->resetAfterTest();
         $this->remove_all_filters_from_config(); // Remove all filters.
         [

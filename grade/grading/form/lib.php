@@ -701,7 +701,7 @@ abstract class gradingform_controller {
      *     last key is the maximum grade.
      * @param bool $allowgradedecimals if decimal values are allowed as grades.
      */
-    final public function set_grade_range(array $graderange, $allowgradedecimals = false) {
+    public final function set_grade_range(array $graderange, $allowgradedecimals = false) {
         $this->graderange = $graderange;
         $this->allowgradedecimals = $allowgradedecimals;
     }
@@ -711,7 +711,7 @@ abstract class gradingform_controller {
      *
      * @return array
      */
-    final public function get_grade_range() {
+    public final function get_grade_range() {
         if (empty($this->graderange)) {
             return array();
         }
@@ -723,7 +723,7 @@ abstract class gradingform_controller {
      *
      * @return bool
      */
-    final public function get_allow_grade_decimals() {
+    public final function get_allow_grade_decimals() {
         return $this->allowgradedecimals;
     }
 

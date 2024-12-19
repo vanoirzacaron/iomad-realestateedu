@@ -41,7 +41,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::get_handler_classname() behaviour.
      */
-    public function test_get_handler_classname(): void {
+    public function test_get_handler_classname() {
         global $CFG;
         $this->resetAfterTest(true);
 
@@ -63,7 +63,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::is_defined()
      */
-    public function test_is_defined(): void {
+    public function test_is_defined() {
         global $CFG;
         $this->resetAfterTest(true);
 
@@ -95,7 +95,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::get_redirect_url()
      */
-    public function test_get_redirect_url(): void {
+    public function test_get_redirect_url() {
         global $CFG;
         $this->resetAfterTest(true);
 
@@ -127,7 +127,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::get_redirect_url()
      */
-    public function test_get_embed_url(): void {
+    public function test_get_embed_url() {
         global $CFG;
         $this->resetAfterTest(true);
 
@@ -159,7 +159,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::get_redirect_url()
      */
-    public function test_accept(): void {
+    public function test_accept() {
         global $CFG, $USER, $DB;
         $this->resetAfterTest(true);
 
@@ -196,7 +196,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::get_redirect_url() for guests
      */
-    public function test_accept_guests(): void {
+    public function test_accept_guests() {
         global $CFG, $USER, $DB;
         $this->resetAfterTest(true);
 
@@ -245,7 +245,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::is_defined() with a handler
      */
-    public function test_is_defined_with_handler(): void {
+    public function test_is_defined_with_handler() {
         global $CFG;
         $this->resetAfterTest(true);
         $CFG->sitepolicyhandler = 'testtool_testhandler';
@@ -257,7 +257,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::get_redirect_url() with a handler
      */
-    public function test_get_redirect_url_with_handler(): void {
+    public function test_get_redirect_url_with_handler() {
         global $CFG;
         $this->resetAfterTest(true);
 
@@ -271,7 +271,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::get_redirect_url() with a handler
      */
-    public function test_get_embed_url_with_handler(): void {
+    public function test_get_embed_url_with_handler() {
         global $CFG;
         $this->resetAfterTest(true);
 
@@ -285,7 +285,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::get_redirect_url() with a handler
      */
-    public function test_accept_with_handler(): void {
+    public function test_accept_with_handler() {
         global $CFG, $USER, $DB;
         $this->resetAfterTest(true);
 
@@ -305,7 +305,7 @@ class sitepolicy_test extends advanced_testcase {
     /**
      * Tests for \core_privacy\local\sitepolicy\manager::get_redirect_url() for guests with a handler
      */
-    public function test_accept_guests_with_handler(): void {
+    public function test_accept_guests_with_handler() {
         global $CFG, $USER, $DB;
         $this->resetAfterTest(true);
 

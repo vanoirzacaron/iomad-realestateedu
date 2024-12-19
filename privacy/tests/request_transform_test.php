@@ -45,7 +45,7 @@ class request_transform_test extends advanced_testcase {
      *
      * @covers ::user
      */
-    public function test_user(): void {
+    public function test_user() {
         // Note: This test currently sucks, but there's no point creating users just to test this.
         for ($i = 0; $i < 10; $i++) {
             $this->assertEquals($i, transform::user($i));
@@ -57,7 +57,7 @@ class request_transform_test extends advanced_testcase {
      *
      * @covers ::datetime
      */
-    public function test_datetime(): void {
+    public function test_datetime() {
         $time = 1;
 
         $datestr = transform::datetime($time);
@@ -79,7 +79,7 @@ class request_transform_test extends advanced_testcase {
      *
      * @covers ::date
      */
-    public function test_date(): void {
+    public function test_date() {
         $time = 1;
 
         $datestr = transform::date($time);
@@ -101,7 +101,7 @@ class request_transform_test extends advanced_testcase {
      * @param   string  $expected The expected value
      * @covers ::yesno
      */
-    public function test_yesno($input, $expected): void {
+    public function test_yesno($input, $expected) {
         $this->assertEquals($expected, transform::yesno($input));
     }
 
@@ -110,7 +110,7 @@ class request_transform_test extends advanced_testcase {
      *
      * @return  array
      */
-    public function yesno_provider() {
+    public static function yesno_provider(): array {
         return [
             'Bool False' => [
                 false,

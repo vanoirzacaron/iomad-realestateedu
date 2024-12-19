@@ -56,26 +56,12 @@ class iomadoidcclient {
     /** @var string The resource of the token. */
     protected $tokenresource;
 
-    /** @var string company id based postfix. */
-    protected $postfix;
-
     /**
      * Constructor.
      *
      * @param httpclientinterface $httpclient An HTTP client to use for background communication.
      */
     public function __construct(httpclientinterface $httpclient) {
-        global $CFG;
-
-        // IOMAD
-        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
-        $companyid = iomad::get_my_companyid(context_system::instance(), false);
-        if (!empty($companyid)) {
-            $this->postfix = "_$companyid";
-        } else {
-            $this->postfix = "";
-        }
-
         $this->httpclient = $httpclient;
     }
 
@@ -155,7 +141,7 @@ class iomadoidcclient {
     }
 
     /**
-     * Set IOMADOIDC endpoints.
+     * Set IOMAD OIDC endpoints.
      *
      * @param array $endpoints Array of endpoints. Can have keys 'auth', and 'token'.
      */
@@ -182,13 +168,20 @@ class iomadoidcclient {
      *
      * @param bool $promptlogin Whether to prompt for login or use existing session.
      * @param array $stateparams Parameters to store as state.
-     * @param array $extraparams Additional parameters to send with the IOMADOIDC request.
-     * @param bool $selectaccount Whether to prompt the user to select an account.
+     * @param array $extraparams Additional parameters to send with the IOMAD OIDC request.
      * @return array Array of request parameters.
      */
-    protected function getauthrequestparams($promptlogin = false, array $stateparams = array(), array $extraparams = array(),
-        bool $selectaccount = false) {
-        global $SESSION;
+    protected function getauthrequestparams($promptlogin = false, array $stateparams = array(), array $extraparams = array()) {
+        global $CFG;
+
+        // IOMAD
+        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
+        $companyid = iomad::get_my_companyid(context_system::instance(), false);
+        if (!empty($companyid)) {
+            $postfix = "_$companyid";
+        } else {
+            $postfix = "";
+        }
 
         $nonce = 'N'.uniqid();
 
@@ -202,23 +195,15 @@ class iomadoidcclient {
             'redirect_uri' => $this->redirecturi
         ];
 
-        if (get_config('auth_iomadoidc', 'idptype' . $this->postfix) != AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT_IDENTITY_PLATFORM) {
+        if (get_config('auth_iomadoidc', 'idptype' . $postfix) != AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT) {
             $params['resource'] = $this->tokenresource;
         }
 
         if ($promptlogin === true) {
             $params['prompt'] = 'login';
-        } else if ($selectaccount === true) {
-            $params['prompt'] = 'select_account';
-        } else {
-            $silentloginmode = get_config('auth_iomadoidc', 'silentloginmode' . $this->postfix);
-            if ($silentloginmode) {
-                $params['prompt'] = 'none';
-                $SESSION->silent_login_mode = true;
-            }
         }
 
-        $domainhint = get_config('auth_iomadoidc', 'domainhint' . $this->postfix);
+        $domainhint = get_config('auth_iomadoidc', 'domainhint' . $postfix);
         if (!empty($domainhint)) {
             $params['domain_hint'] = $domainhint;
         }
@@ -274,11 +259,9 @@ class iomadoidcclient {
      *
      * @param bool $promptlogin Whether to prompt for login or use existing session.
      * @param array $stateparams Parameters to store as state.
-     * @param array $extraparams Additional parameters to send with the IOMADOIDC request.
-     * @param bool $selectaccount Whether to prompt the user to select an account.
+     * @param array $extraparams Additional parameters to send with the IOMAD OIDC request.
      */
-    public function authrequest($promptlogin = false, array $stateparams = array(), array $extraparams = array(),
-        bool $selectaccount = false) {
+    public function authrequest($promptlogin = false, array $stateparams = array(), array $extraparams = array()) {
         if (empty($this->clientid)) {
             throw new moodle_exception('erroriomadoidcclientnocreds', 'auth_iomadoidc');
         }
@@ -287,7 +270,7 @@ class iomadoidcclient {
             throw new moodle_exception('erroriomadoidcclientnoauthendpoint', 'auth_iomadoidc');
         }
 
-        $params = $this->getauthrequestparams($promptlogin, $stateparams, $extraparams, $selectaccount);
+        $params = $this->getauthrequestparams($promptlogin, $stateparams, $extraparams);
         $redirecturl = new moodle_url($this->endpoints['auth'], $params);
         redirect($redirecturl);
     }
@@ -314,6 +297,17 @@ class iomadoidcclient {
      * @return array Received parameters.
      */
     public function rocredsrequest($username, $password) {
+        global $CFG;
+
+        // IOMAD
+        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
+        $companyid = iomad::get_my_companyid(context_system::instance(), false);
+        if (!empty($companyid)) {
+            $postfix = "_$companyid";
+        } else {
+            $postfix = "";
+        }
+
         if (empty($this->endpoints['token'])) {
             throw new moodle_exception('erroriomadoidcclientnotokenendpoint', 'auth_iomadoidc');
         }
@@ -331,15 +325,15 @@ class iomadoidcclient {
             'client_secret' => $this->clientsecret,
         ];
 
-        if (get_config('auth_iomadoidc', 'idptype' . $this->postfix) != AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT_IDENTITY_PLATFORM) {
+        if (get_config('auth_iomadoidc', 'idptype' . $postfix) != AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT) {
             $params['resource'] = $this->tokenresource;
         }
 
         try {
             $returned = $this->httpclient->post($this->endpoints['token'], $params);
             return utils::process_json_response($returned, ['token_type' => null, 'id_token' => null]);
-        } catch (moodle_exception $e) {
-            utils::debug('Error in rocredsrequest request', __METHOD__, $e->getMessage());
+        } catch (\Exception $e) {
+            utils::debug('Error in rocredsrequest request', 'iomadoidcclient::rocredsrequest', $e->getMessage());
             return false;
         }
     }
@@ -351,6 +345,17 @@ class iomadoidcclient {
      * @return array Received parameters.
      */
     public function tokenrequest($code) {
+        global $CFG;
+
+        // IOMAD
+        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
+        $companyid = iomad::get_my_companyid(context_system::instance(), false);
+        if (!empty($companyid)) {
+            $postfix = "_$companyid";
+        } else {
+            $postfix = "";
+        }
+
         if (empty($this->endpoints['token'])) {
             throw new moodle_exception('erroriomadoidcclientnotokenendpoint', 'auth_iomadoidc');
         }
@@ -362,7 +367,7 @@ class iomadoidcclient {
             'redirect_uri' => $this->redirecturi,
         ];
 
-        switch (get_config('auth_iomadoidc', 'clientauthmethod' . $this->postfix)) {
+        switch (get_config('auth_iomadoidc', 'clientauthmethod' . $postfix)) {
             case AUTH_IOMADOIDC_AUTH_METHOD_CERTIFICATE:
                 $params['client_assertion_type'] = 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer';
                 $params['client_assertion'] = static::generate_client_assertion();
@@ -381,13 +386,24 @@ class iomadoidcclient {
      * @return array
      */
     public function app_access_token_request() {
+        global $CFG;
+
+        // IOMAD
+        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
+        $companyid = iomad::get_my_companyid(context_system::instance(), false);
+        if (!empty($companyid)) {
+            $postfix = "_$companyid";
+        } else {
+            $postfix = "";
+        }
+
         $params = [
             'client_id' => $this->clientid,
             'scope' => 'https://graph.microsoft.com/.default',
             'grant_type' => 'client_credentials',
         ];
 
-        switch (get_config('auth_iomadoidc', 'clientauthmethod' . $this->postfix)) {
+        switch (get_config('auth_iomadoidc', 'clientauthmethod' . $postfix)) {
             case AUTH_IOMADOIDC_AUTH_METHOD_CERTIFICATE:
                 $params['client_assertion_type'] = 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer';
                 $params['client_assertion'] = static::generate_client_assertion();
@@ -406,34 +422,25 @@ class iomadoidcclient {
      * Calculate the return the assertion used in the token request in certificate connection method.
      *
      * @return string
-     * @throws moodle_exception
      */
-    public static function generate_client_assertion() : string {
-        $authiomadoidcconfig = get_config('auth_iomadoidc');
+    public static function generate_client_assertion() {
+        global $CFG;
 
         // IOMAD
-        $configname = "clientcertsource" . $this->postfix;
-        $certsource = $authiomadoidcconfig->$configname;
-
-        $clientcertpassphrase = null;
-        if (property_exists($authiomadoidcconfig, 'clientcertpassphrase')) {
-            $clientcertpassphrase = $authiomadoidcconfig->clientcertpassphrase;
-        }
-
-        if ($certsource == AUTH_IOMADOIDC_AUTH_CERT_SOURCE_TEXT) {
-            $cert = openssl_x509_read($authiomadoidcconfig->clientcert);
-            $privatekey = openssl_pkey_get_private($authiomadoidcconfig->clientprivatekey, $clientcertpassphrase);
-        } else if ($certsource == AUTH_IOMADOIDC_AUTH_CERT_SOURCE_FILE) {
-            $cert = openssl_x509_read(utils::get_certpath());
-            $privatekey = openssl_pkey_get_private(utils::get_keypath(), $clientcertpassphrase);
+        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
+        $companyid = iomad::get_my_companyid(context_system::instance(), false);
+        if (!empty($companyid)) {
+            $postfix = "_$companyid";
         } else {
-            throw new moodle_exception('errorinvalidcertificatesource', 'auth_iomadoidc');
+            $postfix = "";
         }
-        
-        $sh1hash = openssl_x509_fingerprint($cert);
-        $x5t = base64_encode(hex2bin($sh1hash));
 
         $jwt = new jwt();
+        $authiomadoidcconfig = get_config('auth_iomadoidc');
+        $opname = "clientcert" . $postfix;
+        $cert = openssl_x509_read($authiomadoidcconfig->$opname);
+        $sh1hash = openssl_x509_fingerprint($cert);
+        $x5t = base64_encode(hex2bin($sh1hash));
         $jwt->set_header(['alg' => 'RS256', 'typ' => 'JWT', 'x5t' => $x5t]);
         $jwt->set_claims([
             'aud' => $authiomadoidcconfig->tokenendpoint,
@@ -445,6 +452,6 @@ class iomadoidcclient {
             'iat' => time(),
         ]);
 
-        return $jwt->assert_token($privatekey);
+        return $jwt->assert_token($authiomadoidcconfig->clientprivatekey);
     }
 }

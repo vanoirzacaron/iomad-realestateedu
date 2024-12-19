@@ -35,7 +35,7 @@ class upgradelib_test extends \advanced_testcase {
     /**
      * test_filter_displayh5p_reorder
      */
-    public function test_filter_displayh5p_reorder(): void {
+    public function test_filter_displayh5p_reorder() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 

@@ -41,7 +41,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the rule created event.
      */
-    public function test_rule_created(): void {
+    public function test_rule_created() {
         // Create the items we need to create a rule.
         $course = $this->getDataGenerator()->create_course();
         $user = $this->getDataGenerator()->create_user();
@@ -90,7 +90,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the rule updated event.
      */
-    public function test_rule_updated(): void {
+    public function test_rule_updated() {
         // Create the items we need.
         $monitorgenerator = $this->getDataGenerator()->get_plugin_generator('tool_monitor');
         $course = $this->getDataGenerator()->create_course();
@@ -136,7 +136,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the rule deleted event.
      */
-    public function test_rule_deleted(): void {
+    public function test_rule_deleted() {
         // Create the items we need.
         $monitorgenerator = $this->getDataGenerator()->get_plugin_generator('tool_monitor');
         $course = $this->getDataGenerator()->create_course();
@@ -179,7 +179,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the subscription created event.
      */
-    public function test_subscription_created(): void {
+    public function test_subscription_created() {
         // Create the items we need to test this.
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
@@ -216,7 +216,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the subscription deleted event.
      */
-    public function test_subscription_deleted(): void {
+    public function test_subscription_deleted() {
         // Create the items we need to test this.
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
@@ -299,7 +299,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the subscription criteria met event.
      */
-    public function test_subscription_criteria_met(): void {
+    public function test_subscription_criteria_met() {
         // Create the items we need to test this.
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();

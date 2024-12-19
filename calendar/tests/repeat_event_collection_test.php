@@ -50,7 +50,7 @@ class repeat_event_collection_test extends \advanced_testcase {
      * Test that the collection id is set to the parent id if the repeat id
      * is falsey.
      */
-    public function test_parent_id_no_repeat_id(): void {
+    public function test_parent_id_no_repeat_id() {
         $this->resetAfterTest(true);
         $dbrow = (object) [
             'id' => 123122131,
@@ -66,7 +66,7 @@ class repeat_event_collection_test extends \advanced_testcase {
      * Test that the repeat id is set to the parent id if the repeat id
      * is not falsey (even if the parent id is provided).
      */
-    public function test_parent_id_and_repeat_id(): void {
+    public function test_parent_id_and_repeat_id() {
         $this->resetAfterTest(true);
         $dbrow = (object) [
             'id' => 123122131,
@@ -81,7 +81,7 @@ class repeat_event_collection_test extends \advanced_testcase {
     /**
      * Test that an empty collection is valid.
      */
-    public function test_empty_collection(): void {
+    public function test_empty_collection() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -108,7 +108,7 @@ class repeat_event_collection_test extends \advanced_testcase {
     /**
      * Test that a collection with values behaves correctly.
      */
-    public function test_values_collection(): void {
+    public function test_values_collection() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 

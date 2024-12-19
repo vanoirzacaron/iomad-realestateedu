@@ -43,8 +43,8 @@ const findMatchingTour = (tourDetails, filters) => {
  */
 export const init = async(tourDetails, filters) => {
     const requirements = [];
-    filters.forEach((filter) => {
-        requirements.push(import(filter));
+    filters.forEach(filter => {
+        requirements.push(import(`tool_usertours/filter_${filter}`));
     });
 
     const filterPlugins = await Promise.all(requirements);

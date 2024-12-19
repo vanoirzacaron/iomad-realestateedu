@@ -44,7 +44,7 @@ class blackboardsixformatqti_test extends \question_testcase {
         $xmlfile->text = file_get_contents(__DIR__ . '/fixtures/sample_blackboard_qti.dat');
         return array(0 => $xmlfile);
     }
-    public function test_import_match(): void {
+    public function test_import_match() {
         $xml = $this->make_test_xml();
 
         $importer = new qformat_blackboard_six();
@@ -91,7 +91,7 @@ class blackboardsixformatqti_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_multichoice_single(): void {
+    public function test_import_multichoice_single() {
         $xml = $this->make_test_xml();
 
         $importer = new qformat_blackboard_six();
@@ -149,7 +149,7 @@ class blackboardsixformatqti_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_multichoice_multi(): void {
+    public function test_import_multichoice_multi() {
 
         $xml = $this->make_test_xml();
 
@@ -225,7 +225,7 @@ class blackboardsixformatqti_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_truefalse(): void {
+    public function test_import_truefalse() {
 
         $xml = $this->make_test_xml();
 
@@ -255,7 +255,7 @@ class blackboardsixformatqti_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_fill_in_the_blank(): void {
+    public function test_import_fill_in_the_blank() {
 
         $xml = $this->make_test_xml();
 
@@ -289,7 +289,7 @@ class blackboardsixformatqti_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_essay(): void {
+    public function test_import_essay() {
 
         $xml = $this->make_test_xml();
 
@@ -317,7 +317,7 @@ class blackboardsixformatqti_test extends \question_testcase {
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_category(): void {
+    public function test_import_category() {
 
         $xml = $this->make_test_xml();
 

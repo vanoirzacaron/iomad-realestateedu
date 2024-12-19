@@ -49,7 +49,7 @@ class competency_framework_updated extends base {
      * @param competency_framework $framework The framework.
      * @return self
      */
-    final public static function create_from_framework(competency_framework $framework) {
+    public static final function create_from_framework(competency_framework $framework) {
         if (!$framework->get('id')) {
             throw new \coding_exception('The competency framework ID must be set.');
         }

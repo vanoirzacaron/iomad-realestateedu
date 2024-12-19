@@ -12,7 +12,7 @@ use OpenSpout\Reader\SheetInterface;
 final class Sheet implements SheetInterface
 {
     /** @var RowIterator To iterate over the CSV's rows */
-    private readonly RowIterator $rowIterator;
+    private RowIterator $rowIterator;
 
     /**
      * @param RowIterator $rowIterator Corresponding row iterator

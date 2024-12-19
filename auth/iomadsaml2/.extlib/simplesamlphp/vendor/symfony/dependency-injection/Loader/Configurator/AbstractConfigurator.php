@@ -11,10 +11,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Component\Config\Loader\ParamConfigurator;
-use Symfony\Component\DependencyInjection\Argument\AbstractArgument;
 use Symfony\Component\DependencyInjection\Argument\ArgumentInterface;
-use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Parameter;
@@ -25,15 +22,10 @@ abstract class AbstractConfigurator
 {
     public const FACTORY = 'unknown';
 
-    /**
-     * @var callable(mixed, bool)|null
-     */
-    public static $valuePreProcessor;
-
     /** @internal */
     protected $definition;
 
-    public function __call(string $method, array $args)
+    public function __call($method, $args)
     {
         if (method_exists($this, 'set'.$method)) {
             return $this->{'set'.$method}(...$args);
@@ -70,17 +62,11 @@ abstract class AbstractConfigurator
                 $value[$k] = static::processValue($v, $allowServices);
             }
 
-            return self::$valuePreProcessor ? (self::$valuePreProcessor)($value, $allowServices) : $value;
-        }
-
-        if (self::$valuePreProcessor) {
-            $value = (self::$valuePreProcessor)($value, $allowServices);
+            return $value;
         }
 
         if ($value instanceof ReferenceConfigurator) {
-            $reference = new Reference($value->id, $value->invalidBehavior);
-
-            return $value instanceof ClosureReferenceConfigurator ? new ServiceClosureArgument($reference) : $reference;
+            return new Reference($value->id, $value->invalidBehavior);
         }
 
         if ($value instanceof InlineServiceConfigurator) {
@@ -88,10 +74,6 @@ abstract class AbstractConfigurator
             $value->definition = null;
 
             return $def;
-        }
-
-        if ($value instanceof ParamConfigurator) {
-            return (string) $value;
         }
 
         if ($value instanceof self) {
@@ -107,13 +89,12 @@ abstract class AbstractConfigurator
             case $value instanceof Definition:
             case $value instanceof Expression:
             case $value instanceof Parameter:
-            case $value instanceof AbstractArgument:
             case $value instanceof Reference:
                 if ($allowServices) {
                     return $value;
                 }
         }
 
-        throw new InvalidArgumentException(sprintf('Cannot use values of type "%s" in service configuration files.', get_debug_type($value)));
+        throw new InvalidArgumentException(sprintf('Cannot use values of type "%s" in service configuration files.', \is_object($value) ? \get_class($value) : \gettype($value)));
     }
 }

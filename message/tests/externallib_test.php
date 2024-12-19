@@ -105,7 +105,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test send_instant_messages.
      */
-    public function test_send_instant_messages(): void {
+    public function test_send_instant_messages() {
         global $DB, $USER;
 
         $this->resetAfterTest();
@@ -162,7 +162,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test send_instant_messages with a message text longer than permitted.
      */
-    public function test_send_instant_messages_long_text(): void {
+    public function test_send_instant_messages_long_text() {
         global $CFG;
 
         $this->resetAfterTest(true);
@@ -197,7 +197,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test send_instant_messages to a user who has blocked you.
      */
-    public function test_send_instant_messages_blocked_user(): void {
+    public function test_send_instant_messages_blocked_user() {
         global $DB;
 
         $this->resetAfterTest();
@@ -232,7 +232,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test send_instant_messages when sending a message to a non-contact who has blocked non-contacts.
      */
-    public function test_send_instant_messages_block_non_contacts(): void {
+    public function test_send_instant_messages_block_non_contacts() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -268,7 +268,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test send_instant_messages when sending a message to a contact who has blocked non-contacts.
      */
-    public function test_send_instant_messages_block_non_contacts_but_am_contact(): void {
+    public function test_send_instant_messages_block_non_contacts_but_am_contact() {
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -318,7 +318,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test send_instant_messages with no capabilities
      */
-    public function test_send_instant_messages_no_capability(): void {
+    public function test_send_instant_messages_no_capability() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -350,7 +350,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test send_instant_messages when messaging is disabled.
      */
-    public function test_send_instant_messages_messaging_disabled(): void {
+    public function test_send_instant_messages_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest(true);
@@ -380,7 +380,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test delete_contacts.
      */
-    public function test_delete_contacts(): void {
+    public function test_delete_contacts() {
         $this->resetAfterTest(true);
 
         $user1 = self::getDataGenerator()->create_user();
@@ -425,7 +425,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting contact requests.
      */
-    public function test_get_contact_requests(): void {
+    public function test_get_contact_requests() {
         global $PAGE;
 
         $this->resetAfterTest();
@@ -464,7 +464,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test the get_contact_requests() function when the user has blocked the sender of the request.
      */
-    public function test_get_contact_requests_blocked_sender(): void {
+    public function test_get_contact_requests_blocked_sender() {
         $this->resetAfterTest();
         $user1 = self::getDataGenerator()->create_user();
         $user2 = self::getDataGenerator()->create_user();
@@ -486,7 +486,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting contact requests when there are none.
      */
-    public function test_get_contact_requests_no_requests(): void {
+    public function test_get_contact_requests_no_requests() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -502,7 +502,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting contact requests with limits.
      */
-    public function test_get_contact_requests_with_limits(): void {
+    public function test_get_contact_requests_with_limits() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -523,7 +523,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting contact requests with messaging disabled.
      */
-    public function test_get_contact_requests_messaging_disabled(): void {
+    public function test_get_contact_requests_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -544,7 +544,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting contact requests with no permission.
      */
-    public function test_get_contact_requests_no_permission(): void {
+    public function test_get_contact_requests_no_permission() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -562,7 +562,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting the number of received contact requests.
      */
-    public function test_get_received_contact_requests_count(): void {
+    public function test_get_received_contact_requests_count() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -603,7 +603,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test the get_received_contact_requests_count() function when the user has blocked the sender of the request.
      */
-    public function test_get_received_contact_requests_count_blocked_sender(): void {
+    public function test_get_received_contact_requests_count_blocked_sender() {
         $this->resetAfterTest();
         $user1 = self::getDataGenerator()->create_user();
         $user2 = self::getDataGenerator()->create_user();
@@ -625,7 +625,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting the number of received contact requests with no permissions.
      */
-    public function test_get_received_contact_requests_count_no_permission(): void {
+    public function test_get_received_contact_requests_count_no_permission() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -642,7 +642,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting the number of received contact requests with messaging disabled.
      */
-    public function test_get_received_contact_requests_count_messaging_disabled(): void {
+    public function test_get_received_contact_requests_count_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -663,7 +663,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test creating a contact request.
      */
-    public function test_create_contact_request(): void {
+    public function test_create_contact_request() {
         global $CFG, $DB;
 
         $this->resetAfterTest();
@@ -695,7 +695,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test creating a contact request when not allowed.
      */
-    public function test_create_contact_request_not_allowed(): void {
+    public function test_create_contact_request_not_allowed() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -721,7 +721,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test creating a contact request with messaging disabled.
      */
-    public function test_create_contact_request_messaging_disabled(): void {
+    public function test_create_contact_request_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -743,7 +743,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test creating a contact request with no permission.
      */
-    public function test_create_contact_request_no_permission(): void {
+    public function test_create_contact_request_no_permission() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -761,7 +761,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming a contact request.
      */
-    public function test_confirm_contact_request(): void {
+    public function test_confirm_contact_request() {
         global $DB;
 
         $this->resetAfterTest();
@@ -794,7 +794,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming a contact request with messaging disabled.
      */
-    public function test_confirm_contact_request_messaging_disabled(): void {
+    public function test_confirm_contact_request_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -816,7 +816,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming a contact request with no permission.
      */
-    public function test_confirm_contact_request_no_permission(): void {
+    public function test_confirm_contact_request_no_permission() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -834,7 +834,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test declining a contact request.
      */
-    public function test_decline_contact_request(): void {
+    public function test_decline_contact_request() {
         global $DB;
 
         $this->resetAfterTest();
@@ -859,7 +859,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test declining a contact request with messaging disabled.
      */
-    public function test_decline_contact_request_messaging_disabled(): void {
+    public function test_decline_contact_request_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -881,7 +881,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test declining a contact request with no permission.
      */
-    public function test_decline_contact_request_no_permission(): void {
+    public function test_decline_contact_request_no_permission() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -899,7 +899,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test muting conversations.
      */
-    public function test_mute_conversations(): void {
+    public function test_mute_conversations() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -935,7 +935,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test muting a conversation with messaging disabled.
      */
-    public function test_mute_conversations_messaging_disabled(): void {
+    public function test_mute_conversations_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -960,7 +960,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test muting a conversation with no permission.
      */
-    public function test_mute_conversations_no_permission(): void {
+    public function test_mute_conversations_no_permission() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -981,7 +981,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test unmuting conversations.
      */
-    public function test_unmute_conversations(): void {
+    public function test_unmute_conversations() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1015,7 +1015,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test unmuting a conversation with messaging disabled.
      */
-    public function test_unmute_conversation_messaging_disabled(): void {
+    public function test_unmute_conversation_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1040,7 +1040,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test unmuting a conversation with no permission.
      */
-    public function test_unmute_conversation_no_permission(): void {
+    public function test_unmute_conversation_no_permission() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -1061,7 +1061,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test blocking a user.
      */
-    public function test_block_user(): void {
+    public function test_block_user() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1093,7 +1093,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test blocking a user.
      */
-    public function test_block_user_when_ineffective(): void {
+    public function test_block_user_when_ineffective() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1117,7 +1117,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test blocking a user with messaging disabled.
      */
-    public function test_block_user_messaging_disabled(): void {
+    public function test_block_user_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1139,7 +1139,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test blocking a user with no permission.
      */
-    public function test_block_user_no_permission(): void {
+    public function test_block_user_no_permission() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -1157,7 +1157,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test unblocking a user.
      */
-    public function test_unblock_user(): void {
+    public function test_unblock_user() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1188,7 +1188,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test unblocking a user with messaging disabled.
      */
-    public function test_unblock_user_messaging_disabled(): void {
+    public function test_unblock_user_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1210,7 +1210,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test unblocking a user with no permission.
      */
-    public function test_unblock_user_no_permission(): void {
+    public function test_unblock_user_no_permission() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -1228,7 +1228,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test search_contacts.
      */
-    public function test_search_contacts(): void {
+    public function test_search_contacts() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1295,7 +1295,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_messages.
      */
-    public function test_get_messages(): void {
+    public function test_get_messages() {
         global $CFG, $DB, $PAGE;
         $this->resetAfterTest(true);
 
@@ -1484,7 +1484,7 @@ class externallib_test extends externallib_advanced_testcase {
         $messages = external_api::clean_returnvalue(core_message_external::get_messages_returns(), $messages);
         $this->assertCount(1, $messages['messages']);
         // Check we receive custom data as a unserialisable json.
-        $this->assertObjectHasProperty('datakey', json_decode($messages['messages'][0]['customdata']));
+        $this->assertObjectHasAttribute('datakey', json_decode($messages['messages'][0]['customdata']));
         $this->assertEquals('mod_feedback', $messages['messages'][0]['component']);
         $this->assertEquals('submission', $messages['messages'][0]['eventtype']);
         $feedbackicon = clean_param($PAGE->get_renderer('core')->image_url('monologo', 'mod_feedback')->out(), PARAM_URL);
@@ -1539,7 +1539,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_messages where we want all messages from a user, sent to any user.
      */
-    public function test_get_messages_useridto_all(): void {
+    public function test_get_messages_useridto_all() {
         $this->resetAfterTest(true);
 
         $user1 = self::getDataGenerator()->create_user();
@@ -1573,7 +1573,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_messages where we want all messages to a user, sent by any user.
      */
-    public function test_get_messages_useridfrom_all(): void {
+    public function test_get_messages_useridfrom_all() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -1607,7 +1607,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_blocked_users.
      */
-    public function test_get_blocked_users(): void {
+    public function test_get_blocked_users() {
         $this->resetAfterTest(true);
 
         $user1 = self::getDataGenerator()->create_user();
@@ -1652,7 +1652,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test mark_message_read.
      */
-    public function test_mark_message_read(): void {
+    public function test_mark_message_read() {
         $this->resetAfterTest(true);
 
         $user1 = self::getDataGenerator()->create_user();
@@ -1711,7 +1711,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test mark_notification_read.
      */
-    public function test_mark_notification_read(): void {
+    public function test_mark_notification_read() {
         $this->resetAfterTest(true);
 
         $user1 = self::getDataGenerator()->create_user();
@@ -1771,7 +1771,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test delete_message.
      */
-    public function test_delete_message(): void {
+    public function test_delete_message() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1870,14 +1870,14 @@ class externallib_test extends externallib_advanced_testcase {
 
     }
 
-    public function test_mark_all_notifications_as_read_invalid_user_exception(): void {
+    public function test_mark_all_notifications_as_read_invalid_user_exception() {
         $this->resetAfterTest(true);
 
         $this->expectException('moodle_exception');
         core_message_external::mark_all_notifications_as_read(-2132131, 0);
     }
 
-    public function test_mark_all_notifications_as_read_access_denied_exception(): void {
+    public function test_mark_all_notifications_as_read_access_denied_exception() {
         $this->resetAfterTest(true);
 
         $sender = $this->getDataGenerator()->create_user();
@@ -1888,7 +1888,7 @@ class externallib_test extends externallib_advanced_testcase {
         core_message_external::mark_all_notifications_as_read($sender->id, 0);
     }
 
-    public function test_mark_all_notifications_as_read_missing_from_user_exception(): void {
+    public function test_mark_all_notifications_as_read_missing_from_user_exception() {
         $this->resetAfterTest(true);
 
         $sender = $this->getDataGenerator()->create_user();
@@ -1898,7 +1898,7 @@ class externallib_test extends externallib_advanced_testcase {
         core_message_external::mark_all_notifications_as_read($sender->id, 99999);
     }
 
-    public function test_mark_all_notifications_as_read(): void {
+    public function test_mark_all_notifications_as_read() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1932,7 +1932,7 @@ class externallib_test extends externallib_advanced_testcase {
         $this->assertCount(0, $unreadnotifications);
     }
 
-    public function test_mark_all_notifications_as_read_time_created_to(): void {
+    public function test_mark_all_notifications_as_read_time_created_to() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -1975,7 +1975,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_user_notification_preferences
      */
-    public function test_get_user_notification_preferences(): void {
+    public function test_get_user_notification_preferences() {
         $this->resetAfterTest(true);
 
         $user = self::getDataGenerator()->create_user();
@@ -2014,7 +2014,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_user_notification_preferences permissions
      */
-    public function test_get_user_notification_preferences_permissions(): void {
+    public function test_get_user_notification_preferences_permissions() {
         $this->resetAfterTest(true);
 
         $user = self::getDataGenerator()->create_user();
@@ -2032,7 +2032,7 @@ class externallib_test extends externallib_advanced_testcase {
      * If checks this by placing some users in the same course, where default caps would permit a user to view another user's
      * profile.
      */
-    public function test_message_search_users_messagingallusers_disabled(): void {
+    public function test_message_search_users_messagingallusers_disabled() {
         global $DB;
         $this->resetAfterTest();
 
@@ -2128,7 +2128,7 @@ class externallib_test extends externallib_advanced_testcase {
      * This test verifies that any contacts are returned, as well as any non-contacts, regardless of whether the searching user
      * can view their respective profile.
      */
-    public function test_message_search_users_messagingallusers_enabled(): void {
+    public function test_message_search_users_messagingallusers_enabled() {
         global $DB;
         $this->resetAfterTest();
 
@@ -2221,7 +2221,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Verify searching for users find themselves when they have self-conversations.
      */
-    public function test_message_search_users_self_conversations(): void {
+    public function test_message_search_users_self_conversations() {
         $this->resetAfterTest();
 
         // Create some users.
@@ -2251,7 +2251,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Verify searching for users works even if no matching users from either contacts, or non-contacts can be found.
      */
-    public function test_message_search_users_with_empty_result(): void {
+    public function test_message_search_users_with_empty_result() {
         $this->resetAfterTest();
 
         // Create some users, but make sure neither will match the search term.
@@ -2277,7 +2277,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying that limits and offsets work for both the contacts and non-contacts return data.
      */
-    public function test_message_search_users_limit_offset(): void {
+    public function test_message_search_users_limit_offset() {
         $this->resetAfterTest();
 
         // Create 20 users.
@@ -2356,7 +2356,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests searching users as another user having the 'moodle/user:viewdetails' capability.
      */
-    public function test_message_search_users_with_cap(): void {
+    public function test_message_search_users_with_cap() {
         $this->resetAfterTest();
         global $DB;
 
@@ -2413,7 +2413,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests searching users as another user without the 'moodle/user:viewdetails' capability.
      */
-    public function test_message_search_users_without_cap(): void {
+    public function test_message_search_users_without_cap() {
         $this->resetAfterTest();
 
         // Create some users.
@@ -2432,7 +2432,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests searching users with messaging disabled.
      */
-    public function test_message_search_users_messaging_disabled(): void {
+    public function test_message_search_users_messaging_disabled() {
         $this->resetAfterTest();
 
         // Create some skeleton data just so we can call the WS.
@@ -2452,7 +2452,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests searching messages.
      */
-    public function test_messagearea_search_messages(): void {
+    public function test_messagearea_search_messages() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -2511,7 +2511,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests searching messages as another user.
      */
-    public function test_messagearea_search_messages_as_other_user(): void {
+    public function test_messagearea_search_messages_as_other_user() {
         $this->resetAfterTest(true);
 
         // The person doing the search.
@@ -2568,7 +2568,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests searching messages as another user without the proper capabilities.
      */
-    public function test_messagearea_search_messages_as_other_user_without_cap(): void {
+    public function test_messagearea_search_messages_as_other_user_without_cap() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -2586,7 +2586,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests searching messages with messaging disabled
      */
-    public function test_messagearea_search_messages_messaging_disabled(): void {
+    public function test_messagearea_search_messages_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest(true);
@@ -2608,7 +2608,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests retrieving contacts.
      */
-    public function test_get_user_contacts(): void {
+    public function test_get_user_contacts() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -2674,7 +2674,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests retrieving contacts as another user.
      */
-    public function test_get_user_contacts_as_other_user(): void {
+    public function test_get_user_contacts_as_other_user() {
         $this->resetAfterTest(true);
 
         $this->setAdminUser();
@@ -2739,7 +2739,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests retrieving contacts as another user without the proper capabilities.
      */
-    public function test_get_user_contacts_as_other_user_without_cap(): void {
+    public function test_get_user_contacts_as_other_user_without_cap() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -2757,7 +2757,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests retrieving contacts with messaging disabled.
      */
-    public function test_get_user_contacts_messaging_disabled(): void {
+    public function test_get_user_contacts_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest(true);
@@ -2779,7 +2779,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting contacts when there are no results.
      */
-    public function test_get_user_contacts_no_results(): void {
+    public function test_get_user_contacts_no_results() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -2795,7 +2795,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests get_conversation_messages for retrieving messages.
      */
-    public function test_get_conversation_messages(): void {
+    public function test_get_conversation_messages() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -2869,7 +2869,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests get_conversation_messages for retrieving messages using timefrom parameter.
      */
-    public function test_get_conversation_messages_timefrom(): void {
+    public function test_get_conversation_messages_timefrom() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -2925,7 +2925,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests get_conversation_messages for retrieving messages as another user.
      */
-    public function test_get_conversation_messages_as_other_user(): void {
+    public function test_get_conversation_messages_as_other_user() {
         $this->resetAfterTest(true);
 
         // Set as admin.
@@ -2993,7 +2993,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests get_conversation_messages for retrieving messages as another user without the proper capabilities.
      */
-    public function test_get_conversation_messages_as_other_user_without_cap(): void {
+    public function test_get_conversation_messages_as_other_user_without_cap() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -3019,7 +3019,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests get_conversation_messages for retrieving messages as another user not in the conversation.
      */
-    public function test_get_conversation_messages_as_user_not_in_conversation(): void {
+    public function test_get_conversation_messages_as_user_not_in_conversation() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -3044,7 +3044,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests get_conversation_messages for retrieving messages with messaging disabled.
      */
-    public function test_get_conversation_messages_messaging_disabled(): void {
+    public function test_get_conversation_messages_messaging_disabled() {
         $this->resetAfterTest(true);
 
         // Create some skeleton data just so we can call the WS.
@@ -3073,7 +3073,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test marking all conversation messages as read with an invalid user.
      */
-    public function test_mark_all_conversation_messages_as_read_invalid_user_exception(): void {
+    public function test_mark_all_conversation_messages_as_read_invalid_user_exception() {
         $this->resetAfterTest(true);
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3095,7 +3095,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test marking all conversation messages as read without proper access.
      */
-    public function test_mark_all_conversation_messages_as_read_access_denied_exception(): void {
+    public function test_mark_all_conversation_messages_as_read_access_denied_exception() {
         $this->resetAfterTest(true);
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3119,7 +3119,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test marking all conversation messages as read for another user.
      */
-    public function test_mark_all_conversation_messages_as_read_wrong_user(): void {
+    public function test_mark_all_conversation_messages_as_read_wrong_user() {
         $this->resetAfterTest(true);
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3143,7 +3143,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test marking all conversation messages as admin.
      */
-    public function test_mark_all_conversation_messages_as_admin(): void {
+    public function test_mark_all_conversation_messages_as_admin() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -3169,7 +3169,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test marking all conversation messages.
      */
-    public function test_mark_all_conversation_messages_as_read(): void {
+    public function test_mark_all_conversation_messages_as_read() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -3195,7 +3195,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting unread conversation count.
      */
-    public function test_get_unread_conversations_count(): void {
+    public function test_get_unread_conversations_count() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -3235,7 +3235,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting unread conversation count as other user.
      */
-    public function test_get_unread_conversations_count_as_other_user(): void {
+    public function test_get_unread_conversations_count_as_other_user() {
         $this->resetAfterTest(true);
 
         // The person wanting the conversation count.
@@ -3275,7 +3275,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting unread conversation count as other user without proper capability.
      */
-    public function test_get_unread_conversations_count_as_other_user_without_cap(): void {
+    public function test_get_unread_conversations_count_as_other_user_without_cap() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -3293,7 +3293,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test deleting conversations.
      */
-    public function test_delete_conversations_by_id(): void {
+    public function test_delete_conversations_by_id() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -3347,7 +3347,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test deleting conversations as other user.
      */
-    public function test_delete_conversations_by_id_as_other_user(): void {
+    public function test_delete_conversations_by_id_as_other_user() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -3400,7 +3400,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test deleting conversations as other user without proper capability.
      */
-    public function test_delete_conversations_by_id_as_other_user_without_cap(): void {
+    public function test_delete_conversations_by_id_as_other_user_without_cap() {
         $this->resetAfterTest(true);
 
         // Create some users.
@@ -3428,7 +3428,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test deleting conversations with messaging disabled.
      */
-    public function test_delete_conversations_by_id_messaging_disabled(): void {
+    public function test_delete_conversations_by_id_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest(true);
@@ -3460,7 +3460,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get message processor.
      */
-    public function test_get_message_processor(): void {
+    public function test_get_message_processor() {
         $this->resetAfterTest(true);
 
         // Create a user.
@@ -3482,7 +3482,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_user_notification_preferences
      */
-    public function test_get_user_message_preferences(): void {
+    public function test_get_user_message_preferences() {
         $this->resetAfterTest(true);
 
         $user = self::getDataGenerator()->create_user();
@@ -3524,7 +3524,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_user_message_preferences permissions
      */
-    public function test_get_user_message_preferences_permissions(): void {
+    public function test_get_user_message_preferences_permissions() {
         $this->resetAfterTest(true);
 
         $user = self::getDataGenerator()->create_user();
@@ -3560,7 +3560,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying that conversations can be marked as favourite conversations.
      */
-    public function test_set_favourite_conversations_basic(): void {
+    public function test_set_favourite_conversations_basic() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3596,7 +3596,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming that a user can't favourite a conversation on behalf of another user.
      */
-    public function test_set_favourite_conversations_another_users_conversation(): void {
+    public function test_set_favourite_conversations_another_users_conversation() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3624,7 +3624,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming that a user can't mark a conversation as their own favourite if it's a conversation they're not a member of.
      */
-    public function test_set_favourite_conversations_non_member(): void {
+    public function test_set_favourite_conversations_non_member() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3653,7 +3653,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming that a user can't favourite a non-existent conversation.
      */
-    public function test_set_favourite_conversations_non_existent_conversation(): void {
+    public function test_set_favourite_conversations_non_existent_conversation() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3667,7 +3667,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming that a user can unset a favourite conversation, or list of favourite conversations.
      */
-    public function test_unset_favourite_conversations_basic(): void {
+    public function test_unset_favourite_conversations_basic() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3714,7 +3714,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming that a user can't unfavourite a conversation for another user.
      */
-    public function test_unset_favourite_conversations_another_users_conversation(): void {
+    public function test_unset_favourite_conversations_another_users_conversation() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3748,7 +3748,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming that a user can't unfavourite a non-existent conversation.
      */
-    public function test_unset_favourite_conversations_non_existent_conversation(): void {
+    public function test_unset_favourite_conversations_non_existent_conversation() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -3832,7 +3832,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test confirming the basic use of get_conversations, with no limits, nor type or favourite restrictions.
      */
-    public function test_get_conversations_no_restrictions(): void {
+    public function test_get_conversations_no_restrictions() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -3900,7 +3900,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying that html format messages are supported, and that message_format_message_text() is being called appropriately.
      */
-    public function test_get_conversations_message_format(): void {
+    public function test_get_conversations_message_format() {
         $this->resetAfterTest();
 
         global $DB;
@@ -3935,7 +3935,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests retrieving conversations with a limit and offset to ensure pagination works correctly.
      */
-    public function test_get_conversations_limit_offset(): void {
+    public function test_get_conversations_limit_offset() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -3987,7 +3987,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying the type filtering behaviour of the get_conversations external method.
      */
-    public function test_get_conversations_type_filter(): void {
+    public function test_get_conversations_type_filter() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -4019,7 +4019,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests retrieving conversations when a 'self' conversation exists.
      */
-    public function test_get_conversations_self_conversations(): void {
+    public function test_get_conversations_self_conversations() {
         global $DB;
         $this->resetAfterTest();
 
@@ -4046,7 +4046,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests retrieving conversations when a conversation contains a deleted user.
      */
-    public function test_get_conversations_deleted_user(): void {
+    public function test_get_conversations_deleted_user() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -4111,7 +4111,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Tests retrieving conversations when a conversation contains a deleted from the database user.
      */
-    public function test_get_conversations_deleted_user_from_database(): void {
+    public function test_get_conversations_deleted_user_from_database() {
         global $DB;
 
         $this->resetAfterTest();
@@ -4166,7 +4166,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying the behaviour of get_conversations() when fetching favourite conversations.
      */
-    public function test_get_conversations_favourite_conversations(): void {
+    public function test_get_conversations_favourite_conversations() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -4239,7 +4239,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying that group linked conversations are returned and contain a subname matching the course name.
      */
-    public function test_get_conversations_group_linked(): void {
+    public function test_get_conversations_group_linked() {
         $this->resetAfterTest();
         global $CFG, $DB;
 
@@ -4285,7 +4285,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test that group conversations containing MathJax don't break the WebService.
      */
-    public function test_get_conversations_group_with_mathjax(): void {
+    public function test_get_conversations_group_with_mathjax() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -4335,7 +4335,7 @@ class externallib_test extends externallib_advanced_testcase {
      * test is performed is because we do not need as much data for group conversations (saving DB calls), so we want
      * to confirm this happens.
      */
-    public function test_get_conversations_user_in_group_and_individual_chat(): void {
+    public function test_get_conversations_user_in_group_and_individual_chat() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -4395,7 +4395,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying get_conversations identifies if a conversation is muted or not.
      */
-    public function test_get_conversations_some_muted(): void {
+    public function test_get_conversations_some_muted() {
         $this->resetAfterTest();
 
         // Create some users.
@@ -4445,7 +4445,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test returning members in a conversation with no contact requests.
      */
-    public function test_get_conversation_members_messaging_disabled(): void {
+    public function test_get_conversation_members_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -4459,7 +4459,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test returning members in a conversation with no contact requests.
      */
-    public function test_get_conversation_members_wrong_user(): void {
+    public function test_get_conversation_members_wrong_user() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -4474,7 +4474,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test returning members in a conversation with no contact requests.
      */
-    public function test_get_conversation_members(): void {
+    public function test_get_conversation_members() {
         $this->resetAfterTest();
 
         $lastaccess = new \stdClass();
@@ -4527,7 +4527,7 @@ class externallib_test extends externallib_advanced_testcase {
         $this->assertEquals(true, $member1->showonlinestatus);
         $this->assertEquals(false, $member1->iscontact);
         $this->assertEquals(false, $member1->isblocked);
-        $this->assertObjectHasProperty('contactrequests', $member1);
+        $this->assertObjectHasAttribute('contactrequests', $member1);
         $this->assertEmpty($member1->contactrequests);
 
         $this->assertEquals($user2->id, $member2->id);
@@ -4536,7 +4536,7 @@ class externallib_test extends externallib_advanced_testcase {
         $this->assertEquals(true, $member2->showonlinestatus);
         $this->assertEquals(true, $member2->iscontact);
         $this->assertEquals(false, $member2->isblocked);
-        $this->assertObjectHasProperty('contactrequests', $member2);
+        $this->assertObjectHasAttribute('contactrequests', $member2);
         $this->assertEmpty($member2->contactrequests);
 
         $this->assertEquals($user3->id, $member3->id);
@@ -4545,14 +4545,14 @@ class externallib_test extends externallib_advanced_testcase {
         $this->assertEquals(true, $member3->showonlinestatus);
         $this->assertEquals(false, $member3->iscontact);
         $this->assertEquals(true, $member3->isblocked);
-        $this->assertObjectHasProperty('contactrequests', $member3);
+        $this->assertObjectHasAttribute('contactrequests', $member3);
         $this->assertEmpty($member3->contactrequests);
     }
 
     /**
      * Test returning members in a conversation with contact requests.
      */
-    public function test_get_conversation_members_with_contact_requests(): void {
+    public function test_get_conversation_members_with_contact_requests() {
         $this->resetAfterTest();
 
         $lastaccess = new \stdClass();
@@ -4647,7 +4647,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test returning members in a conversation when you are not a member.
      */
-    public function test_get_conversation_members_not_a_member(): void {
+    public function test_get_conversation_members_not_a_member() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -4674,7 +4674,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying multiple messages can be sent to an individual conversation.
      */
-    public function test_send_messages_to_conversation_individual(): void {
+    public function test_send_messages_to_conversation_individual() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -4712,12 +4712,12 @@ class externallib_test extends externallib_advanced_testcase {
         external_api::clean_returnvalue(core_message_external::send_messages_to_conversation_returns(), $writtenmessages);
 
         $this->assertCount(2, $writtenmessages);
-        $this->assertObjectHasProperty('id', $writtenmessages[0]);
+        $this->assertObjectHasAttribute('id', $writtenmessages[0]);
         $this->assertEquals($user1->id, $writtenmessages[0]->useridfrom);
         $this->assertEquals('<p>a message from user 1</p>', $writtenmessages[0]->text);
         $this->assertNotEmpty($writtenmessages[0]->timecreated);
 
-        $this->assertObjectHasProperty('id', $writtenmessages[1]);
+        $this->assertObjectHasAttribute('id', $writtenmessages[1]);
         $this->assertEquals($user1->id, $writtenmessages[1]->useridfrom);
         $this->assertEquals('<p>another message from user 1</p>', $writtenmessages[1]->text);
         $this->assertNotEmpty($writtenmessages[1]->timecreated);
@@ -4726,7 +4726,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying multiple messages can be sent to an group conversation.
      */
-    public function test_send_messages_to_conversation_group(): void {
+    public function test_send_messages_to_conversation_group() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -4764,12 +4764,12 @@ class externallib_test extends externallib_advanced_testcase {
         external_api::clean_returnvalue(core_message_external::send_messages_to_conversation_returns(), $writtenmessages);
 
         $this->assertCount(2, $writtenmessages);
-        $this->assertObjectHasProperty('id', $writtenmessages[0]);
+        $this->assertObjectHasAttribute('id', $writtenmessages[0]);
         $this->assertEquals($user1->id, $writtenmessages[0]->useridfrom);
         $this->assertEquals('<p>a message from user 1 to group conv</p>', $writtenmessages[0]->text);
         $this->assertNotEmpty($writtenmessages[0]->timecreated);
 
-        $this->assertObjectHasProperty('id', $writtenmessages[1]);
+        $this->assertObjectHasAttribute('id', $writtenmessages[1]);
         $this->assertEquals($user1->id, $writtenmessages[1]->useridfrom);
         $this->assertEquals('<p>another message from user 1 to group conv</p>', $writtenmessages[1]->text);
         $this->assertNotEmpty($writtenmessages[1]->timecreated);
@@ -4778,7 +4778,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying multiple messages can not be sent to a non existent conversation.
      */
-    public function test_send_messages_to_conversation_non_existent_conversation(): void {
+    public function test_send_messages_to_conversation_non_existent_conversation() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -4806,7 +4806,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying multiple messages can not be sent to a conversation by a non-member.
      */
-    public function test_send_messages_to_conversation_non_member(): void {
+    public function test_send_messages_to_conversation_non_member() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -4841,7 +4841,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying a to long message can not be sent to a conversation.
      */
-    public function test_send_messages_to_conversation_long_text(): void {
+    public function test_send_messages_to_conversation_long_text() {
         $this->resetAfterTest(true);
 
         // Get a bunch of conversations, some group, some individual and in different states.
@@ -4873,7 +4873,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting a conversation that doesn't exist.
      */
-    public function test_get_conversation_no_conversation(): void {
+    public function test_get_conversation_no_conversation() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -4900,7 +4900,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying that the correct favourite information is returned for a non-linked converastion at user context.
      */
-    public function test_get_conversation_favourited(): void {
+    public function test_get_conversation_favourited() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -4935,7 +4935,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test verifying that the correct favourite information is returned for a group-linked conversation at course context.
      */
-    public function test_get_conversation_favourited_group_linked(): void {
+    public function test_get_conversation_favourited_group_linked() {
         $this->resetAfterTest();
         global $DB;
 
@@ -4983,7 +4983,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting a conversation with no messages.
      */
-    public function test_get_conversation_no_messages(): void {
+    public function test_get_conversation_no_messages() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -5032,7 +5032,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test getting a conversation with messages.
      */
-    public function test_get_conversation_with_messages(): void {
+    public function test_get_conversation_with_messages() {
         $this->resetAfterTest();
 
         $user1 = self::getDataGenerator()->create_user();
@@ -5138,7 +5138,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Data provider for test_get_conversation_counts().
      */
-    public function get_conversation_counts_test_cases() {
+    public static function get_conversation_counts_test_cases(): array {
         $typeindividual = \core_message\api::MESSAGE_CONVERSATION_TYPE_INDIVIDUAL;
         $typegroup = \core_message\api::MESSAGE_CONVERSATION_TYPE_GROUP;
         $typeself = \core_message\api::MESSAGE_CONVERSATION_TYPE_SELF;
@@ -5501,7 +5501,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test the get_conversation_counts() function.
      *
-     * @dataProvider get_conversation_counts_test_cases()
+     * @dataProvider get_conversation_counts_test_cases
      * @param array $conversationconfigs Conversations to create
      * @param int $deletemessagesuser The user who is deleting the messages
      * @param array $deletemessages The list of messages to delete (by index)
@@ -5518,7 +5518,7 @@ class externallib_test extends externallib_advanced_testcase {
         $expectedcounts,
         $expectedunreadcounts,
         $deletedusers
-    ): void {
+    ) {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
         $users = [
@@ -5615,7 +5615,7 @@ class externallib_test extends externallib_advanced_testcase {
         $expectedcounts,
         $expectedunreadcounts,
         $deletedusers
-    ): void {
+    ) {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
         $users = [
@@ -5684,7 +5684,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test delete_message for all users.
      */
-    public function test_delete_message_for_all_users(): void {
+    public function test_delete_message_for_all_users() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -5730,7 +5730,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test delete_message for all users with messaging disabled.
      */
-    public function test_delete_message_for_all_users_messaging_disabled(): void {
+    public function test_delete_message_for_all_users_messaging_disabled() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -5754,7 +5754,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test delete_message for all users with no permission.
      */
-    public function test_delete_message_for_all_users_no_permission(): void {
+    public function test_delete_message_for_all_users_no_permission() {
         $this->resetAfterTest();
 
         // Create fake data to test it.
@@ -5774,7 +5774,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test delete_message for all users in a private conversation.
      */
-    public function test_delete_message_for_all_users_private_conversation(): void {
+    public function test_delete_message_for_all_users_private_conversation() {
         global $DB;
 
         $this->resetAfterTest();
@@ -5803,7 +5803,7 @@ class externallib_test extends externallib_advanced_testcase {
      * Test retrieving conversation messages by providing a timefrom higher than last message timecreated. It should return no
      * messages but keep the return structure to not break when called from the ws.
      */
-    public function test_get_conversation_messages_timefrom_higher_than_last_timecreated(): void {
+    public function test_get_conversation_messages_timefrom_higher_than_last_timecreated() {
         $this->resetAfterTest(true);
 
         // Create some users.

@@ -41,7 +41,7 @@ class create_gradecategories_test extends \externallib_advanced_testcase {
      *
      * @return void
      */
-    public function test_create_gradecategories(): void {
+    public function test_create_gradecategories() {
         global $DB;
         $this->resetAfterTest(true);
         $course = $this->getDataGenerator()->create_course();

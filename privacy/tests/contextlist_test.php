@@ -43,7 +43,7 @@ class contextlist_test extends advanced_testcase {
      *
      * @covers ::add_from_sql
      */
-    public function test_add_from_sql(): void {
+    public function test_add_from_sql() {
         global $DB;
 
         $sql = "SELECT c.id FROM {context} c";
@@ -61,7 +61,7 @@ class contextlist_test extends advanced_testcase {
      *
      * @covers ::add_system_context
      */
-    public function test_add_system_context(): void {
+    public function test_add_system_context() {
         $cl = new contextlist();
         $cl->add_system_context();
 
@@ -77,7 +77,7 @@ class contextlist_test extends advanced_testcase {
      *
      * @covers ::add_user_context
      */
-    public function test_add_user_context(): void {
+    public function test_add_user_context() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
@@ -98,7 +98,7 @@ class contextlist_test extends advanced_testcase {
      *
      * @covers ::add_user_contexts
      */
-    public function test_add_user_contexts(): void {
+    public function test_add_user_contexts() {
         $this->resetAfterTest();
 
         $user1 = $this->getDataGenerator()->create_user();
@@ -123,10 +123,11 @@ class contextlist_test extends advanced_testcase {
      * @param string $expected Expected detected value.
      * @covers ::guess_id_field_from_sql
      */
-    public function test_guess_id_field_from_sql($sql, $expected): void {
+    public function test_guess_id_field_from_sql($sql, $expected) {
 
         $rc = new \ReflectionClass(contextlist::class);
         $rcm = $rc->getMethod('guess_id_field_from_sql');
+        $rcm->setAccessible(true);
         $actual = $rcm->invoke(new contextlist(), $sql);
 
         $this->assertEquals($expected, $actual, 'Unable to guess context id field in: '.$sql);
@@ -137,7 +138,7 @@ class contextlist_test extends advanced_testcase {
      *
      * @return array
      */
-    public function data_guess_id_field_from_sql() {
+    public static function data_guess_id_field_from_sql(): array {
         return [
             'easy' => [
                 'SELECT contextid FROM {foo}',

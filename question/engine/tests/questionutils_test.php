@@ -32,7 +32,7 @@ require_once(__DIR__ . '/../lib.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class questionutils_test extends \advanced_testcase {
-    public function test_arrays_have_same_keys_and_values(): void {
+    public function test_arrays_have_same_keys_and_values() {
         $this->assertTrue(question_utils::arrays_have_same_keys_and_values(
                 array(),
                 array()));
@@ -53,7 +53,7 @@ class questionutils_test extends \advanced_testcase {
                 array('sub0' => '1', 'sub1' => '2', 'sub2' => '3', 'sub3' => '1')));
     }
 
-    public function test_arrays_same_at_key(): void {
+    public function test_arrays_same_at_key() {
         $this->assertTrue(question_utils::arrays_same_at_key(
                 array(),
                 array(),
@@ -88,7 +88,7 @@ class questionutils_test extends \advanced_testcase {
                 'key'));
     }
 
-    public function test_arrays_same_at_key_missing_is_blank(): void {
+    public function test_arrays_same_at_key_missing_is_blank() {
         $this->assertTrue(question_utils::arrays_same_at_key_missing_is_blank(
                 array(),
                 array(),
@@ -123,7 +123,7 @@ class questionutils_test extends \advanced_testcase {
                 'key'));
     }
 
-    public function test_arrays_same_at_key_integer(): void {
+    public function test_arrays_same_at_key_integer() {
         $this->assertTrue(question_utils::arrays_same_at_key_integer(
                 array(),
                 array(),
@@ -158,7 +158,7 @@ class questionutils_test extends \advanced_testcase {
                 'key'));
     }
 
-    public function test_int_to_roman(): void {
+    public function test_int_to_roman() {
         $this->assertSame('i', question_utils::int_to_roman(1));
         $this->assertSame('iv', question_utils::int_to_roman(4));
         $this->assertSame('v', question_utils::int_to_roman(5));
@@ -172,7 +172,7 @@ class questionutils_test extends \advanced_testcase {
         $this->assertSame('mmmcmxcix', question_utils::int_to_roman(3999));
     }
 
-    public function test_int_to_letter(): void {
+    public function test_int_to_letter() {
         $this->assertEquals('A', question_utils::int_to_letter(1));
         $this->assertEquals('B', question_utils::int_to_letter(2));
         $this->assertEquals('C', question_utils::int_to_letter(3));
@@ -201,22 +201,22 @@ class questionutils_test extends \advanced_testcase {
         $this->assertEquals('Z', question_utils::int_to_letter(26));
     }
 
-    public function test_int_to_roman_too_small(): void {
+    public function test_int_to_roman_too_small() {
         $this->expectException(\moodle_exception::class);
         question_utils::int_to_roman(0);
     }
 
-    public function test_int_to_roman_too_big(): void {
+    public function test_int_to_roman_too_big() {
         $this->expectException(\moodle_exception::class);
         question_utils::int_to_roman(4000);
     }
 
-    public function test_int_to_roman_not_int(): void {
+    public function test_int_to_roman_not_int() {
         $this->expectException(\moodle_exception::class);
         question_utils::int_to_roman(1.5);
     }
 
-    public function test_clean_param_mark(): void {
+    public function test_clean_param_mark() {
         $this->assertNull(question_utils::clean_param_mark(null));
         $this->assertNull(question_utils::clean_param_mark('frog'));
         $this->assertSame('', question_utils::clean_param_mark(''));

@@ -95,7 +95,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         );
     }
 
-    public function test_initial_state(): void {
+    public function test_initial_state() {
         $this->assertFalse($this->observer->get_modified());
         $this->assertEquals(0, count($this->observer->get_attempts_added()));
         $this->assertEquals(0, count($this->observer->get_attempts_modified()));
@@ -106,14 +106,14 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_update_usage(): void {
+    public function test_update_usage() {
 
         $this->quba->set_preferred_behaviour('deferredfeedback');
 
         $this->assertTrue($this->observer->get_modified());
     }
 
-    public function test_add_question(): void {
+    public function test_add_question() {
 
         $slot = $this->quba->add_question(\test_question_maker::make_question('truefalse'));
 
@@ -126,7 +126,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_add_and_start_question(): void {
+    public function test_add_and_start_question() {
 
         $slot = $this->quba->add_question(\test_question_maker::make_question('truefalse'));
                 $this->quba->start_question($slot);
@@ -145,7 +145,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_process_action(): void {
+    public function test_process_action() {
 
         $this->quba->manual_grade($this->slot, 'Actually, that is not quite right', 0.5, FORMAT_HTML);
 
@@ -169,7 +169,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_regrade_same_steps(): void {
+    public function test_regrade_same_steps() {
 
         // Change the question in a minor way and regrade.
         $this->quba->get_question($this->slot, false)->answers[14]->fraction = 0.5;
@@ -199,7 +199,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_regrade_losing_steps(): void {
+    public function test_regrade_losing_steps() {
 
         // Change the question so that 'toad' is also right, and regrade. This
         // will mean that the try again, and second try states are no longer
@@ -238,7 +238,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_tricky_regrade(): void {
+    public function test_tricky_regrade() {
 
         // The tricky thing here is that we take a half-complete question-attempt,
         // and then as one transaction, we submit some more responses, and then
@@ -279,7 +279,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_move_question(): void {
+    public function test_move_question() {
 
         $q = \test_question_maker::make_question('truefalse');
         $newslot = $this->quba->add_question_in_place_of_other($this->slot, $q);
@@ -303,7 +303,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_move_question_then_modify(): void {
+    public function test_move_question_then_modify() {
 
         $q = \test_question_maker::make_question('truefalse');
         $newslot = $this->quba->add_question_in_place_of_other($this->slot, $q);
@@ -333,7 +333,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_move_question_then_move_again(): void {
+    public function test_move_question_then_move_again() {
         $originalqa = $this->quba->get_question_attempt($this->slot);
 
         $q1 = \test_question_maker::make_question('truefalse');
@@ -360,7 +360,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_set_max_mark(): void {
+    public function test_set_max_mark() {
         $this->quba->set_max_mark($this->slot, 6.0);
         $this->assertEqualsWithDelta(4.0, $this->quba->get_total_mark(), 0.0000005);
 
@@ -379,7 +379,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_set_question_attempt_metadata(): void {
+    public function test_set_question_attempt_metadata() {
         $this->quba->set_question_attempt_metadata($this->slot, 'metathingy', 'a value');
         $this->assertEquals('a value', $this->quba->get_question_attempt_metadata($this->slot, 'metathingy'));
 
@@ -395,7 +395,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_set_question_attempt_metadata_then_change(): void {
+    public function test_set_question_attempt_metadata_then_change() {
         $this->quba->set_question_attempt_metadata($this->slot, 'metathingy', 'a value');
         $this->quba->set_question_attempt_metadata($this->slot, 'metathingy', 'different value');
         $this->assertEquals('different value', $this->quba->get_question_attempt_metadata($this->slot, 'metathingy'));
@@ -412,7 +412,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_set_metadata_previously_set_but_dont_actually_change(): void {
+    public function test_set_metadata_previously_set_but_dont_actually_change() {
         $this->quba->set_question_attempt_metadata($this->slot, 'metathingy', 'a value');
         $this->observer = new testable_question_engine_unit_of_work($this->quba);
         $this->quba->set_observer($this->observer);
@@ -430,7 +430,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_set_metadata_previously_set(): void {
+    public function test_set_metadata_previously_set() {
         $this->quba->set_question_attempt_metadata($this->slot, 'metathingy', 'a value');
         $this->observer = new testable_question_engine_unit_of_work($this->quba);
         $this->quba->set_observer($this->observer);
@@ -449,7 +449,7 @@ class unitofwork_test extends \data_loading_method_test_base {
                 $this->observer->get_metadata_modified());
     }
 
-    public function test_set_metadata_in_new_question(): void {
+    public function test_set_metadata_in_new_question() {
         $newslot = $this->quba->add_question(\test_question_maker::make_question('truefalse'));
         $this->quba->start_question($newslot);
         $this->quba->set_question_attempt_metadata($newslot, 'metathingy', 'a value');
@@ -467,7 +467,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_set_metadata_then_move(): void {
+    public function test_set_metadata_then_move() {
         $this->quba->set_question_attempt_metadata($this->slot, 'metathingy', 'a value');
         $q = \test_question_maker::make_question('truefalse');
         $newslot = $this->quba->add_question_in_place_of_other($this->slot, $q);
@@ -488,7 +488,7 @@ class unitofwork_test extends \data_loading_method_test_base {
         $this->assertEquals(0, count($this->observer->get_metadata_modified()));
     }
 
-    public function test_move_then_set_metadata(): void {
+    public function test_move_then_set_metadata() {
         $q = \test_question_maker::make_question('truefalse');
         $newslot = $this->quba->add_question_in_place_of_other($this->slot, $q);
         $this->quba->start_question($this->slot);

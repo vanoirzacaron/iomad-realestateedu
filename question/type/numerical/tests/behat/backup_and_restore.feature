@@ -19,8 +19,6 @@ Feature: Test duplicating a quiz containing a Numerical question
       | quiz       | Test quiz | C1     | quiz1    |
     And quiz "Test quiz" contains the following questions:
       | Numerical-001 | 1 |
-    And the following config values are set as admin:
-      | enableasyncbackup | 0 |
 
   @javascript
   Scenario: Backup and restore a course containing a Numerical question

@@ -147,7 +147,12 @@ table.question-bank-table {
     table-layout: fixed;
     overflow-x: scroll;
     width: min-content;
-    max-width: 100%;
+
+    td,
+    th {
+        max-width: 40vw;
+        width: max-content;
+    }
 
     th {
         text-align: left;
@@ -243,7 +248,7 @@ table.question-bank-table {
 
 body.path-question-type {
     /* Hacks to display the labels within a form group. */
-    .fitem .col-form-label.sr-only:not(legend):not([for="id_category"]) {
+    .form-group .col-form-label.sr-only:not(legend):not([for="id_category"]) {
         position: static;
         width: auto;
         height: auto;
@@ -347,8 +352,7 @@ body.path-question-type {
     }
 }
 
-.que input[size],
-.que textarea[cols] {
+.path-mod-quiz input[size] {
     width: auto;
     max-width: 100%;
 }
@@ -662,6 +666,13 @@ body.path-question-type .mform fieldset.hidden {
     position: relative;
 }
 
+// qbank_managecategories
+[data-filterregion=filter][data-filter-type=category] .form-autocomplete-suggestions li[aria-disabled=true] {
+    font-weight: bold;
+    color: $body-color;
+    background-color: $body-bg;
+}
+
 @include media-breakpoint-down(sm) {
     .que .info {
         float: none;
@@ -669,5 +680,14 @@ body.path-question-type .mform fieldset.hidden {
     }
     .que .content {
         margin: 0;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .question-bank-table {
+        td,
+        th {
+            max-width: 75vw;
+        }
     }
 }

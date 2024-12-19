@@ -74,7 +74,7 @@ class scheduled_task_test extends \advanced_testcase {
         $this->assertEquals($expected, $testclass->eval_cron_field($field, $min, $max));
     }
 
-    public function test_get_next_scheduled_time(): void {
+    public function test_get_next_scheduled_time() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -312,7 +312,7 @@ class scheduled_task_test extends \advanced_testcase {
         $this->assertEquals(strtotime('2023-10-29 02:00 Europe/London'), $four);
     }
 
-    public function test_timezones(): void {
+    public function test_timezones() {
         global $CFG, $USER;
 
         // The timezones used in this test are chosen because they do not use DST - that would break the test.
@@ -425,7 +425,7 @@ class scheduled_task_test extends \advanced_testcase {
     /**
      * Tests that the reset function deletes old tasks.
      */
-    public function test_reset_scheduled_tasks_for_component_delete(): void {
+    public function test_reset_scheduled_tasks_for_component_delete() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -463,7 +463,7 @@ class scheduled_task_test extends \advanced_testcase {
             'component' => 'moodle')));
     }
 
-    public function test_get_next_scheduled_task(): void {
+    public function test_get_next_scheduled_task() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -548,7 +548,7 @@ class scheduled_task_test extends \advanced_testcase {
         $this->assertNull($task);
     }
 
-    public function test_get_broken_scheduled_task(): void {
+    public function test_get_broken_scheduled_task() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -580,7 +580,7 @@ class scheduled_task_test extends \advanced_testcase {
      * Tests the use of 'R' syntax in time fields of tasks to get
      * tasks be configured with a non-uniform time.
      */
-    public function test_random_time_specification(): void {
+    public function test_random_time_specification() {
 
         // Testing non-deterministic things in a unit test is not really
         // wise, so we just test the values have changed within allowed bounds.
@@ -618,7 +618,7 @@ class scheduled_task_test extends \advanced_testcase {
      * Test that the file_temp_cleanup_task removes directories and
      * files as expected.
      */
-    public function test_file_temp_cleanup_task(): void {
+    public function test_file_temp_cleanup_task() {
         global $CFG;
         $backuptempdir = make_backup_temp_directory('');
 
@@ -677,7 +677,7 @@ class scheduled_task_test extends \advanced_testcase {
     /**
      * Test that the function to clear the fail delay from a task works correctly.
      */
-    public function test_clear_fail_delay(): void {
+    public function test_clear_fail_delay() {
 
         $this->resetAfterTest();
 
@@ -949,7 +949,7 @@ class scheduled_task_test extends \advanced_testcase {
      *
      * @return array[]
      */
-    public function is_component_enabled_provider(): array {
+    public static function is_component_enabled_provider(): array {
         return [
             'Enabled component' => ['auth_cas', true],
             'Disabled component' => ['auth_ldap', false],
@@ -1034,74 +1034,5 @@ class scheduled_task_test extends \advanced_testcase {
         $this->assertEquals(0, $task->get_disabled());
         $this->assertEquals(1, $task->get_hour());
         $this->assertEquals(false, $task->has_default_configuration());
-    }
-
-    /**
-     * Test send messages when a task reaches the max fail delay time.
-     *
-     * @covers ::scheduled_task_failed
-     * @covers ::send_failed_task_max_delay_message
-     */
-    public function test_message_max_fail_delay(): void {
-        $this->resetAfterTest();
-        $this->setAdminUser();
-
-        // Redirect messages.
-        $messagesink = $this->redirectMessages();
-        $cronlockfactory = \core\lock\lock_config::get_lock_factory('cron');
-
-        // Get an example task to use for testing. Task is set to run every minute by default.
-        $taskname = '\core\task\send_new_user_passwords_task';
-        $task = manager::get_scheduled_task($taskname);
-        $lock = $cronlockfactory->get_lock('\\' . get_class($task), 10);
-        $task->set_lock($lock);
-        // Catch the message.
-        manager::scheduled_task_failed($task);
-        $messages = $messagesink->get_messages();
-        $this->assertCount(0, $messages);
-
-        // Set the max fail delay time.
-        $task = manager::get_scheduled_task($taskname);
-        $lock = $cronlockfactory->get_lock('\\' . get_class($task), 10);
-        $task->set_lock($lock);
-        $task->set_fail_delay(86400);
-        $task->execute();
-        // Catch the message.
-        manager::scheduled_task_failed($task);
-        $messages = $messagesink->get_messages();
-        $this->assertCount(1, $messages);
-
-        // Get the task and execute it second time.
-        $task = manager::get_scheduled_task($taskname);
-        $lock = $cronlockfactory->get_lock('\\' . get_class($task), 10);
-        $task->set_lock($lock);
-        // Set the fail delay to 12 hours.
-        $task->set_fail_delay(43200);
-        $task->execute();
-        manager::scheduled_task_failed($task);
-        // Catch the message.
-        $messages = $messagesink->get_messages();
-        $this->assertCount(2, $messages);
-
-        // Get the task and execute it third time.
-        $task = manager::get_scheduled_task($taskname);
-        $lock = $cronlockfactory->get_lock('\\' . get_class($task), 10);
-        $task->set_lock($lock);
-        // Set the fail delay to 48 hours.
-        $task->set_fail_delay(172800);
-        $task->execute();
-        manager::scheduled_task_failed($task);
-        // Catch the message.
-        $messages = $messagesink->get_messages();
-        $this->assertCount(3, $messages);
-
-        // Check first message information.
-        $this->assertStringContainsString('Task failed: Send new user passwords', $messages[0]->subject);
-        $this->assertEquals('failedtaskmaxdelay', $messages[0]->eventtype);
-        $this->assertEquals('-10', $messages[0]->useridfrom);
-        $this->assertEquals('2', $messages[0]->useridto);
-
-        // Close sink.
-        $messagesink->close();
     }
 }

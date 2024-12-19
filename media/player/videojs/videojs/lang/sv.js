@@ -21,7 +21,7 @@ videojs.addLanguage('sv', {
   "Depressed": "Deprimerad",
   "Descriptions": "Beskrivningar",
   "Done": "Klar",
-  "Drop shadow": "DropSkugga",
+  "Dropshadow": "DropSkugga",
   "Duration": "Total tid",
   "End of dialog window.": "Slutet av dialogfönster.",
   "Font Family": "Typsnittsfamilj",

@@ -177,7 +177,7 @@ class component_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming the deletion of favourites by type and item, but with no optional context filter provided.
      */
-    public function test_delete_favourites_by_type_and_item(): void {
+    public function test_delete_favourites_by_type_and_item() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for each user.
@@ -225,7 +225,7 @@ class component_favourite_service_test extends \advanced_testcase {
     /**
      * Test confirming the deletion of favourites by type and item and with the optional context filter provided.
      */
-    public function test_delete_favourites_by_type_and_item_with_context(): void {
+    public function test_delete_favourites_by_type_and_item_with_context() {
         list($user1context, $user2context, $course1context, $course2context) = $this->setup_users_and_courses();
 
         // Get a user_favourite_service for each user.

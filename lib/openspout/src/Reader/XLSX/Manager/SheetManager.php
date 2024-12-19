@@ -51,15 +51,15 @@ final class SheetManager
     public const SHEET_STATE_HIDDEN = 'hidden';
 
     /** @var string Path of the XLSX file being read */
-    private readonly string $filePath;
+    private string $filePath;
 
-    private readonly Options $options;
+    private Options $options;
 
     /** @var SharedStringsManager Manages shared strings */
-    private readonly SharedStringsManager $sharedStringsManager;
+    private SharedStringsManager $sharedStringsManager;
 
     /** @var XLSX Used to unescape XML data */
-    private readonly XLSX $escaper;
+    private XLSX $escaper;
 
     /** @var Sheet[] List of sheets */
     private array $sheets;
@@ -111,7 +111,7 @@ final class SheetManager
     }
 
     /**
-     * @param XMLReader $xmlReader XMLReader object, positioned on a "<workbookPr>" starting node
+     * @param \OpenSpout\Reader\Wrapper\XMLReader $xmlReader XMLReader object, positioned on a "<workbookPr>" starting node
      *
      * @return int A return code that indicates what action should the processor take next
      */
@@ -126,7 +126,7 @@ final class SheetManager
     }
 
     /**
-     * @param XMLReader $xmlReader XMLReader object, positioned on a "<workbookView>" starting node
+     * @param \OpenSpout\Reader\Wrapper\XMLReader $xmlReader XMLReader object, positioned on a "<workbookView>" starting node
      *
      * @return int A return code that indicates what action should the processor take next
      */
@@ -140,7 +140,7 @@ final class SheetManager
     }
 
     /**
-     * @param XMLReader $xmlReader XMLReader object, positioned on a "<sheet>" starting node
+     * @param \OpenSpout\Reader\Wrapper\XMLReader $xmlReader XMLReader object, positioned on a "<sheet>" starting node
      *
      * @return int A return code that indicates what action should the processor take next
      */
@@ -166,11 +166,11 @@ final class SheetManager
      * We can find the XML file path describing the sheet inside "workbook.xml.res", by mapping with the sheet ID
      * ("r:id" in "workbook.xml", "Id" in "workbook.xml.res").
      *
-     * @param XMLReader $xmlReaderOnSheetNode XML Reader instance, pointing on the node describing the sheet, as defined in "workbook.xml"
-     * @param int       $sheetIndexZeroBased  Index of the sheet, based on order of appearance in the workbook (zero-based)
-     * @param bool      $isSheetActive        Whether this sheet was defined as active
+     * @param \OpenSpout\Reader\Wrapper\XMLReader $xmlReaderOnSheetNode XML Reader instance, pointing on the node describing the sheet, as defined in "workbook.xml"
+     * @param int                                 $sheetIndexZeroBased  Index of the sheet, based on order of appearance in the workbook (zero-based)
+     * @param bool                                $isSheetActive        Whether this sheet was defined as active
      *
-     * @return Sheet Sheet instance
+     * @return \OpenSpout\Reader\XLSX\Sheet Sheet instance
      */
     private function getSheetFromSheetXMLNode(XMLReader $xmlReaderOnSheetNode, int $sheetIndexZeroBased, bool $isSheetActive): Sheet
     {

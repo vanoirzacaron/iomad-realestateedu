@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Function to upgrade tool_cohortroles.
  *
@@ -30,6 +32,20 @@
  */
 function xmldb_tool_cohortroles_upgrade($oldversion) {
     global $DB;
+
+    if ($oldversion < 2020020600) {
+        // Delete any tool_cohortroles mappings for roles which no longer exist.
+        $DB->delete_records_select('tool_cohortroles', 'roleid NOT IN (SELECT id FROM {role})');
+
+        // Cohortroles savepoint reached.
+        upgrade_plugin_savepoint(true, 2020020600, 'tool', 'cohortroles');
+    }
+
+    // Automatically generated Moodle v3.9.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    // Automatically generated Moodle v4.0.0 release upgrade line.
+    // Put any upgrade step following this.
 
     // Automatically generated Moodle v4.1.0 release upgrade line.
     // Put any upgrade step following this.
@@ -46,9 +62,6 @@ function xmldb_tool_cohortroles_upgrade($oldversion) {
     }
 
     // Automatically generated Moodle v4.3.0 release upgrade line.
-    // Put any upgrade step following this.
-
-    // Automatically generated Moodle v4.4.0 release upgrade line.
     // Put any upgrade step following this.
 
     return true;

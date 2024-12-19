@@ -31,7 +31,7 @@ class grade_deleted_test extends \advanced_testcase {
     /**
      * Tests the event details.
      */
-    public function test_event(): void {
+    public function test_event() {
         global $CFG;
         require_once("$CFG->libdir/gradelib.php");
 

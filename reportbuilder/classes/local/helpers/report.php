@@ -26,7 +26,6 @@ use core_reportbuilder\manager;
 use core_reportbuilder\local\models\column;
 use core_reportbuilder\local\models\filter;
 use core_reportbuilder\local\models\report as report_model;
-use core_tag_tag;
 
 /**
  * Helper class for manipulating custom reports and their elements (columns, filters, conditions, etc)
@@ -49,26 +48,19 @@ class report {
         $data->name = trim($data->name);
         $data->type = datasource::TYPE_CUSTOM_REPORT;
 
-        // Create report persistent.
-        $report = manager::create_report_persistent($data);
+        $reportpersistent = manager::create_report_persistent($data);
 
         // Add datasource default columns, filters and conditions to the report.
         if ($default) {
-            $source = $report->get('source');
+            $source = $reportpersistent->get('source');
             /** @var datasource $datasource */
-            $datasource = new $source($report);
+            $datasource = new $source($reportpersistent, []);
             $datasource->add_default_columns();
             $datasource->add_default_filters();
             $datasource->add_default_conditions();
         }
 
-        // Report tags.
-        if (property_exists($data, "tags")) {
-            core_tag_tag::set_item_tags('core_reportbuilder', 'reportbuilder_report', $report->get('id'),
-                $report->get_context(), $data->tags);
-        }
-
-        return $report;
+        return $reportpersistent;
     }
 
     /**
@@ -88,12 +80,6 @@ class report {
             'uniquerows' => $data->uniquerows,
         ])->update();
 
-        // Report tags.
-        if (property_exists($data, "tags")) {
-            core_tag_tag::set_item_tags('core_reportbuilder', 'reportbuilder_report', $report->get('id'),
-                $report->get_context(), $data->tags);
-        }
-
         return $report;
     }
 
@@ -109,9 +95,6 @@ class report {
         if ($report === false) {
             throw new invalid_parameter_exception('Invalid report');
         }
-
-        // Report tags.
-        core_tag_tag::remove_all_item_tags('core_reportbuilder', 'reportbuilder_report', $report->get('id'));
 
         return $report->delete();
     }
@@ -423,7 +406,7 @@ class report {
      *
      * @deprecated since Moodle 4.1 - please do not use this function any more, {@see custom_report_column_cards_exporter}
      */
-    public static function get_available_columns(report_model $persistent): array {
+    public static function get_available_columns(report_model $persistent) : array {
         debugging('The function ' . __FUNCTION__ . '() is deprecated, please do not use it any more. ' .
             'See \'custom_report_column_cards_exporter\' class for replacement', DEBUG_DEVELOPER);
 

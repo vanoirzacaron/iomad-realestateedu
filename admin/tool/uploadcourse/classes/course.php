@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use tool_uploadcourse\permissions;
-
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
 require_once($CFG->dirroot . '/course/lib.php');
@@ -247,10 +245,10 @@ class tool_uploadcourse_course {
      * Log an error
      *
      * @param string $code error code.
-     * @param string $message error message.
+     * @param lang_string $message error message.
      * @return void
      */
-    protected function error($code, string $message) {
+    protected function error($code, lang_string $message) {
         if (array_key_exists($code, $this->errors)) {
             throw new coding_exception('Error code already defined');
         }
@@ -447,11 +445,6 @@ class tool_uploadcourse_course {
                 return false;
             } else if (!$this->can_delete()) {
                 $this->error('coursedeletionnotallowed', new lang_string('coursedeletionnotallowed', 'tool_uploadcourse'));
-                return false;
-            }
-
-            if ($error = permissions::check_permission_to_delete($this->shortname)) {
-                $this->error('coursedeletionpermission', $error);
                 return false;
             }
 
@@ -687,20 +680,9 @@ class tool_uploadcourse_course {
                 return false;
             }
 
-            if ($error = permissions::check_permission_to_update($coursedata)) {
-                $this->error('cannotupdatepermission', $error);
-                return false;
-            }
-
             $this->do = self::DO_UPDATE;
         } else {
             $coursedata = $this->get_final_create_data($coursedata);
-
-            if ($error = permissions::check_permission_to_create($coursedata)) {
-                $this->error('courseuploadnotallowed', $error);
-                return false;
-            }
-
             $this->do = self::DO_CREATE;
         }
 
@@ -817,7 +799,6 @@ class tool_uploadcourse_course {
         $this->data = $coursedata;
 
         // Get enrolment data. Where the course already exists, we can also perform validation.
-        // Some data is impossible to validate without the existing course, we will do it again during actual upload.
         $this->enrolmentdata = tool_uploadcourse_helper::get_enrolment_data($this->rawdata);
         $courseid = $coursedata['id'] ?? 0;
         $errors = $this->validate_enrolment_data($courseid, $this->enrolmentdata);
@@ -842,11 +823,6 @@ class tool_uploadcourse_course {
             return false;
         }
 
-        if ($this->restoredata && ($error = permissions::check_permission_to_restore($this->do, $this->data))) {
-            $this->error('courserestorepermission', $error);
-            return false;
-        }
-
         // We can only reset courses when allowed and we are updating the course.
         if ($this->importoptions['reset'] || $this->options['reset']) {
             if ($this->do !== self::DO_UPDATE) {
@@ -855,11 +831,6 @@ class tool_uploadcourse_course {
                 return false;
             } else if (!$this->can_reset()) {
                 $this->error('courseresetnotallowed', new lang_string('courseresetnotallowed', 'tool_uploadcourse'));
-                return false;
-            }
-
-            if ($error = permissions::check_permission_to_reset($this->data)) {
-                $this->error('courseresetpermission', $error);
                 return false;
             }
         }
@@ -918,7 +889,7 @@ class tool_uploadcourse_course {
                 $rc->execute_plan();
                 $this->status('courserestored', new lang_string('courserestored', 'tool_uploadcourse'));
             } else {
-                $this->error('errorwhilerestoringcourse', new lang_string('errorwhilerestoringcourse', 'tool_uploadcourse'));
+                $this->error('errorwhilerestoringcourse', new lang_string('errorwhilerestoringthecourse', 'tool_uploadcourse'));
             }
             $rc->destroy();
         }
@@ -942,7 +913,7 @@ class tool_uploadcourse_course {
     /**
      * Validate passed enrolment data against an existing course
      *
-     * @param int $courseid id of the course where enrolment methods are created/updated or 0 if it is a new course
+     * @param int $courseid
      * @param array[] $enrolmentdata
      * @return lang_string[] Errors keyed on error code
      */
@@ -1051,10 +1022,16 @@ class tool_uploadcourse_course {
         }
 
         $enrolmentplugins = tool_uploadcourse_helper::get_enrolment_plugins();
+        $instances = enrol_get_instances($course->id, false);
         foreach ($enrolmentdata as $enrolmethod => $method) {
 
-            $plugin = $enrolmentplugins[$enrolmethod];
-            $instance = $plugin->find_instance($method, $course->id);
+            $instance = null;
+            foreach ($instances as $i) {
+                if ($i->enrol == $enrolmethod) {
+                    $instance = $i;
+                    break;
+                }
+            }
 
             $todelete = isset($method['delete']) && $method['delete'];
             $todisable = isset($method['disable']) && $method['disable'];
@@ -1079,13 +1056,8 @@ class tool_uploadcourse_course {
                 // Create/update enrolment.
                 $plugin = $enrolmentplugins[$enrolmethod];
 
-                // In case we could not properly validate enrolment data before the course existed
-                // let's repeat it again here.
-                $errors = $plugin->validate_enrol_plugin_data($method, $course->id);
-
-                if (!$errors) {
+                if ($plugin->is_csv_upload_supported()) {
                     $status = ($todisable) ? ENROL_INSTANCE_DISABLED : ENROL_INSTANCE_ENABLED;
-                    $method += ['status' => $status, 'courseid' => $course->id, 'id' => $instance->id ?? null];
                     $method = $plugin->fill_enrol_custom_fields($method, $course->id);
 
                     // Create a new instance if necessary.
@@ -1129,7 +1101,34 @@ class tool_uploadcourse_course {
                         break;
                     }
 
-                    // Validate role context again since course is created.
+                    // Now update values.
+                    $modifiedinstance = $instance;
+
+                    // Sort out the start, end and date.
+                    $modifiedinstance->enrolstartdate = (isset($method['startdate']) ? strtotime($method['startdate']) : 0);
+                    $modifiedinstance->enrolenddate = (isset($method['enddate']) ? strtotime($method['enddate']) : 0);
+
+                    // Is the enrolment period set?
+                    if (isset($method['enrolperiod']) && !empty($method['enrolperiod'])) {
+                        if (preg_match('/^\d+$/', $method['enrolperiod'])) {
+                            $method['enrolperiod'] = (int)$method['enrolperiod'];
+                        } else {
+                            // Try and convert period to seconds.
+                            $method['enrolperiod'] = strtotime('1970-01-01 GMT + ' . $method['enrolperiod']);
+                        }
+                        $modifiedinstance->enrolperiod = $method['enrolperiod'];
+                    }
+                    if ($instance->enrolstartdate > 0 && isset($method['enrolperiod'])) {
+                        $modifiedinstance->enrolenddate = $instance->enrolstartdate + $method['enrolperiod'];
+                    }
+                    if ($instance->enrolenddate > 0) {
+                        $modifiedinstance->enrolperiod = $instance->enrolenddate - $instance->enrolstartdate;
+                    }
+                    if ($instance->enrolenddate < $instance->enrolstartdate) {
+                        $modifiedinstance->enrolenddate = $instance->enrolstartdate;
+                    }
+
+                    // Sort out the given role.
                     if (isset($method['role']) || isset($method['roleid'])) {
                         if (isset($method['role'])) {
                             $role = $method['role'];
@@ -1139,19 +1138,27 @@ class tool_uploadcourse_course {
                             $role = $DB->get_field('role', 'shortname', ['id' => $roleid], MUST_EXIST);
                         }
                         if (!$this->validate_role_context($course->id, $roleid)) {
-                            $this->error('contextrolenotallowed', new lang_string('contextrolenotallowed', 'core_role', $role));
+                            $this->error('contextrolenotallowed',
+                                new lang_string('contextrolenotallowed', 'core_role', $role));
                             break;
+                        }
+
+                        $roleids = tool_uploadcourse_helper::get_role_ids();
+                        if (in_array($roleid, $roleids)) {
+                            $modifiedinstance->roleid = $roleid;
                         }
                     }
 
-                    // Now update values.
-                    // Sort out plugin specific fields.
-                    $modifiedinstance = $plugin->update_enrol_plugin_data($course->id, $method, $instance);
+                    // Sort out custom instance name.
+                    if (isset($method['name'])) {
+                        $modifiedinstance->name = $method['name'];
+                    }
+
                     $plugin->update_instance($instance, $modifiedinstance);
                 } else {
-                    foreach ($errors as $key => $message) {
-                        $this->error($key, $message);
-                    }
+                    $this->error('errorunsupportedmethod',
+                        new lang_string('errorunsupportedmethod', 'tool_uploadcourse',
+                            $enrolmethod));
                 }
             }
         }
@@ -1164,7 +1171,7 @@ class tool_uploadcourse_course {
      * @param int $roleid Role ID.
      * @return bool
      */
-    protected function validate_role_context(int $courseid, int $roleid): bool {
+    protected function validate_role_context(int $courseid, int $roleid) : bool {
         if (empty($this->assignableroles[$courseid])) {
             $coursecontext = \context_course::instance($courseid);
             $this->assignableroles[$courseid] = get_assignable_roles($coursecontext, ROLENAME_SHORT);
@@ -1181,7 +1188,7 @@ class tool_uploadcourse_course {
      * @param int $roleid Role ID.
      * @return bool
      */
-    protected function validate_role_context_level(int $roleid): bool {
+    protected function validate_role_context_level(int $roleid) : bool {
         if (empty($this->contextlevels[$roleid])) {
             $this->contextlevels[$roleid] = get_role_contextlevels($roleid);
         }

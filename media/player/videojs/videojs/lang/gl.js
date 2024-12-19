@@ -68,7 +68,7 @@ videojs.addLanguage('gl', {
   "Raised": "Érguida",
   "Depressed": "Caída",
   "Uniform": "Uniforme",
-  "Drop shadow": "Sombra caída",
+  "Dropshadow": "Sombra caída",
   "Font Family": "Familia de letras",
   "Proportional Sans-Serif": "Sans-Serif proporcional",
   "Monospace Sans-Serif": "Sans-Serif monoespazo (caixa fixa)",

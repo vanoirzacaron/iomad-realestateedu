@@ -68,7 +68,7 @@ videojs.addLanguage('oc', {
   "Raised": "Naut",
   "Depressed": "Enfonsat",
   "Uniform": "Unifòrme",
-  "Drop shadow": "Ombrat",
+  "Dropshadow": "Ombrat",
   "Font Family": "Familha de polissa",
   "Proportional Sans-Serif": "Sans-Serif proporcionala",
   "Monospace Sans-Serif": "Monospace Sans-Serif",

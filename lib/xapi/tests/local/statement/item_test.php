@@ -42,7 +42,7 @@ class item_test extends advanced_testcase {
     /**
      * Test item creation.
      */
-    public function test_create(): void {
+    public function test_create() {
 
         // This is a generic item so check that it can create and item and json encode later.
         $data = (object) [

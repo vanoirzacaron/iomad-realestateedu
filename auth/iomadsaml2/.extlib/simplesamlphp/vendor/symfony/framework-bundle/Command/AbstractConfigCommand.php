@@ -16,7 +16,6 @@ use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\StyleInterface;
-use Symfony\Component\DependencyInjection\Extension\ConfigurationExtensionInterface;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
@@ -58,69 +57,12 @@ abstract class AbstractConfigCommand extends ContainerDebugCommand
     }
 
     /**
-     * @param OutputInterface|StyleInterface $output
-     */
-    protected function listNonBundleExtensions($output)
-    {
-        $title = 'Available registered non-bundle extension aliases';
-        $headers = ['Extension alias'];
-        $rows = [];
-
-        $kernel = $this->getApplication()->getKernel();
-
-        $bundleExtensions = [];
-        foreach ($kernel->getBundles() as $bundle) {
-            if ($extension = $bundle->getContainerExtension()) {
-                $bundleExtensions[\get_class($extension)] = true;
-            }
-        }
-
-        $extensions = $this->getContainerBuilder($kernel)->getExtensions();
-
-        foreach ($extensions as $alias => $extension) {
-            if (isset($bundleExtensions[\get_class($extension)])) {
-                continue;
-            }
-            $rows[] = [$alias];
-        }
-
-        if (!$rows) {
-            return;
-        }
-
-        if ($output instanceof StyleInterface) {
-            $output->title($title);
-            $output->table($headers, $rows);
-        } else {
-            $output->writeln($title);
-            $table = new Table($output);
-            $table->setHeaders($headers)->setRows($rows)->render();
-        }
-    }
-
-    /**
      * @return ExtensionInterface
      */
-    protected function findExtension(string $name)
+    protected function findExtension($name)
     {
         $bundles = $this->initializeBundles();
         $minScore = \INF;
-
-        $kernel = $this->getApplication()->getKernel();
-        if ($kernel instanceof ExtensionInterface && ($kernel instanceof ConfigurationInterface || $kernel instanceof ConfigurationExtensionInterface)) {
-            if ($name === $kernel->getAlias()) {
-                return $kernel;
-            }
-
-            if ($kernel->getAlias()) {
-                $distance = levenshtein($name, $kernel->getAlias());
-
-                if ($distance < $minScore) {
-                    $guess = $kernel->getAlias();
-                    $minScore = $distance;
-                }
-            }
-        }
 
         foreach ($bundles as $bundle) {
             if ($name === $bundle->getName()) {
@@ -139,7 +81,7 @@ abstract class AbstractConfigCommand extends ContainerDebugCommand
             }
         }
 
-        $container = $this->getContainerBuilder($kernel);
+        $container = $this->getContainerBuilder();
 
         if ($container->hasExtension($name)) {
             return $container->getExtension($name);
@@ -174,7 +116,7 @@ abstract class AbstractConfigCommand extends ContainerDebugCommand
         }
 
         if (!$configuration instanceof ConfigurationInterface) {
-            throw new \LogicException(sprintf('Configuration class "%s" should implement ConfigurationInterface in order to be dumpable.', get_debug_type($configuration)));
+            throw new \LogicException(sprintf('Configuration class "%s" should implement ConfigurationInterface in order to be dumpable.', \get_class($configuration)));
         }
     }
 
@@ -182,9 +124,8 @@ abstract class AbstractConfigCommand extends ContainerDebugCommand
     {
         // Re-build bundle manually to initialize DI extensions that can be extended by other bundles in their build() method
         // as this method is not called when the container is loaded from the cache.
-        $kernel = $this->getApplication()->getKernel();
-        $container = $this->getContainerBuilder($kernel);
-        $bundles = $kernel->getBundles();
+        $container = $this->getContainerBuilder();
+        $bundles = $this->getApplication()->getKernel()->getBundles();
         foreach ($bundles as $bundle) {
             if ($extension = $bundle->getContainerExtension()) {
                 $container->registerExtension($extension);

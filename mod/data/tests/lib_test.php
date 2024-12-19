@@ -63,7 +63,7 @@ class lib_test extends \advanced_testcase {
      * it is not complete. Inserts a record and
      * confirms that it is complete.
      */
-    public function test_data_completion(): void {
+    public function test_data_completion() {
         global $DB, $CFG;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -111,7 +111,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals(1, $completiondata->completionstate);
     }
 
-    public function test_data_delete_record(): void {
+    public function test_data_delete_record() {
         global $DB;
 
         $this->resetAfterTest();
@@ -182,7 +182,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test comment_created event.
      */
-    public function test_data_comment_created_event(): void {
+    public function test_data_comment_created_event() {
         global $CFG, $DB;
         require_once($CFG->dirroot . '/comment/lib.php');
 
@@ -245,7 +245,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test comment_deleted event.
      */
-    public function test_data_comment_deleted_event(): void {
+    public function test_data_comment_deleted_event() {
         global $CFG, $DB;
         require_once($CFG->dirroot . '/comment/lib.php');
 
@@ -310,7 +310,7 @@ class lib_test extends \advanced_testcase {
      * Checks that data_user_can_manage_entry will return true if the user
      * has the mod/data:manageentries capability.
      */
-    public function test_data_user_can_manage_entry_return_true_with_capability(): void {
+    public function test_data_user_can_manage_entry_return_true_with_capability() {
 
         $this->resetAfterTest();
         $testdata = $this->create_user_test_data();
@@ -334,7 +334,7 @@ class lib_test extends \advanced_testcase {
      * Checks that data_user_can_manage_entry will return false if the data
      * is set to readonly.
      */
-    public function test_data_user_can_manage_entry_return_false_readonly(): void {
+    public function test_data_user_can_manage_entry_return_false_readonly() {
 
         $this->resetAfterTest();
         $testdata = $this->create_user_test_data();
@@ -366,7 +366,7 @@ class lib_test extends \advanced_testcase {
      * Checks that data_user_can_manage_entry will return false if the record
      * can't be found in the database.
      */
-    public function test_data_user_can_manage_entry_return_false_no_record(): void {
+    public function test_data_user_can_manage_entry_return_false_no_record() {
 
         $this->resetAfterTest();
         $testdata = $this->create_user_test_data();
@@ -397,7 +397,7 @@ class lib_test extends \advanced_testcase {
      * Checks that data_user_can_manage_entry will return false if the record
      * isn't owned by the user.
      */
-    public function test_data_user_can_manage_entry_return_false_not_owned_record(): void {
+    public function test_data_user_can_manage_entry_return_false_not_owned_record() {
 
         $this->resetAfterTest();
         $testdata = $this->create_user_test_data();
@@ -429,7 +429,7 @@ class lib_test extends \advanced_testcase {
      * Checks that data_user_can_manage_entry will return true if the data
      * doesn't require approval.
      */
-    public function test_data_user_can_manage_entry_return_true_data_no_approval(): void {
+    public function test_data_user_can_manage_entry_return_true_data_no_approval() {
 
         $this->resetAfterTest();
         $testdata = $this->create_user_test_data();
@@ -463,7 +463,7 @@ class lib_test extends \advanced_testcase {
      * Checks that data_user_can_manage_entry will return true if the record
      * isn't yet approved.
      */
-    public function test_data_user_can_manage_entry_return_true_record_unapproved(): void {
+    public function test_data_user_can_manage_entry_return_true_record_unapproved() {
 
         $this->resetAfterTest();
         $testdata = $this->create_user_test_data();
@@ -499,7 +499,7 @@ class lib_test extends \advanced_testcase {
      * Checks that data_user_can_manage_entry will return the 'manageapproved'
      * value if the record has already been approved.
      */
-    public function test_data_user_can_manage_entry_return_manageapproved(): void {
+    public function test_data_user_can_manage_entry_return_manageapproved() {
 
         $this->resetAfterTest();
         $testdata = $this->create_user_test_data();
@@ -575,7 +575,7 @@ class lib_test extends \advanced_testcase {
      * @throws coding_exception
      * @throws rating_exception
      */
-    public function test_mod_data_rating_can_see_item_ratings(): void {
+    public function test_mod_data_rating_can_see_item_ratings() {
         global $DB;
 
         $this->resetAfterTest();
@@ -701,7 +701,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Tests for mod_data_refresh_events.
      */
-    public function test_data_refresh_events(): void {
+    public function test_data_refresh_events() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -746,7 +746,7 @@ class lib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function data_get_config_provider() {
+    public static function data_get_config_provider(): array {
         $initialdata = (object) [
             'template_foo' => true,
             'template_bar' => false,
@@ -828,7 +828,7 @@ class lib_test extends \advanced_testcase {
      * @param   array   $funcargs       The args to pass to data_get_config
      * @param   mixed   $expectation    The expected value
      */
-    public function test_data_get_config($funcargs, $expectation): void {
+    public function test_data_get_config($funcargs, $expectation) {
         $this->assertEquals($expectation, call_user_func_array('data_get_config', $funcargs));
     }
 
@@ -837,7 +837,7 @@ class lib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function data_set_config_provider() {
+    public static function data_set_config_provider(): array {
         $basevalue = (object) ['id' => rand(1, 1000)];
         $config = [
             'template_foo'  => true,
@@ -910,7 +910,7 @@ class lib_test extends \advanced_testcase {
      * @param   bool    $expectupdate   Whether we expected an update
      * @param   mixed   $newconfigvalue The expected value
      */
-    public function test_data_set_config($database, $key, $value, $expectupdate, $newconfigvalue): void {
+    public function test_data_set_config($database, $key, $value, $expectupdate, $newconfigvalue) {
         global $DB;
 
         // Mock the database.
@@ -937,7 +937,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($value, $config->$key);
     }
 
-    public function test_mod_data_get_tagged_records(): void {
+    public function test_mod_data_get_tagged_records() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -967,7 +967,7 @@ class lib_test extends \advanced_testcase {
         $this->assertStringNotContainsString('value14', $res->content);
     }
 
-    public function test_mod_data_get_tagged_records_approval(): void {
+    public function test_mod_data_get_tagged_records_approval() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1024,7 +1024,7 @@ class lib_test extends \advanced_testcase {
         $this->assertStringContainsString('value21', $res->content);
     }
 
-    public function test_mod_data_get_tagged_records_time(): void {
+    public function test_mod_data_get_tagged_records_time() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1083,7 +1083,7 @@ class lib_test extends \advanced_testcase {
         $this->assertStringContainsString('value21', $res->content);
     }
 
-    public function test_mod_data_get_tagged_records_course_enrolment(): void {
+    public function test_mod_data_get_tagged_records_course_enrolment() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1137,7 +1137,7 @@ class lib_test extends \advanced_testcase {
         $this->assertStringContainsString('value21', $res->content);
     }
 
-    public function test_mod_data_get_tagged_records_course_groups(): void {
+    public function test_mod_data_get_tagged_records_course_groups() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1205,7 +1205,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test check_updates_since callback.
      */
-    public function test_check_updates_since(): void {
+    public function test_check_updates_since() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -1275,7 +1275,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEqualsCanonicalizing([$datarecor1did, $datarecor2did], $updates->entries->itemids);
     }
 
-    public function test_data_core_calendar_provide_event_action_in_hidden_section(): void {
+    public function test_data_core_calendar_provide_event_action_in_hidden_section() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1312,7 +1312,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_data_core_calendar_provide_event_action_for_non_user(): void {
+    public function test_data_core_calendar_provide_event_action_for_non_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1343,7 +1343,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_data_core_calendar_provide_event_action_open(): void {
+    public function test_data_core_calendar_provide_event_action_open() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -1372,7 +1372,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_data_core_calendar_provide_event_action_open_for_user(): void {
+    public function test_data_core_calendar_provide_event_action_open_for_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1410,7 +1410,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_data_core_calendar_provide_event_action_closed(): void {
+    public function test_data_core_calendar_provide_event_action_closed() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -1435,7 +1435,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_data_core_calendar_provide_event_action_closed_for_user(): void {
+    public function test_data_core_calendar_provide_event_action_closed_for_user() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -1466,7 +1466,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_data_core_calendar_provide_event_action_open_in_future(): void {
+    public function test_data_core_calendar_provide_event_action_open_in_future() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -1495,7 +1495,7 @@ class lib_test extends \advanced_testcase {
         $this->assertFalse($actionevent->is_actionable());
     }
 
-    public function test_data_core_calendar_provide_event_action_open_in_future_for_user(): void {
+    public function test_data_core_calendar_provide_event_action_open_in_future_for_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1533,7 +1533,7 @@ class lib_test extends \advanced_testcase {
         $this->assertFalse($actionevent->is_actionable());
     }
 
-    public function test_data_core_calendar_provide_event_action_no_time_specified(): void {
+    public function test_data_core_calendar_provide_event_action_no_time_specified() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -1561,7 +1561,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_data_core_calendar_provide_event_action_no_time_specified_for_user(): void {
+    public function test_data_core_calendar_provide_event_action_no_time_specified_for_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1629,7 +1629,7 @@ class lib_test extends \advanced_testcase {
      * This function should work given either an instance of the module (cm_info), such as when checking the active rules,
      * or if passed a stdClass of similar structure, such as when checking the the default completion settings for a mod type.
      */
-    public function test_mod_data_completion_get_active_rule_descriptions(): void {
+    public function test_mod_data_completion_get_active_rule_descriptions() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -1665,7 +1665,7 @@ class lib_test extends \advanced_testcase {
     /**
      * An unknown event type should not change the data instance.
      */
-    public function test_mod_data_core_calendar_event_timestart_updated_unknown_event(): void {
+    public function test_mod_data_core_calendar_event_timestart_updated_unknown_event() {
         global $CFG, $DB;
         require_once($CFG->dirroot . "/calendar/lib.php");
 
@@ -1706,7 +1706,7 @@ class lib_test extends \advanced_testcase {
     /**
      * A DATA_EVENT_TYPE_OPEN event should update the timeavailablefrom property of the data activity.
      */
-    public function test_mod_data_core_calendar_event_timestart_updated_open_event(): void {
+    public function test_mod_data_core_calendar_event_timestart_updated_open_event() {
         global $CFG, $DB;
         require_once($CFG->dirroot . "/calendar/lib.php");
 
@@ -1763,7 +1763,7 @@ class lib_test extends \advanced_testcase {
     /**
      * A DATA_EVENT_TYPE_CLOSE event should update the timeavailableto property of the data activity.
      */
-    public function test_mod_data_core_calendar_event_timestart_updated_close_event(): void {
+    public function test_mod_data_core_calendar_event_timestart_updated_close_event() {
         global $CFG, $DB;
         require_once($CFG->dirroot . "/calendar/lib.php");
 
@@ -1820,7 +1820,7 @@ class lib_test extends \advanced_testcase {
     /**
      * An unknown event type should not have any limits.
      */
-    public function test_mod_data_core_calendar_get_valid_event_timestart_range_unknown_event(): void {
+    public function test_mod_data_core_calendar_get_valid_event_timestart_range_unknown_event() {
         global $CFG;
         require_once($CFG->dirroot . "/calendar/lib.php");
 
@@ -1858,7 +1858,7 @@ class lib_test extends \advanced_testcase {
     /**
      * The open event should be limited by the data's timeclose property, if it's set.
      */
-    public function test_mod_data_core_calendar_get_valid_event_timestart_range_open_event(): void {
+    public function test_mod_data_core_calendar_get_valid_event_timestart_range_open_event() {
         global $CFG;
         require_once($CFG->dirroot . "/calendar/lib.php");
 
@@ -1903,7 +1903,7 @@ class lib_test extends \advanced_testcase {
     /**
      * The close event should be limited by the data's timeavailablefrom property, if it's set.
      */
-    public function test_mod_data_core_calendar_get_valid_event_timestart_range_close_event(): void {
+    public function test_mod_data_core_calendar_get_valid_event_timestart_range_close_event() {
         global $CFG;
 
         require_once($CFG->dirroot . "/calendar/lib.php");
@@ -1949,7 +1949,7 @@ class lib_test extends \advanced_testcase {
     /**
      * A user who does not have capabilities to add events to the calendar should be able to create an database.
      */
-    public function test_creation_with_no_calendar_capabilities(): void {
+    public function test_creation_with_no_calendar_capabilities() {
         $this->resetAfterTest();
         $course = self::getDataGenerator()->create_course();
         $context = \context_course::instance($course->id);
@@ -2090,7 +2090,7 @@ class lib_test extends \advanced_testcase {
      * @param bool $hasotherfields if the field is not present in the templates
      * @param bool $expected the expected return
      */
-    public function test_data_append_new_field_to_templates(bool $hasfield, bool $hasotherfields, bool $expected): void {
+    public function test_data_append_new_field_to_templates(bool $hasfield, bool $hasotherfields, bool $expected) {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -2141,7 +2141,7 @@ class lib_test extends \advanced_testcase {
      *
      * @return array of scenarios
      */
-    public function data_append_new_field_to_templates_provider(): array {
+    public static function data_append_new_field_to_templates_provider(): array {
         return [
             'Plain template' => [
                 'hasfield' => false,
@@ -2174,7 +2174,7 @@ class lib_test extends \advanced_testcase {
      * @covers \data_get_field_new
      * @dataProvider format_parser_provider
      */
-    public function test_create_field(string $type, string $expected): void {
+    public function test_create_field(string $type, string $expected) {
         $this->resetAfterTest();
         $this->setAdminUser();
         $generator = $this->getDataGenerator();

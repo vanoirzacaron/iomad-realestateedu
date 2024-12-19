@@ -17,12 +17,11 @@ class LtiConstants
 
     // Optional message claims
     public const CONTEXT = 'https://purl.imsglobal.org/spec/lti/claim/context';
-    public const CUSTOM = 'https://purl.imsglobal.org/spec/lti/claim/custom';
+    public const TOOL_PLATFORM = 'https://purl.imsglobal.org/spec/lti/claim/tool_platform';
+    public const ROLE_SCOPE_MENTOR = 'https://purlimsglobal.org/spec/lti/claim/role_scope_mentor';
     public const LAUNCH_PRESENTATION = 'https://purl.imsglobal.org/spec/lti/claim/launch_presentation';
     public const LIS = 'https://purl.imsglobal.org/spec/lti/claim/lis';
-    public const LTI1P1 = 'https://purl.imsglobal.org/spec/lti/claim/lti1p1';
-    public const ROLE_SCOPE_MENTOR = 'https://purlimsglobal.org/spec/lti/claim/role_scope_mentor';
-    public const TOOL_PLATFORM = 'https://purl.imsglobal.org/spec/lti/claim/tool_platform';
+    public const CUSTOM = 'https://purl.imsglobal.org/spec/lti/claim/custom';
 
     // LTI DL
     public const DL_CONTENT_ITEMS = 'https://purl.imsglobal.org/spec/lti-dl/claim/content_items';

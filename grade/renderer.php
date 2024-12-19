@@ -45,18 +45,12 @@ class core_grades_renderer extends plugin_renderer_base {
      * Renders the group selector trigger element.
      *
      * @param object $course The course object.
-     * @param string|null $groupactionbaseurl This parameter has been deprecated since 4.4 and should not be used anymore.
+     * @param string|null $groupactionbaseurl The base URL for the group action.
      * @return string|null The raw HTML to render.
      */
     public function group_selector(object $course, ?string $groupactionbaseurl = null): ?string {
         global $USER;
 
-        if ($groupactionbaseurl !== null) {
-            debugging(
-                'The $groupactionbaseurl argument has been deprecated. Please remove it from your method calls.',
-                DEBUG_DEVELOPER,
-            );
-        }
         // Make sure that group mode is enabled.
         if (!$groupmode = $course->groupmode) {
             return null;
@@ -65,12 +59,17 @@ class core_grades_renderer extends plugin_renderer_base {
         $sbody = $this->render_from_template('core_group/comboboxsearch/searchbody', [
             'courseid' => $course->id,
             'currentvalue' => optional_param('groupsearchvalue', '', PARAM_NOTAGS),
-            'instance' => rand(),
         ]);
 
-        $label = $groupmode == VISIBLEGROUPS ? get_string('selectgroupsvisible') : get_string('selectgroupsseparate');
+        $label = $groupmode == VISIBLEGROUPS ? get_string('selectgroupsvisible') :
+            get_string('selectgroupsseparate');
 
-        $buttondata = ['label' => $label];
+        $data = [
+            'name' => 'group',
+            'label' => $label,
+            'courseid' => $course->id,
+            'groupactionbaseurl' => $groupactionbaseurl
+        ];
 
         $context = context_course::instance($course->id);
 
@@ -81,27 +80,22 @@ class core_grades_renderer extends plugin_renderer_base {
         }
 
         $activegroup = groups_get_course_group($course, true, $allowedgroups);
-        $buttondata['group'] = $activegroup;
+        $data['group'] = $activegroup;
 
         if ($activegroup) {
             $group = groups_get_group($activegroup);
-            $buttondata['selectedgroup'] = format_string($group->name, true, ['context' => $context]);
+            $data['selectedgroup'] = format_string($group->name, true, ['context' => $context]);
         } else if ($activegroup === 0) {
-            $buttondata['selectedgroup'] = get_string('allparticipants');
+            $data['selectedgroup'] = get_string('allparticipants');
         }
 
         $groupdropdown = new comboboxsearch(
             false,
-            $this->render_from_template('core_group/comboboxsearch/group_selector', $buttondata),
+            $this->render_from_template('core_group/comboboxsearch/group_selector', $data),
             $sbody,
             'group-search',
             'groupsearchwidget',
-            'groupsearchdropdown overflow-auto',
-            null,
-            true,
-            $label,
-            'group',
-            $activegroup
+            'groupsearchdropdown overflow-auto w-100',
         );
         return $this->render_from_template($groupdropdown->get_template(), $groupdropdown->export_for_template($this));
     }
@@ -164,7 +158,7 @@ class core_grades_renderer extends plugin_renderer_base {
      * @param bool $showbuttons Whether to display buttons (message, add to contacts) within the heading.
      * @return string The raw HTML to render.
      */
-    public function user_heading(stdClass $user, int $courseid, bool $showbuttons = true): string {
+    public function user_heading(stdClass $user, int $courseid, bool $showbuttons = true) : string {
         global $USER;
 
         $headingdata = [

@@ -25,7 +25,7 @@ namespace core_competency;
  */
 class course_competency_test extends \advanced_testcase {
 
-    public function test_get_courses_with_competency_and_user(): void {
+    public function test_get_courses_with_competency_and_user() {
         global $CFG, $DB;
 
         $this->resetAfterTest(true);

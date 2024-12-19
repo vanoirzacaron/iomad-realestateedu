@@ -50,7 +50,7 @@ class core_renderer extends \core_renderer {
             $url->param('edit', 'on');
             $editstring = get_string('turneditingon');
         }
-        $button = new \single_button($url, $editstring, $method, \single_button::BUTTON_PRIMARY);
+        $button = new \single_button($url, $editstring, $method, ['class' => 'btn btn-primary']);
         return $this->render_single_button($button);
     }
 
@@ -170,21 +170,78 @@ class core_renderer extends \core_renderer {
                 $purposeclass = plugin_supports('mod', $this->page->activityname, FEATURE_MOD_PURPOSE);
                 $purposeclass .= ' activityiconcontainer icon-size-6';
                 $purposeclass .= ' modicon_' . $this->page->activityname;
-                $isbranded = component_callback('mod_' . $this->page->activityname, 'is_branded', [], false);
-                $imagedata = html_writer::tag('div', $imagedata, ['class' => $purposeclass . ($isbranded ? ' isbranded' : '')]);
+                $imagedata = html_writer::tag('div', $imagedata, ['class' => $purposeclass]);
                 if (!empty($USER->editing)) {
                     $prefix = get_string('modulename', $this->page->activityname);
                 }
             }
         }
 
-        // Return the heading wrapped in an sr-only element so it is only visible to screen-readers.
-        if (!empty($this->page->layout_options['nocontextheader'])) {
-            return html_writer::div($heading, 'sr-only');
+        $contextheader = new \context_header($heading, $headinglevel, $imagedata, $userbuttons, $prefix);
+        return $this->render_context_header($contextheader);
+    }
+
+     /**
+      * Renders the header bar.
+      *
+      * @param context_header $contextheader Header bar object.
+      * @return string HTML for the header bar.
+      */
+    protected function render_context_header(\context_header $contextheader) {
+
+        // Generate the heading first and before everything else as we might have to do an early return.
+        if (!isset($contextheader->heading)) {
+            $heading = $this->heading($this->page->heading, $contextheader->headinglevel, 'h2');
+        } else {
+            $heading = $this->heading($contextheader->heading, $contextheader->headinglevel, 'h2');
         }
 
-        $contextheader = new \context_header($heading, $headinglevel, $imagedata, $userbuttons, $prefix);
-        return $this->render($contextheader);
+        // All the html stuff goes here.
+        $html = html_writer::start_div('page-context-header');
+
+        // Image data.
+        if (isset($contextheader->imagedata)) {
+            // Header specific image.
+            $html .= html_writer::div($contextheader->imagedata, 'page-header-image mr-2');
+        }
+
+        // Headings.
+        if (isset($contextheader->prefix)) {
+            $prefix = html_writer::div($contextheader->prefix, 'text-muted text-uppercase small line-height-3');
+            $heading = $prefix . $heading;
+        }
+        $html .= html_writer::tag('div', $heading, array('class' => 'page-header-headings'));
+
+        // Buttons.
+        if (isset($contextheader->additionalbuttons)) {
+            $html .= html_writer::start_div('btn-group header-button-group');
+            foreach ($contextheader->additionalbuttons as $button) {
+                if (!isset($button->page)) {
+                    // Include js for messaging.
+                    if ($button['buttontype'] === 'togglecontact') {
+                        \core_message\helper::togglecontact_requirejs();
+                    }
+                    if ($button['buttontype'] === 'message') {
+                        \core_message\helper::messageuser_requirejs();
+                    }
+                    $image = $this->pix_icon($button['formattedimage'], $button['title'], 'moodle', array(
+                        'class' => 'iconsmall',
+                        'role' => 'presentation'
+                    ));
+                    $image .= html_writer::span($button['title'], 'header-button-title');
+                } else {
+                    $image = html_writer::empty_tag('img', array(
+                        'src' => $button['formattedimage'],
+                        'role' => 'presentation'
+                    ));
+                }
+                $html .= html_writer::link($button['url'], html_writer::tag('span', $image), $button['linkattributes']);
+            }
+            $html .= html_writer::end_div();
+        }
+        $html .= html_writer::end_div();
+
+        return $html;
     }
 
     /**

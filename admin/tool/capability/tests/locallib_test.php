@@ -36,7 +36,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test the function that gets the data - simple case.
      */
-    public function test_tool_capability_calculate_role_data(): void {
+    public function test_tool_capability_calculate_role_data() {
         global $DB;
 
         $data = tool_capability_calculate_role_data('mod/quiz:attempt', get_all_roles());
@@ -58,7 +58,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test the function that gets the data - simple case.
      */
-    public function test_tool_capability_calculate_role_data_orphan_contexts(): void {
+    public function test_tool_capability_calculate_role_data_orphan_contexts() {
         global $DB;
         $this->resetAfterTest();
 

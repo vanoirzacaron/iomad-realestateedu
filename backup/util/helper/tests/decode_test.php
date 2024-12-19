@@ -46,7 +46,7 @@ class decode_test extends \basic_testcase {
     /**
      * test restore_decode_rule class
      */
-    function test_restore_decode_rule(): void {
+    function test_restore_decode_rule() {
 
         // Test various incorrect constructors
         try {
@@ -160,14 +160,14 @@ class decode_test extends \basic_testcase {
     /**
      * test restore_decode_content class
      */
-    function test_restore_decode_content(): void {
+    function test_restore_decode_content() {
         // TODO: restore_decode_content tests
     }
 
     /**
      * test restore_decode_processor class
      */
-    function test_restore_decode_processor(): void {
+    function test_restore_decode_processor() {
         // TODO: restore_decode_processor tests
     }
 }

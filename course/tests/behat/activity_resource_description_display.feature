@@ -16,10 +16,8 @@ Feature: Display activity and resource description
       | teacher1 | C1     | editingteacher |
 
   Scenario Outline: Display activity and resource descriptions
-    Given I enable "chat" "mod" plugin
-    And I enable "survey" "mod" plugin
     # Generate activity/resource with description
-    And the following "activities" exist:
+    Given the following "activities" exist:
       | activity  | course | name      | intro           | showdescription |
       | <acttype> | C1     | <actname> | <actname> intro | 1               |
     When I am on the "Course 1" course page logged in as teacher1

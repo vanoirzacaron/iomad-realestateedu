@@ -95,12 +95,10 @@ class course_summary_exporter extends \core\external\exporter {
             ),
             'summary' => array(
                 'type' => PARAM_RAW,
-                'null' => NULL_ALLOWED,
-                'default' => null,
+                'null' => NULL_ALLOWED
             ),
             'summaryformat' => array(
                 'type' => PARAM_INT,
-                'default' => FORMAT_MOODLE,
             ),
             'startdate' => array(
                 'type' => PARAM_INT,
@@ -121,8 +119,7 @@ class course_summary_exporter extends \core\external\exporter {
             ],
             'pdfexportfont' => [
                 'type' => PARAM_TEXT,
-                'null' => NULL_ALLOWED,
-                'default' => null,
+                'null' => NULL_ALLOWED
             ],
         );
     }
@@ -183,10 +180,20 @@ class course_summary_exporter extends \core\external\exporter {
      * @return string|false url of course image or false if it's not exist.
      */
     public static function get_course_image($course) {
+        global $CFG;
+
         $image = \cache::make('core', 'course_image')->get($course->id);
 
         if (is_null($image)) {
             $image = false;
+        }
+
+        // IOMAD
+        // Check that the image has the correct tenant URL.
+        if ($image &&
+            !str_starts_with($image, $CFG->wwwroot)) {
+            // We don't match - fix it.
+            $image = \iomad::fix_url($image);
         }
 
         return $image;

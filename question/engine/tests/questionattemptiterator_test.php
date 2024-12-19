@@ -56,7 +56,7 @@ class questionattemptiterator_test extends \advanced_testcase {
         $this->iterator = null;
     }
 
-    public function test_foreach_loop(): void {
+    public function test_foreach_loop() {
         $i = 1;
         foreach ($this->iterator as $key => $qa) {
             $this->assertEquals($i, $key);
@@ -66,46 +66,46 @@ class questionattemptiterator_test extends \advanced_testcase {
         $this->assertEquals(3, $i);
     }
 
-    public function test_offsetExists_before_start(): void {
+    public function test_offsetExists_before_start() {
         $this->assertFalse(isset($this->iterator[0]));
     }
 
-    public function test_offsetExists_at_start(): void {
+    public function test_offsetExists_at_start() {
         $this->assertTrue(isset($this->iterator[1]));
     }
 
-    public function test_offsetExists_at_endt(): void {
+    public function test_offsetExists_at_endt() {
         $this->assertTrue(isset($this->iterator[2]));
     }
 
-    public function test_offsetExists_past_end(): void {
+    public function test_offsetExists_past_end() {
         $this->assertFalse(isset($this->iterator[3]));
     }
 
-    public function test_offsetGet_before_start(): void {
+    public function test_offsetGet_before_start() {
         $this->expectException(\moodle_exception::class);
         $step = $this->iterator[0];
     }
 
-    public function test_offsetGet_at_start(): void {
+    public function test_offsetGet_at_start() {
         $this->assertSame($this->qas[1], $this->iterator[1]);
     }
 
-    public function test_offsetGet_at_end(): void {
+    public function test_offsetGet_at_end() {
         $this->assertSame($this->qas[2], $this->iterator[2]);
     }
 
-    public function test_offsetGet_past_end(): void {
+    public function test_offsetGet_past_end() {
         $this->expectException(\moodle_exception::class);
         $step = $this->iterator[3];
     }
 
-    public function test_cannot_set(): void {
+    public function test_cannot_set() {
         $this->expectException(\moodle_exception::class);
         $this->iterator[0] = null;
     }
 
-    public function test_cannot_unset(): void {
+    public function test_cannot_unset() {
         $this->expectException(\moodle_exception::class);
         unset($this->iterator[2]);
     }

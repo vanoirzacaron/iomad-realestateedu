@@ -369,7 +369,7 @@ abstract class question_definition {
      *      that should only be used in unavoidable, the constant question_attempt::USE_RAW_DATA
      *      meaning take all the raw submitted data belonging to this question.
      */
-    abstract public function get_expected_data();
+    public abstract function get_expected_data();
 
     /**
      * What data would need to be submitted to get this question correct.
@@ -379,7 +379,7 @@ abstract class question_definition {
      *
      * @return array|null parameter name => value.
      */
-    abstract public function get_correct_response();
+    public abstract function get_correct_response();
 
 
     /**

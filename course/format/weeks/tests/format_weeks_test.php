@@ -29,14 +29,13 @@ require_once($CFG->dirroot . '/course/lib.php');
  * @package    format_weeks
  * @copyright  2015 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \format_weeks
  */
 class format_weeks_test extends \advanced_testcase {
 
     /**
      * Tests for format_weeks::get_section_name method with default section names.
      */
-    public function test_get_section_name(): void {
+    public function test_get_section_name() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -60,7 +59,7 @@ class format_weeks_test extends \advanced_testcase {
     /**
      * Tests for format_weeks::get_section_name method with modified section names.
      */
-    public function test_get_section_name_customised(): void {
+    public function test_get_section_name_customised() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -92,7 +91,7 @@ class format_weeks_test extends \advanced_testcase {
     /**
      * Tests for format_weeks::get_default_section_name.
      */
-    public function test_get_default_section_name(): void {
+    public function test_get_default_section_name() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -127,7 +126,7 @@ class format_weeks_test extends \advanced_testcase {
     /**
      * Test web service updating section name
      */
-    public function test_update_inplace_editable(): void {
+    public function test_update_inplace_editable() {
         global $CFG, $DB, $PAGE;
         require_once($CFG->dirroot . '/lib/external/externallib.php');
 
@@ -160,7 +159,7 @@ class format_weeks_test extends \advanced_testcase {
     /**
      * Test callback updating section name
      */
-    public function test_inplace_editable(): void {
+    public function test_inplace_editable() {
         global $CFG, $DB, $PAGE;
 
         $this->resetAfterTest();
@@ -194,7 +193,7 @@ class format_weeks_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_default_course_enddate(): void {
+    public function test_default_course_enddate() {
         global $CFG, $DB, $PAGE;
 
         $this->resetAfterTest(true);
@@ -230,13 +229,13 @@ class format_weeks_test extends \advanced_testcase {
     }
 
     /**
-     * Test for get_view_url().
-     *
-     * @covers ::get_view_url
+     * Test for get_view_url() to ensure that the url is only given for the correct cases
      */
-    public function test_get_view_url(): void {
+    public function test_get_view_url() {
         global $CFG;
         $this->resetAfterTest();
+
+        $linkcoursesections = $CFG->linkcoursesections;
 
         // Generate a course with two sections (0 and 1) and two modules.
         $generator = $this->getDataGenerator();
@@ -248,34 +247,22 @@ class format_weeks_test extends \advanced_testcase {
         $format->update_course_format_options($data);
 
         // In page.
+        $CFG->linkcoursesections = 0;
+        $this->assertNotEmpty($format->get_view_url(null));
+        $this->assertNotEmpty($format->get_view_url(0));
+        $this->assertNotEmpty($format->get_view_url(1));
+        $CFG->linkcoursesections = 1;
         $this->assertNotEmpty($format->get_view_url(null));
         $this->assertNotEmpty($format->get_view_url(0));
         $this->assertNotEmpty($format->get_view_url(1));
 
         // Navigation.
-        $this->assertStringContainsString('course/view.php', $format->get_view_url(0));
-        $this->assertStringContainsString('course/view.php', $format->get_view_url(1));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(0, ['navigation' => 1]));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(1, ['navigation' => 1]));
-        // When sr parameter is defined, the section.php page should be returned.
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(0, ['sr' => 1]));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(1, ['sr' => 1]));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(0, ['sr' => 0]));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(1, ['sr' => 0]));
+        $CFG->linkcoursesections = 0;
+        $this->assertNull($format->get_view_url(1, ['navigation' => 1]));
+        $this->assertNull($format->get_view_url(0, ['navigation' => 1]));
+        $CFG->linkcoursesections = 1;
+        $this->assertNotEmpty($format->get_view_url(1, ['navigation' => 1]));
+        $this->assertNotEmpty($format->get_view_url(0, ['navigation' => 1]));
     }
 
-    /**
-     * Test get_required_jsfiles().
-     *
-     * @covers ::get_required_jsfiles
-     */
-    public function test_get_required_jsfiles(): void {
-        $this->resetAfterTest();
-
-        $generator = $this->getDataGenerator();
-
-        $course = $generator->create_course(['format' => 'weeks']);
-        $format = course_get_format($course);
-        $this->assertEmpty($format->get_required_jsfiles());
-    }
 }

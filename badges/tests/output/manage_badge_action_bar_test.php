@@ -36,7 +36,7 @@ class manage_badge_action_bar_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function generate_badge_navigation_provider(): array {
+    public static function generate_badge_navigation_provider(): array {
         return [
             "Test tertiary nav as an editing teacher" => [
                 "editingteacher", [
@@ -84,7 +84,7 @@ class manage_badge_action_bar_test extends \advanced_testcase {
      * @param array $expected
      * @covers ::generate_badge_navigation
      */
-    public function test_generate_badge_navigation(string $role, array $expected): void {
+    public function test_generate_badge_navigation(string $role, array $expected) {
         global $DB;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -134,6 +134,7 @@ class manage_badge_action_bar_test extends \advanced_testcase {
 
         $rc = new \ReflectionClass(manage_badge_action_bar::class);
         $rcm = $rc->getMethod('generate_badge_navigation');
+        $rcm->setAccessible(true);
         $content = $rcm->invoke($actionbar);
         $this->assertEquals($expected, array_values($content));
     }

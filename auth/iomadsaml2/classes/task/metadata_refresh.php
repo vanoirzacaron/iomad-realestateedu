@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Auth SAML2 metadata refresh scheduled task.
+ * Auth IOMAD SAML2 metadata refresh scheduled task.
  *
  * @package    auth_iomadsaml2
  * @author     Sam Chaffee
@@ -32,7 +32,7 @@ use auth_iomadsaml2\metadata_writer;
 use moodle_exception;
 
 /**
- * Auth SAML2 metadata refresh scheduled task.
+ * Auth IOMAD SAML2 metadata refresh scheduled task.
  *
  * @package    auth_iomadsaml2
  * @copyright  Copyright (c) 2017 Blackboard Inc. (http://www.blackboard.com)

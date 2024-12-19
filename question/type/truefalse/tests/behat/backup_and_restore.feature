@@ -19,8 +19,6 @@ Feature: Test duplicating a quiz containing a True/False question
       | quiz       | Test quiz | C1     | quiz1    |
     And quiz "Test quiz" contains the following questions:
       | true-false-001 | 1 |
-    And the following config values are set as admin:
-      | enableasyncbackup | 0 |
 
   @javascript
   Scenario: Backup and restore a course containing a True/False question

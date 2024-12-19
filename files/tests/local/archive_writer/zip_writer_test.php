@@ -50,8 +50,7 @@ class zip_writer_test extends advanced_testcase {
         $opened = $zip->open($pathtozip);
         $this->assertTrue($opened);
 
-        // Filename that has been sanitized by Zipstream.
-        $pathtofileinzip = ltrim($pathtofileinzip, '/');
+        $pathtofileinzip = $zipwriter->sanitise_filepath($pathtofileinzip);
 
         $this->assertEquals("Hey, this is an awesome text file. Hello! :)", $zip->getFromName($pathtofileinzip));
     }
@@ -72,8 +71,7 @@ class zip_writer_test extends advanced_testcase {
         $opened = $zip->open($pathtozip);
         $this->assertTrue($opened);
 
-        // Filename that has been sanitized by Zipstream.
-        $pathtofileinzip = ltrim($pathtofileinzip, '/');
+        $pathtofileinzip = $zipwriter->sanitise_filepath($pathtofileinzip);
 
         $this->assertEquals($mycontent, $zip->getFromName($pathtofileinzip));
     }
@@ -111,8 +109,7 @@ class zip_writer_test extends advanced_testcase {
         $opened = $zip->open($pathtozip);
         $this->assertTrue($opened);
 
-        // Filename that has been sanitized by Zipstream.
-        $pathtofileinzip = ltrim($pathtofileinzip, '/');
+        $pathtofileinzip = $zipwriter->sanitise_filepath($pathtofileinzip);
 
         $this->assertEquals($storedfile->get_content(), $zip->getFromName($pathtofileinzip));
     }
@@ -150,10 +147,36 @@ class zip_writer_test extends advanced_testcase {
         $opened = $zip->open($pathtozip);
         $this->assertTrue($opened);
 
-        // Filename that has been sanitized by Zipstream.
-        $pathtofileinzip = ltrim($pathtofileinzip, '/');
+        $pathtofileinzip = $zipwriter->sanitise_filepath($pathtofileinzip);
 
         $this->assertEquals($storedfile->get_content(), $zip->getFromName($pathtofileinzip));
     }
 
+    /**
+     * Test sanitise_filepath().
+     *
+     * @param string $providedfilepath The provided file path.
+     * @param string $expectedfilepath The expected file path.
+     * @dataProvider sanitise_filepath_provider
+     */
+    public function test_sanitise_filepath(string $providedfilepath, string $expectedfilepath): void {
+        $zipwriter = archive_writer::get_stream_writer('path/to/file.txt', archive_writer::ZIP_WRITER);
+        $this->assertEquals($expectedfilepath, $zipwriter->sanitise_filepath($providedfilepath));
+    }
+
+    /**
+     * Data provider for test_sanitise_filepath.
+     *
+     * @return array
+     */
+    public function sanitise_filepath_provider(): array {
+        return [
+            ['a../../file/path', 'a../file/path'],
+            ['a./file/path', 'a./file/path'],
+            ['../file/path', 'file/path'],
+            ['foo/bar/', 'foo/bar/'],
+            ['\\\\\\a\\\\\\file\\\\\\path', 'a/file/path'],
+            ['//a//file/////path////', 'a/file/path/']
+        ];
+    }
 }

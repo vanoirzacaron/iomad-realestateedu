@@ -90,6 +90,7 @@ class course_sender_test extends \advanced_testcase {
 
         // Set get_file method accessibility.
         $method = new ReflectionMethod(course_sender::class, 'prepare_share_contents');
+        $method->setAccessible(true);
 
         // Test with invalid share format.
         $this->expectException(\moodle_exception::class);
@@ -157,6 +158,7 @@ class course_sender_test extends \advanced_testcase {
 
         // Set get_resource_description method accessibility.
         $method = new ReflectionMethod(course_sender::class, 'get_resource_description');
+        $method->setAccessible(true);
 
         // Test the processed description.
         $httpclient = new http_client();
@@ -259,7 +261,7 @@ The last word of this sentence is in bold', $processeddescription);
      *
      * @return array Test data.
      */
-    public function share_resource_provider(): array {
+    public static function share_resource_provider(): array {
         return [
             'Success' => [
                 'http_response' => new Response(

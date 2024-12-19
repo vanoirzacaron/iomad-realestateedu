@@ -141,10 +141,7 @@ GLOBAL $gSQLMaxRows,$gSQLBlockRows,$ADODB_ROUND;
 
 			default:
 				if ($v) {
-					$v = trim($v);
-					if ($htmlspecialchars) {
-						$v = htmlspecialchars($v);
-					}
+					$v = htmlspecialchars(stripslashes(trim($v)));
 				} elseif ($v === null) {
 					$v = '(NULL)';
 				} else {

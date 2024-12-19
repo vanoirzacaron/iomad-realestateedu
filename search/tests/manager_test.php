@@ -57,7 +57,7 @@ class manager_test extends \advanced_testcase {
         parent::tearDown();
     }
 
-    public function test_search_enabled(): void {
+    public function test_search_enabled() {
 
         $this->resetAfterTest();
 
@@ -80,7 +80,7 @@ class manager_test extends \advanced_testcase {
      * @param string $expected The expected course search url.
      * @dataProvider data_course_search_url
      */
-    public function test_course_search_url(?bool $gsenabled, ?bool $allcourses, ?bool $enablearea, string $expected): void {
+    public function test_course_search_url(?bool $gsenabled, ?bool $allcourses, ?bool $enablearea, string $expected) {
         $this->resetAfterTest();
 
         if (!is_null($gsenabled)) {
@@ -106,7 +106,7 @@ class manager_test extends \advanced_testcase {
      *
      * @return array[]
      */
-    public function data_course_search_url(): array {
+    public static function data_course_search_url(): array {
         return [
             'defaults' => [null, null, null, '/course/search.php'],
             'enabled' => [true, true, true, '/search/index.php'],
@@ -129,7 +129,7 @@ class manager_test extends \advanced_testcase {
      * @param bool $expected The expected result.
      * @dataProvider data_can_replace_course_search
      */
-    public function test_can_replace_course_search(?bool $gsenabled, ?bool $allcourses, ?bool $enablearea, bool $expected): void {
+    public function test_can_replace_course_search(?bool $gsenabled, ?bool $allcourses, ?bool $enablearea, bool $expected) {
         $this->resetAfterTest();
 
         if (!is_null($gsenabled)) {
@@ -155,7 +155,7 @@ class manager_test extends \advanced_testcase {
      *
      * @return array[]
      */
-    public function data_can_replace_course_search(): array {
+    public static function data_can_replace_course_search(): array {
         return [
             'defaults' => [null, null, null, false],
             'enabled' => [true, true, true, true],
@@ -169,7 +169,7 @@ class manager_test extends \advanced_testcase {
         ];
     }
 
-    public function test_search_areas(): void {
+    public function test_search_areas() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -205,7 +205,7 @@ class manager_test extends \advanced_testcase {
         $this->assertArrayHasKey($this->forumpostareaid, \core_search\manager::get_search_areas_list(true));
     }
 
-    public function test_search_config(): void {
+    public function test_search_config() {
 
         $this->resetAfterTest();
 
@@ -265,7 +265,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Tests the get_last_indexing_duration method in the base area class.
      */
-    public function test_get_last_indexing_duration(): void {
+    public function test_get_last_indexing_duration() {
         $this->resetAfterTest();
 
         $search = \testable_core_search::instance();
@@ -289,7 +289,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Tests that partial indexing works correctly.
      */
-    public function test_partial_indexing(): void {
+    public function test_partial_indexing() {
         global $USER;
 
         $this->resetAfterTest();
@@ -389,7 +389,7 @@ class manager_test extends \advanced_testcase {
      * This tests the different logic about displaying progress for slow/fast and
      * complete/incomplete processing.
      */
-    public function test_index_progress(): void {
+    public function test_index_progress() {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
 
@@ -472,7 +472,7 @@ class manager_test extends \advanced_testcase {
      * a problem by preventing it from indexing other documents modified between now and the future
      * date).
      */
-    public function test_future_documents(): void {
+    public function test_future_documents() {
         $this->resetAfterTest();
 
         // Create a course and a forum.
@@ -522,7 +522,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Tests that indexing a specified context works correctly.
      */
-    public function test_context_indexing(): void {
+    public function test_context_indexing() {
         global $USER;
 
         $this->resetAfterTest();
@@ -623,7 +623,7 @@ class manager_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_search_user_accesses(): void {
+    public function test_search_user_accesses() {
         global $DB;
 
         $this->resetAfterTest();
@@ -772,7 +772,7 @@ class manager_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_search_user_accesses_blocks(): void {
+    public function test_search_user_accesses_blocks() {
         global $DB;
 
         $this->resetAfterTest();
@@ -890,7 +890,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Tests retrieval of users search areas when limiting to a course the user is not enrolled in
      */
-    public function test_search_users_accesses_limit_non_enrolled_course(): void {
+    public function test_search_users_accesses_limit_non_enrolled_course() {
         global $DB;
 
         $this->resetAfterTest();
@@ -929,7 +929,7 @@ class manager_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_search_user_accesses_allavailable(): void {
+    public function test_search_user_accesses_allavailable() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -1010,7 +1010,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Tests group-related aspects of the get_areas_user_accesses function.
      */
-    public function test_search_user_accesses_groups(): void {
+    public function test_search_user_accesses_groups() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1110,7 +1110,7 @@ class manager_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_is_search_area(): void {
+    public function test_is_search_area() {
 
         $this->assertFalse(\testable_core_search::is_search_area('\asd\asd'));
         $this->assertFalse(\testable_core_search::is_search_area('\mod_forum\search\posta'));
@@ -1125,7 +1125,7 @@ class manager_test extends \advanced_testcase {
      * adding things to the request list, it doesn't test that they are actually indexed by the
      * scheduled task.
      */
-    public function test_request_index(): void {
+    public function test_request_index() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1234,7 +1234,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Tests the process_index_requests function.
      */
-    public function test_process_index_requests(): void {
+    public function test_process_index_requests() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1371,7 +1371,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Test search area categories.
      */
-    public function test_get_search_area_categories(): void {
+    public function test_get_search_area_categories() {
         $categories = \core_search\manager::get_search_area_categories();
 
         $this->assertTrue(is_array($categories));
@@ -1389,7 +1389,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Test that we can find out if search area categories functionality is enabled.
      */
-    public function test_is_search_area_categories_enabled(): void {
+    public function test_is_search_area_categories_enabled() {
         $this->resetAfterTest();
 
         $this->assertFalse(\core_search\manager::is_search_area_categories_enabled());
@@ -1402,7 +1402,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Test that we can find out if hiding all results category is enabled.
      */
-    public function test_should_hide_all_results_category(): void {
+    public function test_should_hide_all_results_category() {
         $this->resetAfterTest();
 
         $this->assertEquals(0, \core_search\manager::should_hide_all_results_category());
@@ -1415,7 +1415,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Test that we can get default search category name.
      */
-    public function test_get_default_area_category_name(): void {
+    public function test_get_default_area_category_name() {
         $this->resetAfterTest();
 
         $expected = 'core-all';
@@ -1433,7 +1433,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Test that we can get correct search area category by its name.
      */
-    public function test_get_search_area_category_by_name(): void {
+    public function test_get_search_area_category_by_name() {
         $this->resetAfterTest();
 
         $testcategory = \core_search\manager::get_search_area_category_by_name('test_random_name');
@@ -1450,7 +1450,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Test that we can check that "Include all visible courses" feature is enabled.
      */
-    public function test_include_all_courses_enabled(): void {
+    public function test_include_all_courses_enabled() {
         $this->resetAfterTest();
         $this->assertFalse(\core_search\manager::include_all_courses());
         set_config('searchincludeallcourses', 1);
@@ -1460,7 +1460,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Test that we can correctly build a list of courses for a course filter for the search results.
      */
-    public function test_build_limitcourseids(): void {
+    public function test_build_limitcourseids() {
         global $USER;
 
         $this->resetAfterTest();
@@ -1503,7 +1503,7 @@ class manager_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function parse_search_area_id_data_provider() {
+    public static function parse_search_area_id_data_provider(): array {
         return [
             ['mod_book-chapter', ['mod_book', 'search_chapter']],
             ['mod_customcert-activity', ['mod_customcert', 'search_activity']],
@@ -1518,14 +1518,14 @@ class manager_test extends \advanced_testcase {
      * @param string $areaid Area id to parse.
      * @param array $expected Expected result of parsing.
      */
-    public function test_parse_search_area_id($areaid, $expected): void {
+    public function test_parse_search_area_id($areaid, $expected) {
         $this->assertEquals($expected, \core_search\manager::parse_areaid($areaid));
     }
 
     /**
      * Test that manager class will throw an exception when parsing an invalid area id.
      */
-    public function test_parse_invalid_search_area_id(): void {
+    public function test_parse_invalid_search_area_id() {
         $this->expectException('coding_exception');
         $this->expectExceptionMessage('Trying to parse invalid search area id invalid_area');
         \core_search\manager::parse_areaid('invalid_area');
@@ -1534,7 +1534,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Test getting a coding exception when trying to lean up existing search area.
      */
-    public function test_cleaning_up_existing_search_area(): void {
+    public function test_cleaning_up_existing_search_area() {
         $expectedmessage = "Area mod_assign-activity exists. Please use appropriate search area class to manipulate the data.";
 
         $this->expectException('coding_exception');
@@ -1546,7 +1546,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Test clean up of non existing search area.
      */
-    public function test_clean_up_non_existing_search_area(): void {
+    public function test_clean_up_non_existing_search_area() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1579,7 +1579,7 @@ class manager_test extends \advanced_testcase {
     /**
      * Tests the context_deleted, course_deleting_start, and course_deleting_finish methods.
      */
-    public function test_context_deletion(): void {
+    public function test_context_deletion() {
         $this->resetAfterTest();
 
         // Create one course with 4 activities, and another with one.

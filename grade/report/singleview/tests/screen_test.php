@@ -37,7 +37,7 @@ class screen_test extends \advanced_testcase {
     /**
      * Test load_users method.
      */
-    public function test_load_users(): void {
+    public function test_load_users() {
         global $DB;
 
         $this->setAdminUser();

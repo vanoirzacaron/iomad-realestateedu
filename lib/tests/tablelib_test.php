@@ -127,7 +127,7 @@ class tablelib_test extends \advanced_testcase {
         return $table;
     }
 
-    public function test_empty_table(): void {
+    public function test_empty_table() {
         $this->expectOutputRegex('/' . get_string('nothingtodisplay') . '/');
         $this->run_table_test(
             array('column1', 'column2'),       // Columns.
@@ -141,7 +141,7 @@ class tablelib_test extends \advanced_testcase {
         );
     }
 
-    public function test_has_next_pagination(): void {
+    public function test_has_next_pagination() {
 
         $data = $this->generate_data(11, 2);
         $columns = $this->generate_columns(2);
@@ -162,7 +162,7 @@ class tablelib_test extends \advanced_testcase {
         );
     }
 
-    public function test_has_hide(): void {
+    public function test_has_hide() {
 
         $data = $this->generate_data(11, 2);
         $columns = $this->generate_columns(2);
@@ -183,7 +183,7 @@ class tablelib_test extends \advanced_testcase {
         );
     }
 
-    public function test_has_not_hide(): void {
+    public function test_has_not_hide() {
 
         $data = $this->generate_data(11, 2);
         $columns = $this->generate_columns(2);
@@ -207,7 +207,7 @@ class tablelib_test extends \advanced_testcase {
         $this->assertStringNotContainsString(get_string('hide'), $output);
     }
 
-    public function test_has_sort(): void {
+    public function test_has_sort() {
 
         $data = $this->generate_data(11, 2);
         $columns = $this->generate_columns(2);
@@ -228,7 +228,7 @@ class tablelib_test extends \advanced_testcase {
         );
     }
 
-    public function test_has_not_sort(): void {
+    public function test_has_not_sort() {
 
         $data = $this->generate_data(11, 2);
         $columns = $this->generate_columns(2);
@@ -252,7 +252,7 @@ class tablelib_test extends \advanced_testcase {
         $this->assertStringNotContainsString(get_string('sortby'), $output);
     }
 
-    public function test_has_not_next_pagination(): void {
+    public function test_has_not_next_pagination() {
 
         $data = $this->generate_data(10, 2);
         $columns = $this->generate_columns(2);
@@ -277,7 +277,7 @@ class tablelib_test extends \advanced_testcase {
         $this->assertStringNotContainsString(get_string('next'), $output);
     }
 
-    public function test_1_col(): void {
+    public function test_1_col() {
 
         $data = $this->generate_data(100, 1);
         $columns = $this->generate_columns(1);
@@ -297,7 +297,7 @@ class tablelib_test extends \advanced_testcase {
         );
     }
 
-    public function test_empty_rows(): void {
+    public function test_empty_rows() {
 
         $data = $this->generate_data(1, 5);
         $columns = $this->generate_columns(5);
@@ -318,7 +318,7 @@ class tablelib_test extends \advanced_testcase {
         );
     }
 
-    public function test_5_cols(): void {
+    public function test_5_cols() {
 
         $data = $this->generate_data(100, 5);
         $columns = $this->generate_columns(5);
@@ -338,7 +338,7 @@ class tablelib_test extends \advanced_testcase {
         );
     }
 
-    public function test_50_cols(): void {
+    public function test_50_cols() {
 
         $data = $this->generate_data(100, 50);
         $columns = $this->generate_columns(50);
@@ -363,7 +363,7 @@ class tablelib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function fullname_column_provider() {
+    public static function fullname_column_provider(): array {
         return [
             ['language'],
             ['alternatename lastname'],
@@ -379,7 +379,7 @@ class tablelib_test extends \advanced_testcase {
      *
      * @dataProvider fullname_column_provider
      */
-    public function test_fullname_column(string $format): void {
+    public function test_fullname_column(string $format) {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -399,7 +399,7 @@ class tablelib_test extends \advanced_testcase {
      *
      * @dataProvider fullname_column_provider
      */
-    public function test_fullname_column_prohibit_viewfullnames(string $format): void {
+    public function test_fullname_column_prohibit_viewfullnames(string $format) {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -419,7 +419,7 @@ class tablelib_test extends \advanced_testcase {
         $this->assertStringContainsString(fullname($user, false), $table->format_row($user)['fullname']);
     }
 
-    public function test_get_row_html(): void {
+    public function test_get_row_html() {
         $data = $this->generate_data(1, 5);
         $columns = $this->generate_columns(5);
         $headers = $this->generate_headers(5);
@@ -436,7 +436,7 @@ class tablelib_test extends \advanced_testcase {
         $this->assertMatchesRegularExpression('/<td class="cell c0"/', $row);
     }
 
-    public function test_persistent_table(): void {
+    public function test_persistent_table() {
         global $SESSION;
 
         $data = $this->generate_data(5, 5);
@@ -592,7 +592,7 @@ class tablelib_test extends \advanced_testcase {
         return $table;
     }
 
-    public function test_can_be_reset(): void {
+    public function test_can_be_reset() {
         // Table in its default state (as if seen for the first time), nothing to reset.
         $table = $this->prepare_table_for_reset_test(uniqid('tablelib_test_'));
         $table->setup();
@@ -689,7 +689,7 @@ class tablelib_test extends \advanced_testcase {
     /**
      * Test export in CSV format
      */
-    public function test_table_export(): void {
+    public function test_table_export() {
         $table = new flexible_table('tablelib_test_export');
         $table->define_baseurl('/invalid.php');
         $table->define_columns(['c1', 'c2', 'c3']);
@@ -782,7 +782,7 @@ class tablelib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function initials_provider(): array {
+    public static function initials_provider(): array {
         return [
             [null, null, null],
             ['A', null, 'A'],

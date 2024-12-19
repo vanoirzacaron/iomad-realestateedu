@@ -97,7 +97,7 @@ class persistent_test extends advanced_testcase {
         $dbman->create_table($table);
     }
 
-    public function test_properties_definition(): void {
+    public function test_properties_definition() {
         $expected = array(
             'shortname' => array(
                 'type' => PARAM_TEXT,
@@ -183,7 +183,7 @@ class persistent_test extends advanced_testcase {
     /**
      * Test creating persistent instance by specifying record ID in constructor
      */
-    public function test_constructor(): void {
+    public function test_constructor() : void {
         $persistent = (new core_testable_persistent(0, (object) [
             'idnumber' => '123',
             'sortorder' => 1,
@@ -203,7 +203,7 @@ class persistent_test extends advanced_testcase {
         new core_testable_persistent(42);
     }
 
-    public function test_to_record(): void {
+    public function test_to_record() {
         $p = new core_testable_persistent();
         $expected = (object) array(
             'shortname' => '',
@@ -222,7 +222,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($expected, $p->to_record());
     }
 
-    public function test_from_record(): void {
+    public function test_from_record() {
         $p = new core_testable_persistent();
         $data = (object) array(
             'shortname' => 'ddd',
@@ -242,7 +242,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($data, $p->to_record());
     }
 
-    public function test_from_record_invalid_param(): void {
+    public function test_from_record_invalid_param() {
         $p = new core_testable_persistent();
         $data = (object) array(
             'shortname' => 'ddd',
@@ -267,7 +267,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($data, $p->to_record());
     }
 
-    public function test_validate(): void {
+    public function test_validate() {
         $data = (object) array(
             'idnumber' => 'abc',
             'sortorder' => 0
@@ -288,7 +288,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($expected, $p->get_errors());
     }
 
-    public function test_validation_required(): void {
+    public function test_validation_required() {
         $data = (object) array(
             'idnumber' => 'abc'
         );
@@ -300,7 +300,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($expected, $p->get_errors());
     }
 
-    public function test_validation_custom(): void {
+    public function test_validation_custom() {
         $data = (object) array(
             'idnumber' => 'abc',
             'sortorder' => 10,
@@ -313,7 +313,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($expected, $p->get_errors());
     }
 
-    public function test_validation_custom_message(): void {
+    public function test_validation_custom_message() {
         $data = (object) array(
             'idnumber' => 'abc',
             'sortorder' => 'abc',
@@ -326,7 +326,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($expected, $p->get_errors());
     }
 
-    public function test_validation_choices(): void {
+    public function test_validation_choices() {
         $data = (object) array(
             'idnumber' => 'abc',
             'sortorder' => 0,
@@ -340,7 +340,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($expected, $p->get_errors());
     }
 
-    public function test_validation_type(): void {
+    public function test_validation_type() {
         $data = (object) array(
             'idnumber' => 'abc',
             'sortorder' => 'NaN'
@@ -350,7 +350,7 @@ class persistent_test extends advanced_testcase {
         $this->assertArrayHasKey('sortorder', $p->get_errors());
     }
 
-    public function test_validation_null(): void {
+    public function test_validation_null() {
         $data = (object) array(
             'idnumber' => null,
             'sortorder' => 0,
@@ -369,7 +369,7 @@ class persistent_test extends advanced_testcase {
         $this->assertArrayNotHasKey('scaleid', $p->get_errors());
     }
 
-    public function test_create(): void {
+    public function test_create() {
         global $DB;
         $p = new core_testable_persistent(0, (object) array('sortorder' => 123, 'idnumber' => 'abc'));
         $this->assertFalse(isset($p->beforecreate));
@@ -385,7 +385,7 @@ class persistent_test extends advanced_testcase {
         $this->assertTrue($p->is_valid()); // Should always be valid after a create.
     }
 
-    public function test_update(): void {
+    public function test_update() {
         global $DB;
         $p = new core_testable_persistent(0, (object) array('sortorder' => 123, 'idnumber' => 'abc'));
         $p->create();
@@ -429,7 +429,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals(1, $record->sortorder);
     }
 
-    public function test_save(): void {
+    public function test_save() {
         global $DB;
         $p = new core_testable_persistent(0, (object) array('sortorder' => 123, 'idnumber' => 'abc'));
         $this->assertFalse(isset($p->beforecreate));
@@ -531,7 +531,7 @@ class persistent_test extends advanced_testcase {
         $persistent->set_many(['invalid' => 'stuff']);
     }
 
-    public function test_read(): void {
+    public function test_read() {
         $p = new core_testable_persistent(0, (object) array('sortorder' => 123, 'idnumber' => 'abc'));
         $p->create();
         unset($p->beforevalidate);
@@ -547,7 +547,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($p, $p3);
     }
 
-    public function test_delete(): void {
+    public function test_delete() {
         global $DB;
 
         $p = new core_testable_persistent(0, (object) array('sortorder' => 123, 'idnumber' => 'abc'));
@@ -564,12 +564,12 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals(true, $p->afterdelete);
     }
 
-    public function test_has_property(): void {
+    public function test_has_property() {
         $this->assertFalse(core_testable_persistent::has_property('unknown'));
         $this->assertTrue(core_testable_persistent::has_property('idnumber'));
     }
 
-    public function test_custom_setter_getter(): void {
+    public function test_custom_setter_getter() {
         global $DB;
 
         $path = array(1, 2, 3);
@@ -618,7 +618,7 @@ class persistent_test extends advanced_testcase {
         core_testable_persistent::get_record(['id' => 42], MUST_EXIST);
     }
 
-    public function test_record_exists(): void {
+    public function test_record_exists() {
         global $DB;
         $this->assertFalse($DB->record_exists(core_testable_persistent::TABLE, array('idnumber' => 'abc')));
         $p = new core_testable_persistent(0, (object) array('sortorder' => 123, 'idnumber' => 'abc'));
@@ -630,7 +630,7 @@ class persistent_test extends advanced_testcase {
         $this->assertFalse(core_testable_persistent::record_exists($id));
     }
 
-    public function test_get_sql_fields(): void {
+    public function test_get_sql_fields() {
         $expected = '' .
             'c.id AS prefix_id, ' .
             'c.shortname AS prefix_shortname, ' .
@@ -647,7 +647,7 @@ class persistent_test extends advanced_testcase {
         $this->assertEquals($expected, core_testable_persistent::get_sql_fields('c', 'prefix_'));
     }
 
-    public function test_get_sql_fields_too_long(): void {
+    public function test_get_sql_fields_too_long() {
         $this->expectException(coding_exception::class);
         $this->expectExceptionMessageMatches('/The alias .+ exceeds 30 characters/');
         core_testable_persistent::get_sql_fields('c');

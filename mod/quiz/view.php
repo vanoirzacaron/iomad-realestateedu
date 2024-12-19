@@ -24,7 +24,6 @@
  */
 
 use mod_quiz\access_manager;
-use mod_quiz\output\list_of_attempts;
 use mod_quiz\output\renderer;
 use mod_quiz\output\view_page;
 use mod_quiz\quiz_attempt;
@@ -96,20 +95,10 @@ if ($unfinishedattempt = quiz_get_user_attempt_unfinished($quiz->id, $USER->id))
 }
 $numattempts = count($attempts);
 
-$gradeitemmarks = $quizobj->get_grade_calculator()->compute_grade_item_totals_for_attempts(
-    array_column($attempts, 'uniqueid'));
-
 $viewobj->attempts = $attempts;
 $viewobj->attemptobjs = [];
 foreach ($attempts as $attempt) {
-    $attemptobj = new quiz_attempt($attempt, $quiz, $cm, $course, false);
-    $attemptobj->set_grade_item_totals($gradeitemmarks[$attempt->uniqueid]);
-    $viewobj->attemptobjs[] = $attemptobj;
-
-}
-$viewobj->attemptslist = new list_of_attempts($timenow);
-foreach (array_reverse($viewobj->attemptobjs) as $attemptobj) {
-    $viewobj->attemptslist->add_attempt($attemptobj);
+    $viewobj->attemptobjs[] = new quiz_attempt($attempt, $quiz, $cm, $course, false);
 }
 
 // Work out the final grade, checking whether it was overridden in the gradebook.

@@ -118,7 +118,7 @@ class completion_criteria_date extends completion_criteria {
      * @return string
      */
     public function get_title_detailed() {
-        return userdate($this->timeend, get_string('strftimedatemonthabbr', 'core_langconfig'));
+        return userdate($this->timeend, '%d-%h-%y');
     }
 
     /**
@@ -138,10 +138,7 @@ class completion_criteria_date extends completion_criteria {
      * @return string
      */
     public function get_status($completion) {
-        return $completion->is_complete() ? get_string('yes') : userdate(
-            $this->timeend,
-            get_string('strftimedatemonthabbr', 'core_langconfig')
-        );
+        return $completion->is_complete() ? get_string('yes') : userdate($this->timeend, '%d-%h-%y');
     }
 
     /**
@@ -200,7 +197,7 @@ class completion_criteria_date extends completion_criteria {
         $details = array();
         $details['type'] = get_string('datepassed', 'completion');
         $details['criteria'] = get_string('remainingenroleduntildate', 'completion');
-        $details['requirement'] = userdate($this->timeend, get_string('strftimedatemonthabbr', 'core_langconfig'));
+        $details['requirement'] = userdate($this->timeend, '%d %B %Y');
         $details['status'] = '';
 
         return $details;

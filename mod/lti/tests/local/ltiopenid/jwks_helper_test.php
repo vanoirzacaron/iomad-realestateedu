@@ -54,7 +54,7 @@ class jwks_helper_test extends \basic_testcase {
      * @param array $expected the expected outputs/exceptions.
      * @return void
      */
-    public function test_fix_jwks_alg(array $jwks, string $jwt, array $expected): void {
+    public function test_fix_jwks_alg(array $jwks, string $jwt, array $expected) {
         if (isset($expected['exception'])) {
             $this->expectException($expected['exception']);
         }
@@ -66,7 +66,7 @@ class jwks_helper_test extends \basic_testcase {
      * Provider for test_fix_jwks_alg.
      * @return array test data.
      */
-    public function jwks_alg_provider(): array {
+    public static function jwks_alg_provider(): array {
         return [
             // Algs already present, so no changes to input key array.
             'All JWKS keys have algs set' => [

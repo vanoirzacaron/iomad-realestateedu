@@ -12,9 +12,6 @@ class DeepLinkMessageValidator extends AbstractMessageValidator
         return LtiConstants::MESSAGE_TYPE_DEEPLINK;
     }
 
-    /**
-     * @throws LtiException
-     */
     public static function validate(array $jwtBody): void
     {
         static::validateGenericMessage($jwtBody);

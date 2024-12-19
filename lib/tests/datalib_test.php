@@ -36,7 +36,7 @@ class datalib_test extends \advanced_testcase {
     /**
      * Do a test of the user search SQL with database users.
      */
-    public function test_users_search_sql(): void {
+    public function test_users_search_sql() {
         global $DB;
         $this->resetAfterTest();
 
@@ -154,19 +154,19 @@ class datalib_test extends \advanced_testcase {
         }
     }
 
-    public function test_users_order_by_sql_simple(): void {
+    public function test_users_order_by_sql_simple() {
         list($sort, $params) = users_order_by_sql();
         $this->assert_same_sql('lastname, firstname, id', $sort);
         $this->assertEquals(array(), $params);
     }
 
-    public function test_users_order_by_sql_table_prefix(): void {
+    public function test_users_order_by_sql_table_prefix() {
         list($sort, $params) = users_order_by_sql('u');
         $this->assert_same_sql('u.lastname, u.firstname, u.id', $sort);
         $this->assertEquals(array(), $params);
     }
 
-    public function test_users_order_by_sql_search_no_extra_fields(): void {
+    public function test_users_order_by_sql_search_no_extra_fields() {
         global $CFG, $DB;
         $this->resetAfterTest(true);
 
@@ -182,7 +182,7 @@ class datalib_test extends \advanced_testcase {
                 'usersortexact3' => 'search'), $params);
     }
 
-    public function test_users_order_by_sql_search_with_extra_fields_and_prefix(): void {
+    public function test_users_order_by_sql_search_with_extra_fields_and_prefix() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -220,7 +220,7 @@ class datalib_test extends \advanced_testcase {
                 'usersortexact3' => 'search', 'usersortexact4' => 'search'), $params);
     }
 
-    public function test_get_admin(): void {
+    public function test_get_admin() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -252,7 +252,7 @@ class datalib_test extends \advanced_testcase {
         $this->assertEquals($odlread, $DB->perf_get_reads());
     }
 
-    public function test_get_admins(): void {
+    public function test_get_admins() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -283,7 +283,7 @@ class datalib_test extends \advanced_testcase {
         $this->assertEquals($odlread+1, $DB->perf_get_reads());
     }
 
-    public function test_get_course(): void {
+    public function test_get_course() {
         global $DB, $PAGE, $SITE;
         $this->resetAfterTest();
 
@@ -338,7 +338,7 @@ class datalib_test extends \advanced_testcase {
         ], reset($courses));
     }
 
-    public function test_increment_revision_number(): void {
+    public function test_increment_revision_number() {
         global $DB;
         $this->resetAfterTest();
 
@@ -395,7 +395,7 @@ class datalib_test extends \advanced_testcase {
         $this->assertEquals($record1->cacherev, $record2->cacherev);
     }
 
-    public function test_get_coursemodule_from_id(): void {
+    public function test_get_coursemodule_from_id() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -418,7 +418,7 @@ class datalib_test extends \advanced_testcase {
         $this->assertSame('folder', $cm->modname);
         $this->assertSame($folder1a->id, $cm->instance);
         $this->assertSame($folder1a->course, $cm->course);
-        $this->assertObjectNotHasProperty('sectionnum', $cm);
+        $this->assertObjectNotHasAttribute('sectionnum', $cm);
 
         $this->assertEquals($cm, get_coursemodule_from_id('', $folder1a->cmid));
         $this->assertEquals($cm, get_coursemodule_from_id('folder', $folder1a->cmid, $course1->id));
@@ -461,7 +461,7 @@ class datalib_test extends \advanced_testcase {
         }
     }
 
-    public function test_get_coursemodule_from_instance(): void {
+    public function test_get_coursemodule_from_instance() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -483,7 +483,7 @@ class datalib_test extends \advanced_testcase {
         $this->assertSame('folder', $cm->modname);
         $this->assertSame($folder1a->id, $cm->instance);
         $this->assertSame($folder1a->course, $cm->course);
-        $this->assertObjectNotHasProperty('sectionnum', $cm);
+        $this->assertObjectNotHasAttribute('sectionnum', $cm);
 
         $this->assertEquals($cm, get_coursemodule_from_instance('folder', $folder1a->id, $course1->id));
         $this->assertEquals($cm, get_coursemodule_from_instance('folder', $folder1a->id, 0));
@@ -525,7 +525,7 @@ class datalib_test extends \advanced_testcase {
         }
     }
 
-    public function test_get_coursemodules_in_course(): void {
+    public function test_get_coursemodules_in_course() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -553,17 +553,17 @@ class datalib_test extends \advanced_testcase {
         $this->assertSame('folder', $cm->modname);
         $this->assertSame($folder1a->id, $cm->instance);
         $this->assertSame($folder1a->course, $cm->course);
-        $this->assertObjectNotHasProperty('sectionnum', $cm);
-        $this->assertObjectNotHasProperty('revision', $cm);
-        $this->assertObjectNotHasProperty('display', $cm);
+        $this->assertObjectNotHasAttribute('sectionnum', $cm);
+        $this->assertObjectNotHasAttribute('revision', $cm);
+        $this->assertObjectNotHasAttribute('display', $cm);
 
         $cm = $modules[$folder1b->cmid];
         $this->assertSame('folder', $cm->modname);
         $this->assertSame($folder1b->id, $cm->instance);
         $this->assertSame($folder1b->course, $cm->course);
-        $this->assertObjectNotHasProperty('sectionnum', $cm);
-        $this->assertObjectNotHasProperty('revision', $cm);
-        $this->assertObjectNotHasProperty('display', $cm);
+        $this->assertObjectNotHasAttribute('sectionnum', $cm);
+        $this->assertObjectNotHasAttribute('revision', $cm);
+        $this->assertObjectNotHasAttribute('display', $cm);
 
         $modules = get_coursemodules_in_course('folder', $course1->id, 'revision, display');
         $this->assertCount(2, $modules);
@@ -572,9 +572,9 @@ class datalib_test extends \advanced_testcase {
         $this->assertSame('folder', $cm->modname);
         $this->assertSame($folder1a->id, $cm->instance);
         $this->assertSame($folder1a->course, $cm->course);
-        $this->assertObjectNotHasProperty('sectionnum', $cm);
-        $this->assertObjectHasProperty('revision', $cm);
-        $this->assertObjectHasProperty('display', $cm);
+        $this->assertObjectNotHasAttribute('sectionnum', $cm);
+        $this->assertObjectHasAttribute('revision', $cm);
+        $this->assertObjectHasAttribute('display', $cm);
 
         $modules = get_coursemodules_in_course('label', $course1->id);
         $this->assertCount(0, $modules);
@@ -594,7 +594,7 @@ class datalib_test extends \advanced_testcase {
         }
     }
 
-    public function test_get_all_instances_in_courses(): void {
+    public function test_get_all_instances_in_courses() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -649,7 +649,7 @@ class datalib_test extends \advanced_testcase {
         }
     }
 
-    public function test_get_all_instances_in_course(): void {
+    public function test_get_all_instances_in_course() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -705,7 +705,7 @@ class datalib_test extends \advanced_testcase {
     /**
      * Test max courses in category
      */
-    public function test_max_courses_in_category(): void {
+    public function test_max_courses_in_category() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -770,7 +770,7 @@ class datalib_test extends \advanced_testcase {
     /**
      * Test debug message for max courses in category
      */
-    public function test_debug_max_courses_in_category(): void {
+    public function test_debug_max_courses_in_category() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -842,11 +842,11 @@ class datalib_test extends \advanced_testcase {
         $this->assertEquals('user_a@example.com', $results[$userids[0]]->email);
         $this->assertEquals(1, $results[$userids[0]]->confirmed);
         $this->assertEquals('a_first', $results[$userids[0]]->firstname);
-        $this->assertObjectHasProperty('firstnamephonetic', $results[$userids[0]]);
+        $this->assertObjectHasAttribute('firstnamephonetic', $results[$userids[0]]);
 
         // Should not have the custom field or department because no context specified.
-        $this->assertObjectNotHasProperty('department', $results[$userids[0]]);
-        $this->assertObjectNotHasProperty('profile_field_specialid', $results[$userids[0]]);
+        $this->assertObjectNotHasAttribute('department', $results[$userids[0]]);
+        $this->assertObjectNotHasAttribute('profile_field_specialid', $results[$userids[0]]);
 
         // Check sorting.
         $results = get_users_listing('username', 'DESC');
@@ -867,8 +867,8 @@ class datalib_test extends \advanced_testcase {
         // specify a context AND have permissions.
         $results = get_users_listing('lastaccess', 'asc', 0, 0, '', '', '', '', null,
                 \context_system::instance());
-        $this->assertObjectNotHasProperty('department', $results[$userids[0]]);
-        $this->assertObjectNotHasProperty('profile_field_specialid', $results[$userids[0]]);
+        $this->assertObjectNotHasAttribute('department', $results[$userids[0]]);
+        $this->assertObjectNotHasAttribute('profile_field_specialid', $results[$userids[0]]);
         $this->setAdminUser();
         $results = get_users_listing('lastaccess', 'asc', 0, 0, '', '', '', '', null,
                 \context_system::instance());
@@ -906,7 +906,7 @@ class datalib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function get_safe_orderby_provider(): array {
+    public static function get_safe_orderby_provider(): array {
         $orderbymap = [
             'courseid' => 'c.id',
             'somecustomvalue' => 'c.startdate, c.shortname',
@@ -994,7 +994,7 @@ class datalib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function get_safe_orderby_multiple_provider(): array {
+    public static function get_safe_orderby_multiple_provider(): array {
         $orderbymap = [
             'courseid' => 'c.id',
             'firstname' => 'u.firstname',

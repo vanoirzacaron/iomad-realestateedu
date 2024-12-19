@@ -31,7 +31,7 @@ require_once($CFG->libdir . '/outputrequirementslib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class outputrequirementslib_test extends \advanced_testcase {
-    public function test_string_for_js(): void {
+    public function test_string_for_js() {
         $this->resetAfterTest();
 
         $page = new \moodle_page();
@@ -44,20 +44,20 @@ class outputrequirementslib_test extends \advanced_testcase {
         //       it would be nice to test that the strings are actually fetched in the footer.
     }
 
-    public function test_one_time_output_normal_case(): void {
+    public function test_one_time_output_normal_case() {
         $page = new \moodle_page();
         $this->assertTrue($page->requires->should_create_one_time_item_now('test_item'));
         $this->assertFalse($page->requires->should_create_one_time_item_now('test_item'));
     }
 
-    public function test_one_time_output_repeat_output_throws(): void {
+    public function test_one_time_output_repeat_output_throws() {
         $page = new \moodle_page();
         $page->requires->set_one_time_item_created('test_item');
         $this->expectException('coding_exception');
         $page->requires->set_one_time_item_created('test_item');
     }
 
-    public function test_one_time_output_different_pages_independent(): void {
+    public function test_one_time_output_different_pages_independent() {
         $firstpage = new \moodle_page();
         $secondpage = new \moodle_page();
         $this->assertTrue($firstpage->requires->should_create_one_time_item_now('test_item'));
@@ -69,7 +69,7 @@ class outputrequirementslib_test extends \advanced_testcase {
      *
      * Test to make sure that backslashes are not generated with either slasharguments set to on or off.
      */
-    public function test_jquery_plugin(): void {
+    public function test_jquery_plugin() {
         global $CFG, $PAGE;
 
         $this->resetAfterTest();
@@ -107,7 +107,7 @@ class outputrequirementslib_test extends \advanced_testcase {
     /**
      * Test AMD modules loading.
      */
-    public function test_js_call_amd(): void {
+    public function test_js_call_amd() {
 
         $page = new \moodle_page();
 
@@ -148,13 +148,14 @@ class outputrequirementslib_test extends \advanced_testcase {
      * @covers \page_requirements_manager::js_fix_url
      * @dataProvider js_fix_url_moodle_url_provider
      */
-    public function test_js_fix_url_moodle_url(\moodle_url $moodleurl, int $cfgslashargs, string $expected): void {
+    public function test_js_fix_url_moodle_url(\moodle_url $moodleurl, int $cfgslashargs, string $expected) {
         global $CFG;
         $defaultslashargs = $CFG->slasharguments;
 
         $CFG->slasharguments = $cfgslashargs;
         $rc = new \ReflectionClass(\page_requirements_manager::class);
         $rcm = $rc->getMethod('js_fix_url');
+        $rcm->setAccessible(true);
         $requires = new \page_requirements_manager();
         $actualmoodleurl = $rcm->invokeArgs($requires, [$moodleurl]);
         $this->assertEquals($expected, $actualmoodleurl->out(false));
@@ -169,7 +170,7 @@ class outputrequirementslib_test extends \advanced_testcase {
      * @see \page_requirements_manager::js_fix_url()
      * @see \moodle_url
      */
-    public function js_fix_url_moodle_url_provider() {
+    public static function js_fix_url_moodle_url_provider(): array {
         global $CFG;
         $wwwroot = rtrim($CFG->wwwroot, '/');
         $libdir = rtrim($CFG->libdir, '/');
@@ -231,13 +232,14 @@ class outputrequirementslib_test extends \advanced_testcase {
      * @covers \page_requirements_manager::js_fix_url
      * @dataProvider js_fix_url_plain_string_provider
      */
-    public function test_js_fix_url_plain_string(string $url, int $cfgslashargs, string $expected): void {
+    public function test_js_fix_url_plain_string(string $url, int $cfgslashargs, string $expected) {
         global $CFG;
         $defaultslashargs = $CFG->slasharguments;
 
         $CFG->slasharguments = $cfgslashargs;
         $rc = new \ReflectionClass(\page_requirements_manager::class);
         $rcm = $rc->getMethod('js_fix_url');
+        $rcm->setAccessible(true);
         $requires = new \page_requirements_manager();
         $actualmoodleurl = $rcm->invokeArgs($requires, [$url]);
         $this->assertEquals($expected, $actualmoodleurl->out(false));
@@ -251,7 +253,7 @@ class outputrequirementslib_test extends \advanced_testcase {
      * @return array
      * @see \page_requirements_manager::js_fix_url()
      */
-    public function js_fix_url_plain_string_provider() {
+    public static function js_fix_url_plain_string_provider(): array {
         global $CFG;
         $wwwroot = rtrim($CFG->wwwroot, '/');
         $admin = "/{$CFG->admin}/"; // Deprecated, just for coverage purposes.
@@ -262,6 +264,16 @@ class outputrequirementslib_test extends \advanced_testcase {
                 '/admin/environment.xml',
                 0,
                 $wwwroot . $admin . 'environment.xml'
+            ],
+            'Course Format JS (slasharguments on)' => [
+                '/course/format/topics/format.js',
+                1,
+                $wwwroot . '/lib/javascript.php/1/course/format/topics/format.js'
+            ],
+            'Course Format JS (slasharguments off)' => [
+                '/course/format/topics/format.js',
+                0,
+                $wwwroot . '/lib/javascript.php?rev=1&jsfile=%2Fcourse%2Fformat%2Ftopics%2Fformat.js'
             ],
             'Data JS' => [
                 '/mod/data/data.js',
@@ -311,9 +323,10 @@ class outputrequirementslib_test extends \advanced_testcase {
      * @covers \page_requirements_manager::js_fix_url
      * @dataProvider js_fix_url_coding_exception_provider
      */
-    public function test_js_fix_url_coding_exception($url, string $exmessage): void {
+    public function test_js_fix_url_coding_exception($url, string $exmessage) {
         $rc = new \ReflectionClass(\page_requirements_manager::class);
         $rcm = $rc->getMethod('js_fix_url');
+        $rcm->setAccessible(true);
         $requires = new \page_requirements_manager();
         $this->expectException(\coding_exception::class);
         $this->expectExceptionMessage($exmessage);
@@ -326,7 +339,7 @@ class outputrequirementslib_test extends \advanced_testcase {
      * @return array
      * @see \page_requirements_manager::js_fix_url()
      */
-    public function js_fix_url_coding_exception_provider() {
+    public static function js_fix_url_coding_exception_provider(): array {
         global $CFG;
         $wwwroot = rtrim($CFG->wwwroot, '/');
 

@@ -60,7 +60,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_search_enabled(): void {
+    public function test_search_enabled() {
 
         $searcharea = \core_search\manager::get_search_area($this->bookchapterareaid);
         list($componentname, $varname) = $searcharea->get_config_var_name();
@@ -80,7 +80,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_chapters_indexing(): void {
+    public function test_chapters_indexing() {
         global $DB;
 
         // Returns the instance as long as the area is supported.
@@ -147,7 +147,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_check_access(): void {
+    public function test_check_access() {
         global $DB;
 
         // Returns the instance as long as the area is supported.

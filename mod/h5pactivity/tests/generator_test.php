@@ -31,7 +31,7 @@ final class generator_test extends \advanced_testcase {
     /**
      * Test on H5P activity creation.
      */
-    public function test_create_instance(): void {
+    public function test_create_instance() {
         global $DB, $CFG, $USER;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -87,7 +87,7 @@ final class generator_test extends \advanced_testcase {
      * Test that a new H5P activity cannot be generated without a valid file
      * other user.
      */
-    public function test_create_file_exception(): void {
+    public function test_create_file_exception() {
         global $CFG;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -114,7 +114,7 @@ final class generator_test extends \advanced_testcase {
      * @param bool $exception if an exception is expected
      *
      */
-    public function test_create_attempt(array $tracks, int $attempts, int $results, bool $exception): void {
+    public function test_create_attempt(array $tracks, int $attempts, int $results, bool $exception) {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -305,7 +305,7 @@ final class generator_test extends \advanced_testcase {
      * @param bool $validmod if the activity id is provided
      * @param bool $validuser if the user id is provided
      */
-    public function test_create_attempt_exceptions(bool $validmod, bool $validuser): void {
+    public function test_create_attempt_exceptions(bool $validmod, bool $validuser) {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();

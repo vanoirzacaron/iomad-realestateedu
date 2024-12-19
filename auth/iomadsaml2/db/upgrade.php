@@ -74,7 +74,7 @@ function xmldb_auth_iomadsaml2_upgrade($oldversion) {
     }
 
     if ($oldversion < 2016080302) {
-        // Update plugin configuration settings from auth_iomadsaml2 to auth/saml2.
+        // Update plugin configuration settings from auth_iomadsaml2 to auth/iomadsaml2.
         $currentconfig = get_config('auth_iomadsaml2');
 
         // Remove old config.
@@ -88,7 +88,7 @@ function xmldb_auth_iomadsaml2_upgrade($oldversion) {
 
         // Set new config.
         foreach ($currentconfig as $key => $value) {
-            set_config($key, $value, 'auth/saml2');
+            set_config($key, $value, 'auth/iomadsaml2');
         }
 
         // Saml2 savepoint reached.
@@ -96,9 +96,9 @@ function xmldb_auth_iomadsaml2_upgrade($oldversion) {
     }
 
     if ($oldversion < 2017051800) {
-        // Update plugin configuration settings from auth/saml2 to auth_iomadsaml2.
+        // Update plugin configuration settings from auth/iomadsaml2 to auth_iomadsaml2.
         $currentconfig = (array)get_config('auth_iomadsaml2');
-        $oldconfig = $DB->get_records('config_plugins', ['plugin' => 'auth/saml2']);
+        $oldconfig = $DB->get_records('config_plugins', ['plugin' => 'auth/iomadsaml2']);
 
         // Convert old config items to new.
         foreach ($oldconfig as $item) {
@@ -117,9 +117,9 @@ function xmldb_auth_iomadsaml2_upgrade($oldversion) {
 
     // Depending on the path from the previous version branch, we may need to run this again.
     if ($oldversion < 2018021900) {
-        // Update plugin configuration settings from auth/saml2 to auth_iomadsaml2.
+        // Update plugin configuration settings from auth/iomadsaml2 to auth_iomadsaml2.
         $currentconfig = (array)get_config('auth_iomadsaml2');
-        $oldconfig = $DB->get_records('config_plugins', ['plugin' => 'auth/saml2']);
+        $oldconfig = $DB->get_records('config_plugins', ['plugin' => 'auth/iomadsaml2']);
 
         // Convert old config items to new.
         foreach ($oldconfig as $item) {
@@ -138,10 +138,10 @@ function xmldb_auth_iomadsaml2_upgrade($oldversion) {
 
     if ($oldversion < 2018021901) {
         /* Multiple IdP support
-         * sitedata/saml2/idp.xml is now sitedata/saml2/md5($entityid).idp.xml
+         * sitedata/iomadsaml2/idp.xml is now sitedata/iomadsaml2/md5($entityid).idp.xml
          */
 
-        $xmlfile = $CFG->dataroot . "/saml2/idp.xml";
+        $xmlfile = $CFG->dataroot . "/iomadsaml2/idp.xml";
         $entityids = [];
         $mduinames = [];
 
@@ -167,7 +167,7 @@ function xmldb_auth_iomadsaml2_upgrade($oldversion) {
             if ($idpelements && isset($idpelements[0])) {
                 $entityid = (string)$idpelements[0]->attributes('', true)->entityID[0];
                 $entityids[$type] = $entityid;
-                rename($xmlfile, $CFG->dataroot . "/saml2/" . md5($entityid) . ".idp.xml");
+                rename($xmlfile, $CFG->dataroot . "/iomadsaml2/" . md5($entityid) . ".idp.xml");
 
                 // Locate a displayname element provided by the IdP XML metadata.
                 $names = @$idpelements[0]->xpath('//mdui:DisplayName');
@@ -379,36 +379,28 @@ function xmldb_auth_iomadsaml2_upgrade($oldversion) {
     if ($oldversion < 2022031503) {
         if (in_array($CFG->dbtype, ['mysqli', 'mariadb'])) {
             $tolower = get_config('auth_iomadsaml2', 'tolower');
-            if (empty($tolower) || $tolower == auth_iomadsaml2\admin\saml2_settings::OPTION_TOLOWER_EXACT) {
+            if (empty($tolower) || $tolower == auth_iomadsaml2\admin\iomadsaml2_settings::OPTION_TOLOWER_EXACT) {
                 // Previous versions of the code meant that mariadb operated in a case-insensitive manner set to prevent issues.
-                set_config('tolower', auth_iomadsaml2\admin\saml2_settings::OPTION_TOLOWER_CASE_INSENSITIVE, 'auth_iomadsaml2');
+                set_config('tolower', auth_iomadsaml2\admin\iomadsaml2_settings::OPTION_TOLOWER_CASE_INSENSITIVE, 'auth_iomadsaml2');
             }
         }
 
         upgrade_plugin_savepoint(true, 2022031503, 'auth', 'iomadsaml2');
     }
 
-    if ($oldversion < 2023100300) {
-        // We are removing some options from the admin settings page, therefore if
-        // either of those options have been set we need to remove them from the database.
-        $protocols = get_config('auth_iomadsaml2', 'assertionsconsumerservices');
-        $protocols = explode(',', $protocols);
-        $a = array_search('urn:oasis:names:tc:SAML:1.0:profiles:browser-post', $protocols);
-        $b = array_search('urn:oasis:names:tc:SAML:1.0:profiles:artifact-01', $protocols);
+    if ($oldversion < 2022111702) {
 
-        if ($a) {
-            unset($protocols[$a]);
+        // Define field companyid to be added to auth_iomadsaml2_idps.
+        $table = new xmldb_table('auth_iomadsaml2_idps');
+        $field = new xmldb_field('companyid', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, '0', 'whitelist');
+
+        // Conditionally launch add field companyid.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
         }
 
-        if ($b) {
-            unset($protocols[$b]);
-        }
-
-        $protocols = implode(',', $protocols);
-        set_config('assertionsconsumerservices', $protocols, 'auth_iomadsaml2');
-
-        upgrade_plugin_savepoint(true, 2023100300, 'auth', 'iomadsaml2');
+        // Iomadsaml2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2022111702, 'auth', 'iomadsaml2');
     }
-
     return true;
 }

@@ -62,7 +62,7 @@ class locallib_test extends \advanced_testcase {
         parent::tearDown();
     }
 
-    public function test_aggregate_submission_grades_process_notgraded(): void {
+    public function test_aggregate_submission_grades_process_notgraded() {
         $this->resetAfterTest(true);
 
         // fixture set-up
@@ -73,7 +73,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_submission_grades_process($batch);
     }
 
-    public function test_aggregate_submission_grades_process_single(): void {
+    public function test_aggregate_submission_grades_process_single() {
         $this->resetAfterTest(true);
 
         // fixture set-up
@@ -85,7 +85,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_submission_grades_process($batch);
     }
 
-    public function test_aggregate_submission_grades_process_null_doesnt_influence(): void {
+    public function test_aggregate_submission_grades_process_null_doesnt_influence() {
         $this->resetAfterTest(true);
 
         // fixture set-up
@@ -98,7 +98,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_submission_grades_process($batch);
     }
 
-    public function test_aggregate_submission_grades_process_weighted_single(): void {
+    public function test_aggregate_submission_grades_process_weighted_single() {
         $this->resetAfterTest(true);
 
         // fixture set-up
@@ -110,7 +110,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_submission_grades_process($batch);
     }
 
-    public function test_aggregate_submission_grades_process_mean(): void {
+    public function test_aggregate_submission_grades_process_mean() {
         $this->resetAfterTest(true);
 
         // fixture set-up
@@ -125,7 +125,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_submission_grades_process($batch);
     }
 
-    public function test_aggregate_submission_grades_process_mean_changed(): void {
+    public function test_aggregate_submission_grades_process_mean_changed() {
         $this->resetAfterTest(true);
 
         // fixture set-up
@@ -140,7 +140,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_submission_grades_process($batch);
     }
 
-    public function test_aggregate_submission_grades_process_mean_nochange(): void {
+    public function test_aggregate_submission_grades_process_mean_nochange() {
         $this->resetAfterTest(true);
 
         // fixture set-up
@@ -154,7 +154,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_submission_grades_process($batch);
     }
 
-    public function test_aggregate_submission_grades_process_rounding(): void {
+    public function test_aggregate_submission_grades_process_rounding() {
         $this->resetAfterTest(true);
 
         // fixture set-up
@@ -168,7 +168,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_submission_grades_process($batch);
     }
 
-    public function test_aggregate_submission_grades_process_weighted_mean(): void {
+    public function test_aggregate_submission_grades_process_weighted_mean() {
         $this->resetAfterTest(true);
 
         // fixture set-up
@@ -183,7 +183,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_submission_grades_process($batch);
     }
 
-    public function test_aggregate_grading_grades_process_nograding(): void {
+    public function test_aggregate_grading_grades_process_nograding() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -194,7 +194,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch);
     }
 
-    public function test_aggregate_grading_grades_process_single_grade_new(): void {
+    public function test_aggregate_grading_grades_process_single_grade_new() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -211,7 +211,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch, $now);
     }
 
-    public function test_aggregate_grading_grades_process_single_grade_update(): void {
+    public function test_aggregate_grading_grades_process_single_grade_update() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -222,7 +222,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch);
     }
 
-    public function test_aggregate_grading_grades_process_single_grade_uptodate(): void {
+    public function test_aggregate_grading_grades_process_single_grade_uptodate() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -233,7 +233,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch);
     }
 
-    public function test_aggregate_grading_grades_process_single_grade_overridden(): void {
+    public function test_aggregate_grading_grades_process_single_grade_overridden() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -244,7 +244,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch);
     }
 
-    public function test_aggregate_grading_grades_process_multiple_grades_new(): void {
+    public function test_aggregate_grading_grades_process_multiple_grades_new() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -263,7 +263,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch, $now);
     }
 
-    public function test_aggregate_grading_grades_process_multiple_grades_update(): void {
+    public function test_aggregate_grading_grades_process_multiple_grades_update() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -276,7 +276,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch);
     }
 
-    public function test_aggregate_grading_grades_process_multiple_grades_overriden(): void {
+    public function test_aggregate_grading_grades_process_multiple_grades_overriden() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -289,7 +289,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch);
     }
 
-    public function test_aggregate_grading_grades_process_multiple_grades_one_missing(): void {
+    public function test_aggregate_grading_grades_process_multiple_grades_one_missing() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -302,7 +302,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch);
     }
 
-    public function test_aggregate_grading_grades_process_multiple_grades_missing_overridden(): void {
+    public function test_aggregate_grading_grades_process_multiple_grades_missing_overridden() {
         $this->resetAfterTest(true);
         // fixture set-up
         $batch = array();
@@ -315,7 +315,7 @@ class locallib_test extends \advanced_testcase {
         $this->workshop->aggregate_grading_grades_process($batch);
     }
 
-    public function test_percent_to_value(): void {
+    public function test_percent_to_value() {
         $this->resetAfterTest(true);
         // fixture setup
         $total = 185;
@@ -326,7 +326,7 @@ class locallib_test extends \advanced_testcase {
         $this->assertEquals($part, $total * $percent / 100);
     }
 
-    public function test_percent_to_value_negative(): void {
+    public function test_percent_to_value_negative() {
         $this->resetAfterTest(true);
         // fixture setup
         $total = 185;
@@ -337,7 +337,7 @@ class locallib_test extends \advanced_testcase {
         $part = workshop::percent_to_value($percent, $total);
     }
 
-    public function test_percent_to_value_over_hundred(): void {
+    public function test_percent_to_value_over_hundred() {
         $this->resetAfterTest(true);
         // fixture setup
         $total = 185;
@@ -348,7 +348,7 @@ class locallib_test extends \advanced_testcase {
         $part = workshop::percent_to_value($percent, $total);
     }
 
-    public function test_lcm(): void {
+    public function test_lcm() {
         $this->resetAfterTest(true);
         // fixture setup + exercise SUT + verify in one step
         $this->assertEquals(workshop::lcm(1,4), 4);
@@ -358,7 +358,7 @@ class locallib_test extends \advanced_testcase {
         $this->assertEquals(workshop::lcm(6,4), 12);
     }
 
-    public function test_lcm_array(): void {
+    public function test_lcm_array() {
         $this->resetAfterTest(true);
         // fixture setup
         $numbers = array(5,3,15);
@@ -368,7 +368,7 @@ class locallib_test extends \advanced_testcase {
         $this->assertEquals($lcm, 15);
     }
 
-    public function test_prepare_example_assessment(): void {
+    public function test_prepare_example_assessment() {
         $this->resetAfterTest(true);
         // fixture setup
         $fakerawrecord = (object)array(
@@ -397,7 +397,7 @@ class locallib_test extends \advanced_testcase {
         $a = $this->workshop->prepare_example_assessment($fakerawrecord);
     }
 
-    public function test_prepare_example_reference_assessment(): void {
+    public function test_prepare_example_reference_assessment() {
         global $USER;
         $this->resetAfterTest(true);
         // fixture setup
@@ -433,7 +433,7 @@ class locallib_test extends \advanced_testcase {
      * This includes the groupingid option (when group mode is in use), and
      * standard activity restrictions using the availability API.
      */
-    public function test_user_restrictions(): void {
+    public function test_user_restrictions() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -542,7 +542,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test the workshop reset feature.
      */
-    public function test_reset_phase(): void {
+    public function test_reset_phase() {
         $this->resetAfterTest(true);
 
         $this->workshop->switch_phase(workshop::PHASE_CLOSED);
@@ -567,7 +567,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test deleting assessments related data on workshop reset.
      */
-    public function test_reset_userdata_assessments(): void {
+    public function test_reset_userdata_assessments() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -601,7 +601,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test deleting submissions related data on workshop reset.
      */
-    public function test_reset_userdata_submissions(): void {
+    public function test_reset_userdata_submissions() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -635,7 +635,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test normalizing list of extensions.
      */
-    public function test_normalize_file_extensions(): void {
+    public function test_normalize_file_extensions() {
         $this->resetAfterTest(true);
 
         workshop::normalize_file_extensions('');
@@ -645,7 +645,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test cleaning list of extensions.
      */
-    public function test_clean_file_extensions(): void {
+    public function test_clean_file_extensions() {
         $this->resetAfterTest(true);
 
         workshop::clean_file_extensions('');
@@ -655,7 +655,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test validation of the list of file extensions.
      */
-    public function test_invalid_file_extensions(): void {
+    public function test_invalid_file_extensions() {
         $this->resetAfterTest(true);
 
         workshop::invalid_file_extensions('', '');
@@ -665,7 +665,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test checking file name against the list of allowed extensions.
      */
-    public function test_is_allowed_file_type(): void {
+    public function test_is_allowed_file_type() {
         $this->resetAfterTest(true);
 
         workshop::is_allowed_file_type('', '');
@@ -675,7 +675,7 @@ class locallib_test extends \advanced_testcase {
     /**
      * Test workshop::check_group_membership() functionality.
      */
-    public function test_check_group_membership(): void {
+    public function test_check_group_membership() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -866,6 +866,7 @@ class locallib_test extends \advanced_testcase {
 
         $reflector = new \ReflectionObject($this->workshop);
         $initialbarprefsprop = $reflector->getProperty('initialbarprefs');
+        $initialbarprefsprop->setAccessible(true);
         $initialbarprefs = $initialbarprefsprop->getValue($this->workshop);
 
         return $initialbarprefs;

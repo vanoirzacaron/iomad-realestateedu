@@ -38,16 +38,7 @@ require_once($CFG->dirroot . '/mod/chat/lib.php');
  */
 class events_test extends \advanced_testcase {
 
-    /**
-     * Setup testcase.
-     */
-    public function setUp(): void {
-        // Chat module is disabled by default, enable it for testing.
-        $manager = \core_plugin_manager::resolve_plugininfo_class('mod');
-        $manager::enable_plugin('chat', 1);
-    }
-
-    public function test_message_sent(): void {
+    public function test_message_sent() {
         global $DB;
         $this->resetAfterTest();
 
@@ -106,7 +97,7 @@ class events_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_sessions_viewed(): void {
+    public function test_sessions_viewed() {
         global $USER;
         $this->resetAfterTest();
 
@@ -139,7 +130,7 @@ class events_test extends \advanced_testcase {
         $this->assertEquals($chat, $event->get_record_snapshot('chat', $chat->id));
     }
 
-    public function test_course_module_instance_list_viewed(): void {
+    public function test_course_module_instance_list_viewed() {
         global $USER;
         $this->resetAfterTest();
 
@@ -161,7 +152,7 @@ class events_test extends \advanced_testcase {
         $this->assertEquals(\context_course::instance($course->id), $event->get_context());
     }
 
-    public function test_course_module_viewed(): void {
+    public function test_course_module_viewed() {
         $this->resetAfterTest();
         $this->setAdminUser();
         $course = $this->getDataGenerator()->create_course();

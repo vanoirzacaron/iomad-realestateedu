@@ -52,17 +52,16 @@ trait communication_test_helper_trait {
      */
     protected function get_course(
         string $roomname = 'Sampleroom',
-        string $provider = 'communication_matrix',
-        array $extrafields = [],
+        string $provider = 'communication_matrix'
     ): \stdClass {
 
         $this->setup_communication_configs();
         $records = [
             'selectedcommunication' => $provider,
-            'communicationroomname' => $roomname,
+            $provider . 'roomname' => $roomname,
         ];
 
-        return $this->getDataGenerator()->create_course(array_merge($records, $extrafields));
+        return $this->getDataGenerator()->create_course($records);
     }
 
     /**
@@ -114,18 +113,5 @@ trait communication_test_helper_trait {
             'filepath' => '/',
             'filename' => $storedname,
         ], "{$CFG->dirroot}/communication/tests/fixtures/{$filename}");
-    }
-
-    /**
-     * Helper to execute a particular task.
-     *
-     * @param string $task The task.
-     */
-    private function execute_task(string $task): void {
-        // Run the scheduled task.
-        ob_start();
-        $task = \core\task\manager::get_scheduled_task($task);
-        $task->execute();
-        ob_end_clean();
     }
 }

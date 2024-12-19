@@ -2100,8 +2100,7 @@ function forum_get_course_forum($courseid, $type) {
             $forum->name  = get_string("namenews", "forum");
             $forum->intro = get_string("intronews", "forum");
             $forum->introformat = FORMAT_HTML;
-            $forum->forcesubscribe = $CFG->forum_announcementsubscription;
-            $forum->maxattachments = $CFG->forum_announcementmaxattachments;
+            $forum->forcesubscribe = FORUM_FORCESUBSCRIBE;
             $forum->assessed = 0;
             if ($courseid == SITEID) {
                 $forum->name  = get_string("sitenews");
@@ -6481,7 +6480,7 @@ function forum_get_coursemodule_info($coursemodule) {
     global $DB;
 
     $dbparams = ['id' => $coursemodule->instance];
-    $fields = 'id, name, intro, introformat, completionposts, completiondiscussions, completionreplies, duedate, cutoffdate, trackingtype';
+    $fields = 'id, name, intro, introformat, completionposts, completiondiscussions, completionreplies, duedate, cutoffdate';
     if (!$forum = $DB->get_record('forum', $dbparams, $fields)) {
         return false;
     }
@@ -6508,8 +6507,6 @@ function forum_get_coursemodule_info($coursemodule) {
     if ($forum->cutoffdate) {
         $result->customdata['cutoffdate'] = $forum->cutoffdate;
     }
-    // Add the forum type to the custom data for Web Services (core_course_get_contents).
-    $result->customdata['trackingtype'] = $forum->trackingtype;
 
     return $result;
 }
@@ -6584,7 +6581,7 @@ function forum_post_is_visible_privately($post, $cm) {
  * @param   \stdClass   $parent
  * @return  bool
  */
-function forum_user_can_reply_privately(\context_module $context, \stdClass $parent): bool {
+function forum_user_can_reply_privately(\context_module $context, \stdClass $parent) : bool {
     if ($parent->privatereplyto) {
         // You cannot reply privately to a post which is, itself, a private reply.
         return false;
@@ -6768,7 +6765,7 @@ function mod_forum_count_all_discussions(\mod_forum\local\entities\forum $forum,
  * @param   int                              $groupid The groupid requested
  * @return  array                            The list of groups to show
  */
-function mod_forum_get_groups_from_groupid(\mod_forum\local\entities\forum $forum, stdClass $user, ?int $groupid): ?array {
+function mod_forum_get_groups_from_groupid(\mod_forum\local\entities\forum $forum, stdClass $user, ?int $groupid) : ?array {
 
     $effectivegroupmode = $forum->get_effective_group_mode();
     if (empty($effectivegroupmode)) {

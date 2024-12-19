@@ -44,7 +44,7 @@ require_once($CFG->libdir.'/componentlib.class.php');
  */
 class componentlib_test extends \advanced_testcase {
 
-    public function test_component_installer(): void {
+    public function test_component_installer() {
         global $CFG;
 
         $url = $this->getExternalTestFileUrl('');
@@ -78,7 +78,7 @@ class componentlib_test extends \advanced_testcase {
     /**
      * Test the public API of the {@link lang_installer} class.
      */
-    public function test_lang_installer(): void {
+    public function test_lang_installer() {
 
         // Test the manipulation with the download queue.
         $installer = new testable_lang_installer();

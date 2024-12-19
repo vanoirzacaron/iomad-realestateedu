@@ -170,6 +170,7 @@ function tool_dbtransfer_create_maintenance_file() {
     $options = new stdClass();
     $options->trusted = false;
     $options->noclean = false;
+    $options->smiley = false;
     $options->filter = false;
     $options->para = true;
     $options->newlines = false;

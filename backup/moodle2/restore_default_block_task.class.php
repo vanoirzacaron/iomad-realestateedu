@@ -50,11 +50,11 @@ class restore_default_block_task extends restore_block_task {
         return array();
     }
 
-    public static function define_decode_contents() {
+    static public function define_decode_contents() {
         return array();
     }
 
-    public static function define_decode_rules() {
+    static public function define_decode_rules() {
         return array();
     }
 }

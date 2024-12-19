@@ -11,7 +11,6 @@ Feature: Move a section using keyboard
       | category         | 0        |
       | enablecompletion | 1        |
       | numsections      | 4        |
-      | initsections     | 1        |
     And the following "activities" exist:
       | activity | name              | intro                       | course | idnumber | section |
       | assign   | Activity sample 1 | Test assignment description | C1     | sample1  | 1       |
@@ -24,19 +23,19 @@ Feature: Move a section using keyboard
   @javascript
   Scenario: Move section above another section
     Given I open section "3" edit menu
-    And I click on "Move" "link" in the "Section 3" "section"
+    And I click on "Move" "link" in the "Topic 3" "section"
     # Focus on the modal content tree.
     When I press the tab key
     And I press the tab key
     # Select the section 1.
     And I press the down key
     And I press enter
-    Then "Section 2" "section" should appear after "Section 3" "section"
+    Then I should see "Activity sample 3" in the "Topic 2" "section"
 
   @javascript
   Scenario: Move section using go to the last element
     Given I open section "2" edit menu
-    And I click on "Move" "link" in the "Section 2" "section"
+    And I click on "Move" "link" in the "Topic 2" "section"
     # Focus on the modal content tree.
     When I press the tab key
     And I press the tab key
@@ -44,12 +43,12 @@ Feature: Move a section using keyboard
     And I press the end key
     # Move down to section 4
     And I press enter
-    Then "Section 2" "section" should appear after "Section 4" "section"
+    Then I should see "Activity sample 2" in the "Topic 4" "section"
 
   @javascript
   Scenario: Move section using go to the first element
     Given I open section "3" edit menu
-    And I click on "Move" "link" in the "Section 3" "section"
+    And I click on "Move" "link" in the "Topic 3" "section"
     # Focus on the modal content tree.
     When I press the tab key
     And I press the tab key
@@ -60,4 +59,4 @@ Feature: Move a section using keyboard
     # Go to the first section.
     And I press the home key
     And I press enter
-    Then "Section 1" "section" should appear after "Section 3" "section"
+    Then I should see "Activity sample 3" in the "Topic 1" "section"

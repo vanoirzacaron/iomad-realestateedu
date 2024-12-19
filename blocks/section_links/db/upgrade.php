@@ -37,6 +37,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Upgrade code for the section links block.
  *
@@ -45,6 +47,14 @@
  * @param object $block
  */
 function xmldb_block_section_links_upgrade($oldversion, $block) {
+    global $CFG;
+
+    // Automatically generated Moodle v3.9.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    // Automatically generated Moodle v4.0.0 release upgrade line.
+    // Put any upgrade step following this.
+
     // Automatically generated Moodle v4.1.0 release upgrade line.
     // Put any upgrade step following this.
 
@@ -52,9 +62,6 @@ function xmldb_block_section_links_upgrade($oldversion, $block) {
     // Put any upgrade step following this.
 
     // Automatically generated Moodle v4.3.0 release upgrade line.
-    // Put any upgrade step following this.
-
-    // Automatically generated Moodle v4.4.0 release upgrade line.
     // Put any upgrade step following this.
 
     return true;

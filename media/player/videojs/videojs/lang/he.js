@@ -66,7 +66,7 @@ videojs.addLanguage('he', {
   "Raised": "מורם",
   "Depressed": "מורד",
   "Uniform": "אחיד",
-  "Drop shadow": "הטלת צל",
+  "Dropshadow": "הטלת צל",
   "Font Family": "משפחת גופן",
   "Proportional Sans-Serif": "פרופורציוני וללא תגיות (Proportional Sans-Serif)",
   "Monospace Sans-Serif": "ברוחב אחיד וללא תגיות (Monospace Sans-Serif)",

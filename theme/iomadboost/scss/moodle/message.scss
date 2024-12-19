@@ -442,11 +442,13 @@ $message-day-color: color-yiq($message-app-bg) !default;
     .contact-status {
         position: absolute;
         left: 39px;
-        top: 34px;
+        top: 39px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
         &.online {
-            .icon {
-                color: $green;
-            }
+            border: 1px solid $body-bg;
+            background-color: $green;
         }
     }
 
@@ -504,6 +506,10 @@ $message-day-color: color-yiq($message-app-bg) !default;
         padding: 0;
         border-radius: 50%;
         flex-shrink: 0;
+
+        @include hover-focus {
+            background-color: $gray-200;
+        }
 
         @each $size, $length in $iconsizes {
             &.icon-size-#{$size} {

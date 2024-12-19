@@ -60,7 +60,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_search_enabled(): void {
+    public function test_search_enabled() {
         $searcharea = \core_search\manager::get_search_area($this->wikicollabpageareaid);
         list($componentname, $varname) = $searcharea->get_config_var_name();
 
@@ -79,7 +79,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_collaborative_page_indexing(): void {
+    public function test_collaborative_page_indexing() {
         global $DB;
 
         // Returns the instance as long as the area is supported.
@@ -147,7 +147,7 @@ class search_test extends \advanced_testcase {
     /**
      * Group support for wiki entries.
      */
-    public function test_collaborative_page_group_support(): void {
+    public function test_collaborative_page_group_support() {
         // Get the search area and test generators.
         $searcharea = \core_search\manager::get_search_area($this->wikicollabpageareaid);
         $generator = $this->getDataGenerator();
@@ -203,7 +203,7 @@ class search_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_collaborative_page_check_access(): void {
+    public function test_collaborative_page_check_access() {
         global $DB;
 
         // Returns the instance as long as the area is supported.

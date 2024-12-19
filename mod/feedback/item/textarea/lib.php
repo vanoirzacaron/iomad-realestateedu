@@ -102,10 +102,9 @@ class feedback_item_textarea extends feedback_item_base {
      * @param stdClass $item the db-object from feedback_item
      * @param int $groupid
      * @param int $courseid
-     * @param bool $excel Indicate if being used for Excel
      * @return stdClass
      */
-    protected function get_analysed($item, $groupid = false, $courseid = false, bool $excel = false) {
+    protected function get_analysed($item, $groupid = false, $courseid = false) {
         global $DB;
 
         $analysed_val = new stdClass();
@@ -116,8 +115,7 @@ class feedback_item_textarea extends feedback_item_base {
         if ($values) {
             $data = array();
             foreach ($values as $value) {
-                // Convert line breaks except for Excel.
-                $data[] = $excel ? $value->value : str_replace("\n", '<br />', $value->value);
+                $data[] = str_replace("\n", '<br />', $value->value);
             }
             $analysed_val->data = $data;
         }
@@ -160,11 +158,11 @@ class feedback_item_textarea extends feedback_item_base {
                              $xls_formats, $item,
                              $groupid, $courseid = false) {
 
-        $analyseditem = $this->get_analysed($item, $groupid, $courseid, true);
+        $analysed_item = $this->get_analysed($item, $groupid, $courseid);
 
         $worksheet->write_string($row_offset, 0, $item->label, $xls_formats->head2);
         $worksheet->write_string($row_offset, 1, $item->name, $xls_formats->head2);
-        $data = $analyseditem->data;
+        $data = $analysed_item->data;
         if (is_array($data)) {
             if (isset($data[0])) {
                 $worksheet->write_string($row_offset, 2, htmlspecialchars_decode($data[0], ENT_QUOTES), $xls_formats->value_bold);

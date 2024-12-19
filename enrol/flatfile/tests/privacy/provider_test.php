@@ -71,7 +71,7 @@ class provider_test extends provider_testcase {
     /**
      * Verify that get_metadata returns the database table mapping.
      */
-    public function test_get_metadata(): void {
+    public function test_get_metadata() {
         $collection = new collection('enrol_flatfile');
         $collection = provider::get_metadata($collection);
         $collectiondata = $collection->get_collection();
@@ -82,7 +82,7 @@ class provider_test extends provider_testcase {
     /**
      * Verify that the relevant course contexts are returned for users with pending enrolment records.
      */
-    public function test_get_contexts_for_user(): void {
+    public function test_get_contexts_for_user() {
         global $DB;
         // Create, via flatfile syncing, the future enrolments entries in the enrol_flatfile table.
         $this->create_future_enrolments();
@@ -106,7 +106,7 @@ class provider_test extends provider_testcase {
     /**
      * Verify the export includes any future enrolment records for the user.
      */
-    public function test_export_user_data(): void {
+    public function test_export_user_data() {
         // Create, via flatfile syncing, the future enrolments entries in the enrol_flatfile table.
         $this->create_future_enrolments();
 
@@ -140,7 +140,7 @@ class provider_test extends provider_testcase {
     /**
      * Verify export will limit any future enrolment records to only those contextids provided.
      */
-    public function test_export_user_data_restricted_context_subset(): void {
+    public function test_export_user_data_restricted_context_subset() {
         // Create, via flatfile syncing, the future enrolments entries in the enrol_flatfile table.
         $this->create_future_enrolments();
 
@@ -168,7 +168,7 @@ class provider_test extends provider_testcase {
     /**
      * Verify that records can be deleted by context.
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
         // Create, via flatfile syncing, the future enrolments entries in the enrol_flatfile table.
         $this->create_future_enrolments();
@@ -181,7 +181,7 @@ class provider_test extends provider_testcase {
         $this->assertEquals(0, $DB->count_records('enrol_flatfile', ['courseid' => $this->coursecontext1->instanceid]));
     }
 
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
         // Create, via flatfile syncing, the future enrolments entries in the enrol_flatfile table.
         $this->create_future_enrolments();
@@ -209,7 +209,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::get_users_in_context().
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         global $DB;
         // Create, via flatfile syncing, the future enrolments entries in the enrol_flatfile table.
         $this->create_future_enrolments();
@@ -237,7 +237,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_data_for_users().
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
 
         // Create, via flatfile syncing, the future enrolments entries in the enrol_flatfile table.

@@ -37,7 +37,7 @@ class generator_test extends \advanced_testcase {
     /**
      * Test creating category
      */
-    public function test_create_category(): void {
+    public function test_create_category() {
         $this->resetAfterTest(true);
 
         $lpg = $this->get_generator();
@@ -50,7 +50,7 @@ class generator_test extends \advanced_testcase {
     /**
      * Test creating field
      */
-    public function test_create_field(): void {
+    public function test_create_field() {
         $this->resetAfterTest(true);
 
         $lpg = $this->get_generator();
@@ -69,7 +69,7 @@ class generator_test extends \advanced_testcase {
     /**
      * Test for function add_instance_data()
      */
-    public function test_add_instance_data(): void {
+    public function test_add_instance_data() {
         $this->resetAfterTest(true);
 
         $lpg = $this->get_generator();

@@ -50,7 +50,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * test_potential_contexts description
      */
-    public function test_potential_contexts(): void {
+    public function test_potential_contexts() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -71,7 +71,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * test_potential_contexts description
      */
-    public function test_potential_contexts_no_manager(): void {
+    public function test_potential_contexts_no_manager() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();

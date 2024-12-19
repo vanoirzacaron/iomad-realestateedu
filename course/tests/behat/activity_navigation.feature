@@ -18,8 +18,6 @@ Feature: Activity navigation
       | student1  | C1      | student         |
       | teacher1  | C1      | editingteacher  |
       | student1  | C2      | student         |
-    And I enable "chat" "mod" plugin
-    And I enable "survey" "mod" plugin
     And the following "activities" exist:
       | activity   | name         | intro                       | course | idnumber  | section |
       | assign     | Assignment 1 | Test assignment description | C1     | assign1   | 0       |
@@ -54,7 +52,6 @@ Feature: Activity navigation
     # Hidden activity.
     And I click on "Hide" "link" in the "Glossary 1" activity
     # Hidden section.
-    And I am on "Course 1" course homepage
     And I hide section "5"
     # Set up book.
     And I follow "Book 1"

@@ -49,19 +49,10 @@ class lib_test extends \advanced_testcase {
     }
 
     /**
-     * Setup testcase.
-     */
-    public function setUp(): void {
-        // Survey module is disabled by default, enable it for testing.
-        $manager = \core_plugin_manager::resolve_plugininfo_class('mod');
-        $manager::enable_plugin('survey', 1);
-    }
-
-    /**
      * Test survey_view
      * @return void
      */
-    public function test_survey_view(): void {
+    public function test_survey_view() {
         global $CFG;
 
         $CFG->enablecompletion = 1;
@@ -103,7 +94,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test survey_order_questions
      */
-    public function test_survey_order_questions(): void {
+    public function test_survey_order_questions() {
         global $DB;
 
         $this->resetAfterTest();
@@ -124,7 +115,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test survey_save_answers
      */
-    public function test_survey_save_answers(): void {
+    public function test_survey_save_answers() {
         global $DB;
 
         $this->resetAfterTest();
@@ -177,7 +168,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals($survey->id, $event->other['surveyid']);
     }
 
-    public function test_survey_core_calendar_provide_event_action(): void {
+    public function test_survey_core_calendar_provide_event_action() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -203,7 +194,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_survey_core_calendar_provide_event_action_for_user(): void {
+    public function test_survey_core_calendar_provide_event_action_for_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -238,7 +229,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_survey_core_calendar_provide_event_action_as_non_user(): void {
+    public function test_survey_core_calendar_provide_event_action_as_non_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -266,7 +257,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_survey_core_calendar_provide_event_action_already_completed(): void {
+    public function test_survey_core_calendar_provide_event_action_already_completed() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -300,7 +291,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_survey_core_calendar_provide_event_action_already_completed_for_user(): void {
+    public function test_survey_core_calendar_provide_event_action_already_completed_for_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -367,7 +358,7 @@ class lib_test extends \advanced_testcase {
      * This function should work given either an instance of the module (cm_info), such as when checking the active rules,
      * or if passed a stdClass of similar structure, such as when checking the the default completion settings for a mod type.
      */
-    public function test_mod_survey_completion_get_active_rule_descriptions(): void {
+    public function test_mod_survey_completion_get_active_rule_descriptions() {
         $this->resetAfterTest();
         $this->setAdminUser();
 

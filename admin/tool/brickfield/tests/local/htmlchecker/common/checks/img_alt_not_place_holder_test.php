@@ -133,7 +133,7 @@ EOD;
     /**
      * Test for the each en string specified in $strings - line 43 in imgAltNotPlaceHolder.
      */
-    public function test_failcheck(): void {
+    public function test_failcheck() {
         $results = $this->get_checker_results($this->htmlfail1);
         $this->assertTrue($results[0]->element->tagName == 'img');
 
@@ -156,7 +156,7 @@ EOD;
     /**
      * Test with alt that was not specified in the $strings array.
      */
-    public function test_passcheck1(): void {
+    public function test_passcheck1() {
         $results = $this->get_checker_results($this->htmlpass1);
         $this->assertEmpty($results);
     }

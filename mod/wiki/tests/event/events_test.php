@@ -68,7 +68,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test comment_created event.
      */
-    public function test_comment_created(): void {
+    public function test_comment_created() {
         $this->setUp();
 
         $page = $this->wikigenerator->create_first_page($this->wiki);
@@ -91,7 +91,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test comment_deleted event.
      */
-    public function test_comment_deleted(): void {
+    public function test_comment_deleted() {
         $this->setUp();
 
         $page = $this->wikigenerator->create_first_page($this->wiki);
@@ -120,7 +120,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test comment_viewed event.
      */
-    public function test_comment_viewed(): void {
+    public function test_comment_viewed() {
         // There is no proper API to call or trigger this event, so simulating event
         // to check if event returns the right information.
 
@@ -149,7 +149,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test instances_list_viewed event.
      */
-    public function test_course_module_instance_list_viewed(): void {
+    public function test_course_module_instance_list_viewed() {
         // There is no proper API to call or trigger this event, so simulating event
         // to check if event returns the right information.
 
@@ -174,7 +174,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test course_module_viewed event.
      */
-    public function test_course_module_viewed(): void {
+    public function test_course_module_viewed() {
         // There is no proper API to call or trigger this event, so simulating event
         // to check if event returns the right information.
 
@@ -203,7 +203,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_viewed event.
      */
-    public function test_page_viewed(): void {
+    public function test_page_viewed() {
         // There is no proper API to call or trigger this event, so simulating event
         // to check if event returns the right information.
 
@@ -234,7 +234,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_viewed event for prettypage view.
      */
-    public function test_pretty_page_viewed(): void {
+    public function test_pretty_page_viewed() {
         // There is no proper API to call or trigger this event, so simulating event
         // to check if event returns the right information.
 
@@ -266,7 +266,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_created event.
      */
-    public function test_page_created(): void {
+    public function test_page_created() {
         global $USER;
 
         $this->setUp();
@@ -289,7 +289,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_deleted and page_version_deleted and page_locks_deleted event.
      */
-    public function test_page_deleted(): void {
+    public function test_page_deleted() {
         global $DB;
 
         $this->setUp();
@@ -345,7 +345,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_updated event.
      */
-    public function test_page_updated(): void {
+    public function test_page_updated() {
         global $USER;
 
         $this->setUp();
@@ -369,7 +369,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_diff_viewed event.
      */
-    public function test_page_diff_viewed(): void {
+    public function test_page_diff_viewed() {
         // There is no proper API to call or trigger this event, so simulating event
         // to check if event returns the right information.
 
@@ -404,7 +404,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_history_viewed event.
      */
-    public function test_page_history_viewed(): void {
+    public function test_page_history_viewed() {
         // There is no proper API to call or trigger this event, so simulating event
         // to check if event returns the right information.
 
@@ -435,7 +435,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_map_viewed event.
      */
-    public function test_page_map_viewed(): void {
+    public function test_page_map_viewed() {
         // There is no proper API to call or trigger this event, so simulating event
         // to check if event returns the right information.
 
@@ -470,7 +470,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_version_viewed event.
      */
-    public function test_page_version_viewed(): void {
+    public function test_page_version_viewed() {
         // There is no proper API to call or trigger this event, so simulating event
         // to check if event returns the right information.
 
@@ -505,7 +505,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test page_version_restored event.
      */
-    public function test_page_version_restored(): void {
+    public function test_page_version_restored() {
         $this->setUp();
 
         $page = $this->wikigenerator->create_first_page($this->wiki);

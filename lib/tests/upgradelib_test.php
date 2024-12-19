@@ -38,7 +38,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the {@link upgrade_stale_php_files_present() function
      */
-    public function test_upgrade_stale_php_files_present(): void {
+    public function test_upgrade_stale_php_files_present() {
         // Just call the function, must return bool false always
         // if there aren't any old files in the codebase.
         $this->assertFalse(upgrade_stale_php_files_present());
@@ -77,7 +77,7 @@ class upgradelib_test extends advanced_testcase {
         return $DB->get_record('grade_items', array('id' => $item->id));
     }
 
-    public function test_upgrade_extra_credit_weightoverride(): void {
+    public function test_upgrade_extra_credit_weightoverride() {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -145,7 +145,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the upgrade function for flagging courses with calculated grade item problems.
      */
-    public function test_upgrade_calculated_grade_items_freeze(): void {
+    public function test_upgrade_calculated_grade_items_freeze() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -279,7 +279,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the upgrade function for final grade after setting grade max for category and grade item.
      */
-    public function test_upgrade_update_category_grademax_regrade_final_grades(): void {
+    public function test_upgrade_update_category_grademax_regrade_final_grades() {
         global $DB;
 
         $this->resetAfterTest();
@@ -325,7 +325,7 @@ class upgradelib_test extends advanced_testcase {
         $this->assertEquals(20, $coursegrade->finalgrade);
     }
 
-    function test_upgrade_calculated_grade_items_regrade(): void {
+    function test_upgrade_calculated_grade_items_regrade() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -396,7 +396,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test that the upgrade script correctly flags courses to be frozen due to letter boundary problems.
      */
-    public function test_upgrade_course_letter_boundary(): void {
+    public function test_upgrade_course_letter_boundary() {
         global $CFG, $DB;
         $this->resetAfterTest(true);
 
@@ -600,7 +600,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test upgrade_letter_boundary_needs_freeze function.
      */
-    public function test_upgrade_letter_boundary_needs_freeze(): void {
+    public function test_upgrade_letter_boundary_needs_freeze() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -687,7 +687,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test libcurl custom check api.
      */
-    public function test_check_libcurl_version(): void {
+    public function test_check_libcurl_version() {
         $supportedversion = 0x071304;
         $curlinfo = curl_version();
         $currentversion = $curlinfo['version_number'];
@@ -744,7 +744,7 @@ class upgradelib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function serialized_strings_dataprovider() {
+    public static function serialized_strings_dataprovider(): array {
         return [
             'A configuration that uses the old object' => [
                 'O:6:"object":3:{s:4:"text";s:32:"Nothing that anyone cares about.";s:5:"title";s:16:"Really old block";s:6:"format";s:1:"1";}',
@@ -782,7 +782,7 @@ class upgradelib_test extends advanced_testcase {
      * @param bool $expectededited If the string is expected to be edited.
      * @param string $expectedresult The expected serialized setting to be returned.
      */
-    public function test_upgrade_fix_serialized_objects($initialstring, $expectededited, $expectedresult): void {
+    public function test_upgrade_fix_serialized_objects($initialstring, $expectededited, $expectedresult) {
         list($edited, $resultstring) = upgrade_fix_serialized_objects($initialstring);
         $this->assertEquals($expectededited, $edited);
         $this->assertEquals($expectedresult, $resultstring);
@@ -811,7 +811,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Check that orphaned files are deleted.
      */
-    public function test_upgrade_delete_orphaned_file_records(): void {
+    public function test_upgrade_delete_orphaned_file_records() {
         global $DB, $CFG;
         require_once($CFG->dirroot . '/repository/lib.php');
 
@@ -897,7 +897,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the functionality of {@link upgrade_core_licenses} function.
      */
-    public function test_upgrade_core_licenses(): void {
+    public function test_upgrade_core_licenses() {
         global $CFG, $DB;
 
         $this->resetAfterTest();
@@ -915,8 +915,8 @@ class upgradelib_test extends advanced_testcase {
 
         foreach ($licenses as $license) {
             $this->assertContains($license->shortname, $expectedshortnames);
-            $this->assertObjectHasProperty('custom', $license);
-            $this->assertObjectHasProperty('sortorder', $license);
+            $this->assertObjectHasAttribute('custom', $license);
+            $this->assertObjectHasAttribute('sortorder', $license);
         }
         // A core license which was deleted prior to upgrade should not be reinstalled.
         $actualshortnames = $DB->get_records_menu('license', null, '', 'id, shortname');
@@ -937,7 +937,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the functionality of upgrade_calendar_events_status() function.
      */
-    public function test_upgrade_calendar_events_status(): void {
+    public function test_upgrade_calendar_events_status() {
 
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -972,7 +972,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the functionality of upgrade_calendar_events_get_teacherid() function.
      */
-    public function test_upgrade_calendar_events_get_teacherid(): void {
+    public function test_upgrade_calendar_events_get_teacherid() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1001,7 +1001,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the functionality of upgrade_calendar_standard_events_fix() function.
      */
-    public function test_upgrade_calendar_standard_events_fix(): void {
+    public function test_upgrade_calendar_standard_events_fix() {
 
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -1046,7 +1046,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the functionality of upgrade_calendar_subscription_events_fix() function.
      */
-    public function test_upgrade_calendar_subscription_events_fix(): void {
+    public function test_upgrade_calendar_subscription_events_fix() {
         global $CFG, $DB;
 
         require_once($CFG->dirroot . '/calendar/lib.php');
@@ -1113,7 +1113,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the functionality of upgrade_calendar_action_events_fix() function.
      */
-    public function test_upgrade_calendar_action_events_fix(): void {
+    public function test_upgrade_calendar_action_events_fix() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1169,7 +1169,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the user override part of upgrade_calendar_override_events_fix() function.
      */
-    public function test_upgrade_calendar_user_override_events_fix(): void {
+    public function test_upgrade_calendar_user_override_events_fix() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1231,7 +1231,7 @@ class upgradelib_test extends advanced_testcase {
     /**
      * Test the group override part of upgrade_calendar_override_events_fix() function.
      */
-    public function test_upgrade_calendar_group_override_events_fix(): void {
+    public function test_upgrade_calendar_group_override_events_fix() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1427,7 +1427,7 @@ class upgradelib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function usermenu_items_dataprovider(): array {
+    public static function usermenu_items_dataprovider(): array {
         return [
             'Add new item to empty usermenu' => [
                 '',
@@ -1460,7 +1460,7 @@ calendar,core_calendar|/calendar/view.php?view=month',
      * @covers ::upgrade_add_item_to_usermenu
      * @dataProvider usermenu_items_dataprovider
      */
-    public function test_upgrade_add_item_to_usermenu(string $initialmenu, string $newmenuitem, string $expectedmenu): void {
+    public function test_upgrade_add_item_to_usermenu(string $initialmenu, string $newmenuitem, string $expectedmenu) {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1477,7 +1477,7 @@ calendar,core_calendar|/calendar/view.php?view=month',
     /**
      * Test that file timestamps are corrected for copied files.
      */
-    public function test_upgrade_fix_file_timestamps(): void {
+    public function test_upgrade_fix_file_timestamps() {
         global $DB;
         $this->resetAfterTest();
 
@@ -1542,7 +1542,7 @@ calendar,core_calendar|/calendar/view.php?view=month',
      *
      * @covers ::moodle_needs_upgrading
      */
-    public function test_moodle_upgrade_check_outageless(): void {
+    public function test_moodle_upgrade_check_outageless() {
         global $CFG;
         $this->resetAfterTest();
         // Get a baseline.
@@ -1565,10 +1565,10 @@ calendar,core_calendar|/calendar/view.php?view=month',
      *
      * @covers ::upgrade_started
      */
-    public function test_moodle_start_upgrade_outageless(): void {
+    public function test_moodle_start_upgrade_outageless() {
         global $CFG;
         $this->resetAfterTest();
-        $this->assertObjectNotHasProperty('upgraderunning', $CFG);
+        $this->assertObjectNotHasAttribute('upgraderunning', $CFG);
 
         // Confirm that starting normally sets the upgraderunning flag.
         upgrade_started();
@@ -1589,10 +1589,10 @@ calendar,core_calendar|/calendar/view.php?view=month',
      *
      * @covers ::upgrade_set_timeout
      */
-    public function test_moodle_set_upgrade_timeout_outageless(): void {
+    public function test_moodle_set_upgrade_timeout_outageless() {
         global $CFG;
         $this->resetAfterTest();
-        $this->assertObjectNotHasProperty('upgraderunning', $CFG);
+        $this->assertObjectNotHasAttribute('upgraderunning', $CFG);
 
         // Confirm running normally sets the timeout.
         upgrade_set_timeout(120);
@@ -1615,7 +1615,7 @@ calendar,core_calendar|/calendar/view.php?view=month',
      * @covers ::upgrade_started
      * @covers ::upgrade_set_timeout
      */
-    public function test_upgrade_components_with_outageless(): void {
+    public function test_upgrade_components_with_outageless() {
         global $CFG;
         $this->resetAfterTest();
 

@@ -43,7 +43,7 @@ class moodlenet_auth_check_test extends externallib_advanced_testcase {
      *
      * @covers ::execute
      */
-    public function test_moodlenet_auth_check(): void {
+    public function test_moodlenet_auth_check() {
         global $CFG;
         $this->resetAfterTest();
         $this->setAdminUser();

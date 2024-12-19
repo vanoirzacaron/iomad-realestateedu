@@ -46,28 +46,28 @@ class question_type_test extends \advanced_testcase {
         $this->qtype = null;
     }
 
-    public function test_name(): void {
+    public function test_name() {
         $this->assertEquals($this->qtype->name(), 'description');
     }
 
-    public function test_actual_number_of_questions(): void {
+    public function test_actual_number_of_questions() {
         $this->assertEquals(0, $this->qtype->actual_number_of_questions(null));
     }
 
-    public function test_can_analyse_responses(): void {
+    public function test_can_analyse_responses() {
         $this->assertFalse($this->qtype->can_analyse_responses());
     }
 
-    public function test_get_random_guess_score(): void {
+    public function test_get_random_guess_score() {
         $this->assertNull($this->qtype->get_random_guess_score(null));
     }
 
-    public function test_get_possible_responses(): void {
+    public function test_get_possible_responses() {
         $this->assertEquals(array(), $this->qtype->get_possible_responses(null));
     }
 
 
-    public function test_question_saving(): void {
+    public function test_question_saving() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 

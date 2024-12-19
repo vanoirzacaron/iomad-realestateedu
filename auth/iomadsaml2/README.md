@@ -55,7 +55,7 @@ need to change at all.
 * Optionally auto create users
 * Support for multiple identity providers
 * IdP initiated flow / IdP first flow / IdP unsolicited logins, eg:
-  http://idp.local/simplesaml/saml2/idp/SSOService.php?spentityid=http://moodle.local/auth/iomadsaml2/sp/metadata.php&RelayState=http://moodle.local/course/view.php?id=2
+  http://idp.local/simplesaml/iomadsaml2/idp/SSOService.php?spentityid=http://moodle.local/auth/iomadsaml2/sp/metadata.php&RelayState=http://moodle.local/course/view.php?id=2
 
 
 Features not yet implemented:
@@ -66,14 +66,13 @@ Features not yet implemented:
 
 ## Branches
 
-| Moodle version    | Branch             | PHP       | SimpleSAMLphp |
-| ----------------- | ------------------ |-----------|---------------|
-| Moodle 3.9+       | `MOODLE_39_STABLE` | 7.4+      | v2.0.5        |
-| Totara 13+        | `TOTARA_13_STABLE` | 7.4+      | v2.0.5        |
-| Totara 12         | `TOTARA_12_STABLE` | 7.1 - 7.2 | v1.19.1       |
-| Moodle 3.5 to 3.8 | `MOODLE_35_STABLE` | 7.2+      | v1.18.8       |
-| Moodle 2.7 to 3.4 | `27_34STABLE`      | 5.5+      | v1.15.4       |
-| Totara up to 11   | `27_34STABLE`      | 5.5+      | v1.15.4       |
+| Moodle version    | Branch             | PHP  | SimpleSAMLphp |
+| ----------------- | ------------------ | ---- | ------------- |
+| Moodle 3.9+       | `MOODLE_39_STABLE` | 7.2+ | v1.19.5       |
+| Totara 12+        | `MOODLE_39_STABLE` | 7.2+ | v1.19.1       |
+| Moodle 3.5 to 3.8 | `MOODLE_35_STABLE` | 7.2+ | v1.18.8       |
+| Moodle 2.7 to 3.4 | `27_34STABLE`      | 5.5+ | v1.15.4       |
+| Totara up to 11   | `27_34STABLE`      | 5.5+ | v1.15.4       |
 
 ## Installation
 
@@ -82,13 +81,13 @@ Features not yet implemented:
 git to clone it into your source:
 
    ```sh
-   git clone git@github.com:catalyst/moodle-auth_iomadsaml2.git auth/saml2
+   git clone git@github.com:catalyst/moodle-auth_iomadsaml2.git auth/iomadsaml2
    ```
 
 2. Then run the Moodle upgrade
 
 3. If your IdP has a publicly available XML descriptor, copy its URL into
-   the SAML2 auth config settings page. Otherwise copy the XML verbatim into
+   the IOMAD SAML2 auth config settings page. Otherwise copy the XML verbatim into
    the settings textarea instead.
 
 4. If your IdP requires whitelisting each SP, use the links in the settings page
@@ -129,9 +128,9 @@ This plugin has been tested against:
 * NetIQ Access Manager
 
 To configure this against testshib you will need a moodle which is publicly
-accessible over the internet. Turn on the SAML2 plugin and then configure it:
+accessible over the internet. Turn on the IOMAD SAML2 plugin and then configure it:
 
-Home ► Site administration ► Plugins ► Authentication ► SAML2
+Home ► Site administration ► Plugins ► Authentication ► IOMAD SAML2
 
 1. Set the Idp URL to: https://www.testshib.org/metadata/testshib-providers.xml
 2. Set dual auth to Yes
@@ -145,7 +144,7 @@ Home ► Site administration ► Plugins ► Authentication ► SAML2
 
 ## Debugging
 
-If you are having any issues, turn on debugging inside the SAML2 auth plugin, as well
+If you are having any issues, turn on debugging inside the IOMAD SAML2 auth plugin, as well
 as turning on the Moodle level debugging. This will give in depth debugging on the SAML
 XML and errors, as well as stack traces. Please include this in any GitHub issue you
 create if you are having trouble.
@@ -203,8 +202,8 @@ To enable multiple IdPs you can use the 'IdP metadata XML OR public XML URL' con
 field. An example might look like this:
 
 ```
-Identity Provider Name https://ssp1.local/simplesaml/saml2/idp/metadata.php
-https://ssp2.local/simplesaml/saml2/idp/metadata.php
+Identity Provider Name https://ssp1.local/simplesaml/iomadsaml2/idp/metadata.php
+https://ssp2.local/simplesaml/iomadsaml2/idp/metadata.php
 ```
 
 If there is any text before the `https` scheme then it will be used as the override name.
@@ -247,11 +246,11 @@ It is possible to lock the certificates in the admin UI which prevents inadverte
 overwriting of them. They can also be unlocked in the UI. If you really want to
 protect them, `chown` the files so that your webserver user cannot modify them at all.
 
-These certificates are located in the `$CFG->dataroot/saml2` directory.
+These certificates are located in the `$CFG->dataroot/iomadsaml2` directory.
 
 To manually unlock the certificates please restore the write permissions to the required files.
 ```bash
-$ cd $CFG->dataroot/saml2
+$ cd $CFG->dataroot/iomadsaml2
 $ chmod 0660 site.example.crt
 $ chmod 0660 site.example.pem
 ```
@@ -294,10 +293,10 @@ Okta has some weird names for settings which are confusing, this may help deciph
 
 | Okta name             | Sane name             | Value                                                            |
 | --------------------- | --------------------- | ---------------------------------------------------------------- |
-| Single sign on URL    | ACS URL               | `https://example.com/auth/iomadsaml2/sp/saml2-acs.php/example.com`    |
+| Single sign on URL    | ACS URL               | `https://example.com/auth/iomadsaml2/sp/iomadsaml2-acs.php/example.com`    |
 | Audience URI          | Entity ID             | `https://example.com/auth/iomadsaml2/sp/metadata.php`                 |
 | Enable Single Log Out | Enable Single Log Out | True                                                             |
-| Single Logout URL     | Single Logout URL     | `https://example.com/auth/iomadsaml2/sp/saml2-logout.php/example.com` |
+| Single Logout URL     | Single Logout URL     | `https://example.com/auth/iomadsaml2/sp/iomadsaml2-logout.php/example.com` |
 | Assertion Encryption  | Assertion Encryption  | Encrypted                                                        |
 
 Suggested attribute mappings:
@@ -312,7 +311,7 @@ Suggested attribute mappings:
 
 ### Auth Proc Filter Hooks
 
-Other plugins may hook into SAML2 and create custom Auth Proc Filters.
+Other plugins may hook into IOMAD SAML2 and create custom Auth Proc Filters.
 Auth Proc Filters allow you to mutate the attributes passed back from the IdP
 before Moodle handles them and maps them to profile fields.
 
@@ -368,8 +367,8 @@ function local_hookimplement_extend_auth_iomadsaml2_proc() {
 }
 
 function update_attributes($attributes) {
-   global $SESSION, $iomadsam2auth;
-    $idps = $iomadsam2auth->metadataentities;
+   global $SESSION, $iomadsaml2auth;
+    $idps = $iomadsaml2auth->metadataentities;
     foreach ($idps as $idp) {
         foreach ($idp as $key => $value) {
             if ($SESSION->iomadsaml2idp == $key) {
@@ -389,7 +388,7 @@ function update_attributes($attributes) {
 
 The diversity and variable quality and features of SAML moodle plugins is a
 reflection of a great need for a solid SAML plugin, but the neglect to do
-it properly in core. SAML2 is by far the most robust and supported protocol
+it properly in core. IOMAD SAML2 is by far the most robust and supported protocol
 across the internet and should be fully integrated into Moodle core as both
 a Service Provider and as an Identity Provider, and without any external
 dependencies to manage.

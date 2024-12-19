@@ -55,16 +55,16 @@ class question_type_test extends \advanced_testcase {
         $this->qtype = null;
     }
 
-    public function test_name(): void {
+    public function test_name() {
         $this->assertEquals($this->qtype->name(), 'calculatedsimple');
     }
 
-    public function test_can_analyse_responses(): void {
+    public function test_can_analyse_responses() {
         $this->assertTrue($this->qtype->can_analyse_responses());
     }
 
 
-    public function test_question_saving_sumwithvariants(): void {
+    public function test_question_saving_sumwithvariants() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 

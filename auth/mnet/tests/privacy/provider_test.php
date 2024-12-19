@@ -52,7 +52,7 @@ class provider_test extends provider_testcase {
     /**
      * Check that a user context is returned if there is any user data for this user.
      */
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         global $DB;
 
         $user = $this->getDataGenerator()->create_user(['auth' => 'mnet']);
@@ -80,7 +80,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that user data is exported correctly.
      */
-    public function test_export_user_data(): void {
+    public function test_export_user_data() {
         global $DB;
 
         $user = $this->getDataGenerator()->create_user(['auth' => 'mnet']);
@@ -121,7 +121,7 @@ class provider_test extends provider_testcase {
     /**
      * Test deleting all user data for a specific context.
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
 
         $user1 = $this->getDataGenerator()->create_user(['auth' => 'mnet']);
@@ -169,7 +169,7 @@ class provider_test extends provider_testcase {
     /**
      * This should work identical to the above test.
      */
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
 
         $user1 = $this->getDataGenerator()->create_user(['auth' => 'mnet']);
@@ -218,7 +218,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that only users with a user context are fetched.
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         global $DB;
 
         $this->resetAfterTest();
@@ -258,7 +258,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that data for users in approved userlist is deleted.
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
 
         $this->resetAfterTest();

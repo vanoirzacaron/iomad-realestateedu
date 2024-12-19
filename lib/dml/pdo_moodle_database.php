@@ -534,7 +534,7 @@ abstract class pdo_moodle_database extends moodle_database {
         return $this->execute($sql, $params);
     }
 
-    public function sql_concat(...$arr) {
+    public function sql_concat() {
         throw new \moodle_exception('TODO');
     }
 

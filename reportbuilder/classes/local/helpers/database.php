@@ -39,49 +39,47 @@ class database {
     /**
      * Generates unique table/column alias that must be used in generated SQL
      *
-     * @param string $suffix Optional string to append to alias
      * @return string
      */
-    public static function generate_alias(string $suffix = ''): string {
+    public static function generate_alias(): string {
         static $aliascount = 0;
 
-        return static::GENERATE_ALIAS_PREFIX . ($aliascount++) . $suffix;
+        return static::GENERATE_ALIAS_PREFIX . ($aliascount++);
     }
 
     /**
      * Generate multiple unique table/column aliases, see {@see generate_alias} for info
      *
      * @param int $count
-     * @param string $suffix
      * @return string[]
      */
-    public static function generate_aliases(int $count, string $suffix = ''): array {
-        return array_map([static::class, 'generate_alias'], array_fill(0, $count, $suffix));
+    public static function generate_aliases(int $count): array {
+        return array_map([
+            static::class, 'generate_alias'
+        ], array_fill(0, $count, null));
     }
 
     /**
      * Generates unique parameter name that must be used in generated SQL
      *
-     * When passing the returned value to {@see \moodle_database::get_in_or_equal} it's recommended to define the suffix
-     *
-     * @param string $suffix Optional string to append to parameter name
      * @return string
      */
-    public static function generate_param_name(string $suffix = ''): string {
+    public static function generate_param_name(): string {
         static $paramcount = 0;
 
-        return static::GENERATE_PARAM_PREFIX . ($paramcount++) . $suffix;
+        return static::GENERATE_PARAM_PREFIX . ($paramcount++);
     }
 
     /**
      * Generate multiple unique parameter names, see {@see generate_param_name} for info
      *
      * @param int $count
-     * @param string $suffix
      * @return string[]
      */
-    public static function generate_param_names(int $count, string $suffix = ''): array {
-        return array_map([static::class, 'generate_param_name'], array_fill(0, $count, $suffix));
+    public static function generate_param_names(int $count): array {
+        return array_map([
+            static::class, 'generate_param_name'
+        ], array_fill(0, $count, null));
     }
 
     /**

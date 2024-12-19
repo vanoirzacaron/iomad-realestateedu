@@ -47,7 +47,7 @@ class backup_rss_client_block_task extends backup_block_task {
         return array(); // No special handling of configdata
     }
 
-    public static function encode_content_links($content) {
+    static public function encode_content_links($content) {
         return $content; // No special encoding of links
     }
 }

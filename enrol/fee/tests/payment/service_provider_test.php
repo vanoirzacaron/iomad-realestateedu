@@ -37,7 +37,7 @@ class service_provider_test extends \advanced_testcase {
      *
      * @covers ::get_payable
      */
-    public function test_get_payable(): void {
+    public function test_get_payable() {
         global $DB;
         $this->resetAfterTest();
 
@@ -68,7 +68,7 @@ class service_provider_test extends \advanced_testcase {
      *
      * @covers ::get_success_url
      */
-    public function test_get_success_url(): void {
+    public function test_get_success_url() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -99,7 +99,7 @@ class service_provider_test extends \advanced_testcase {
      *
      * @covers ::deliver_order
      */
-    public function test_deliver_order(): void {
+    public function test_deliver_order() {
         global $DB;
         $this->resetAfterTest();
 

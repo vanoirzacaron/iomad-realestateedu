@@ -68,7 +68,7 @@ class external_test extends externallib_advanced_testcase {
                 'datatype' => 'textarea', 'signup' => 1, 'visible' => 1, 'required' => 1, 'sortorder' => 2))->id;
     }
 
-    public function test_get_signup_settings(): void {
+    public function test_get_signup_settings() {
         global $CFG;
 
         $CFG->defaultcity = 'Bcn';
@@ -86,8 +86,6 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals(print_password_policy(), $result['passwordpolicy']);
         $this->assertNotContains('recaptchachallengehash', $result);
         $this->assertNotContains('recaptchachallengeimage', $result);
-        // Check if the extended username chars is returning false when is not set.
-        $this->assertFalse($result['extendedusernamechars']);
 
         // Whip up a array with named entries to easily check against.
         $namedarray = array();
@@ -103,17 +101,12 @@ class external_test extends externallib_advanced_testcase {
 
         $this->assertEquals('text', $namedarray['frogname']['datatype']);
         $this->assertEquals('textarea', $namedarray['sometext']['datatype']);
-
-        $CFG->extendedusernamechars = true;
-        $result = auth_email_external::get_signup_settings();
-        $result = \core_external\external_api::clean_returnvalue(auth_email_external::get_signup_settings_returns(), $result);
-        $this->assertTrue($result['extendedusernamechars']);
     }
 
     /**
      * Test get_signup_settings with mathjax in a profile field.
      */
-    public function test_get_signup_settings_with_mathjax_in_profile_fields(): void {
+    public function test_get_signup_settings_with_mathjax_in_profile_fields() {
         // Enable MathJax filter in content and headings.
         $this->configure_filters([
             ['name' => 'mathjaxloader', 'state' => TEXTFILTER_ON, 'move' => -1, 'applytostrings' => true],
@@ -151,7 +144,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals($fieldname, $namedarray['mathjaxname']['name']);
     }
 
-    public function test_signup_user(): void {
+    public function test_signup_user() {
         global $DB;
 
         $username = 'pepe';

@@ -17,71 +17,15 @@
 namespace tool_mobile;
 
 use core\session\utility\cookie_helper;
-use html_writer;
 
 /**
  * Allows plugins to add any elements to the footer.
  *
  * @package    tool_mobile
- * @copyright  2024 Andrew Lyons <andrew@nicols.co.uk>
+ * @copyright  2024 Juan Leyva
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class hook_callbacks {
-    /**
-     * Callback to add head elements.
-     *
-     * @param \core\hook\output\before_standard_head_html_generation $hook
-     */
-    public static function before_standard_head_html_generation(
-        \core\hook\output\before_standard_head_html_generation $hook,
-    ): void {
-        global $CFG, $PAGE;
-        // Smart App Banners meta tag is only displayed if mobile services are enabled and configured.
-        if (!empty($CFG->enablemobilewebservice)) {
-            $mobilesettings = get_config('tool_mobile');
-            if (!empty($mobilesettings->enablesmartappbanners)) {
-                if (!empty($mobilesettings->iosappid)) {
-                    $hook->add_html(
-                        '<meta name="apple-itunes-app" content="app-id=' . s($mobilesettings->iosappid) . ', ' .
-                            'app-argument=' . $PAGE->url->out() . '"/>'
-                    );
-                }
-
-                if (!empty($mobilesettings->androidappid)) {
-                    $mobilemanifesturl = "$CFG->wwwroot/$CFG->admin/tool/mobile/mobile.webmanifest.php";
-                    $hook->add_html('<link rel="manifest" href="' . $mobilemanifesturl . '" />');
-                }
-            }
-        }
-    }
-
-    /**
-     * Callback to add head elements.
-     *
-     * @param \core\hook\output\before_standard_footer_html_generation $hook
-     */
-    public static function before_standard_footer_html_generation(
-        \core\hook\output\before_standard_footer_html_generation $hook,
-    ): void {
-        global $CFG;
-
-        require_once(__DIR__ . '/../lib.php');
-
-        if (empty($CFG->enablemobilewebservice)) {
-            return;
-        }
-
-        $url = tool_mobile_create_app_download_url();
-        if (empty($url)) {
-            return;
-        }
-        $hook->add_html(
-            html_writer::div(
-                html_writer::link($url, get_string('getmoodleonyourmobile', 'tool_mobile'), ['class' => 'mobilelink']),
-            ),
-        );
-    }
-
     /**
      * Callback to recover $SESSION->wantsurl.
      *

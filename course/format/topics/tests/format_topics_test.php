@@ -29,7 +29,6 @@ require_once($CFG->dirroot . '/course/lib.php');
  * @package    format_topics
  * @copyright  2015 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \format_topics
  */
 class format_topics_test extends \advanced_testcase {
 
@@ -38,7 +37,7 @@ class format_topics_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_get_section_name(): void {
+    public function test_get_section_name() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -64,7 +63,7 @@ class format_topics_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_get_section_name_customised(): void {
+    public function test_get_section_name_customised() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -98,7 +97,7 @@ class format_topics_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_get_default_section_name(): void {
+    public function test_get_default_section_name() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -118,7 +117,7 @@ class format_topics_test extends \advanced_testcase {
                 $sectionname = get_string('section0name', 'format_topics');
                 $this->assertEquals($sectionname, $courseformat->get_default_section_name($section));
             } else {
-                $sectionname = get_string('newsection', 'format_topics');
+                $sectionname = get_string('sectionname', 'format_topics') . ' ' . $section->section;
                 $this->assertEquals($sectionname, $courseformat->get_default_section_name($section));
             }
         }
@@ -129,7 +128,7 @@ class format_topics_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_update_inplace_editable(): void {
+    public function test_update_inplace_editable() {
         global $CFG, $DB, $PAGE;
         require_once($CFG->dirroot . '/lib/external/externallib.php');
 
@@ -164,7 +163,7 @@ class format_topics_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_inplace_editable(): void {
+    public function test_inplace_editable() {
         global $DB, $PAGE;
 
         $this->resetAfterTest();
@@ -198,7 +197,7 @@ class format_topics_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_default_course_enddate(): void {
+    public function test_default_course_enddate() {
         global $CFG, $DB;
 
         $this->resetAfterTest(true);
@@ -233,13 +232,15 @@ class format_topics_test extends \advanced_testcase {
     }
 
     /**
-     * Test for get_view_url().
+     * Test for get_view_url() to ensure that the url is only given for the correct cases.
      *
-     * @covers ::get_view_url
+     * @return void
      */
-    public function test_get_view_url(): void {
+    public function test_get_view_url() {
         global $CFG;
         $this->resetAfterTest();
+
+        $linkcoursesections = $CFG->linkcoursesections;
 
         // Generate a course with two sections (0 and 1) and two modules.
         $generator = $this->getDataGenerator();
@@ -251,34 +252,21 @@ class format_topics_test extends \advanced_testcase {
         $format->update_course_format_options($data);
 
         // In page.
+        $CFG->linkcoursesections = 0;
+        $this->assertNotEmpty($format->get_view_url(null));
+        $this->assertNotEmpty($format->get_view_url(0));
+        $this->assertNotEmpty($format->get_view_url(1));
+        $CFG->linkcoursesections = 1;
         $this->assertNotEmpty($format->get_view_url(null));
         $this->assertNotEmpty($format->get_view_url(0));
         $this->assertNotEmpty($format->get_view_url(1));
 
         // Navigation.
-        $this->assertStringContainsString('course/view.php', $format->get_view_url(0));
-        $this->assertStringContainsString('course/view.php', $format->get_view_url(1));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(0, ['navigation' => 1]));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(1, ['navigation' => 1]));
-        // When sr parameter is defined, the section.php page should be returned.
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(0, ['sr' => 1]));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(1, ['sr' => 1]));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(0, ['sr' => 0]));
-        $this->assertStringContainsString('course/section.php', $format->get_view_url(1, ['sr' => 0]));
-    }
-
-    /**
-     * Test get_required_jsfiles().
-     *
-     * @covers ::get_required_jsfiles
-     */
-    public function test_get_required_jsfiles(): void {
-        $this->resetAfterTest();
-
-        $generator = $this->getDataGenerator();
-
-        $course = $generator->create_course(['format' => 'topics']);
-        $format = course_get_format($course);
-        $this->assertEmpty($format->get_required_jsfiles());
+        $CFG->linkcoursesections = 0;
+        $this->assertNull($format->get_view_url(1, ['navigation' => 1]));
+        $this->assertNull($format->get_view_url(0, ['navigation' => 1]));
+        $CFG->linkcoursesections = 1;
+        $this->assertNotEmpty($format->get_view_url(1, ['navigation' => 1]));
+        $this->assertNotEmpty($format->get_view_url(0, ['navigation' => 1]));
     }
 }

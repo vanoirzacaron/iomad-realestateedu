@@ -52,7 +52,7 @@ class report_test extends \advanced_testcase {
      *
      * @return array the data for the test sub-cases.
      */
-    public function report_sql_cases(): array {
+    public static function report_sql_cases(): array {
         return [[null], ['csv']]; // Only need to test on or off, not all download types.
     }
 
@@ -230,6 +230,7 @@ class report_test extends \advanced_testcase {
             $reflectionobject = $parent;
         }
         $prefsproperty = $reflectionobject->getProperty('prefs');
+        $prefsproperty->setAccessible(true);
         $prefs = $prefsproperty->getValue($table);
         $prefs['i_first'] = 'A';
         $prefsproperty->setValue($table, $prefs);
@@ -245,7 +246,7 @@ class report_test extends \advanced_testcase {
      * Bands provider.
      * @return array
      */
-    public function get_bands_count_and_width_provider(): array {
+    public static function get_bands_count_and_width_provider(): array {
         return [
             [10, [20, .5]],
             [20, [20, 1]],
@@ -327,7 +328,7 @@ class report_test extends \advanced_testcase {
      *
      * @covers ::regrade_question
      */
-    public function test_regrade_question(): void {
+    public function test_regrade_question() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();

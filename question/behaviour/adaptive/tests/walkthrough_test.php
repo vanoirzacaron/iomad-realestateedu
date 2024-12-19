@@ -67,7 +67,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         return new \question_no_pattern_expectation('/'.preg_quote($penaltyinfo, '/').'/');
     }
 
-    public function test_adaptive_multichoice(): void {
+    public function test_adaptive_multichoice() {
 
         // Create a multiple choice, single response question.
         $mc = \test_question_maker::make_a_multichoice_single_question();
@@ -177,7 +177,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->assertEqualsWithDelta($autogradedstep->get_fraction(), 1, 0.0000001);
     }
 
-    public function test_adaptive_multichoice2(): void {
+    public function test_adaptive_multichoice2() {
 
         // Create a multiple choice, multiple response question.
         $mc = \test_question_maker::make_a_multichoice_multi_question();
@@ -229,7 +229,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_contains_correct_expectation());
     }
 
-    public function test_adaptive_shortanswer_partially_right(): void {
+    public function test_adaptive_shortanswer_partially_right() {
 
         // Create a short answer question.
         $sa = \test_question_maker::make_question('shortanswer');
@@ -308,7 +308,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_does_not_contain_validation_error_expectation());
     }
 
-    public function test_adaptive_shortanswer_wrong_right_wrong(): void {
+    public function test_adaptive_shortanswer_wrong_right_wrong() {
 
         // Create a short answer question.
         $sa = \test_question_maker::make_question('shortanswer');
@@ -391,7 +391,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_does_not_contain_validation_error_expectation());
     }
 
-    public function test_adaptive_shortanswer_invalid_after_complete(): void {
+    public function test_adaptive_shortanswer_invalid_after_complete() {
 
         // Create a short answer question.
         $sa = \test_question_maker::make_question('shortanswer');
@@ -473,7 +473,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_does_not_contain_validation_error_expectation());
     }
 
-    public function test_adaptive_shortanswer_zero_penalty(): void {
+    public function test_adaptive_shortanswer_zero_penalty() {
 
         // Create a short answer question.
         $sa = \test_question_maker::make_question('shortanswer');
@@ -530,7 +530,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_does_not_contain_validation_error_expectation());
     }
 
-    public function test_adaptive_shortanswer_try_to_submit_blank(): void {
+    public function test_adaptive_shortanswer_try_to_submit_blank() {
 
         // Create a short answer question with correct answer true.
         $sa = \test_question_maker::make_question('shortanswer');
@@ -589,7 +589,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_contains_validation_error_expectation());
     }
 
-    public function test_adaptive_numerical(): void {
+    public function test_adaptive_numerical() {
 
         // Create a numerical question.
         $sa = \test_question_maker::make_question('numerical', 'pi');
@@ -644,7 +644,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_does_not_contain_validation_error_expectation());
     }
 
-    public function test_adaptive_numerical_invalid(): void {
+    public function test_adaptive_numerical_invalid() {
 
         // Create a numerical question.
         $numq = \test_question_maker::make_question('numerical', 'pi');
@@ -748,7 +748,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
                 $this->get_does_not_contain_disregarded_info_expectation());
     }
 
-    public function test_adaptive_multianswer(): void {
+    public function test_adaptive_multianswer() {
 
         // Create a multianswer question.
         $q = \test_question_maker::make_question('multianswer', 'twosubq');

@@ -38,7 +38,7 @@ class import_handler_info_test extends \advanced_testcase {
      * @param string $description description of the mod.
      * @param bool $expectexception whether we expect an exception during init or not.
      */
-    public function test_initialisation($modname, $description, $expectexception): void {
+    public function test_initialisation($modname, $description, $expectexception) {
         $this->resetAfterTest();
         // Skip those cases we cannot init.
         if ($expectexception) {
@@ -59,7 +59,7 @@ class import_handler_info_test extends \advanced_testcase {
      *
      * @return array the data for creation of the info object.
      */
-    public function handler_info_data_provider() {
+    public static function handler_info_data_provider(): array {
         return [
             'All data present' => ['label', 'Add a label to the course', false],
             'Empty module name' => ['', 'Add a file resource to the course', true],

@@ -428,26 +428,11 @@ class data_field_base {     // Base class for Database Field Types (see field/*/
 
         echo $OUTPUT->heading($this->name(), 3);
 
-        $filepath = $CFG->dirroot . '/mod/data/field/' . $this->type . '/mod.html';
-        $templatename = 'datafield_' . $this->type . '/' . $this->type;
+        $filepath = $CFG->dirroot.'/mod/data/field/'.$this->type.'/mod.html';
 
-        try {
-            $templatefilepath = \core\output\mustache_template_finder::get_template_filepath($templatename);
-            $templatefileexists = true;
-        } catch (moodle_exception $e) {
-            if (!file_exists($filepath)) {
-                // Neither file exists.
-                throw new \moodle_exception(get_string('missingfieldtype', 'data', (object)['name' => $this->field->name]));
-            }
-            $templatefileexists = false;
-        }
-
-        if ($templatefileexists) {
-            // Give out templated Bootstrap formatted form fields.
-            $data = $this->get_field_params();
-            echo $OUTPUT->render_from_template($templatename, $data);
+        if (!file_exists($filepath)) {
+            throw new \moodle_exception(get_string('missingfieldtype', 'data', (object)['name' => $this->field->name]));
         } else {
-            // Fall back to display mod.html for backward compatibility.
             require_once($filepath);
         }
 
@@ -757,37 +742,6 @@ class data_field_base {     // Base class for Database Field Types (see field/*/
         }
         return $configs;
     }
-
-    /**
-     * Function to let field define their parameters.
-     *
-     * This method that should be overridden by the datafield plugins
-     * when they need to define their data.
-     *
-     * @return array
-     */
-    protected function get_field_params(): array {
-        // Name and description of the field.
-        $data = [
-            'name' => $this->field->name,
-            'description' => $this->field->description,
-        ];
-
-        // Whether the field is required.
-        if (isset($this->field->required)) {
-            $data['required'] = $this->field->required;
-        }
-
-        // Add all the field parameters.
-        for ($i = 1; $i <= 10; $i++) {
-            if (isset($this->field->{"param$i"})) {
-                $data["param$i"] = $this->field->{"param$i"};
-            }
-        }
-
-        return $data;
-    }
-
 }
 
 
@@ -1790,8 +1744,7 @@ function data_print_preference_form($data, $perpage, $search, $sort='', $order='
     echo '<label for="pref_perpage">'.get_string('pagesize','data').'</label> ';
     $pagesizes = array(2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,15=>15,
                        20=>20,30=>30,40=>40,50=>50,100=>100,200=>200,300=>300,400=>400,500=>500,1000=>1000);
-    echo html_writer::select($pagesizes, 'perpage', $perpage, false, array('id' => 'pref_perpage',
-        'class' => 'custom-select mr-1'));
+    echo html_writer::select($pagesizes, 'perpage', $perpage, false, array('id' => 'pref_perpage', 'class' => 'custom-select'));
 
     if ($advanced) {
         $regsearchclass = 'search_none';
@@ -1800,10 +1753,10 @@ function data_print_preference_form($data, $perpage, $search, $sort='', $order='
         $regsearchclass = 'search_inline';
         $advancedsearchclass = 'search_none';
     }
-    echo '<div id="reg_search" class="' . $regsearchclass . ' mr-1" >';
-    echo '<label for="pref_search" class="mr-1">' . get_string('search') . '</label><input type="text" ' .
-         'class="form-control d-inline-block align-middle w-auto mr-1" size="16" name="search" id= "pref_search" value="' . s($search) . '" /></div>';
-    echo '<label for="pref_sortby">'.get_string('sortby').'</label> ';
+    echo '<div id="reg_search" class="' . $regsearchclass . ' form-inline" >&nbsp;&nbsp;&nbsp;';
+    echo '<label for="pref_search">' . get_string('search') . '</label> <input type="text" ' .
+         'class="form-control" size="16" name="search" id= "pref_search" value="' . s($search) . '" /></div>';
+    echo '&nbsp;&nbsp;&nbsp;<label for="pref_sortby">'.get_string('sortby').'</label> ';
     // foreach field, print the option
     echo '<select name="sort" id="pref_sortby" class="custom-select mr-1">';
     if ($fields = $DB->get_records('data_fields', array('dataid'=>$data->id), 'name')) {
@@ -1856,14 +1809,14 @@ function data_print_preference_form($data, $perpage, $search, $sort='', $order='
         $checked = '';
     }
     $PAGE->requires->js('/mod/data/data.js');
-    echo '<input type="hidden" name="advanced" value="0" />';
-    echo '<input type="hidden" name="filter" value="1" />';
-    echo '<input type="checkbox" id="advancedcheckbox" name="advanced" value="1" ' . $checked . ' ' .
+    echo '&nbsp;<input type="hidden" name="advanced" value="0" />';
+    echo '&nbsp;<input type="hidden" name="filter" value="1" />';
+    echo '&nbsp;<input type="checkbox" id="advancedcheckbox" name="advanced" value="1" ' . $checked . ' ' .
          'onchange="showHideAdvSearch(this.checked);" class="mx-1" />' .
          '<label for="advancedcheckbox">' . get_string('advancedsearch', 'data') . '</label>';
     echo '</div>';
     echo '<div id="advsearch-save-sec" class="ml-auto '. $regsearchclass . '">';
-    echo '<input type="submit" class="btn btn-secondary" value="' . get_string('savesettings', 'data') . '" />';
+    echo '&nbsp;<input type="submit" class="btn btn-secondary" value="' . get_string('savesettings', 'data') . '" />';
     echo '</div>';
     echo '</div>';
     echo '<div>';
@@ -3398,6 +3351,7 @@ function data_presets_generate_xml($course, $cm, $data) {
     $preset = preset::create_from_instance($manager, $data->name);
     $reflection = new \ReflectionClass(preset::class);
     $method = $reflection->getMethod('generate_preset_xml');
+    $method->setAccessible(true);
     return $method->invokeArgs($preset, []);
 }
 

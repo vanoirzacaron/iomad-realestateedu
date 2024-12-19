@@ -29,7 +29,7 @@ use core_competency\template;
  */
 class task_test extends \advanced_testcase {
 
-    public function test_sync_plans_from_cohorts_task(): void {
+    public function test_sync_plans_from_cohorts_task() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -149,7 +149,7 @@ class task_test extends \advanced_testcase {
         $this->assertEquals(3, plan::count_records(array('templateid' => $tpl->get('id'))));
     }
 
-    public function test_sync_plans_from_cohorts_with_templateduedate_task(): void {
+    public function test_sync_plans_from_cohorts_with_templateduedate_task() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $dg = $this->getDataGenerator();
@@ -228,7 +228,7 @@ class task_test extends \advanced_testcase {
         $this->assertEquals(4, plan::count_records(array('templateid' => $tpl->get('id'))));
     }
 
-    public function test_sync_plans_from_cohorts_with_passed_duedate(): void {
+    public function test_sync_plans_from_cohorts_with_passed_duedate() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -266,7 +266,7 @@ class task_test extends \advanced_testcase {
         $this->assertEquals(2, plan::count_records()); // Now there is two.
     }
 
-    public function test_complete_plans_task(): void {
+    public function test_complete_plans_task() {
         global $DB;
         $this->resetAfterTest(true);
         $this->setAdminUser();

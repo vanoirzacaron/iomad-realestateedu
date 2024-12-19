@@ -47,16 +47,16 @@ if (trim($forum->intro) != '') {
     $introcontent = format_module_intro('forum', $forum, $coursemodule->id);
 
     if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $modcontext)) {
-        $stredit  = get_string('edit');
+        $streditsummary  = get_string('editsummary');
         $introcontent .= html_writer::start_div('editinglink');
         $introcontent .= html_writer::link(
             new moodle_url('/course/modedit.php', [
                 'update' => $coursemodule->id,
                 'sesskey' => sesskey(),
             ]),
-            $OUTPUT->pix_icon('t/edit', $stredit),
+            $OUTPUT->pix_icon('t/edit', $streditsummary),
             [
-                'title' => $stredit,
+                'title' => $streditsummary,
             ]
         );
         $introcontent .= html_writer::end_div();

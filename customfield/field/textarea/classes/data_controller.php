@@ -24,8 +24,6 @@
 
 namespace customfield_textarea;
 
-use backup_nested_element;
-
 defined('MOODLE_INTERNAL') || die;
 
 /**
@@ -41,7 +39,7 @@ class data_controller extends \core_customfield\data_controller {
      * Return the name of the field where the information is stored
      * @return string
      */
-    public function datafield(): string {
+    public function datafield() : string {
         return 'value';
     }
 
@@ -61,7 +59,7 @@ class data_controller extends \core_customfield\data_controller {
      *
      * @return string
      */
-    public function get_form_element_name(): string {
+    public function get_form_element_name() : string {
         return parent::get_form_element_name() . '_editor';
     }
 
@@ -102,21 +100,17 @@ class data_controller extends \core_customfield\data_controller {
         if (!$this->get('id')) {
             $this->data->set('value', '');
             $this->data->set('valueformat', FORMAT_MOODLE);
-            $this->data->set('valuetrust', false);
             $this->save();
         }
 
         if (array_key_exists('text', $fromform)) {
             $textoptions = $this->value_editor_options();
-            $context = $textoptions['context'];
-
             $data = (object) ['field_editor' => $fromform];
-            $data = file_postupdate_standard_editor($data, 'field', $textoptions, $context,
+            $data = file_postupdate_standard_editor($data, 'field', $textoptions, $textoptions['context'],
                 'customfield_textarea', 'value', $this->get('id'));
-
             $this->data->set('value', $data->field);
             $this->data->set('valueformat', $data->fieldformat);
-            $this->data->set('valuetrust', trusttext_trusted($context));
+
             $this->save();
         }
     }
@@ -131,19 +125,18 @@ class data_controller extends \core_customfield\data_controller {
      */
     public function instance_form_before_set_data(\stdClass $instance) {
         $textoptions = $this->value_editor_options();
-        $context = $textoptions['context'];
         if ($this->get('id')) {
             $text = $this->get('value');
             $format = $this->get('valueformat');
-            $temp = (object) ['field' => $text, 'fieldformat' => $format, 'fieldtrust' => trusttext_trusted($context)];
-            file_prepare_standard_editor($temp, 'field', $textoptions, $context, 'customfield_textarea',
+            $temp = (object)['field' => $text, 'fieldformat' => $format];
+            file_prepare_standard_editor($temp, 'field', $textoptions, $textoptions['context'], 'customfield_textarea',
                 'value', $this->get('id'));
             $value = $temp->field_editor;
         } else {
             $text = $this->get_field()->get_configdata_property('defaultvalue');
             $format = $this->get_field()->get_configdata_property('defaultvalueformat');
-            $temp = (object) ['field' => $text, 'fieldformat' => $format, 'fieldtrust' => trusttext_trusted($context)];
-            file_prepare_standard_editor($temp, 'field', $textoptions, $context, 'customfield_textarea',
+            $temp = (object)['field' => $text, 'fieldformat' => $format];
+            file_prepare_standard_editor($temp, 'field', $textoptions, $textoptions['context'], 'customfield_textarea',
                 'defaultvalue', $this->get_field()->get('id'));
             $value = $temp->field_editor;
         }
@@ -194,35 +187,6 @@ class data_controller extends \core_customfield\data_controller {
     }
 
     /**
-     * Implement the backup callback for the custom field element.
-     * This includes any embedded files in the custom field element.
-     *
-     * @param \backup_nested_element $customfieldelement The custom field element to be backed up.
-     */
-    public function backup_define_structure(backup_nested_element $customfieldelement): void {
-        $annotations = $customfieldelement->get_file_annotations();
-
-        if (!isset($annotations['customfield_textarea']['value'])) {
-            $customfieldelement->annotate_files('customfield_textarea', 'value', 'id');
-        }
-    }
-
-    /**
-     * Implement the restore callback for the custom field element.
-     * This includes restoring any embedded files in the custom field element.
-     *
-     * @param \restore_structure_step $step The restore step instance.
-     * @param int $newid The new ID for the custom field data after restore.
-     * @param int $oldid The original ID of the custom field data before backup.
-     */
-    public function restore_define_structure(\restore_structure_step $step, int $newid, int $oldid): void {
-        if (!$step->get_mappingid('customfield_data', $oldid)) {
-            $step->set_mapping('customfield_data', $oldid, $newid, true);
-            $step->add_related_files('customfield_textarea', 'value', 'customfield_data');
-        }
-    }
-
-    /**
      * Returns value in a human-readable format
      *
      * @return mixed|null value or null if empty
@@ -240,20 +204,14 @@ class data_controller extends \core_customfield\data_controller {
             $context = $this->get_context();
             $processed = file_rewrite_pluginfile_urls($value, 'pluginfile.php',
                 $context->id, 'customfield_textarea', 'value', $dataid);
-            $value = format_text($processed, $this->get('valueformat'), [
-                'context' => $context,
-                'trusted' => $this->get('valuetrust'),
-            ]);
+            $value = format_text($processed, $this->get('valueformat'), ['context' => $context]);
         } else {
-            $field = $this->get_field();
-
-            $context = $field->get_handler()->get_configuration_context();
+            $fieldid = $this->get_field()->get('id');
+            $configcontext = $this->get_field()->get_handler()->get_configuration_context();
             $processed = file_rewrite_pluginfile_urls($value, 'pluginfile.php',
-                $context->id, 'customfield_textarea', 'defaultvalue', $field->get('id'));
-            $value = format_text($processed, $field->get_configdata_property('defaultvalueformat'), [
-                'context' => $context,
-                'trusted' => true,
-            ]);
+                $configcontext->id, 'customfield_textarea', 'defaultvalue', $fieldid);
+            $valueformat = $this->get_field()->get_configdata_property('defaultvalueformat');
+            $value = format_text($processed, $valueformat, ['context' => $configcontext]);
         }
 
         return $value;

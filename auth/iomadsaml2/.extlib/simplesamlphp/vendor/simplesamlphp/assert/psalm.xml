@@ -2,8 +2,7 @@
 <psalm
   name="Assertions"
   useDocblockTypes="true"
-  errorLevel="2"
-  reportMixedIssues="false"
+  totallyTyped="false"
   hideExternalErrors="true"
 >
   <projectFiles>
@@ -23,6 +22,7 @@
     <MissingClosureReturnType errorLevel="info" />
     <MissingPropertyType errorLevel="info" />
     <InvalidDocblock errorLevel="info" />
+    <MisplacedRequiredParam errorLevel="info" />
 
     <MissingConstructor errorLevel="info" />
     <MissingClosureParamType errorLevel="info" />

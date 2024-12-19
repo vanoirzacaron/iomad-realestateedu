@@ -64,9 +64,12 @@ class CompiledRoute implements \Serializable
     }
 
     /**
-     * @internal
+     * @return string
+     *
+     * @internal since Symfony 4.3
+     * @final since Symfony 4.3
      */
-    final public function serialize(): string
+    public function serialize()
     {
         return serialize($this->__serialize());
     }
@@ -84,9 +87,10 @@ class CompiledRoute implements \Serializable
     }
 
     /**
-     * @internal
+     * @internal since Symfony 4.3
+     * @final since Symfony 4.3
      */
-    final public function unserialize($serialized)
+    public function unserialize($serialized)
     {
         $this->__unserialize(unserialize($serialized, ['allowed_classes' => false]));
     }
@@ -94,7 +98,7 @@ class CompiledRoute implements \Serializable
     /**
      * Returns the static prefix.
      *
-     * @return string
+     * @return string The static prefix
      */
     public function getStaticPrefix()
     {
@@ -104,7 +108,7 @@ class CompiledRoute implements \Serializable
     /**
      * Returns the regex.
      *
-     * @return string
+     * @return string The regex
      */
     public function getRegex()
     {
@@ -114,7 +118,7 @@ class CompiledRoute implements \Serializable
     /**
      * Returns the host regex.
      *
-     * @return string|null
+     * @return string|null The host regex or null
      */
     public function getHostRegex()
     {
@@ -124,7 +128,7 @@ class CompiledRoute implements \Serializable
     /**
      * Returns the tokens.
      *
-     * @return array
+     * @return array The tokens
      */
     public function getTokens()
     {
@@ -134,7 +138,7 @@ class CompiledRoute implements \Serializable
     /**
      * Returns the host tokens.
      *
-     * @return array
+     * @return array The tokens
      */
     public function getHostTokens()
     {
@@ -144,7 +148,7 @@ class CompiledRoute implements \Serializable
     /**
      * Returns the variables.
      *
-     * @return array
+     * @return array The variables
      */
     public function getVariables()
     {
@@ -154,7 +158,7 @@ class CompiledRoute implements \Serializable
     /**
      * Returns the path variables.
      *
-     * @return array
+     * @return array The variables
      */
     public function getPathVariables()
     {
@@ -164,7 +168,7 @@ class CompiledRoute implements \Serializable
     /**
      * Returns the host variables.
      *
-     * @return array
+     * @return array The variables
      */
     public function getHostVariables()
     {

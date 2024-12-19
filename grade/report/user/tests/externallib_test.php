@@ -95,7 +95,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_grades_table function case teacher
      */
-    public function test_get_grades_table_teacher(): void {
+    public function test_get_grades_table_teacher() {
 
         $this->resetAfterTest(true);
 
@@ -129,7 +129,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_grades_table function case student
      */
-    public function test_get_grades_table_student(): void {
+    public function test_get_grades_table_student() {
         global $CFG, $DB;
 
         $this->resetAfterTest(true);
@@ -173,7 +173,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_grades_table function case incorrect permissions
      */
-    public function test_get_grades_table_permissions(): void {
+    public function test_get_grades_table_permissions() {
         global $CFG, $DB;
 
         $this->resetAfterTest(true);
@@ -197,7 +197,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test view_grade_report function
      */
-    public function test_view_grade_report(): void {
+    public function test_view_grade_report() {
         global $USER;
 
         $this->resetAfterTest(true);
@@ -246,7 +246,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_grades_items function case teacher
      */
-    public function test_get_grade_items_teacher(): void {
+    public function test_get_grade_items_teacher() {
 
         $this->resetAfterTest(true);
 
@@ -350,7 +350,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_grades_items function case student
      */
-    public function test_get_grade_items_student(): void {
+    public function test_get_grade_items_student() {
 
         $this->resetAfterTest(true);
 

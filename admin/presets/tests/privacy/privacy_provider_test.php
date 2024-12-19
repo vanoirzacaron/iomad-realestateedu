@@ -36,7 +36,7 @@ class privacy_provider_test extends provider_testcase {
      * Test for provider::get_metadata().
      * @covers ::get_metadata
      */
-    public function test_get_metadata(): void {
+    public function test_get_metadata() {
         $collection = new collection('core_adminpresets');
         $newcollection = provider::get_metadata($collection);
         $itemcollection = $newcollection->get_collection();
@@ -49,7 +49,7 @@ class privacy_provider_test extends provider_testcase {
      * Test for provider::get_contexts_for_userid() doesn't return any context.
      * @covers ::get_contexts_for_userid
      */
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         global $USER;
 
         $this->resetAfterTest();
@@ -67,7 +67,7 @@ class privacy_provider_test extends provider_testcase {
      * Test for provider::get_users_in_context() doesn't return any user.
      * @covers ::get_users_in_context
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         global $USER;
 
         $this->resetAfterTest();
@@ -88,7 +88,7 @@ class privacy_provider_test extends provider_testcase {
      * Test for provider::export_user_data().
      * @covers ::export_user_data
      */
-    public function test_export_user_data(): void {
+    public function test_export_user_data() {
         global $USER;
 
         $this->resetAfterTest();
@@ -121,7 +121,7 @@ class privacy_provider_test extends provider_testcase {
      * Test for provider::delete_data_for_all_users_in_context().
      * @covers ::delete_data_for_all_users_in_context
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB, $USER;
 
         $this->resetAfterTest();
@@ -146,7 +146,7 @@ class privacy_provider_test extends provider_testcase {
      * Test for provider::delete_data_for_user().
      * @covers ::delete_data_for_user
      */
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB, $USER;
 
         $this->resetAfterTest();

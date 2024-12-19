@@ -42,7 +42,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::get_metadata().
      */
-    public function test_get_metadata(): void {
+    public function test_get_metadata() {
         $collection = new collection('core_group');
         $newcollection = provider::get_metadata($collection);
         $itemcollection = $newcollection->get_collection();
@@ -65,7 +65,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::export_groups() to export manual group memberships.
      */
-    public function test_export_groups(): void {
+    public function test_export_groups() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -106,7 +106,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::export_groups() to export group memberships of a component.
      */
-    public function test_export_groups_for_component(): void {
+    public function test_export_groups_for_component() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -151,7 +151,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_groups_for_all_users() to delete manual group memberships.
      */
-    public function test_delete_groups_for_all_users(): void {
+    public function test_delete_groups_for_all_users() {
         global $DB;
 
         $this->resetAfterTest();
@@ -214,7 +214,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_groups_for_all_users() to delete group memberships of a component.
      */
-    public function test_delete_groups_for_all_users_for_component(): void {
+    public function test_delete_groups_for_all_users_for_component() {
         global $DB;
 
         $this->resetAfterTest();
@@ -279,7 +279,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_groups_for_all_users() to check deleting from cache.
      */
-    public function test_delete_groups_for_all_users_deletes_cache(): void {
+    public function test_delete_groups_for_all_users_deletes_cache() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -310,7 +310,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_groups_for_user() to delete manual group memberships.
      */
-    public function test_delete_groups_for_user(): void {
+    public function test_delete_groups_for_user() {
         global $DB;
 
         $this->resetAfterTest();
@@ -412,7 +412,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_groups_for_user() to delete group memberships of a component.
      */
-    public function test_delete_groups_for_user_for_component(): void {
+    public function test_delete_groups_for_user_for_component() {
         global $DB;
 
         $this->resetAfterTest();
@@ -516,7 +516,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_groups_for_users() to delete group memberships of a component.
      */
-    public function test_delete_groups_for_users_for_component(): void {
+    public function test_delete_groups_for_users_for_component() {
         global $DB;
 
         $this->resetAfterTest();
@@ -655,7 +655,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_groups_for_user() to check deleting from cache.
      */
-    public function test_delete_groups_for_user_deletes_cache(): void {
+    public function test_delete_groups_for_user_deletes_cache() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -683,7 +683,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::get_contexts_for_userid().
      */
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         $this->resetAfterTest();
 
         $course1 = $this->getDataGenerator()->create_course();
@@ -729,7 +729,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::get_contexts_for_userid() when there are group memberships from other components.
      */
-    public function test_get_contexts_for_userid_component(): void {
+    public function test_get_contexts_for_userid_component() {
         $this->resetAfterTest();
 
         $course1 = $this->getDataGenerator()->create_course();
@@ -766,7 +766,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::export_user_data().
      */
-    public function test_export_user_data(): void {
+    public function test_export_user_data() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -810,7 +810,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_data_for_all_users_in_context().
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
 
         $this->resetAfterTest();
@@ -873,7 +873,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_data_for_user().
      */
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
 
         $this->resetAfterTest();
@@ -975,7 +975,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::delete_data_for_users().
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
 
         $this->resetAfterTest();
@@ -1047,7 +1047,7 @@ class provider_test extends provider_testcase {
     /**
      * Test for provider::get_users_in_context().
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         $this->resetAfterTest();
 
         $course1 = $this->getDataGenerator()->create_course();

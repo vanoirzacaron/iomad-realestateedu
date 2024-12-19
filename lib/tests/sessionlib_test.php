@@ -30,7 +30,7 @@ class sessionlib_test extends \advanced_testcase {
     /**
      * @covers ::cron_setup_user
      */
-    public function test_cron_setup_user(): void {
+    public function test_cron_setup_user() {
         // This function uses the $GLOBALS super global. Disable the VariableNameLowerCase sniff for this function.
         // phpcs:disable moodle.NamingConventions.ValidVariableName.VariableNameLowerCase
 
@@ -76,7 +76,7 @@ class sessionlib_test extends \advanced_testcase {
         $this->assertSame($user1->id, $USER->id);
         $this->assertSame($PAGE->context, \context_course::instance($SITE->id));
         $this->assertNotSame($adminsession, $SESSION);
-        $this->assertObjectNotHasProperty('test1', $SESSION);
+        $this->assertObjectNotHasAttribute('test1', $SESSION);
         $this->assertEmpty((array)$SESSION);
         $usersession1 = $SESSION;
         $SESSION->test2 = true;
@@ -169,7 +169,7 @@ class sessionlib_test extends \advanced_testcase {
      *
      * @return array of config and secure result
      */
-    public function moodle_cookie_secure_provider() {
+    public static function moodle_cookie_secure_provider(): array {
         return array(
             array(
                 // Non ssl, not set.
@@ -245,7 +245,7 @@ class sessionlib_test extends \advanced_testcase {
      * @param array $config Array of key value config settings
      * @param bool $secure Wether cookies should be secure or not
      */
-    public function test_is_moodle_cookie_secure($config, $secure): void {
+    public function test_is_moodle_cookie_secure($config, $secure) {
         global $CFG;
         $this->resetAfterTest();
         foreach ($config as $key => $value) {
@@ -254,14 +254,14 @@ class sessionlib_test extends \advanced_testcase {
         $this->assertEquals($secure, is_moodle_cookie_secure());
     }
 
-    public function test_sesskey(): void {
+    public function test_sesskey() {
         global $USER;
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
 
         \core\session\manager::init_empty_session();
-        $this->assertObjectNotHasProperty('sesskey', $USER);
+        $this->assertObjectNotHasAttribute('sesskey', $USER);
 
         $sesskey = sesskey();
         $this->assertNotEmpty($sesskey);
@@ -281,7 +281,7 @@ class sessionlib_test extends \advanced_testcase {
         $this->assertFalse(sesskey());
     }
 
-    public function test_confirm_sesskey(): void {
+    public function test_confirm_sesskey() {
         $this->resetAfterTest();
 
         $sesskey = sesskey();
@@ -303,7 +303,7 @@ class sessionlib_test extends \advanced_testcase {
         $this->assertFalse(confirm_sesskey());
     }
 
-    public function test_require_sesskey(): void {
+    public function test_require_sesskey() {
         $this->resetAfterTest();
 
         $sesskey = sesskey();

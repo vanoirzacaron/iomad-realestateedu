@@ -32,7 +32,7 @@ class entities_discussion_summary_test extends \advanced_testcase {
     /**
      * Test the entity returns expected values.
      */
-    public function test_entity(): void {
+    public function test_entity() {
         $this->resetAfterTest();
 
         $firstauthor = new author_entity(

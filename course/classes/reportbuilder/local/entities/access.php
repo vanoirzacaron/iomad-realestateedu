@@ -36,15 +36,12 @@ use stdClass;
 class access extends base {
 
     /**
-     * Database tables that this entity uses
+     * Database tables that this entity uses and their default aliases
      *
-     * @return string[]
+     * @return array
      */
-    protected function get_default_tables(): array {
-        return [
-            'user_lastaccess',
-            'user',
-        ];
+    protected function get_default_table_aliases(): array {
+        return ['user_lastaccess' => 'ula', 'user' => 'u'];
     }
 
     /**

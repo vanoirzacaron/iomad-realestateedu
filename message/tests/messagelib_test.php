@@ -37,7 +37,7 @@ final class messagelib_test extends \advanced_testcase {
     /**
      * Test message_get_blocked_users throws an exception because has been removed.
      */
-    public function test_message_get_blocked_users(): void {
+    public function test_message_get_blocked_users() {
         $this->expectException('coding_exception');
         $this->expectExceptionMessage(
             'message_get_blocked_users() has been removed, please use \core_message\api::get_blocked_users() instead.'
@@ -48,7 +48,7 @@ final class messagelib_test extends \advanced_testcase {
     /**
      * Test message_get_contacts throws an exception because has been removed.
      */
-    public function test_message_get_contacts(): void {
+    public function test_message_get_contacts() {
         $this->expectException('coding_exception');
         $this->expectExceptionMessage('message_get_contacts() has been removed.');
         message_get_contacts();
@@ -57,7 +57,7 @@ final class messagelib_test extends \advanced_testcase {
     /**
      * Test message_search_users.
      */
-    public function test_message_search_users(): void {
+    public function test_message_search_users() {
         global $USER;
 
         $this->resetAfterTest();
@@ -82,7 +82,7 @@ final class messagelib_test extends \advanced_testcase {
     /**
      * Test message_get_messages.
      */
-    public function test_message_get_messages(): void {
+    public function test_message_get_messages() {
         global $DB;
 
         $this->resetAfterTest();

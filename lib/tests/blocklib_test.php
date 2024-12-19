@@ -79,19 +79,19 @@ class blocklib_test extends \advanced_testcase {
         return $return;
     }
 
-    public function test_no_regions_initially(): void {
+    public function test_no_regions_initially() {
         // Exercise SUT & Validate.
         $this->assertEquals(array(), $this->blockmanager->get_regions());
     }
 
-    public function test_add_region(): void {
+    public function test_add_region() {
         // Exercise SUT.
         $this->blockmanager->add_region('a-region-name', false);
         // Validate.
         $this->assertEquals(array('a-region-name'), $this->blockmanager->get_regions());
     }
 
-    public function test_add_regions(): void {
+    public function test_add_regions() {
         // Set up fixture.
         $regions = array('a-region', 'another-region');
         // Exercise SUT.
@@ -100,7 +100,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertEqualsCanonicalizing($regions, $this->blockmanager->get_regions());
     }
 
-    public function test_add_region_twice(): void {
+    public function test_add_region_twice() {
         // Exercise SUT.
         $this->blockmanager->add_region('a-region-name', false);
         $this->blockmanager->add_region('another-region', false);
@@ -108,7 +108,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertEqualsCanonicalizing(array('a-region-name', 'another-region'), $this->blockmanager->get_regions());
     }
 
-    public function test_cannot_add_region_after_loaded(): void {
+    public function test_cannot_add_region_after_loaded() {
         // Set up fixture.
         $this->blockmanager->mark_loaded();
         // Exercise SUT.
@@ -119,7 +119,7 @@ class blocklib_test extends \advanced_testcase {
     /**
      * Testing adding a custom region.
      */
-    public function test_add_custom_region(): void {
+    public function test_add_custom_region() {
         global $SESSION;
         // Exercise SUT.
         $this->blockmanager->add_region('a-custom-region-name');
@@ -134,7 +134,7 @@ class blocklib_test extends \advanced_testcase {
     /**
      * Test adding two custom regions using add_regions method.
      */
-    public function test_add_custom_regions(): void {
+    public function test_add_custom_regions() {
         global $SESSION;
         // Set up fixture.
         $regions = array('a-region', 'another-custom-region');
@@ -150,7 +150,7 @@ class blocklib_test extends \advanced_testcase {
     /**
      * Test adding two custom block regions.
      */
-    public function test_add_custom_region_twice(): void {
+    public function test_add_custom_region_twice() {
         // Exercise SUT.
         $this->blockmanager->add_region('a-custom-region-name');
         $this->blockmanager->add_region('another-custom-region');
@@ -163,7 +163,7 @@ class blocklib_test extends \advanced_testcase {
     /**
      * Test to ensure that we cannot add a region after the blocks have been loaded.
      */
-    public function test_cannot_add_custom_region_after_loaded(): void {
+    public function test_cannot_add_custom_region_after_loaded() {
         // Set up fixture.
         $this->blockmanager->mark_loaded();
         // Exercise SUT.
@@ -171,7 +171,7 @@ class blocklib_test extends \advanced_testcase {
         $this->blockmanager->add_region('too-late');
     }
 
-    public function test_set_default_region(): void {
+    public function test_set_default_region() {
         // Set up fixture.
         $this->blockmanager->add_region('a-region-name', false);
         // Exercise SUT.
@@ -180,13 +180,13 @@ class blocklib_test extends \advanced_testcase {
         $this->assertEquals('a-region-name', $this->blockmanager->get_default_region());
     }
 
-    public function test_cannot_set_unknown_region_as_default(): void {
+    public function test_cannot_set_unknown_region_as_default() {
         // Exercise SUT.
         $this->expectException(\coding_exception::class);
         $this->blockmanager->set_default_region('a-region-name');
     }
 
-    public function test_cannot_change_default_region_after_loaded(): void {
+    public function test_cannot_change_default_region_after_loaded() {
         // Set up fixture.
         $this->blockmanager->mark_loaded();
         // Exercise SUT.
@@ -194,7 +194,7 @@ class blocklib_test extends \advanced_testcase {
         $this->blockmanager->set_default_region('too-late');
     }
 
-    public function test_matching_page_type_patterns(): void {
+    public function test_matching_page_type_patterns() {
         $this->assertEqualsCanonicalizing(array('site-index', 'site-index-*', 'site-*', '*'),
             matching_page_type_patterns('site-index'));
 
@@ -243,7 +243,7 @@ class blocklib_test extends \advanced_testcase {
         }
     }
 
-    public function test_empty_initially(): void {
+    public function test_empty_initially() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -256,7 +256,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertEquals(array('a-region' => array()), $blocks);
     }
 
-    public function test_adding_and_retrieving_one_block(): void {
+    public function test_adding_and_retrieving_one_block() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -275,7 +275,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertContainsBlocksOfType(array($blockname), $blocks);
     }
 
-    public function test_adding_and_retrieving_two_blocks(): void {
+    public function test_adding_and_retrieving_two_blocks() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -295,7 +295,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertContainsBlocksOfType(array($blockname, $blockname), $blocks);
     }
 
-    public function test_adding_blocks(): void {
+    public function test_adding_blocks() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -320,7 +320,7 @@ class blocklib_test extends \advanced_testcase {
      *
      * @return null
      */
-    public function test_block_instances(): void {
+    public function test_block_instances() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -340,7 +340,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertInstanceOf('\block_base', block_instance_by_id($blocks[0]->instance->id));
     }
 
-    public function test_block_not_included_in_different_context(): void {
+    public function test_block_not_included_in_different_context() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -362,7 +362,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertContainsBlocksOfType(array(), $blocks);
     }
 
-    public function test_block_included_in_sub_context(): void {
+    public function test_block_included_in_sub_context() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -383,7 +383,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertContainsBlocksOfType(array($blockname), $blocks);
     }
 
-    public function test_block_not_included_on_different_page_type(): void {
+    public function test_block_not_included_on_different_page_type() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -403,7 +403,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertContainsBlocksOfType(array(), $blocks);
     }
 
-    public function test_block_not_included_on_different_sub_page(): void {
+    public function test_block_not_included_on_different_sub_page() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -423,7 +423,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertContainsBlocksOfType(array(), $blocks);
     }
 
-    public function test_block_included_with_explicit_sub_page(): void {
+    public function test_block_included_with_explicit_sub_page() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -443,7 +443,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertContainsBlocksOfType(array($blockname), $blocks);
     }
 
-    public function test_block_included_with_page_type_pattern(): void {
+    public function test_block_included_with_page_type_pattern() {
         $this->purge_blocks();
 
         // Set up fixture.
@@ -463,7 +463,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertContainsBlocksOfType(array($blockname), $blocks);
     }
 
-    public function test_matching_page_type_patterns_from_pattern(): void {
+    public function test_matching_page_type_patterns_from_pattern() {
         $pattern = '*';
         $expected = array('*');
         $this->assertEquals($expected, array_values(matching_page_type_patterns_from_pattern($pattern)));
@@ -513,7 +513,7 @@ class blocklib_test extends \advanced_testcase {
         $this->assertEquals($expected, array_values(matching_page_type_patterns_from_pattern($pattern)));
     }
 
-    public function test_delete_instances(): void {
+    public function test_delete_instances() {
         global $DB;
         $this->purge_blocks();
         $this->setAdminUser();
@@ -576,7 +576,7 @@ class blocklib_test extends \advanced_testcase {
         \context_block::instance($tokeep);   // Would throw an exception if it was deleted.
     }
 
-    public function test_create_all_block_instances(): void {
+    public function test_create_all_block_instances() {
         global $CFG, $PAGE, $DB;
 
         $this->setAdminUser();
@@ -659,7 +659,7 @@ class blocklib_test extends \advanced_testcase {
     /**
      * Test the block instance time fields (timecreated, timemodified).
      */
-    public function test_block_instance_times(): void {
+    public function test_block_instance_times() {
         global $DB;
 
         $this->purge_blocks();
@@ -726,7 +726,7 @@ class blocklib_test extends \advanced_testcase {
     /**
      * Tests that dashboard pages get their blocks loaded correctly.
      */
-    public function test_default_dashboard(): void {
+    public function test_default_dashboard() {
         global $CFG, $PAGE, $DB;
         $storedpage = $PAGE;
         require_once($CFG->dirroot . '/my/lib.php');

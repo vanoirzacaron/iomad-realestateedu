@@ -42,7 +42,7 @@ final class expired_data_requests_test extends data_privacy_testcase {
     /**
      * Test finding and deleting expired data requests
      */
-    public function test_data_request_expiry(): void {
+    public function test_data_request_expiry() {
         global $DB;
         $this->resetAfterTest();
         \core_privacy\local\request\writer::setup_real_writer_instance();
@@ -159,7 +159,7 @@ final class expired_data_requests_test extends data_privacy_testcase {
      * Tests for the expected request status to protect from false positive/negative,
      * then tests is_expired() is returning the expected response.
      */
-    public function test_is_expired(): void {
+    public function test_is_expired() {
         $this->resetAfterTest();
         \core_privacy\local\request\writer::setup_real_writer_instance();
 

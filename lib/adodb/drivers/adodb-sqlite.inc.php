@@ -211,6 +211,7 @@ class ADODB_sqlite extends ADOConnection {
 		return true;
 	}
 
+	// returns query ID if successful, otherwise false
 	function _query($sql,$inputarr=false)
 	{
 		$rez = sqlite_query($sql,$this->_connectionID);

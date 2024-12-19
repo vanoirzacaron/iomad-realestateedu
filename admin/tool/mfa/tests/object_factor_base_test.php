@@ -38,7 +38,7 @@ class object_factor_base_test extends \advanced_testcase {
      * @covers ::setup_user_factor
      * @return void
      */
-    public function test_revoke_user_factor(): void {
+    public function test_revoke_user_factor() {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
@@ -81,38 +81,5 @@ class object_factor_base_test extends \advanced_testcase {
         $this->setUser($user);
         $this->assertTrue($totpfactor->revoke_user_factor($factorinstance2->id));
         $this->assertEquals(0, count($totpfactor->get_active_user_factors($user)));
-    }
-
-    /**
-     * Tests the replacement of a factor.
-     *
-     * @covers ::setup_user_factor
-     * @covers ::replace_user_factor
-     */
-    public function test_replace_user_factor(): void {
-        $this->resetAfterTest();
-        $user = $this->getDataGenerator()->create_user();
-        $this->setUser($user);
-
-        $factor = \tool_mfa\plugininfo\factor::get_factor('totp');
-
-        // Set up the factor.
-        $data1 = new \stdClass();
-        $data1->secret = 'fakesecret1';
-        $data1->devicename = 'fakedevice1';
-        $factor1 = $factor->setup_user_factor($data1);
-
-        // Prepare some replacement data.
-        $data2 = new \stdClass();
-        $data2->secret = 'fakesecret2';
-        $data2->devicename = 'fakedevice2';
-
-        // Replace the active factor with the replacement data.
-        $factor2 = $factor->replace_user_factor($data2, $factor1->id);
-
-        // Check the active factor is the newer one.
-        $activefactors = $factor->get_active_user_factors($user);
-        $this->assertEquals(1, count($activefactors));
-        $this->assertEquals($factor2->id, $activefactors[0]->id);
     }
 }

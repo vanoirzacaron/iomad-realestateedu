@@ -28,7 +28,7 @@ trait XMLInternalErrorsHelper
      * Throws an XMLProcessingException if an error occured.
      * It also always resets the "libxml_use_internal_errors" setting back to its initial value.
      *
-     * @throws XMLProcessingException
+     * @throws \OpenSpout\Reader\Exception\XMLProcessingException
      */
     private function resetXMLInternalErrorsSettingAndThrowIfXMLErrorOccured(): void
     {

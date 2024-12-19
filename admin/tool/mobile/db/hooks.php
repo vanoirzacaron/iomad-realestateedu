@@ -18,7 +18,7 @@
  * Hook callbacks for Moodle app tools
  *
  * @package    tool_mobile
- * @copyright  2023 Marina Glancy
+ * @copyright  2024 Juan Leyva
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,26 +26,13 @@ defined('MOODLE_INTERNAL') || die();
 
 $callbacks = [
     [
-        'hook' => \core\hook\output\before_standard_head_html_generation::class,
-        'callback' => [\tool_mobile\hook_callbacks::class, 'before_standard_head_html_generation'],
-    ],
-    [
-        'hook' => \core\hook\output\before_standard_footer_html_generation::class,
-        'callback' => [\tool_mobile\hook_callbacks::class, 'before_standard_footer_html_generation'],
-        'priority' => 0,
-    ],
-    [
         'hook' => \core_user\hook\after_login_completed::class,
-        'callback' => [\tool_mobile\hook_callbacks::class, 'after_login_completed'],
+        'callback' => \tool_mobile\hook_callbacks::class . '::after_login_completed',
         'priority' => 500,
     ],
     [
         'hook' => tool_mfa\hook\after_user_passed_mfa::class,
         'callback' => 'tool_mobile\local\hooks\user\after_user_passed_mfa::callback',
         'priority' => 500,
-    ],
-    [
-        'hook' => \core\hook\output\before_http_headers::class,
-        'callback' => [\tool_mobile\local\hooks\output\before_http_headers::class, 'callback'],
     ],
 ];

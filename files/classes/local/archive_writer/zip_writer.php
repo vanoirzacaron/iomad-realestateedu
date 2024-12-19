@@ -24,7 +24,9 @@
 
 namespace core_files\local\archive_writer;
 
+use ZipStream\Option\Archive;
 use ZipStream\ZipStream;
+use ZipStream\Option\File as FileOptions;
 use core_files\archive_writer;
 use core_files\local\archive_writer\file_writer_interface as file_writer_interface;
 use core_files\local\archive_writer\stream_writer_interface as stream_writer_interface;
@@ -64,9 +66,11 @@ class zip_writer extends archive_writer implements file_writer_interface, stream
     }
 
     public static function stream_instance(string $filename): stream_writer_interface {
-        $zipwriter = new ZipStream(
-            outputName: $filename,
-        );
+        $options = new Archive();
+        $options->setSendHttpHeaders(true);
+        $options->setContentDisposition('attachment');
+        $options->setContentType('application/x-zip');
+        $zipwriter = new ZipStream($filename, $options);
 
         return new static($zipwriter);
     }
@@ -76,11 +80,10 @@ class zip_writer extends archive_writer implements file_writer_interface, stream
         $filepath = "$dir/$filename";
         $fh = fopen($filepath, 'w');
 
-        $zipstream = new ZipStream(
-            outputName: $filename,
-            outputStream: $fh,
-            sendHttpHeaders: false,
-        );
+        $exportoptions = new Archive();
+        $exportoptions->setOutputStream($fh);
+        $exportoptions->setSendHttpHeaders(false);
+        $zipstream = new ZipStream($filename, $exportoptions);
 
         $zipwriter = new static($zipstream);
         // ZipStream only takes a file handle resource.
@@ -110,12 +113,10 @@ class zip_writer extends archive_writer implements file_writer_interface, stream
     public function add_file_from_stored_file(string $name, \stored_file $file): void {
         $datetime = new \DateTime();
         $datetime->setTimestamp($file->get_timemodified());
+        $fileoptions = new FileOptions();
+        $fileoptions->setTime($datetime);
         $filehandle = $file->get_content_file_handle();
-        $this->archive->addFileFromStream(
-            fileName: $this->sanitise_filepath($name),
-            stream: $filehandle,
-            lastModificationDateTime: $datetime,
-        );
+        $this->archive->addFileFromStream($this->sanitise_filepath($name), $filehandle, $fileoptions);
         fclose($filehandle);
     }
 
@@ -129,5 +130,11 @@ class zip_writer extends archive_writer implements file_writer_interface, stream
 
     public function get_path_to_zip(): string {
         return $this->zipfilepath;
+    }
+
+    public function sanitise_filepath(string $filepath): string {
+        $filepath = parent::sanitise_filepath($filepath);
+
+        return \ZipStream\File::filterFilename($filepath);
     }
 }

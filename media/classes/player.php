@@ -71,7 +71,7 @@ abstract class core_media_player {
      * @param array $options Options array
      * @return string HTML code for embed
      */
-    abstract public function embed($urls, $name, $width, $height, $options);
+    public abstract function embed($urls, $name, $width, $height, $options);
 
     /**
      * Gets the list of file extensions supported by this media player.
@@ -151,7 +151,7 @@ abstract class core_media_player {
      *
      * @return int Rank (higher is better)
      */
-    abstract public function get_rank();
+    public abstract function get_rank();
 
     /**
      * @deprecated since Moodle 3.2

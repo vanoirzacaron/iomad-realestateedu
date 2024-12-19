@@ -40,7 +40,7 @@ class generator_test extends \advanced_testcase {
      *
      * @covers ::create_default_completion
      */
-    public function test_create_default_completion($course, $module, bool $exception, int $count, int $completion = 0): void {
+    public function test_create_default_completion($course, $module, bool $exception, int $count, int $completion = 0) {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -80,7 +80,7 @@ class generator_test extends \advanced_testcase {
      * Data provider for test_create_default_completion().
      * @return array[]
      */
-    public function create_default_completion_provider(): array {
+    public static function create_default_completion_provider(): array {
         global $SITE;
 
         return [

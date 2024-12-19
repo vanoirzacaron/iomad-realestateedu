@@ -54,7 +54,9 @@ $entry = new stdClass();
 $entry->id = null;
 
 if ($id) {
-    $entry = new blog_entry($id);   // Will trigger exception if not found.
+    if (!$entry = new blog_entry($id)) {
+        throw new \moodle_exception('wrongentryid', 'blog');
+    }
     $userid = $entry->userid;
 } else {
     $userid = $USER->id;
@@ -96,7 +98,7 @@ if (!empty($modid)) {
 $blogheaders = blog_get_headers();
 
 if (!has_capability('moodle/blog:create', $sitecontext) && !has_capability('moodle/blog:manageentries', $sitecontext)) {
-    throw new \moodle_exception('cannoteditentryorblog', 'blog');
+    throw new \moodle_exception('cannoteditentryorblog');
 }
 
 // Make sure that the person trying to edit has access right.
@@ -123,7 +125,7 @@ if ($action === 'delete') {
     comment::init();
 
     if (empty($entry->id)) {
-        throw new \moodle_exception('wrongentryid');
+        throw new \moodle_exception('wrongentryid', 'blog');
     }
     if (data_submitted() && $confirm && confirm_sesskey()) {
         // Make sure the current user is the author of the blog entry, or has some deleteanyentry capability.
@@ -188,7 +190,9 @@ if (!empty($entry->id)) {
     }
 }
 
-[$summaryoptions, $attachmentoptions] = blog_get_editor_options($entry);
+$summaryoptions = array('maxfiles' => 99, 'maxbytes' => $CFG->maxbytes, 'trusttext' => true, 'context' => $sitecontext,
+    'subdirs' => file_area_contains_subdirs($sitecontext, 'blog', 'post', $entry->id));
+$attachmentoptions = array('subdirs' => false, 'maxfiles' => 99, 'maxbytes' => $CFG->maxbytes);
 
 $blogeditform = new blog_edit_form(null, compact('entry',
                                                  'summaryoptions',
@@ -228,7 +232,7 @@ if ($blogeditform->is_cancelled()) {
 
         case 'edit':
             if (empty($entry->id)) {
-                throw new \moodle_exception('wrongentryid');
+                throw new \moodle_exception('wrongentryid', 'blog');
             }
 
             $entry->edit($data, $blogeditform, $summaryoptions, $attachmentoptions);
@@ -268,7 +272,7 @@ switch ($action) {
 
     case 'edit':
         if (empty($entry->id)) {
-            throw new \moodle_exception('wrongentryid');
+            throw new \moodle_exception('wrongentryid', 'blog');
         }
         $strformheading = get_string('updateentrywithid', 'blog');
 

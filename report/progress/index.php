@@ -273,7 +273,7 @@ if (!$csv) {
     print $pagingbar;
 
     if (!$total) {
-        echo $OUTPUT->notification(get_string('nothingtodisplay'), 'info', false);
+        echo $OUTPUT->heading(get_string('nothingtodisplay'));
         echo $OUTPUT->footer();
         exit;
     }

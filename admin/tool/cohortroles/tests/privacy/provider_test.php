@@ -51,7 +51,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_contexts_for_userid().
      */
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         global $DB;
 
         // Test setup.
@@ -94,7 +94,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::export_user_data().
      */
-    public function test_export_user_data(): void {
+    public function test_export_user_data() {
         // Test setup.
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
@@ -144,7 +144,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_all_users_in_context().
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
 
         // Test setup.
@@ -203,7 +203,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_user().
      */
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
 
         // Test setup.
@@ -251,7 +251,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test that only users within a course context are fetched.
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         $component = 'tool_cohortroles';
 
         // Create a user.
@@ -293,7 +293,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test that data for users in approved userlist is deleted.
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         $component = 'tool_cohortroles';
 
         // Create user1.

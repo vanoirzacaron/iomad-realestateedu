@@ -46,7 +46,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_metadata().
      */
-    public function test_get_metadata(): void {
+    public function test_get_metadata() {
         $collection = new collection('mod_lti');
         $newcollection = provider::get_metadata($collection);
         $itemcollection = $newcollection->get_collection();
@@ -90,7 +90,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_contexts_for_userid().
      */
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -122,7 +122,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::test_get_users_in_context()
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -163,7 +163,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::export_user_data().
      */
-    public function test_export_for_context_submissions(): void {
+    public function test_export_for_context_submissions() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -192,7 +192,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::export_user_data().
      */
-    public function test_export_for_context_tool_types(): void {
+    public function test_export_for_context_tool_types() {
         $this->resetAfterTest();
 
         $course1 = $this->getDataGenerator()->create_course();
@@ -243,7 +243,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::export_user_data().
      */
-    public function test_export_for_context_tool_proxies(): void {
+    public function test_export_for_context_tool_proxies() {
         $this->resetAfterTest();
 
         // Create a user that will not make a tool proxy.
@@ -268,7 +268,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_all_users_in_context().
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
 
         $this->resetAfterTest();
@@ -300,7 +300,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_user().
      */
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
 
         $this->resetAfterTest();
@@ -339,7 +339,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_users().
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
         $component = 'mod_lti';
 

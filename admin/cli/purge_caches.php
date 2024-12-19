@@ -31,7 +31,6 @@ require_once($CFG->libdir.'/clilib.php');
 $longoptions = [
     'help' => false,
     'muc' => false,
-    'courses' => false,
     'theme' => false,
     'lang' => false,
     'js' => false,
@@ -56,8 +55,6 @@ all caches will be purged.
 Options:
 -h, --help            Print out this help
     --muc             Purge all MUC caches (includes lang cache)
-    --courses         Purge all course caches (or only those specified by a comma-separated list).
-                      e.g. --courses=4,67,145
     --theme           Purge theme cache
     --lang            Purge language string cache
     --js              Purge JavaScript cache

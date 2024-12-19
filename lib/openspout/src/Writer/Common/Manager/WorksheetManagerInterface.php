@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace OpenSpout\Writer\Common\Manager;
 
 use OpenSpout\Common\Entity\Row;
-use OpenSpout\Common\Exception\InvalidArgumentException;
-use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Writer\Common\Entity\Worksheet;
 
 /**
@@ -20,8 +18,8 @@ interface WorksheetManagerInterface
      * @param Worksheet $worksheet The worksheet to add the row to
      * @param Row       $row       The row to be added
      *
-     * @throws IOException              If the data cannot be written
-     * @throws InvalidArgumentException If a cell value's type is not supported
+     * @throws \OpenSpout\Common\Exception\IOException              If the data cannot be written
+     * @throws \OpenSpout\Common\Exception\InvalidArgumentException If a cell value's type is not supported
      */
     public function addRow(Worksheet $worksheet, Row $row): void;
 
@@ -30,7 +28,7 @@ interface WorksheetManagerInterface
      *
      * @param Worksheet $worksheet The worksheet to start
      *
-     * @throws IOException If the sheet data file cannot be opened for writing
+     * @throws \OpenSpout\Common\Exception\IOException If the sheet data file cannot be opened for writing
      */
     public function startSheet(Worksheet $worksheet): void;
 

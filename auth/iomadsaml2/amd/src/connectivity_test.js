@@ -23,13 +23,10 @@
  */
 
 export const init = (checkTarget, redirURL) => {
-    // We need to use no-cors to ignore cors, however,
-    // this means we are returned an opaque response.
-    // But an opaque response is info to say if the site is accessible or not.
-    fetch(checkTarget, { mode: 'no-cors', method: 'HEAD' })
-    .then(() => {
+    const http = new XMLHttpRequest();
+    http.open('HEAD', checkTarget);
+    http.addEventListener('load', () => {
         window.location = redirURL;
-    })
-    // Do nothing with error, we don't care about it.
-    .catch(() => {});
+    });
+    http.send();
 };

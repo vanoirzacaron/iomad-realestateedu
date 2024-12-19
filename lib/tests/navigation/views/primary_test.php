@@ -37,7 +37,7 @@ class primary_test extends \advanced_testcase {
      * @param string $expected The expected nodes
      * @dataProvider setting_initialise_provider
      */
-    public function test_setting_initialise($usertype, $expected): void {
+    public function test_setting_initialise($usertype, $expected) {
         global $PAGE;
         $PAGE->set_url("/");
         $this->resetAfterTest();
@@ -59,7 +59,7 @@ class primary_test extends \advanced_testcase {
     /**
      * Data provider for the test_setting_initialise function
      */
-    public function setting_initialise_provider() {
+    public static function setting_initialise_provider(): array {
         return [
             'Testing as a guest user' => ['guest', ['home']],
             'Testing as an admin' => ['admin', ['home', 'myhome', 'mycourses', 'siteadminnode']],
@@ -126,6 +126,7 @@ class primary_test extends \advanced_testcase {
 
         $primary = new primary($PAGE);
         $method = new ReflectionMethod('core\navigation\views\primary', 'search_and_set_active_node');
+        $method->setAccessible(true);
 
         $result = $method->invoke($primary, $node);
 
@@ -152,7 +153,7 @@ class primary_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function search_and_set_active_node_provider(): array {
+    public static function search_and_set_active_node_provider(): array {
         return [
             'Test by activating node which is part of the tree'
                 => ['tenthchild', 'tenthchild'],

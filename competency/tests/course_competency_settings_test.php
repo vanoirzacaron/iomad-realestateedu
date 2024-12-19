@@ -25,7 +25,7 @@ namespace core_competency;
  */
 class course_competency_settings_test extends \advanced_testcase {
 
-    public function test_who_can_change_settings(): void {
+    public function test_who_can_change_settings() {
         global $CFG, $DB;
 
         $this->resetAfterTest(true);

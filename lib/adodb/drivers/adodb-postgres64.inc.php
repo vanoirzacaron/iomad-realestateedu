@@ -258,9 +258,7 @@ class ADODB_postgres64 extends ADOConnection{
 		if ($this->_connectionID) {
 			return "'" . pg_escape_string($this->_connectionID, $s) . "'";
 		} else {
-			// Fall back to emulated escaping when there is no database connection.
-			// Avoids errors when using setSessionVariables() in the load balancer.
-			return parent::qStr( $s );
+			return "'" . pg_escape_string($s) . "'";
 		}
 	}
 
@@ -784,6 +782,7 @@ class ADODB_postgres64 extends ADOConnection{
 	}
 
 
+	// returns queryID or false
 	function _query($sql,$inputarr=false)
 	{
 		$this->_pnum = 0;

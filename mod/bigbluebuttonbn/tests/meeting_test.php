@@ -57,7 +57,7 @@ class meeting_test extends \advanced_testcase {
      *
      * @return array[]
      */
-    public function get_instance_types_meeting_info(): array {
+    public static function get_instance_types_meeting_info(): array {
         return [
             'Instance Type ALL - No Group' => [
                 'type' => instance::TYPE_ALL,
@@ -120,7 +120,7 @@ class meeting_test extends \advanced_testcase {
      * @covers ::create_meeting_data
      * @covers ::create_meeting_metadata
      */
-    public function test_create_meeting(int $type, ?string $groupname): void {
+    public function test_create_meeting(int $type, ?string $groupname) {
         $this->resetAfterTest();
         [$meeting, $useringroup, $usernotingroup, $groupid, $activity] =
             $this->prepare_meeting($type, $groupname, SEPARATEGROUPS, false);
@@ -142,7 +142,7 @@ class meeting_test extends \advanced_testcase {
      * @covers ::get_meeting_info
      * @covers ::do_get_meeting_info
      */
-    public function test_get_meeting_info(int $type, ?string $groupname): void {
+    public function test_get_meeting_info(int $type, ?string $groupname) {
         $this->resetAfterTest();
         [$meeting, $useringroup, $usernotingroup, $groupid, $activity] = $this->prepare_meeting($type, $groupname);
         $meetinginfo = $meeting->get_meeting_info();
@@ -178,7 +178,7 @@ class meeting_test extends \advanced_testcase {
      * @dataProvider get_instance_types_meeting_info
      * @covers ::can_join
      */
-    public function test_can_join(int $type, ?string $groupname, int $groupmode, array $canjoin): void {
+    public function test_can_join(int $type, ?string $groupname, int $groupmode, array $canjoin) {
         $this->resetAfterTest();
         [$meeting, $useringroup, $usernotingroup, $groupid, $activity] = $this->prepare_meeting($type, $groupname, $groupmode);
         $this->setUser($useringroup);
@@ -206,7 +206,7 @@ class meeting_test extends \advanced_testcase {
      * @dataProvider get_data_can_join_with_dates
      * @covers ::can_join
      */
-    public function test_can_join_with_dates(int $type, ?string $groupname, int $groupmode, array $canjoin, array $dates): void {
+    public function test_can_join_with_dates(int $type, ?string $groupname, int $groupmode, array $canjoin, array $dates) {
         // Apply the data provider relative values to now.
         array_walk($dates, function(&$val) {
             $val = time() + $val;
@@ -235,7 +235,7 @@ class meeting_test extends \advanced_testcase {
      * @covers ::join
      * @covers ::join_meeting
      */
-    public function test_join_wait_for_moderator_not_joined(): void {
+    public function test_join_wait_for_moderator_not_joined() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -265,7 +265,7 @@ class meeting_test extends \advanced_testcase {
      * @covers ::join
      * @covers ::join_meeting
      */
-    public function test_join_wait_for_moderator_is_joined(): void {
+    public function test_join_wait_for_moderator_is_joined() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -307,7 +307,7 @@ class meeting_test extends \advanced_testcase {
      * @covers ::join
      * @covers ::join_meeting
      */
-    public function test_join_user_limit_reached(): void {
+    public function test_join_user_limit_reached() {
         $this->resetAfterTest();
         set_config('bigbluebuttonbn_userlimit_editable', true);
         $this->setAdminUser();
@@ -354,7 +354,7 @@ class meeting_test extends \advanced_testcase {
      *
      * @covers ::get_attendees
      */
-    public function test_get_attendees(): void {
+    public function test_get_attendees() {
         $this->resetAfterTest();
         [$meeting, $useringroup, $usernotingroup, $groupid, $activity] =
             $this->prepare_meeting(instance::TYPE_ALL, null, NOGROUPS, true);
@@ -375,7 +375,7 @@ class meeting_test extends \advanced_testcase {
      *
      * @covers ::get_attendees
      */
-    public function test_participant_count(): void {
+    public function test_participant_count() {
         $this->resetAfterTest();
         [$meeting, $useringroup, $usernotingroup, $groupid, $activity] =
             $this->prepare_meeting(instance::TYPE_ALL, null, NOGROUPS, true);
@@ -417,7 +417,7 @@ class meeting_test extends \advanced_testcase {
      *
      * @return array[]
      */
-    public function get_data_can_join_with_dates(): array {
+    public static function get_data_can_join_with_dates(): array {
         return [
             'Instance Type ALL - No Group - Closed in past' => [
                 'type' => instance::TYPE_ALL,

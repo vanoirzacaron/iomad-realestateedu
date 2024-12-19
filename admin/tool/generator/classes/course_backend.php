@@ -260,7 +260,6 @@ class tool_generator_course_backend extends tool_generator_backend {
 
         // Log total time.
         $this->log('coursecompleted', round(microtime(true) - $entirestart, 1));
-        $this->end_log();
 
         if ($this->progress && !CLI_SCRIPT) {
             echo html_writer::end_tag('ul');
@@ -287,9 +286,7 @@ class tool_generator_course_backend extends tool_generator_backend {
             $courserecord['summary_format'] = $this->summaryformat;
         }
 
-        $return = $this->generator->create_course($courserecord, array('createsections' => true));
-        $this->end_log();
-        return $return;
+        return $this->generator->create_course($courserecord, array('createsections' => true));
     }
 
     /**
@@ -306,7 +303,6 @@ class tool_generator_course_backend extends tool_generator_backend {
         // Get existing users in order. We will 'fill up holes' in this up to
         // the required number.
         $this->log('checkaccounts', $count);
-        $this->end_log();
         $nextnumber = 1;
         $rs = $DB->get_recordset_select('user', $DB->sql_like('username', '?'),
                 array('tool_generator_%'), 'username', 'id, username');
@@ -374,9 +370,8 @@ class tool_generator_course_backend extends tool_generator_backend {
     private function create_user_accounts($first, $last) {
         global $CFG;
 
+        $this->log('createaccounts', (object)array('from' => $first, 'to' => $last), true);
         $count = $last - $first + 1;
-        $this->log('createusers', $count, true);
-
         $done = 0;
         for ($number = $first; $number <= $last; $number++, $done++) {
             // Work out username with 6-digit number.

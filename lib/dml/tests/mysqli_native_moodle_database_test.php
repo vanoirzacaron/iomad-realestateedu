@@ -70,6 +70,7 @@ class mysqli_native_moodle_database_test extends \advanced_testcase {
 
         $reflector = new ReflectionClass($db2);
         $rp = $reflector->getProperty('mysqli');
+        $rp->setAccessible(true);
         return $rp->getValue($db2);
     }
 

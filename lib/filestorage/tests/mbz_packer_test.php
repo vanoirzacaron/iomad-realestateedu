@@ -30,7 +30,7 @@ require_once($CFG->libdir . '/filestorage/file_progress.php');
  */
 class mbz_packer_test extends \advanced_testcase {
 
-    public function test_archive_with_both_options(): void {
+    public function test_archive_with_both_options() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -89,7 +89,7 @@ class mbz_packer_test extends \advanced_testcase {
         $this->assertEquals('frog', $out->get_content());
     }
 
-    public function usezipbackups_provider() {
+    public static function usezipbackups_provider(): array {
         return [
             'Use zips'  => [true],
             'Use tgz'   => [false],
@@ -99,7 +99,7 @@ class mbz_packer_test extends \advanced_testcase {
     /**
      * @dataProvider usezipbackups_provider
      */
-    public function test_extract_to_pathname_returnvalue_successful($usezipbackups): void {
+    public function test_extract_to_pathname_returnvalue_successful($usezipbackups) {
         global $CFG;
         $this->resetAfterTest();
 
@@ -122,7 +122,7 @@ class mbz_packer_test extends \advanced_testcase {
     /**
      * @dataProvider usezipbackups_provider
      */
-    public function test_extract_to_pathname_returnvalue_failure($usezipbackups): void {
+    public function test_extract_to_pathname_returnvalue_failure($usezipbackups) {
         global $CFG;
         $this->resetAfterTest();
 

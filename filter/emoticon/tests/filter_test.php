@@ -83,7 +83,7 @@ class filter_test extends \advanced_testcase {
      *
      * @dataProvider filter_emoticon_provider
      */
-    public function test_filter_emoticon($input, $format, $expected): void {
+    public function test_filter_emoticon($input, $format, $expected) {
         $this->resetAfterTest();
 
         $filter = new testable_filter_emoticon();
@@ -97,7 +97,7 @@ class filter_test extends \advanced_testcase {
      *
      * @return  array
      */
-    public function filter_emoticon_provider() {
+    public static function filter_emoticon_provider(): array {
         $grr = '(grr)';
         return [
             'FORMAT_MOODLE is not filtered' => [
@@ -166,7 +166,7 @@ class filter_test extends \advanced_testcase {
      * Tests the filter doesn't break anything if activated but invalid format passed.
      *
      */
-    public function test_filter_invalidformat(): void {
+    public function test_filter_invalidformat() {
         global $PAGE;
         $this->resetAfterTest();
 
@@ -183,7 +183,7 @@ class filter_test extends \advanced_testcase {
      * Tests the filter doesn't break anything if activated but no emoticons available.
      *
      */
-    public function test_filter_emptyemoticons(): void {
+    public function test_filter_emptyemoticons() {
         global $CFG;
         $this->resetAfterTest();
         // Empty the emoticons array.

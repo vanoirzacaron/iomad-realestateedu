@@ -40,14 +40,14 @@ use core_reportbuilder\local\report\{column, filter};
 class instance extends base {
 
     /**
-     * Database tables that this entity uses
+     * Database tables that this entity uses and their default aliases
      *
-     * @return string[]
+     * @return array
      */
-    protected function get_default_tables(): array {
+    protected function get_default_table_aliases(): array {
         return [
-            'tag_instance',
-            'context',
+            'tag_instance' => 'ti',
+            'context' => 'tictx',
         ];
     }
 

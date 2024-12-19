@@ -66,14 +66,14 @@ class grouping_handler_test extends advanced_testcase {
     /**
      * Test configuration context.
      */
-    public function test_get_configuration_context(): void {
+    public function test_get_configuration_context() {
         $this->assertInstanceOf(context_system::class, $this->handler->get_configuration_context());
     }
 
     /**
      * Test getting config URL.
      */
-    public function test_get_configuration_url(): void {
+    public function test_get_configuration_url() {
         $this->assertInstanceOf(moodle_url::class, $this->handler->get_configuration_url());
         $this->assertEquals('/group/grouping_customfield.php', $this->handler->get_configuration_url()->out_as_local_url());
     }
@@ -81,7 +81,7 @@ class grouping_handler_test extends advanced_testcase {
     /**
      * Test getting instance context.
      */
-    public function test_get_instance_context(): void {
+    public function test_get_instance_context() {
         global $COURSE;
         $this->resetAfterTest();
 
@@ -98,7 +98,7 @@ class grouping_handler_test extends advanced_testcase {
     /**
      * Test can configure check.
      */
-    public function test_can_configure(): void {
+    public function test_can_configure() {
         $this->resetAfterTest();
 
         $user = self::getDataGenerator()->create_user();
@@ -116,7 +116,7 @@ class grouping_handler_test extends advanced_testcase {
     /**
      * Test can edit functionality.
      */
-    public function test_can_edit(): void {
+    public function test_can_edit() {
         $this->resetAfterTest();
 
         $course = self::getDataGenerator()->create_course();
@@ -139,7 +139,7 @@ class grouping_handler_test extends advanced_testcase {
     /**
      * Test can view functionality.
      */
-    public function test_can_view(): void {
+    public function test_can_view() {
         $this->resetAfterTest();
 
         $course = self::getDataGenerator()->create_course();

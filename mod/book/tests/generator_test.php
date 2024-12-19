@@ -25,7 +25,7 @@ namespace mod_book;
  */
 class generator_test extends \advanced_testcase {
 
-    public function test_create_instance(): void {
+    public function test_create_instance() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -43,7 +43,7 @@ class generator_test extends \advanced_testcase {
         $this->assertEquals('One more book', $DB->get_field_select('book', 'name', 'id = :id', array('id' => $book->id)));
     }
 
-    public function test_create_chapter(): void {
+    public function test_create_chapter() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();

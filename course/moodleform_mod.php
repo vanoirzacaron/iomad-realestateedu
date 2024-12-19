@@ -751,11 +751,11 @@ abstract class moodleform_mod extends moodleform {
         $mform->addElement('checkbox', 'ratingtime', get_string('ratingtime', 'rating'));
         $mform->hideIf('ratingtime', $assessedfieldname, 'eq', 0);
 
-        $mform->addElement('date_time_selector', 'assesstimestart', get_string('fromdate'));
+        $mform->addElement('date_time_selector', 'assesstimestart', get_string('from'));
         $mform->hideIf('assesstimestart', $assessedfieldname, 'eq', 0);
         $mform->hideIf('assesstimestart', 'ratingtime');
 
-        $mform->addElement('date_time_selector', 'assesstimefinish', get_string('todate'));
+        $mform->addElement('date_time_selector', 'assesstimefinish', get_string('to'));
         $mform->hideIf('assesstimefinish', $assessedfieldname, 'eq', 0);
         $mform->hideIf('assesstimefinish', 'ratingtime');
 
@@ -868,9 +868,7 @@ abstract class moodleform_mod extends moodleform {
         $mform->addElement('hidden', 'return', 0);
         $mform->setType('return', PARAM_BOOL);
 
-        // The section number where to return: -1 means no section (0 can't be used because it is a valid section number and
-        // null can't be used because it's converted to 0).
-        $mform->addElement('hidden', 'sr', -1);
+        $mform->addElement('hidden', 'sr', 0);
         $mform->setType('sr', PARAM_INT);
 
         $mform->addElement('hidden', 'beforemod', 0);
@@ -1056,7 +1054,8 @@ abstract class moodleform_mod extends moodleform {
             $buttonarray[] = &$mform->createElement('cancel');
         }
 
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        $grp = $mform->addGroup($buttonarray, 'buttonar', get_string('formactions', 'form'), array(' '), false);
+        $grp->setHiddenLabel(true);
         $mform->setType('buttonar', PARAM_RAW);
     }
 

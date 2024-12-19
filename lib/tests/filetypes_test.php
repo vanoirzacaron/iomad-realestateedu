@@ -32,7 +32,7 @@ require_once($CFG->libdir . '/filelib.php');
  */
 class filetypes_test extends \advanced_testcase {
 
-    public function test_add_type(): void {
+    public function test_add_type() {
         $this->resetAfterTest();
 
         // Check the filetypes to be added do not exist yet (basically this
@@ -91,7 +91,7 @@ class filetypes_test extends \advanced_testcase {
         }
     }
 
-    public function test_update_type(): void {
+    public function test_update_type() {
         $this->resetAfterTest();
 
         // Check previous value for the MIME type of Word documents.
@@ -148,7 +148,7 @@ class filetypes_test extends \advanced_testcase {
         }
     }
 
-    public function test_delete_type(): void {
+    public function test_delete_type() {
         $this->resetAfterTest();
 
         // Filetype exists.
@@ -178,7 +178,7 @@ class filetypes_test extends \advanced_testcase {
         $this->assertArrayNotHasKey('frog', $types);
     }
 
-    public function test_revert_type_to_default(): void {
+    public function test_revert_type_to_default() {
         $this->resetAfterTest();
 
         // Delete and then revert.
@@ -209,41 +209,41 @@ class filetypes_test extends \advanced_testcase {
      * Check that the logic cleans up the variable by deleting parts that are
      * no longer needed.
      */
-    public function test_cleanup(): void {
+    public function test_cleanup() {
         global $CFG;
         $this->resetAfterTest();
 
         // The custom filetypes setting is empty to start with.
-        $this->assertObjectNotHasProperty('customfiletypes', $CFG);
+        $this->assertObjectNotHasAttribute('customfiletypes', $CFG);
 
         // Add a custom filetype, then delete it.
         core_filetypes::add_type('frog', 'application/x-frog', 'document');
-        $this->assertObjectHasProperty('customfiletypes', $CFG);
+        $this->assertObjectHasAttribute('customfiletypes', $CFG);
         core_filetypes::delete_type('frog');
-        $this->assertObjectNotHasProperty('customfiletypes', $CFG);
+        $this->assertObjectNotHasAttribute('customfiletypes', $CFG);
 
         // Change a standard filetype, then change it back.
         core_filetypes::update_type('asm', 'asm', 'text/plain', 'document');
-        $this->assertObjectHasProperty('customfiletypes', $CFG);
+        $this->assertObjectHasAttribute('customfiletypes', $CFG);
         core_filetypes::update_type('asm', 'asm', 'text/plain', 'sourcecode');
-        $this->assertObjectNotHasProperty('customfiletypes', $CFG);
+        $this->assertObjectNotHasAttribute('customfiletypes', $CFG);
 
         // Delete a standard filetype, then add it back (the same).
         core_filetypes::delete_type('asm');
-        $this->assertObjectHasProperty('customfiletypes', $CFG);
+        $this->assertObjectHasAttribute('customfiletypes', $CFG);
         core_filetypes::add_type('asm', 'text/plain', 'sourcecode');
-        $this->assertObjectNotHasProperty('customfiletypes', $CFG);
+        $this->assertObjectNotHasAttribute('customfiletypes', $CFG);
 
         // Revert a changed type.
         core_filetypes::update_type('asm', 'asm', 'text/plain', 'document');
-        $this->assertObjectHasProperty('customfiletypes', $CFG);
+        $this->assertObjectHasAttribute('customfiletypes', $CFG);
         core_filetypes::revert_type_to_default('asm');
-        $this->assertObjectNotHasProperty('customfiletypes', $CFG);
+        $this->assertObjectNotHasAttribute('customfiletypes', $CFG);
 
         // Revert a deleted type.
         core_filetypes::delete_type('asm');
-        $this->assertObjectHasProperty('customfiletypes', $CFG);
+        $this->assertObjectHasAttribute('customfiletypes', $CFG);
         core_filetypes::revert_type_to_default('asm');
-        $this->assertObjectNotHasProperty('customfiletypes', $CFG);
+        $this->assertObjectNotHasAttribute('customfiletypes', $CFG);
     }
 }

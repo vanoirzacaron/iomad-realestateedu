@@ -12,8 +12,6 @@ class user_message_form extends moodleform {
         $mform =& $this->_form;
         $mform->addElement('header', 'general', get_string('message', 'message'));
 
-        $mform->addElement('hidden', 'returnurl');
-        $mform->setType('returnurl', PARAM_LOCALURL);
 
         $mform->addElement('editor', 'messagebody', get_string('messagebody'), null, null);
         $mform->addRule('messagebody', '', 'required', null, 'server');

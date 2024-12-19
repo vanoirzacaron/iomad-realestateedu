@@ -1,5 +1,5 @@
 <?php
-// This file is part of SAML2 Authentication Plugin
+// This file is part of IOMAD SAML2 Authentication Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class auth_iomadsaml2_sitedata_test extends advanced_testcase {
     public function test_it_creates_the_directory_if_it_does_not_exist() {
         global $CFG;
 
-        $expected = "{$CFG->dataroot}/saml2";
+        $expected = "{$CFG->dataroot}/iomadsaml2";
         self::assertFalse(file_exists($expected));
 
         /** @var auth_plugin_iomadsaml2 $iomadsaml2 */
@@ -38,7 +38,7 @@ class auth_iomadsaml2_sitedata_test extends advanced_testcase {
         self::assertTrue(file_exists($expected));
 
         rmdir($expected);
-        $actual = $iomadsaml2->get_saml2_directory();
+        $actual = $iomadsaml2->get_iomadsaml2_directory();
         self::assertTrue(file_exists($expected));
 
         self::assertSame($expected, $actual);

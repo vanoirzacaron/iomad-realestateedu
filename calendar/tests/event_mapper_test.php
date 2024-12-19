@@ -51,7 +51,7 @@ class event_mapper_test extends \advanced_testcase {
     /**
      * Test legacy event -> event.
      */
-    public function test_from_legacy_event_to_event(): void {
+    public function test_from_legacy_event_to_event() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $legacyevent = $this->create_event();
@@ -65,7 +65,7 @@ class event_mapper_test extends \advanced_testcase {
     /**
      * Test event -> legacy event.
      */
-    public function test_from_event_to_legacy_event(): void {
+    public function test_from_event_to_legacy_event() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $legacyevent = $this->create_event(['modname' => 'assign', 'instance' => 1]);
@@ -80,7 +80,7 @@ class event_mapper_test extends \advanced_testcase {
     /**
      * Test event -> stdClass.
      */
-    public function test_from_event_to_stdclass(): void {
+    public function test_from_event_to_stdclass() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $legacyevent = $this->create_event(['modname' => 'assign', 'instance' => 1]);
@@ -98,7 +98,7 @@ class event_mapper_test extends \advanced_testcase {
     /**
      * Test event -> array.
      */
-    public function test_from_event_to_assoc_array(): void {
+    public function test_from_event_to_assoc_array() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $legacyevent = $this->create_event(['modname' => 'assign', 'instance' => 1]);
@@ -116,7 +116,7 @@ class event_mapper_test extends \advanced_testcase {
     /**
      * Test for action event -> legacy event.
      */
-    public function test_from_action_event_to_legacy_event(): void {
+    public function test_from_action_event_to_legacy_event() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $legacyevent = $this->create_event(['modname' => 'assign', 'instance' => 1]);

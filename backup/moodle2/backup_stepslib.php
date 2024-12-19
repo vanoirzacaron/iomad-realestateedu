@@ -400,14 +400,9 @@ class backup_section_structure_step extends backup_structure_step {
 
         // Define each element separated
 
-        $section = new backup_nested_element(
-            'section',
-            ['id'],
-            [
+        $section = new backup_nested_element('section', array('id'), array(
                 'number', 'name', 'summary', 'summaryformat', 'sequence', 'visible',
-                'availabilityjson', 'component', 'itemid', 'timemodified',
-            ]
-        );
+                'availabilityjson', 'timemodified'));
 
         // attach format plugin structure to $section element, only one allowed
         $this->add_plugin_structure('format', $section, false);
@@ -477,7 +472,7 @@ class backup_course_structure_step extends backup_structure_step {
 
         $customfields = new backup_nested_element('customfields');
         $customfield = new backup_nested_element('customfield', array('id'), array(
-            'shortname', 'type', 'value', 'valueformat', 'valuetrust',
+          'shortname', 'type', 'value', 'valueformat'
         ));
 
         $courseformatoptions = new backup_nested_element('courseformatoptions');
@@ -561,7 +556,6 @@ class backup_course_structure_step extends backup_structure_step {
         if ($this->get_setting_value('customfield')) {
             $handler = core_course\customfield\course_handler::create();
             $fieldsforbackup = $handler->get_instance_data_for_backup($this->task->get_courseid());
-            $handler->backup_define_structure($this->task->get_courseid(), $customfield);
             $customfield->set_source_array($fieldsforbackup);
         }
 
@@ -1365,7 +1359,7 @@ class backup_groups_structure_step extends backup_structure_step {
 
         $groupcustomfields = new backup_nested_element('groupcustomfields');
         $groupcustomfield = new backup_nested_element('groupcustomfield', ['id'], [
-            'shortname', 'type', 'value', 'valueformat', 'valuetrust', 'groupid']);
+            'shortname', 'type', 'value', 'valueformat', 'groupid']);
 
         $members = new backup_nested_element('group_members');
 
@@ -1380,7 +1374,7 @@ class backup_groups_structure_step extends backup_structure_step {
 
         $groupingcustomfields = new backup_nested_element('groupingcustomfields');
         $groupingcustomfield = new backup_nested_element('groupingcustomfield', ['id'], [
-            'shortname', 'type', 'value', 'valueformat', 'valuetrust', 'groupingid']);
+            'shortname', 'type', 'value', 'valueformat', 'groupingid']);
 
         $groupinggroups = new backup_nested_element('grouping_groups');
 

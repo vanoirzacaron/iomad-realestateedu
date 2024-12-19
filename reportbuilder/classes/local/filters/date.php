@@ -67,9 +67,6 @@ class date extends base {
     /** @var int Date before [X relative date unit(s)] */
     public const DATE_BEFORE = 9;
 
-    /** @var int Date after [X relative date unit(s)] */
-    public const DATE_AFTER = 10;
-
     /** @var int Relative date unit for an hour */
     public const DATE_UNIT_HOUR = 0;
 
@@ -97,7 +94,6 @@ class date extends base {
             self::DATE_EMPTY => new lang_string('filterisempty', 'core_reportbuilder'),
             self::DATE_RANGE => new lang_string('filterrange', 'core_reportbuilder'),
             self::DATE_BEFORE => new lang_string('filterdatebefore', 'core_reportbuilder'),
-            self::DATE_AFTER => new lang_string('filterdateafter', 'core_reportbuilder'),
             self::DATE_LAST => new lang_string('filterdatelast', 'core_reportbuilder'),
             self::DATE_CURRENT => new lang_string('filterdatecurrent', 'core_reportbuilder'),
             self::DATE_NEXT => new lang_string('filterdatenext', 'core_reportbuilder'),
@@ -132,7 +128,7 @@ class date extends base {
         $mform->hideIf("{$this->name}_value", "{$this->name}_operator", 'in', array_merge($typesnounit, [self::DATE_CURRENT]));
 
         // Unit selector for last and next operators.
-        $unitlabel = get_string('filterfieldunit', 'core_reportbuilder', $this->get_header());
+        $unitlabel = get_string('filterdurationunit', 'core_reportbuilder', $this->get_header());
         $units = [
             self::DATE_UNIT_HOUR => get_string('filterdatehours', 'core_reportbuilder'),
             self::DATE_UNIT_DAY => get_string('filterdatedays', 'core_reportbuilder'),
@@ -212,13 +208,6 @@ class date extends base {
                 // We can use the start date of the "Last" operator as the end date here.
                 $sql = "{$fieldsql} < :{$param}";
                 $params[$param] = self::get_relative_timeframe(self::DATE_LAST, $dateunitvalue, $dateunit)[0];
-                break;
-            case self::DATE_AFTER:
-                $param = database::generate_param_name();
-
-                // We can use the end date of the "Next" operator as the start date here.
-                $sql = "{$fieldsql} > :{$param}";
-                $params[$param] = self::get_relative_timeframe(self::DATE_NEXT, $dateunitvalue, $dateunit)[1];
                 break;
             // Relative helper method can handle these three cases.
             case self::DATE_LAST:

@@ -150,9 +150,9 @@ Feature: We can use Single view
     Given I click on user menu "Grainne Beauchamp"
     And I choose "Single view for this user" in the open action menu
     Then I should see "Gronya,Beecham"
-    And I click on "Nee,Chumlee" "link" in the ".stickyfooter" "css_element"
+    And I follow "Nee,Chumlee"
     Then I should see "Nee,Chumlee"
-    And I click on "Gronya,Beecham" "link" in the ".stickyfooter" "css_element"
+    And I follow "Gronya,Beecham"
     Then I should see "Gronya,Beecham"
     And I open the action menu in "Test assignment four" "table_row"
     And I choose "Show all grades" in the open action menu

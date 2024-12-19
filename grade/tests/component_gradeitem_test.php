@@ -45,7 +45,7 @@ class component_gradeitem_test extends advanced_testcase {
      *
      * @covers ::get_formatted_grade_for_user
      */
-    public function test_get_formatted_grade_for_user_with_points(): void {
+    public function test_get_formatted_grade_for_user_with_points() {
         $grade = $this->initialise_test_and_get_grade_item(5, 4);
 
         $this->assertEquals(4, $grade->grade);
@@ -58,7 +58,7 @@ class component_gradeitem_test extends advanced_testcase {
      *
      * @covers ::get_formatted_grade_for_user
      */
-    public function test_get_formatted_grade_for_user_with_letters(): void {
+    public function test_get_formatted_grade_for_user_with_letters() {
         $grade = $this->initialise_test_and_get_grade_item(5, 4, GRADE_DISPLAY_TYPE_LETTER);
 
         $this->assertEquals(4, $grade->grade);
@@ -71,7 +71,7 @@ class component_gradeitem_test extends advanced_testcase {
      *
      * @covers ::get_formatted_grade_for_user
      */
-    public function test_get_formatted_grade_for_user_with_percentage(): void {
+    public function test_get_formatted_grade_for_user_with_percentage() {
         $grade = $this->initialise_test_and_get_grade_item(5, 4, GRADE_DISPLAY_TYPE_PERCENTAGE);
 
         $this->assertEquals(4, $grade->grade);
@@ -84,7 +84,7 @@ class component_gradeitem_test extends advanced_testcase {
      *
      * @covers ::get_formatted_grade_for_user
      */
-    public function test_get_formatted_grade_for_user_with_points_letter(): void {
+    public function test_get_formatted_grade_for_user_with_points_letter() {
         $grade = $this->initialise_test_and_get_grade_item(5, 4, GRADE_DISPLAY_TYPE_REAL_LETTER);
 
         $this->assertEquals(4, $grade->grade);
@@ -97,7 +97,7 @@ class component_gradeitem_test extends advanced_testcase {
      *
      * @covers ::get_formatted_grade_for_user
      */
-    public function test_get_formatted_grade_for_user_with_scales(): void {
+    public function test_get_formatted_grade_for_user_with_scales() {
         $grade = $this->initialise_test_and_get_grade_item(-2, 2);
 
         $this->assertEquals(2, $grade->grade);
@@ -110,7 +110,7 @@ class component_gradeitem_test extends advanced_testcase {
      *
      * @covers ::get_formatted_grade_for_user
      */
-    public function test_get_formatted_grade_for_user_with_rubric(): void {
+    public function test_get_formatted_grade_for_user_with_rubric() {
         $this->resetAfterTest();
 
         $generator = \testing_util::get_data_generator();
@@ -163,7 +163,7 @@ class component_gradeitem_test extends advanced_testcase {
      *
      * @covers ::get_formatted_grade_for_user
      */
-    public function test_get_formatted_grade_for_user_with_marking_guide(): void {
+    public function test_get_formatted_grade_for_user_with_marking_guide() {
         $this->resetAfterTest();
 
         $generator = \testing_util::get_data_generator();

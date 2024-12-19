@@ -22,17 +22,17 @@ final class FileBasedStrategy implements CachingStrategyInterface
     public const ESCAPED_LINE_FEED_CHARACTER = '_x000A_';
 
     /** @var FileSystemHelper Helper to perform file system operations */
-    private readonly FileSystemHelper $fileSystemHelper;
+    private FileSystemHelper $fileSystemHelper;
 
     /** @var string Temporary folder where the temporary files will be created */
-    private readonly string $tempFolder;
+    private string $tempFolder;
 
     /**
      * @var int Maximum number of strings that can be stored in one temp file
      *
      * @see CachingStrategyFactory::MAX_NUM_STRINGS_PER_TEMP_FILE
      */
-    private readonly int $maxNumStringsPerTempFile;
+    private int $maxNumStringsPerTempFile;
 
     /** @var null|resource Pointer to the last temp file a shared string was written to */
     private $tempFilePointer;
@@ -61,6 +61,8 @@ final class FileBasedStrategy implements CachingStrategyInterface
         $this->tempFolder = $this->fileSystemHelper->createFolder($tempFolder, uniqid('sharedstrings'));
 
         $this->maxNumStringsPerTempFile = $maxNumStringsPerTempFile;
+
+        $this->tempFilePointer = null;
     }
 
     /**
@@ -108,7 +110,7 @@ final class FileBasedStrategy implements CachingStrategyInterface
      *
      * @return string The shared string at the given index
      *
-     * @throws SharedStringNotFoundException If no shared string found for the given index
+     * @throws \OpenSpout\Reader\Exception\SharedStringNotFoundException If no shared string found for the given index
      */
     public function getStringAtIndex(int $sharedStringIndex): string
     {

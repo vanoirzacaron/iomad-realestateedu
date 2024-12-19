@@ -81,7 +81,7 @@ EOD;
     /**
      * Test for noembed child tags
      */
-    public function test_check(): void {
+    public function test_check() {
         $results = $this->get_checker_results($this->htmlfail);
         $this->assertTrue($results[0]->element->tagName == 'embed');
 

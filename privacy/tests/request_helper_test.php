@@ -43,7 +43,7 @@ class request_helper_test extends advanced_testcase {
      *
      * @covers ::get_context_data
      */
-    public function test_get_context_data_context_module(): void {
+    public function test_get_context_data_context_module() {
         $this->resetAfterTest();
 
         // Setup.
@@ -82,7 +82,7 @@ class request_helper_test extends advanced_testcase {
      *
      * @covers ::get_context_data
      */
-    public function test_get_context_data_context_block(): void {
+    public function test_get_context_data_context_block() {
         $this->resetAfterTest();
 
         // Setup.
@@ -103,7 +103,7 @@ class request_helper_test extends advanced_testcase {
      *
      * @covers ::get_context_data
      */
-    public function test_get_context_data_context_module_completion(): void {
+    public function test_get_context_data_context_module_completion() {
         $this->resetAfterTest();
 
         // Create a module and set completion.
@@ -138,7 +138,7 @@ class request_helper_test extends advanced_testcase {
      *
      * @covers ::export_context_files
      */
-    public function test_export_context_files_context_module_no_files(): void {
+    public function test_export_context_files_context_module_no_files() {
         $this->resetAfterTest();
 
         // Setup.
@@ -164,7 +164,7 @@ class request_helper_test extends advanced_testcase {
      *
      * @covers ::export_context_files
      */
-    public function test_export_context_files_context_course_no_files(): void {
+    public function test_export_context_files_context_course_no_files() {
         $this->resetAfterTest();
 
         // Setup.
@@ -184,7 +184,7 @@ class request_helper_test extends advanced_testcase {
      *
      * @covers ::export_context_files
      */
-    public function test_export_context_files_context_course_intro_files(): void {
+    public function test_export_context_files_context_course_intro_files() {
         $this->resetAfterTest();
 
         // Setup.

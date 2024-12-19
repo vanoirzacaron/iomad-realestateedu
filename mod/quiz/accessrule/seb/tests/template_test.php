@@ -38,7 +38,7 @@ class template_test extends \advanced_testcase {
     /**
      * Test that template saved with valid content.
      */
-    public function test_template_is_saved(): void {
+    public function test_template_is_saved() {
         global $DB;
         $data = new \stdClass();
         $data->name = 'Test name';
@@ -69,7 +69,7 @@ class template_test extends \advanced_testcase {
     /**
      * Test that template is not saved with invalid content.
      */
-    public function test_template_is_not_saved_with_invalid_content(): void {
+    public function test_template_is_not_saved_with_invalid_content() {
         $this->expectException(\core\invalid_persistent_exception::class);
         $this->expectExceptionMessage('Invalid SEB config template');
 
@@ -85,7 +85,7 @@ class template_test extends \advanced_testcase {
     /**
      * Test that a template cannot be deleted when assigned to a quiz.
      */
-    public function test_cannot_delete_template_when_assigned_to_quiz(): void {
+    public function test_cannot_delete_template_when_assigned_to_quiz() {
         global $DB;
 
         $data = new \stdClass();

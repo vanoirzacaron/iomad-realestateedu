@@ -157,6 +157,7 @@ class ADODB_ldap extends ADOConnection {
 		}
 	}
 
+	/* returns _queryID or false */
 	function _query($sql,$inputarr=false)
 	{
 		$rs = @ldap_search( $this->_connectionID, $this->database, $sql );

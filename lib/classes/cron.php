@@ -363,9 +363,6 @@ class cron {
             $where .= ' AND classname = :classname';
             $params['classname'] = \core\task\manager::get_canonical_class_name($classname);
         }
-
-        // Only rerun the failed tasks that allow to be re-tried or have the remaining attempts available.
-        $where .= ' AND (attemptsavailable > 0 OR attemptsavailable IS NULL)';
         $tasks = $DB->get_records_sql("SELECT * from {task_adhoc} WHERE $where", $params);
         foreach ($tasks as $t) {
             self::run_adhoc_task($t->id);
@@ -382,8 +379,6 @@ class cron {
     public static function run_inner_scheduled_task(\core\task\task_base $task) {
         global $CFG, $DB;
         $debuglevel = $CFG->debug;
-        $debugdisplay = $CFG->debugdisplay;
-        $CFG->debugdisplay = 1;
 
         \core\task\manager::scheduled_task_starting($task);
         \core\task\logmanager::start_logging($task);
@@ -405,7 +400,7 @@ class cron {
             // Temporarily increase debug level if task has failed and debugging isn't already at maximum.
             if ($debuglevel !== DEBUG_DEVELOPER && $faildelay = $task->get_fail_delay()) {
                 mtrace('Debugging increased temporarily due to faildelay of ' . $faildelay);
-                set_debugging(DEBUG_DEVELOPER, 1);
+                set_debugging(DEBUG_DEVELOPER);
             }
             $task->execute();
             if ($DB->is_transaction_started()) {
@@ -441,10 +436,6 @@ class cron {
             if ($CFG->debug !== $debuglevel) {
                 set_debugging($debuglevel);
             }
-
-            // Reset debugdisplay back.
-            $CFG->debugdisplay = $debugdisplay;
-
             // Reset back to the standard admin user.
             self::setup_user();
             self::set_process_title('Waiting for next scheduled task');
@@ -461,8 +452,6 @@ class cron {
     public static function run_inner_adhoc_task(\core\task\adhoc_task $task) {
         global $CFG, $DB;
         $debuglevel = $CFG->debug;
-        $debugdisplay = $CFG->debugdisplay;
-        $CFG->debugdisplay = 1;
 
         \core\task\manager::adhoc_task_starting($task);
         \core\task\logmanager::start_logging($task);
@@ -514,7 +503,7 @@ class cron {
             // Temporarily increase debug level if task has failed and debugging isn't already at maximum.
             if ($debuglevel !== DEBUG_DEVELOPER && $faildelay = $task->get_fail_delay()) {
                 mtrace('Debugging increased temporarily due to faildelay of ' . $faildelay);
-                set_debugging(DEBUG_DEVELOPER, 1);
+                set_debugging(DEBUG_DEVELOPER);
             }
             $task->execute();
             if ($DB->is_transaction_started()) {
@@ -550,10 +539,6 @@ class cron {
             if ($CFG->debug !== $debuglevel) {
                 set_debugging($debuglevel);
             }
-
-            // Reset debugdisplay back.
-            $CFG->debugdisplay = $debugdisplay;
-
             // Reset back to the standard admin user.
             self::setup_user();
             self::prepare_core_renderer(true);

@@ -38,12 +38,12 @@ class helper_test extends \basic_testcase {
     /*
      * test backup_helper class
      */
-    function test_backup_helper(): void {
+    function test_backup_helper() {
     }
 
     /*
      * test backup_general_helper class
      */
-    function test_backup_general_helper(): void {
+    function test_backup_general_helper() {
     }
 }

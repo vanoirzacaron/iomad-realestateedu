@@ -74,14 +74,14 @@ class backup_dbops_test extends \advanced_testcase {
     /*
      * test backup_ops class
      */
-    function test_backup_dbops(): void {
+    function test_backup_dbops() {
         // Nothing to do here, abstract class + exception, will be tested by the rest
     }
 
     /*
      * test backup_controller_dbops class
      */
-    function test_backup_controller_dbops(): void {
+    function test_backup_controller_dbops() {
         global $DB;
 
         $dbman = $DB->get_manager(); // Going to use some database_manager services for testing
@@ -175,7 +175,7 @@ class backup_dbops_test extends \advanced_testcase {
     /**
      * Check backup_includes_files
      */
-    function test_backup_controller_dbops_includes_files(): void {
+    function test_backup_controller_dbops_includes_files() {
         global $DB;
 
         $dbman = $DB->get_manager(); // Going to use some database_manager services for testing

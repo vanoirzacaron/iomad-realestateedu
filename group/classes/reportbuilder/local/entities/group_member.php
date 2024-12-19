@@ -34,13 +34,13 @@ use core_reportbuilder\local\report\{column, filter};
 class group_member extends base {
 
     /**
-     * Database tables that this entity uses
+     * Database tables that this entity uses and their default aliases
      *
-     * @return string[]
+     * @return array
      */
-    protected function get_default_tables(): array {
+    protected function get_default_table_aliases(): array {
         return [
-            'groups_members',
+            'groups_members' => 'gm',
         ];
     }
 

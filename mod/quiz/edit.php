@@ -40,7 +40,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use mod_quiz\output\edit_nav_actions;
 use mod_quiz\quiz_settings;
 
 require_once(__DIR__ . '/../../config.php');
@@ -187,12 +186,7 @@ if ($message = optional_param('message', '', PARAM_TEXT)) {
     core\notification::add($message, core\notification::SUCCESS);
 }
 
-$tertiarynav = new edit_nav_actions($cmid, edit_nav_actions::SUMMARY);
-
-// Do output.
-echo $output->header();
-echo $output->render($tertiarynav);
-
+echo $OUTPUT->header();
 // Initialise the JavaScript.
 $quizeditconfig = new stdClass();
 $quizeditconfig->url = $thispageurl->out(true, ['qbanktool' => '0']);
@@ -217,4 +211,4 @@ echo $output->edit_page($quizobj, $structure, $contexts, $thispageurl, $pagevars
 // Questions wrapper end.
 echo html_writer::end_tag('div');
 
-echo $output->footer();
+echo $OUTPUT->footer();

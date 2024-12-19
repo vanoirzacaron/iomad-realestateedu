@@ -52,7 +52,7 @@ class lib_test extends \advanced_testcase {
      * Test resource_view
      * @return void
      */
-    public function test_resource_view(): void {
+    public function test_resource_view() {
         global $CFG;
 
         $CFG->enablecompletion = 1;
@@ -96,7 +96,7 @@ class lib_test extends \advanced_testcase {
      *
      * Note: This currently doesn't test every aspect of the function, mainly focusing on the icon.
      */
-    public function test_get_coursemodule_info(): void {
+    public function test_get_coursemodule_info() {
         global $DB, $USER;
 
         $this->resetAfterTest();
@@ -153,7 +153,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals('f/document', $info->icon);
     }
 
-    public function test_resource_core_calendar_provide_event_action(): void {
+    public function test_resource_core_calendar_provide_event_action() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -179,7 +179,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_resource_core_calendar_provide_event_action_already_completed(): void {
+    public function test_resource_core_calendar_provide_event_action_already_completed() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -216,7 +216,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test mod_resource_core_calendar_provide_event_action with user override
      */
-    public function test_resource_core_calendar_provide_event_action_user_override(): void {
+    public function test_resource_core_calendar_provide_event_action_user_override() {
         global $CFG, $USER;
 
         $this->resetAfterTest();

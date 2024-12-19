@@ -31,7 +31,7 @@ class outputrenderers_test extends \advanced_testcase {
      *
      * @covers ::get_generated_url_for_course
      */
-    public function test_get_generated_url_for_course_image(): void {
+    public function test_get_generated_url_for_course_image() {
         global $OUTPUT;
 
         $this->resetAfterTest();

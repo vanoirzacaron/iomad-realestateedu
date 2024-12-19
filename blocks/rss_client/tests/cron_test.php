@@ -33,7 +33,7 @@ class cron_test extends \advanced_testcase {
      * Test that when a record has a skipuntil time that is greater
      * than the current time the attempt is skipped.
      */
-    public function test_skip(): void {
+    public function test_skip() {
         global $DB, $CFG;
         $this->resetAfterTest();
         // Create a RSS feed record with a skip until time set to the future.
@@ -67,7 +67,7 @@ class cron_test extends \advanced_testcase {
      *
      * @return  array
      */
-    public function skip_time_increase_provider(): array {
+    public static function skip_time_increase_provider(): array {
         return [
             'Never failed' => [
                 'skiptime' => 0,
@@ -93,7 +93,7 @@ class cron_test extends \advanced_testcase {
      *
      * @dataProvider    skip_time_increase_provider
      */
-    public function test_error($skiptime, $skipuntil, $newvalue): void {
+    public function test_error($skiptime, $skipuntil, $newvalue) {
         global $DB, $CFG;
         $this->resetAfterTest();
 

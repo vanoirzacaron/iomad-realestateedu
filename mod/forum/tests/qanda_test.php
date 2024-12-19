@@ -88,7 +88,7 @@ class qanda_test extends \advanced_testcase {
      * Test that a user who has not posted in a q&a forum does not receive
      * notificatinos.
      */
-    public function test_user_has_not_posted(): void {
+    public function test_user_has_not_posted() {
         global $CFG, $DB;
 
         $this->resetAfterTest(true);

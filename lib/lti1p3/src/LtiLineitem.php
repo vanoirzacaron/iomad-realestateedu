@@ -2,11 +2,8 @@
 
 namespace Packback\Lti1p3;
 
-use Packback\Lti1p3\Concerns\JsonStringable;
-
 class LtiLineitem
 {
-    use JsonStringable;
     private $id;
     private $score_maximum;
     private $label;
@@ -15,9 +12,8 @@ class LtiLineitem
     private $tag;
     private $start_date_time;
     private $end_date_time;
-    private ?bool $grades_released;
 
-    public function __construct(?array $lineitem = null)
+    public function __construct(array $lineitem = null)
     {
         $this->id = $lineitem['id'] ?? null;
         $this->score_maximum = $lineitem['scoreMaximum'] ?? null;
@@ -27,20 +23,12 @@ class LtiLineitem
         $this->tag = $lineitem['tag'] ?? null;
         $this->start_date_time = $lineitem['startDateTime'] ?? null;
         $this->end_date_time = $lineitem['endDateTime'] ?? null;
-        $this->grades_released = $lineitem['gradesReleased'] ?? null;
     }
 
-    /**
-     * Static function to allow for method chaining without having to assign to a variable first.
-     */
-    public static function new(?array $lineItem = null): self
+    public function __toString()
     {
-        return new LtiLineitem($lineItem);
-    }
-
-    public function getArray(): array
-    {
-        return [
+        // Additionally, includes the call back to filter out only NULL values
+        return json_encode(array_filter([
             'id' => $this->id,
             'scoreMaximum' => $this->score_maximum,
             'label' => $this->label,
@@ -49,8 +37,15 @@ class LtiLineitem
             'tag' => $this->tag,
             'startDateTime' => $this->start_date_time,
             'endDateTime' => $this->end_date_time,
-            'gradesReleased' => $this->grades_released,
-        ];
+        ], '\Packback\Lti1p3\Helpers\Helpers::checkIfNullValue'));
+    }
+
+    /**
+     * Static function to allow for method chaining without having to assign to a variable first.
+     */
+    public static function new()
+    {
+        return new LtiLineitem();
     }
 
     public function getId()
@@ -58,7 +53,7 @@ class LtiLineitem
         return $this->id;
     }
 
-    public function setId($value): self
+    public function setId($value)
     {
         $this->id = $value;
 
@@ -70,7 +65,7 @@ class LtiLineitem
         return $this->label;
     }
 
-    public function setLabel($value): self
+    public function setLabel($value)
     {
         $this->label = $value;
 
@@ -82,7 +77,7 @@ class LtiLineitem
         return $this->score_maximum;
     }
 
-    public function setScoreMaximum($value): self
+    public function setScoreMaximum($value)
     {
         $this->score_maximum = $value;
 
@@ -94,7 +89,7 @@ class LtiLineitem
         return $this->resource_id;
     }
 
-    public function setResourceId($value): self
+    public function setResourceId($value)
     {
         $this->resource_id = $value;
 
@@ -106,7 +101,7 @@ class LtiLineitem
         return $this->resource_link_id;
     }
 
-    public function setResourceLinkId($value): self
+    public function setResourceLinkId($value)
     {
         $this->resource_link_id = $value;
 
@@ -118,7 +113,7 @@ class LtiLineitem
         return $this->tag;
     }
 
-    public function setTag($value): self
+    public function setTag($value)
     {
         $this->tag = $value;
 
@@ -130,7 +125,7 @@ class LtiLineitem
         return $this->start_date_time;
     }
 
-    public function setStartDateTime($value): self
+    public function setStartDateTime($value)
     {
         $this->start_date_time = $value;
 
@@ -142,21 +137,9 @@ class LtiLineitem
         return $this->end_date_time;
     }
 
-    public function setEndDateTime($value): self
+    public function setEndDateTime($value)
     {
         $this->end_date_time = $value;
-
-        return $this;
-    }
-
-    public function getGradesReleased(): ?bool
-    {
-        return $this->grades_released;
-    }
-
-    public function setGradesReleased(?bool $value): self
-    {
-        $this->grades_released = $value;
 
         return $this;
     }

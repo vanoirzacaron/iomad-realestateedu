@@ -78,6 +78,7 @@ $data = $tag->to_object();
 $data->relatedtags = core_tag_tag::get_item_tags_array('core', 'tag', $tag->id);
 
 $options = new stdClass();
+$options->smiley = false;
 $options->filter = false;
 
 // convert and remove any XSS

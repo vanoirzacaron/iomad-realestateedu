@@ -34,7 +34,7 @@ class message_helper_test extends \base_testcase {
      * @param bool $expected the expected return of is_instructor_launch() given the JWT data.
      * @covers ::is_instructor_launch
      */
-    public function test_is_instructor_launch(array $jwtdata, bool $expected): void {
+    public function test_is_instructor_launch(array $jwtdata, bool $expected) {
         $this->assertEquals($expected, message_helper::is_instructor_launch($jwtdata));
     }
 
@@ -43,7 +43,7 @@ class message_helper_test extends \base_testcase {
      *
      * @return array the array of test JWT data.
      */
-    public function message_roles_provider(): array {
+    public static function message_roles_provider(): array {
         return [
             'Roles claim present, includes learner role only' => [
                 'jwtdata' => [

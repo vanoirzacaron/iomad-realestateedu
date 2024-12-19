@@ -450,7 +450,7 @@ class dbTable extends dbObject {
 	 * @param string $type	ADODB datadict field type.
 	 * @param string $size	Field size
 	 * @param array $opts	Field options array
-	 * @return void
+	 * @return array Field specifier array
 	 */
 	function addField( $name, $type, $size = NULL, $opts = NULL ) {
 		$field_id = $this->fieldID( $name );
@@ -486,7 +486,7 @@ class dbTable extends dbObject {
 	 * @param string $field	Field name
 	 * @param string $opt ADOdb field option
 	 * @param mixed $value Field option value
-	 * @return void
+	 * @return array Field specifier array
 	 */
 	function addFieldOpt( $field, $opt, $value = NULL ) {
 		if( $this->currentPlatform ) {
@@ -766,7 +766,7 @@ class dbIndex extends dbObject {
 	 * Adds a field to the index
 	 *
 	 * @param string $name Field name
-	 * @return string[] Field list
+	 * @return string Field list
 	 */
 	function addField( $name ) {
 		$this->columns[$this->fieldID( $name )] = $name;
@@ -779,7 +779,7 @@ class dbIndex extends dbObject {
 	 * Adds options to the index
 	 *
 	 * @param string $opt Comma-separated list of index options.
-	 * @return string[] Option list
+	 * @return string Option list
 	 */
 	function addIndexOpt( $opt ) {
 		$this->opts[] = $opt;
@@ -929,10 +929,10 @@ class dbData extends dbObject {
 	}
 
 	/**
-	 * Adds data.
+	 * Adds options to the index
 	 *
-	 * @param string $cdata Data to add
-	 * @return void
+	 * @param string $opt Comma-separated list of index options.
+	 * @return string Option list
 	 */
 	function addData( $cdata ) {
 		// check we're in a valid field
@@ -1782,7 +1782,7 @@ class adoSchema {
 			$sqlArray = $this->sqlArray;
 		}
 		if( !isset( $sqlArray ) ) {
-			return false;
+			return FALSE;
 		}
 
 		$fp = fopen( $filename, "w" );

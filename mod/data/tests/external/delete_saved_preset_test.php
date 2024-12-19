@@ -42,7 +42,7 @@ class delete_saved_preset_test extends externallib_advanced_testcase {
      *
      * @covers ::execute
      */
-    public function test_delete_saved_preset(): void {
+    public function test_delete_saved_preset() {
         $this->resetAfterTest();
 
         // Create course, database activity and users.

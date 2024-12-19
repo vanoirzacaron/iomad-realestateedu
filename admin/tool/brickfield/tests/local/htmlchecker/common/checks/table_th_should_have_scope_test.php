@@ -163,7 +163,7 @@ EOD;
     /**
      * Test that th has scope that is equal to col or row
      */
-    public function test_check_fail(): void {
+    public function test_check_fail() {
         $results = $this->get_checker_results($this->htmlfail1);
         $this->assertEquals(2, count($results));
         $this->assertTrue($results[0]->element->tagName == 'th');
@@ -177,7 +177,7 @@ EOD;
     /**
      * Test that th has scope but != col || row. Test that th has no scope
      */
-    public function test_check_pass(): void {
+    public function test_check_pass() {
         $results = $this->get_checker_results($this->htmlpass1);
         $this->assertEmpty($results);
 

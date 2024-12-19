@@ -2,7 +2,7 @@
 Feature: As a user I can complete a BigblueButtonBN activity by usual or custom criteria
 
   Background:
-    Given I enable "bigbluebuttonbn" "mod" plugin
+    Given I accept dpa and enable bigbluebuttonbn plugin
     And the following "courses" exist:
       | fullname    | shortname | category | enablecompletion |
       | Test course | C1        | 0        | 1                |

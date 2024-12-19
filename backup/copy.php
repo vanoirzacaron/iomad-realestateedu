@@ -53,10 +53,11 @@ if ($returnurl != '') {
 
 // Setup the page.
 $title = get_string('copycoursetitle', 'backup', $course->shortname);
+$heading = get_string('copycourseheading', 'backup');
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('admin');
 $PAGE->set_title($title);
-$PAGE->set_heading($course->fullname);
+$PAGE->set_heading($heading);
 $PAGE->set_secondary_active_tab('coursereuse');
 
 // Get data ready for mform.
@@ -90,8 +91,7 @@ if ($mform->is_cancelled()) {
 
     // Build the page output.
     echo $OUTPUT->header();
-    \backup_helper::print_coursereuse_selector('copycourse');
-
+    echo $OUTPUT->heading($title);
     $mform->display();
     echo $OUTPUT->footer();
 }

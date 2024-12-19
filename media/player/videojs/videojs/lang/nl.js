@@ -68,7 +68,7 @@ videojs.addLanguage('nl', {
   "Raised": "Verhoogd",
   "Depressed": "Ingedrukt",
   "Uniform": "Uniform",
-  "Drop shadow": "Schaduw",
+  "Dropshadow": "Schaduw",
   "Font Family": "Lettertype",
   "Proportional Sans-Serif": "Proportioneel sans-serif",
   "Monospace Sans-Serif": "Monospace sans-serif",

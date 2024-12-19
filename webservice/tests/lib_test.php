@@ -59,7 +59,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Test init_service_class().
      */
-    public function test_init_service_class(): void {
+    public function test_init_service_class() {
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -148,7 +148,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Tests update_token_lastaccess() function.
      */
-    public function test_update_token_lastaccess(): void {
+    public function test_update_token_lastaccess() {
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -208,7 +208,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Tests for the {@see webservice::get_missing_capabilities_by_users()} implementation.
      */
-    public function test_get_missing_capabilities_by_users(): void {
+    public function test_get_missing_capabilities_by_users() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -269,7 +269,7 @@ class lib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function get_active_tokens_provider(): array {
+    public static function get_active_tokens_provider(): array {
         return [
             'No expiration' => [0, true],
             'Active' => [time() + DAYSECS, true],

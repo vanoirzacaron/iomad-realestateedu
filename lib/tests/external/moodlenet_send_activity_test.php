@@ -43,7 +43,7 @@ class moodlenet_send_activity_test extends externallib_advanced_testcase {
      *
      * @covers ::execute
      */
-    public function test_moodlenet_send_activity(): void {
+    public function test_moodlenet_send_activity() {
         global $CFG;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -118,7 +118,7 @@ class moodlenet_send_activity_test extends externallib_advanced_testcase {
      * @dataProvider return_resource_url_provider
      * @covers ::execute_returns
      */
-    public function test_moodlenet_send_activity_return_resource_url(bool $state, string $resourceurl): void {
+    public function test_moodlenet_send_activity_return_resource_url(bool $state, string $resourceurl) {
         $this->resetAfterTest();
         // Create dummy result with the resourceurl.
         $result = [
@@ -140,7 +140,7 @@ class moodlenet_send_activity_test extends externallib_advanced_testcase {
      *
      * @return array Test data.
      */
-    public function return_resource_url_provider(): array {
+    public static function return_resource_url_provider(): array {
         return [
             'Success 1' => [
                 true,

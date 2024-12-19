@@ -46,7 +46,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the tag updated event.
      */
-    public function test_tag_updated(): void {
+    public function test_tag_updated() {
         $this->setAdminUser();
 
         // Save the system context.
@@ -95,7 +95,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the tag added event.
      */
-    public function test_tag_added(): void {
+    public function test_tag_added() {
         global $DB;
 
         // Create a course to tag.
@@ -134,7 +134,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the tag removed event.
      */
-    public function test_tag_removed(): void {
+    public function test_tag_removed() {
         global $DB;
 
         $this->setAdminUser();
@@ -251,7 +251,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the tag flagged event.
      */
-    public function test_tag_flagged(): void {
+    public function test_tag_flagged() {
         global $DB;
 
         $this->setAdminUser();
@@ -306,7 +306,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the tag unflagged event.
      */
-    public function test_tag_unflagged(): void {
+    public function test_tag_unflagged() {
         global $DB;
 
         $this->setAdminUser();
@@ -364,7 +364,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the tag deleted event
      */
-    public function test_tag_deleted(): void {
+    public function test_tag_deleted() {
         global $DB;
 
         $this->setAdminUser();
@@ -452,7 +452,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test the tag created event.
      */
-    public function test_tag_created(): void {
+    public function test_tag_created() {
         global $DB;
 
         // Trigger and capture the event for creating a tag.

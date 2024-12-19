@@ -45,11 +45,9 @@ class dates_filter_form extends \moodleform {
         ];
 
         // From date field.
-        $this->_form->addElement('date_selector', 'filterdatefrompopover',
-                                 get_string('fromdate'), ['optional' => true], $attributes);
+        $this->_form->addElement('date_selector', 'filterdatefrompopover', get_string('from'), ['optional' => true], $attributes);
 
         // To date field.
-        $this->_form->addElement('date_selector', 'filterdatetopopover',
-                                 get_string('todate'), ['optional' => true], $attributes);
+        $this->_form->addElement('date_selector', 'filterdatetopopover', get_string('to'), ['optional' => true], $attributes);
     }
 }

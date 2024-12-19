@@ -91,7 +91,7 @@ class hook_list_table extends flexible_table {
      */
     public function out(): void {
         // All hook consumers referenced from the db/hooks.php files.
-        $hookmanager = \core\di::get(\core\hook\manager::class);
+        $hookmanager = \core\hook\manager::get_instance();
         $allhooks = (array)$hookmanager->get_all_callbacks();
 
         // Add any unused hooks.
@@ -154,7 +154,11 @@ class hook_list_table extends flexible_table {
             return '';
         }
 
-        $deprecates = \core\hook\manager::get_replaced_callbacks($row->classname);
+        $rc = new \ReflectionClass($row->classname);
+        if (!$rc->implementsInterface(\core\hook\deprecated_callback_replacement::class)) {
+            return '';
+        }
+        $deprecates = call_user_func([$row->classname, 'get_deprecated_plugin_callbacks']);
         if (count($deprecates) === 0) {
             return '';
         }
@@ -269,7 +273,7 @@ class hook_list_table extends flexible_table {
             if (is_array($tag)) {
                 return $this->get_tag(...$tag);
             }
-            return $this->get_tag($tag, 'badge bg-info text-white');
+            return $this->get_tag($tag, 'badge badge-info');
         }, $tags);
 
         return implode("\n", $taglist);

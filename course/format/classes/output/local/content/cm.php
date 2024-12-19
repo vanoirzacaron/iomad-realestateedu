@@ -311,7 +311,7 @@ class cm implements named_templatable, renderable {
         if (!$this->format->show_editor($editcaps)) {
             return false;
         }
-        $returnsection = $this->format->get_sectionnum();
+        $returnsection = $this->format->get_section_number();
         // Edit actions.
         $controlmenu = new $this->controlmenuclass(
             $this->format,

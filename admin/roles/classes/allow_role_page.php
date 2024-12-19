@@ -99,7 +99,7 @@ abstract class core_role_allow_role_page {
      * @param int $fromroleid
      * @param int $targetroleid
      */
-    abstract protected function set_allow($fromroleid, $targetroleid);
+    protected abstract function set_allow($fromroleid, $targetroleid);
 
     /**
      * Load the current allows from the database.
@@ -183,11 +183,11 @@ abstract class core_role_allow_role_page {
      * Snippet of text displayed above the table, telling the admin what to do.
      * @return string
      */
-    abstract public function get_intro_text();
+    public abstract function get_intro_text();
 
     /**
      * Returns the allow class respective event class name.
      * @return string
      */
-    abstract protected function get_eventclass();
+    protected abstract function get_eventclass();
 }

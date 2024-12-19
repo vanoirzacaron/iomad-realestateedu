@@ -35,7 +35,7 @@ class mustache_template_finder_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function valid_template_directories_provider(): array {
+    public static function valid_template_directories_provider(): array {
         return [
             'plugin: mod_assign' => [
                 'component' => 'mod_assign',
@@ -99,7 +99,7 @@ class mustache_template_finder_test extends \advanced_testcase {
     /**
      * Tests for get_template_directories_for_component when dealing with an invalid component.
      */
-    public function test_invalid_component_get_template_directories_for_component(): void {
+    public function test_invalid_component_get_template_directories_for_component() {
         // Test something invalid.
         $this->expectException(\coding_exception::class);
         mustache_template_finder::get_template_directories_for_component('octopus', 'classic');
@@ -111,7 +111,7 @@ class mustache_template_finder_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function valid_template_filepath_provider(): array {
+    public static function valid_template_filepath_provider(): array {
         return [
             'Standard core template' => [
                 'template' => 'core/modal',
@@ -177,7 +177,7 @@ class mustache_template_finder_test extends \advanced_testcase {
      * @param   string $theme
      * @param   string $location
      */
-    public function test_get_template_filepath(string $template, string $theme, string $location): void {
+    public function test_get_template_filepath(string $template, string $theme, string $location) {
         global $CFG;
 
         $filename = mustache_template_finder::get_template_filepath($template, $theme);
@@ -187,7 +187,7 @@ class mustache_template_finder_test extends \advanced_testcase {
     /**
      * Tests for get_template_filepath when dealing with an invalid component.
      */
-    public function test_invalid_component_get_template_filepath(): void {
+    public function test_invalid_component_get_template_filepath() {
         $this->expectException(\moodle_exception::class);
         mustache_template_finder::get_template_filepath('core/octopus', 'classic');
     }

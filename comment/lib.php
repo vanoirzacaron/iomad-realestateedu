@@ -542,7 +542,7 @@ class comment {
      *
      * @param  int $page
      * @param  str $sortdirection sort direction, ASC or DESC
-     * @return array|false
+     * @return array
      */
     public function get_comments($page = '', $sortdirection = 'DESC') {
         global $DB, $CFG, $USER, $OUTPUT;
@@ -955,7 +955,7 @@ class comment {
     /**
      * Revoke validate callbacks
      *
-     * @param array $params addtionall parameters need to add to callbacks
+     * @param stdClass $params addtionall parameters need to add to callbacks
      */
     protected function validate($params=array()) {
         foreach ($params as $key=>$value) {
@@ -1073,7 +1073,7 @@ class comment {
     /**
      * Returns the comment area associated with the commentarea
      *
-     * @return string
+     * @return stdClass
      */
     public function get_commentarea() {
         return $this->commentarea;

@@ -38,7 +38,7 @@ require_once($CFG->dirroot . '/mod/glossary/locallib.php');
  */
 class lib_test extends \advanced_testcase {
 
-    public function test_glossary_view(): void {
+    public function test_glossary_view() {
         global $CFG;
         $origcompletion = $CFG->enablecompletion;
         $CFG->enablecompletion = true;
@@ -94,7 +94,7 @@ class lib_test extends \advanced_testcase {
         $CFG->enablecompletion = $origcompletion;
     }
 
-    public function test_glossary_entry_view(): void {
+    public function test_glossary_entry_view() {
         $this->resetAfterTest(true);
 
         // Generate all the things.
@@ -116,7 +116,7 @@ class lib_test extends \advanced_testcase {
         $sink->close();
     }
 
-    public function test_glossary_core_calendar_provide_event_action(): void {
+    public function test_glossary_core_calendar_provide_event_action() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -142,7 +142,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_glossary_core_calendar_provide_event_action_as_non_user(): void {
+    public function test_glossary_core_calendar_provide_event_action_as_non_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -170,7 +170,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_glossary_core_calendar_provide_event_action_for_user(): void {
+    public function test_glossary_core_calendar_provide_event_action_for_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -207,7 +207,7 @@ class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_glossary_core_calendar_provide_event_action_in_hidden_section(): void {
+    public function test_glossary_core_calendar_provide_event_action_in_hidden_section() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -237,7 +237,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_glossary_core_calendar_provide_event_action_already_completed(): void {
+    public function test_glossary_core_calendar_provide_event_action_already_completed() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -271,7 +271,7 @@ class lib_test extends \advanced_testcase {
         $this->assertNull($actionevent);
     }
 
-    public function test_glossary_core_calendar_provide_event_action_already_completed_for_user(): void {
+    public function test_glossary_core_calendar_provide_event_action_already_completed_for_user() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -336,7 +336,7 @@ class lib_test extends \advanced_testcase {
      * This function should work given either an instance of the module (cm_info), such as when checking the active rules,
      * or if passed a stdClass of similar structure, such as when checking the the default completion settings for a mod type.
      */
-    public function test_mod_glossary_completion_get_active_rule_descriptions(): void {
+    public function test_mod_glossary_completion_get_active_rule_descriptions() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -369,7 +369,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals(mod_glossary_get_completion_active_rule_descriptions(new \stdClass()), []);
     }
 
-    public function test_mod_glossary_get_tagged_entries(): void {
+    public function test_mod_glossary_get_tagged_entries() {
         global $DB;
 
         $this->resetAfterTest();
@@ -468,7 +468,7 @@ class lib_test extends \advanced_testcase {
         $this->assertMatchesRegularExpression('/'.$entry17->concept.'/', $res->content);
     }
 
-    public function test_glossary_get_entries_search(): void {
+    public function test_glossary_get_entries_search() {
         $this->resetAfterTest();
         $this->setAdminUser();
         // Turn on glossary autolinking (usedynalink).
@@ -505,7 +505,7 @@ class lib_test extends \advanced_testcase {
         $this->assertCount(0, $search);
     }
 
-    public function test_mod_glossary_can_delete_entry_users(): void {
+    public function test_mod_glossary_can_delete_entry_users() {
         $this->resetAfterTest();
 
         // Create required data.
@@ -540,7 +540,7 @@ class lib_test extends \advanced_testcase {
         mod_glossary_can_delete_entry($entry, $glossary, $context, false);
     }
 
-    public function test_mod_glossary_can_delete_entry_edit_period(): void {
+    public function test_mod_glossary_can_delete_entry_edit_period() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -572,7 +572,7 @@ class lib_test extends \advanced_testcase {
         mod_glossary_can_delete_entry($entry, $glossary, $context, false);
     }
 
-    public function test_mod_glossary_delete_entry(): void {
+    public function test_mod_glossary_delete_entry() {
         global $DB, $CFG;
         $this->resetAfterTest();
         require_once($CFG->dirroot . '/rating/lib.php');
@@ -631,7 +631,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEmpty(\core_tag_tag::get_by_name(0, 'Cats'));
     }
 
-    public function test_mod_glossary_delete_entry_imported(): void {
+    public function test_mod_glossary_delete_entry_imported() {
         global $DB;
         $this->resetAfterTest();
 
@@ -672,7 +672,7 @@ class lib_test extends \advanced_testcase {
         $this->assertEmpty(\core_tag_tag::get_by_name(0, 'Cats'));
     }
 
-    public function test_mod_glossary_can_update_entry_users(): void {
+    public function test_mod_glossary_can_update_entry_users() {
         $this->resetAfterTest();
 
         // Create required data.
@@ -708,7 +708,7 @@ class lib_test extends \advanced_testcase {
         mod_glossary_can_update_entry($entry, $glossary, $context, $cm, false);
     }
 
-    public function test_mod_glossary_can_update_entry_edit_period(): void {
+    public function test_mod_glossary_can_update_entry_edit_period() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -741,7 +741,7 @@ class lib_test extends \advanced_testcase {
         mod_glossary_can_update_entry($entry, $glossary, $context, $cm, false);
     }
 
-    public function test_prepare_entry_for_edition(): void {
+    public function test_prepare_entry_for_edition() {
         global $USER;
         $this->resetAfterTest(true);
 

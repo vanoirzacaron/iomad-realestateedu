@@ -42,8 +42,6 @@ $string['allsubscribe'] = 'Subscribe to all forums';
 $string['allunsubscribe'] = 'Unsubscribe from all forums';
 $string['allusers'] = 'All users';
 $string['alreadyfirstpost'] = 'This is already the first post in the discussion';
-$string['announcementsettings'] = 'Default announcement forum settings';
-$string['announcementsettings_help'] = 'These settings define the defaults for all announcement forums.';
 $string['anyfile'] = 'Any file';
 $string['areaattachment'] = 'Attachments';
 $string['areapost'] = 'Messages';
@@ -791,6 +789,11 @@ $string['nousersmatch'] = 'No user(s) found for given criteria';
 $string['showmoreusers'] = 'Show more users';
 $string['viewconversation'] = 'View discussion';
 $string['viewgrades'] = 'View grades';
+
+// Deprecated since Moodle 4.0.
+$string['postmailinfolink'] = 'This is a copy of a message posted in {$a->coursename}.
+
+To reply click on this link: {$a->replylink}';
 
 // Deprecated since Moodle 4.3.
 $string['completionpostsgroup'] = 'Require posts';

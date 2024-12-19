@@ -27,7 +27,7 @@ class capability_checker_test extends \advanced_testcase {
     /**
      * Tests loading a class from /availability/classes.
      */
-    public function test_capability_checker(): void {
+    public function test_capability_checker() {
         global $CFG, $DB;
         $this->resetAfterTest();
 

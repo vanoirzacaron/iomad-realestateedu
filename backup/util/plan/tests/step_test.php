@@ -74,7 +74,7 @@ class step_test extends \advanced_testcase {
     /**
      * test base_step class
      */
-    function test_base_step(): void {
+    function test_base_step() {
 
         $bp = new \mock_base_plan('planname'); // We need one plan
         $bt = new \mock_base_task('taskname', $bp); // We need one task
@@ -87,7 +87,7 @@ class step_test extends \advanced_testcase {
     /**
      * test backup_step class
      */
-    function test_backup_step(): void {
+    function test_backup_step() {
 
         // We need one (non interactive) controller for instatiating plan
         $bc = new backup_controller(backup::TYPE_1ACTIVITY, $this->moduleid, backup::FORMAT_MOODLE,
@@ -107,7 +107,7 @@ class step_test extends \advanced_testcase {
     /**
      * test restore_step class, decrypt method
      */
-    public function test_restore_step_decrypt(): void {
+    public function test_restore_step_decrypt() {
 
         $this->resetAfterTest(true);
 
@@ -153,7 +153,7 @@ class step_test extends \advanced_testcase {
     /**
      * test backup_structure_step class
      */
-    function test_backup_structure_step(): void {
+    function test_backup_structure_step() {
         global $CFG;
 
         $file = $CFG->tempdir . '/test/test_backup_structure_step.txt';
@@ -200,7 +200,7 @@ class step_test extends \advanced_testcase {
     /**
      * Verify the add_plugin_structure() backup method behavior and created structures.
      */
-    public function test_backup_structure_step_add_plugin_structure(): void {
+    public function test_backup_structure_step_add_plugin_structure() {
         // Create mocked task, step and element.
         $bt = new \mock_backup_task_basepath('taskname');
         $bs = new \mock_backup_structure_step('steptest', null, $bt);
@@ -227,7 +227,7 @@ class step_test extends \advanced_testcase {
     /**
      * Verify the add_subplugin_structure() backup method behavior and created structures.
      */
-    public function test_backup_structure_step_add_subplugin_structure(): void {
+    public function test_backup_structure_step_add_subplugin_structure() {
         // Create mocked task, step and element.
         $bt = new \mock_backup_task_basepath('taskname');
         $bs = new \mock_backup_structure_step('steptest', null, $bt);
@@ -310,7 +310,7 @@ class step_test extends \advanced_testcase {
     /**
      * Verify the add_plugin_structure() restore method behavior and created structures.
      */
-    public function test_restore_structure_step_add_plugin_structure(): void {
+    public function test_restore_structure_step_add_plugin_structure() {
         // Create mocked task, step and element.
         $bt = new \mock_restore_task_basepath('taskname');
         $bs = new \mock_restore_structure_step('steptest', null, $bt);
@@ -348,7 +348,7 @@ class step_test extends \advanced_testcase {
     /**
      * Verify the add_subplugin_structure() restore method behavior and created structures.
      */
-    public function test_restore_structure_step_add_subplugin_structure(): void {
+    public function test_restore_structure_step_add_subplugin_structure() {
         // Create mocked task, step and element.
         $bt = new \mock_restore_task_basepath('taskname');
         $bs = new \mock_restore_structure_step('steptest', null, $bt);
@@ -454,7 +454,7 @@ class step_test extends \advanced_testcase {
     /**
      * wrong base_step class tests
      */
-    function test_base_step_wrong(): void {
+    function test_base_step_wrong() {
 
         // Try to pass one wrong task
         try {
@@ -469,7 +469,7 @@ class step_test extends \advanced_testcase {
     /**
      * wrong backup_step class tests
      */
-    function test_backup_test_wrong(): void {
+    function test_backup_test_wrong() {
 
         // Try to pass one wrong task
         try {

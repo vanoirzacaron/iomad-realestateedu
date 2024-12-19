@@ -4,7 +4,7 @@ Feature: I can edit a bigbluebutton instance
 
   Background:  Make sure that a course is created
     Given a BigBlueButton mock server is configured
-    And I enable "bigbluebuttonbn" "mod" plugin
+    And I accept dpa and enable bigbluebuttonbn plugin
     And the following config values are set as admin:
       | bigbluebuttonbn_voicebridge_editable | 1 |
     And the following "courses" exist:
@@ -37,9 +37,9 @@ Feature: I can edit a bigbluebutton instance
       | bigbluebuttonbn_meetingevents_enabled        | 1 |
     And the following "users" exist:
       | username | firstname | lastname |
-      | student1 | Student1  | 1        |
+      | student1 | Student1   | 1        |
     And the following "course enrolments" exist:
-      | user     | course      | role    |
+      | user     | course      | role           |
       | student1 | Test course | student |
     And I am on the "RoomRecordings" "bigbluebuttonbn activity editing" page logged in as "admin"
     And I expand all fieldsets

@@ -34,11 +34,8 @@ $dataformat = optional_param('dataformat', '', PARAM_ALPHA);
 admin_externalpage_setup('userbulk');
 require_capability('moodle/user:update', context_system::instance());
 
-$returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
-$return = new moodle_url($returnurl ?: '/admin/user/user_bulk.php');
-
 if (empty($SESSION->bulk_users)) {
-    redirect($return);
+    redirect(new moodle_url('/admin/user/user_bulk.php'));
 }
 
 if ($dataformat) {

@@ -14,7 +14,6 @@ Feature: A teacher can set three types of survey activity
     And the following "course enrolments" exist:
       | user | course | role |
       | teacher1 | C1 | editingteacher |
-    And I enable "survey" "mod" plugin
     And I log in as "teacher1"
 
   Scenario: Switching between the three survey types
@@ -38,8 +37,11 @@ Feature: A teacher can set three types of survey activity
     And I should see "In this online unit..."
     And I should see "my learning focuses on issues that interest me."
 
+  @javascript
   Scenario: Survey activity is created via UI
-    Given I add a survey activity to course "Course 1" section "1"
+    Given I am on the "Course 1" course page
+    And I turn editing mode on
+    And I add a "Survey" to section "1"
     And I set the following fields to these values:
       | Name        | Test survey name        |
       | Description | Test survey description |

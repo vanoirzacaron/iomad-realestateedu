@@ -33,7 +33,7 @@ class format_message_test extends \advanced_testcase {
     const USER_CURRENT = 1;
     const USER_OTHER = 2;
 
-    public function chat_format_message_manually_provider() {
+    public static function chat_format_message_manually_provider(): array {
         $dateregexp = '\d{2}:\d{2}';
         return [
             'Beep everyone' => [
@@ -123,7 +123,7 @@ class format_message_test extends \advanced_testcase {
      * @dataProvider chat_format_message_manually_provider
      */
     public function test_chat_format_message_manually($messagetext, $issystem, $willreturn,
-            $expecttext, $refreshusers, $expectbeep): void {
+            $expecttext, $refreshusers, $expectbeep) {
 
         $this->resetAfterTest();
 

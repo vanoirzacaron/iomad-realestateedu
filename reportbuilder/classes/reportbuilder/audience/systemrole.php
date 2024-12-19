@@ -54,7 +54,8 @@ class systemrole extends base {
         global $DB;
 
         $roles = $this->get_configdata()['roles'];
-        [$insql, $inparams] = $DB->get_in_or_equal($roles, SQL_PARAMS_NAMED, database::generate_param_name('_'));
+        $prefix = database::generate_param_name() . '_';
+        [$insql, $inparams] = $DB->get_in_or_equal($roles, SQL_PARAMS_NAMED, $prefix);
 
         // Ensure parameter names and aliases are unique, as the same audience type can be added multiple times to a report.
         $paramcontextid = database::generate_param_name();

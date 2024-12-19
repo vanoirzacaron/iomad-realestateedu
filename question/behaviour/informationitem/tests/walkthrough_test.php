@@ -35,7 +35,7 @@ require_once(__DIR__ . '/../../../engine/tests/helpers.php');
  * @covers \qbehaviour_informationitem
  */
 class walkthrough_test extends \qbehaviour_walkthrough_test_base {
-    public function test_informationitem_feedback_description(): void {
+    public function test_informationitem_feedback_description() {
 
         // Create a true-false question with correct answer true.
         $description = \test_question_maker::make_question('description');
@@ -89,7 +89,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
         $this->manual_grade('Not good enough!', 1, FORMAT_HTML);
     }
 
-    public function test_informationitem_regrade(): void {
+    public function test_informationitem_regrade() {
 
         // Create a true-false question with correct answer true.
         $description = \test_question_maker::make_question('description');

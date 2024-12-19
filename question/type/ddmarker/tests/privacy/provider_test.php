@@ -44,13 +44,13 @@ require_once($CFG->dirroot . '/question/type/ddmarker/classes/privacy/provider.p
 class provider_test extends \core_privacy\tests\provider_testcase {
     // Include the privacy helper which has assertions on it.
 
-    public function test_get_metadata(): void {
+    public function test_get_metadata() {
         $collection = new \core_privacy\local\metadata\collection('qtype_ddmarker');
         $actual = \qtype_ddmarker\privacy\provider::get_metadata($collection);
         $this->assertEquals($collection, $actual);
     }
 
-    public function test_export_user_preferences_no_pref(): void {
+    public function test_export_user_preferences_no_pref() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
@@ -67,7 +67,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * @param string $value The value stored in the database
      * @param string $expected The expected transformed value
      */
-    public function test_export_user_preferences($name, $value, $expected): void {
+    public function test_export_user_preferences($name, $value, $expected) {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         set_user_preference("qtype_ddmarker_$name", $value, $user);
@@ -91,7 +91,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      *
      * @return array Array of valid user preferences.
      */
-    public function user_preference_provider() {
+    public static function user_preference_provider(): array {
         return [
                 'default mark 1.5' => ['defaultmark', 1.5, 1.5],
                 'penalty 33.33333%' => ['penalty', 0.3333333, '33.33333%'],

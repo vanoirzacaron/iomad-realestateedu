@@ -32,7 +32,7 @@ require_once(__DIR__.'/fixtures/testable_update_validator.php');
  */
 class update_validator_test extends \advanced_testcase {
 
-    public function test_validate_files_layout(): void {
+    public function test_validate_files_layout() {
         $fixtures = __DIR__.'/fixtures/update_validator';
 
         // Non-existing directory.
@@ -107,7 +107,7 @@ class update_validator_test extends \advanced_testcase {
             'moodle-repository_mahara-master'));
     }
 
-    public function test_validate_version_php(): void {
+    public function test_validate_version_php() {
         $fixtures = __DIR__.'/fixtures/update_validator';
 
         $validator = testable_core_update_validator::instance($fixtures.'/noversiontheme', array(
@@ -188,7 +188,7 @@ class update_validator_test extends \advanced_testcase {
         $this->assertTrue($this->has_message($validator->get_messages(), $validator::WARNING, 'maturity', 'MATURITY_ALPHA'));
     }
 
-    public function test_validate_language_pack(): void {
+    public function test_validate_language_pack() {
         $fixtures = __DIR__.'/fixtures/update_validator';
 
         $validator = testable_core_update_validator::instance($fixtures.'/nolang', array(
@@ -262,7 +262,7 @@ class update_validator_test extends \advanced_testcase {
         $this->assertEquals('local_foobar', $validator->get_language_file_name());
     }
 
-    public function test_validate_target_location(): void {
+    public function test_validate_target_location() {
         $fixtures = __DIR__.'/fixtures/update_validator';
 
         $validator = testable_core_update_validator::instance($fixtures.'/installed', array(
@@ -308,7 +308,7 @@ class update_validator_test extends \advanced_testcase {
             $validator->get_plugintype_location('local')));
     }
 
-    public function test_parse_version_php(): void {
+    public function test_parse_version_php() {
         $fixtures = __DIR__.'/fixtures/update_validator/versionphp';
 
         $validator = testable_core_update_validator::instance($fixtures, array());
@@ -326,7 +326,7 @@ class update_validator_test extends \advanced_testcase {
         $this->assertEquals('v2.4', $info['plugin->release']);            // String wins over numeric (non-PHP behaviour).
     }
 
-    public function test_messages_output(): void {
+    public function test_messages_output() {
         $fixtures = __DIR__.'/fixtures/update_validator';
         $validator = testable_core_update_validator::instance($fixtures, array());
 

@@ -72,7 +72,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * Test that calling export_question_usage on a usage belonging to a
      * different user does not export any data.
      */
-    public function test_export_question_usage_no_usage(): void {
+    public function test_export_question_usage_no_usage() {
         $this->resetAfterTest();
 
         $quba = $this->prepare_question_attempt();
@@ -106,7 +106,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
      * Test that calling export_question_usage on a usage belonging to a
      * different user but ignoring the user match
      */
-    public function test_export_question_usage_with_usage(): void {
+    public function test_export_question_usage_with_usage() {
         $this->resetAfterTest();
 
         $quba = $this->prepare_question_attempt();
@@ -184,7 +184,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test that questions owned by a user are exported and never deleted.
      */
-    public function test_question_owned_is_handled(): void {
+    public function test_question_owned_is_handled() {
         global $DB;
         $this->resetAfterTest();
 
@@ -281,7 +281,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Deleting questions should only unset their created and modified user.
      */
-    public function test_question_delete_data_for_user_anonymised(): void {
+    public function test_question_delete_data_for_user_anonymised() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -362,7 +362,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Deleting questions should only unset their created and modified user for all questions in a context.
      */
-    public function test_question_delete_data_for_all_users_in_context_anonymised(): void {
+    public function test_question_delete_data_for_all_users_in_context_anonymised() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -435,7 +435,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::get_users_in_context().
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         $this->resetAfterTest();
 
         $questiongenerator = $this->getDataGenerator()->get_plugin_generator('core_question');
@@ -472,7 +472,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test for provider::delete_data_for_users().
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
 
         $this->resetAfterTest();

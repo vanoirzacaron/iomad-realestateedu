@@ -2,18 +2,13 @@
 
 namespace Packback\Lti1p3;
 
-use Packback\Lti1p3\Interfaces\ILtiDeployment;
-
-class LtiDeployment implements ILtiDeployment
+class LtiDeployment
 {
-    public function __construct(
-        private $deployment_id
-    ) {
-    }
+    private $deployment_id;
 
-    public static function new($deployment_id): self
+    public static function new()
     {
-        return new LtiDeployment($deployment_id);
+        return new LtiDeployment();
     }
 
     public function getDeploymentId()
@@ -21,7 +16,7 @@ class LtiDeployment implements ILtiDeployment
         return $this->deployment_id;
     }
 
-    public function setDeploymentId($deployment_id): self
+    public function setDeploymentId($deployment_id)
     {
         $this->deployment_id = $deployment_id;
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace OpenSpout\Reader\Common;
 
-use OpenSpout\Reader\Exception\XMLProcessingException;
 use OpenSpout\Reader\Wrapper\XMLReader;
 use ReflectionMethod;
 
@@ -26,7 +25,7 @@ final class XMLProcessor
     public const PROCESSING_STOP = 2;
 
     /** @var XMLReader The XMLReader object that will help read sheet's XML data */
-    private readonly XMLReader $xmlReader;
+    private XMLReader $xmlReader;
 
     /** @var array<string, array{reflectionMethod: ReflectionMethod, reflectionObject: object}> Registered callbacks */
     private array $callbacks = [];
@@ -56,7 +55,7 @@ final class XMLProcessor
      * Resumes the reading of the XML file where it was left off.
      * Stops whenever a callback indicates that reading should stop or at the end of the file.
      *
-     * @throws XMLProcessingException
+     * @throws \OpenSpout\Reader\Exception\XMLProcessingException
      */
     public function readUntilStopped(): void
     {

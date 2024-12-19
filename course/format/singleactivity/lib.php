@@ -45,12 +45,22 @@ class format_singleactivity extends core_courseformat\base {
      * @param int|stdClass $section Section object from database or just field course_sections.section
      *     if null the course view page is returned
      * @param array $options options for view URL. At the moment core uses:
-     *     'navigation' (bool) ignored by this format
-     *     'sr' (int) ignored by this format
+     *     'navigation' (bool) if true and section has no separate page, the function returns null
+     *     'sr' (int) used by multipage formats to specify to which section to return
      * @return null|moodle_url
      */
     public function get_view_url($section, $options = array()) {
-        return new moodle_url('/course/view.php', ['id' => $this->courseid]);
+        $sectionnum = $section;
+        if (is_object($sectionnum)) {
+            $sectionnum = $section->section;
+        }
+        if ($sectionnum == 1) {
+            return new moodle_url('/course/view.php', array('id' => $this->courseid, 'section' => 1));
+        }
+        if (!empty($options['navigation']) && $section !== null) {
+            return null;
+        }
+        return new moodle_url('/course/view.php', array('id' => $this->courseid));
     }
 
     /**

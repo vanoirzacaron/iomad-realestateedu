@@ -25,9 +25,100 @@
  */
 class weblib_test extends advanced_testcase {
     /**
+     * @covers ::format_string
+     */
+    public function test_format_string() {
+        global $CFG;
+
+        // Ampersands.
+        $this->assertSame("&amp; &amp;&amp;&amp;&amp;&amp; &amp;&amp;", format_string("& &&&&& &&"));
+        $this->assertSame("ANother &amp; &amp;&amp;&amp;&amp;&amp; Category", format_string("ANother & &&&&& Category"));
+        $this->assertSame("ANother &amp; &amp;&amp;&amp;&amp;&amp; Category", format_string("ANother & &&&&& Category", true));
+        $this->assertSame("Nick's Test Site &amp; Other things", format_string("Nick's Test Site & Other things", true));
+        $this->assertSame("& < > \" '", format_string("& < > \" '", true, ['escape' => false]));
+
+        // String entities.
+        $this->assertSame("&quot;", format_string("&quot;"));
+
+        // Digital entities.
+        $this->assertSame("&11234;", format_string("&11234;"));
+
+        // Unicode entities.
+        $this->assertSame("&#4475;", format_string("&#4475;"));
+
+        // Nulls.
+        $this->assertSame('', format_string(null));
+        $this->assertSame('', format_string(null, true, ['escape' => false]));
+
+        // < and > signs.
+        $originalformatstringstriptags = $CFG->formatstringstriptags;
+
+        $CFG->formatstringstriptags = false;
+        $this->assertSame('x &lt; 1', format_string('x < 1'));
+        $this->assertSame('x &gt; 1', format_string('x > 1'));
+        $this->assertSame('x &lt; 1 and x &gt; 0', format_string('x < 1 and x > 0'));
+
+        $CFG->formatstringstriptags = true;
+        $this->assertSame('x &lt; 1', format_string('x < 1'));
+        $this->assertSame('x &gt; 1', format_string('x > 1'));
+        $this->assertSame('x &lt; 1 and x &gt; 0', format_string('x < 1 and x > 0'));
+
+        $CFG->formatstringstriptags = $originalformatstringstriptags;
+    }
+
+    /**
+     * The format string static caching should include the filters option to make
+     * sure filters are correctly applied when requested.
+     */
+    public function test_format_string_static_caching_with_filters() {
+        global $CFG;
+
+        $this->resetAfterTest(true);
+        $this->setAdminUser();
+        $generator = $this->getDataGenerator();
+        $course = $generator->create_course();
+        $user = $generator->create_user();
+        $rawstring = '<span lang="en" class="multilang">English</span><span lang="ca" class="multilang">Catalan</span>';
+        $expectednofilter = strip_tags($rawstring);
+        $expectedfilter = 'English';
+        $striplinks = true;
+        $context = context_course::instance($course->id);
+        $options = [
+            'context' => $context,
+            'escape' => true,
+            'filter' => false
+        ];
+
+        $this->setUser($user);
+
+        // Format the string without filters. It should just strip the
+        // links.
+        $nofilterresult = format_string($rawstring, $striplinks, $options);
+        $this->assertEquals($expectednofilter, $nofilterresult);
+
+        // Add the multilang filter. Make sure it's enabled globally.
+        $CFG->filterall = true;
+        $CFG->stringfilters = 'multilang';
+        filter_set_global_state('multilang', TEXTFILTER_ON);
+        filter_set_local_state('multilang', $context->id, TEXTFILTER_ON);
+        // This time we want to apply the filters.
+        $options['filter'] = true;
+        $filterresult = format_string($rawstring, $striplinks, $options);
+        $this->assertMatchesRegularExpression("/$expectedfilter/", $filterresult);
+
+        filter_set_local_state('multilang', $context->id, TEXTFILTER_OFF);
+
+        // Confirm that we get back the cached string. The result should be
+        // the same as the filtered text above even though we've disabled the
+        // multilang filter in between.
+        $cachedresult = format_string($rawstring, $striplinks, $options);
+        $this->assertMatchesRegularExpression("/$expectedfilter/", $cachedresult);
+    }
+
+    /**
      * @covers ::s
      */
-    public function test_s(): void {
+    public function test_s() {
         // Special cases.
         $this->assertSame('0', s(0));
         $this->assertSame('0', s('0'));
@@ -187,7 +278,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers ::format_text_email
      */
-    public function test_format_text_email(): void {
+    public function test_format_text_email() {
         $this->assertSame("This is a TEST\n",
             format_text_email('<p>This is a <strong>test</strong></p>', FORMAT_HTML));
         $this->assertSame("This is a TEST\n",
@@ -203,7 +294,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers ::obfuscate_email
      */
-    public function test_obfuscate_email(): void {
+    public function test_obfuscate_email() {
         $email = 'some.user@example.com';
         $obfuscated = obfuscate_email($email);
         $this->assertNotSame($email, $obfuscated);
@@ -214,7 +305,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers ::obfuscate_text
      */
-    public function test_obfuscate_text(): void {
+    public function test_obfuscate_text() {
         $text = 'Žluťoučký koníček 32131';
         $obfuscated = obfuscate_text($text);
         $this->assertNotSame($text, $obfuscated);
@@ -225,7 +316,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers ::highlight
      */
-    public function test_highlight(): void {
+    public function test_highlight() {
         $this->assertSame('This is <span class="highlight">good</span>',
                 highlight('good', 'This is good'));
 
@@ -266,7 +357,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers ::replace_ampersands_not_followed_by_entity
      */
-    public function test_replace_ampersands(): void {
+    public function test_replace_ampersands() {
         $this->assertSame("This &amp; that &nbsp;", replace_ampersands_not_followed_by_entity("This & that &nbsp;"));
         $this->assertSame("This &amp;nbsp that &nbsp;", replace_ampersands_not_followed_by_entity("This &nbsp that &nbsp;"));
     }
@@ -274,21 +365,21 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers ::strip_links
      */
-    public function test_strip_links(): void {
+    public function test_strip_links() {
         $this->assertSame('this is a link', strip_links('this is a <a href="http://someaddress.com/query">link</a>'));
     }
 
     /**
      * @covers ::wikify_links
      */
-    public function test_wikify_links(): void {
+    public function test_wikify_links() {
         $this->assertSame('this is a link [ http://someaddress.com/query ]', wikify_links('this is a <a href="http://someaddress.com/query">link</a>'));
     }
 
     /**
      * @covers ::clean_text
      */
-    public function test_clean_text(): void {
+    public function test_clean_text() {
         $text = "lala <applet>xx</applet>";
         $this->assertSame($text, clean_text($text, FORMAT_PLAIN));
         $this->assertSame('lala xx', clean_text($text, FORMAT_MARKDOWN));
@@ -301,7 +392,7 @@ class weblib_test extends advanced_testcase {
      *
      * @covers ::trusttext_active
      */
-    public function test_trusttext_active(): void {
+    public function test_trusttext_active() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -315,7 +406,7 @@ class weblib_test extends advanced_testcase {
      *
      * @covers ::trusttext_trusted
      */
-    public function test_trusttext_trusted(): void {
+    public function test_trusttext_trusted() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -360,7 +451,7 @@ class weblib_test extends advanced_testcase {
     /**
      * Data provider for trusttext_pre_edit() tests.
      */
-    public function trusttext_pre_edit_provider(): array {
+    public static function trusttext_pre_edit_provider(): array {
         return [
             [true, 0, 'editingteacher', FORMAT_HTML, 1],
             [true, 0, 'editingteacher', FORMAT_MOODLE, 1],
@@ -397,7 +488,7 @@ class weblib_test extends advanced_testcase {
      * @param int $trust
      */
     public function test_trusttext_pre_edit(bool $expectedsanitised, int $enabled, string $rolename,
-                                            string $format, int $trust): void {
+                                            string $format, int $trust) {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -433,7 +524,7 @@ class weblib_test extends advanced_testcase {
      * Test removal of legacy trusttext flag.
      * @covers ::trusttext_strip
      */
-    public function test_trusttext_strip(): void {
+    public function test_trusttext_strip() {
         $this->assertSame('abc', trusttext_strip('abc'));
         $this->assertSame('abc', trusttext_strip('ab#####TRUSTTEXT#####c'));
     }
@@ -442,7 +533,7 @@ class weblib_test extends advanced_testcase {
      * Test trust option of format_text().
      * @covers ::format_text
      */
-    public function test_format_text_trusted(): void {
+    public function test_format_text_trusted() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -497,7 +588,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers ::qualified_me
      */
-    public function test_qualified_me(): void {
+    public function test_qualified_me() {
         global $PAGE, $FULLME, $CFG;
         $this->resetAfterTest();
 
@@ -513,7 +604,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers \null_progress_trace
      */
-    public function test_null_progress_trace(): void {
+    public function test_null_progress_trace() {
         $this->resetAfterTest(false);
 
         $trace = new null_progress_trace();
@@ -529,7 +620,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers \null_progress_trace
      */
-    public function test_text_progress_trace(): void {
+    public function test_text_progress_trace() {
         $this->resetAfterTest(false);
 
         $trace = new text_progress_trace();
@@ -543,7 +634,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers \html_progress_trace
      */
-    public function test_html_progress_trace(): void {
+    public function test_html_progress_trace() {
         $this->resetAfterTest(false);
 
         $trace = new html_progress_trace();
@@ -557,7 +648,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers \html_list_progress_trace
      */
-    public function test_html_list_progress_trace(): void {
+    public function test_html_list_progress_trace() {
         $this->resetAfterTest(false);
 
         $trace = new html_list_progress_trace();
@@ -571,7 +662,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers \progress_trace_buffer
      */
-    public function test_progress_trace_buffer(): void {
+    public function test_progress_trace_buffer() {
         $this->resetAfterTest(false);
 
         $trace = new progress_trace_buffer(new html_progress_trace());
@@ -600,7 +691,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers \combined_progress_trace
      */
-    public function test_combined_progress_trace(): void {
+    public function test_combined_progress_trace() {
         $this->resetAfterTest(false);
 
         $trace1 = new progress_trace_buffer(new html_progress_trace(), false);
@@ -619,7 +710,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers ::set_debugging
      */
-    public function test_set_debugging(): void {
+    public function test_set_debugging() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -662,7 +753,7 @@ class weblib_test extends advanced_testcase {
     /**
      * @covers ::strip_pluginfile_content
      */
-    public function test_strip_pluginfile_content(): void {
+    public function test_strip_pluginfile_content() {
         $source = <<<SOURCE
 Hello!
 
@@ -703,7 +794,7 @@ EXPECTED;
     /**
      * @covers \purify_html
      */
-    public function test_purify_html_ruby(): void {
+    public function test_purify_html_ruby() {
 
         $this->resetAfterTest();
 
@@ -727,7 +818,7 @@ EXPECTED;
      * @dataProvider provider_content_to_text
      * @covers ::content_to_text
      */
-    public function test_content_to_text($content, $format, $expected): void {
+    public function test_content_to_text($content, $format, $expected) {
         $content = content_to_text($content, $format);
         $this->assertEquals($expected, $content);
     }
@@ -735,7 +826,7 @@ EXPECTED;
     /**
      * Data provider for test_content_to_text.
      */
-    public static function provider_content_to_text() {
+    public static function provider_content_to_text(): array {
         return array(
             array('asd', false, 'asd'),
             // Trim '\r\n '.
@@ -761,7 +852,7 @@ EXPECTED;
      *
      * @return array Returns aray of test data for the test_validate_email function
      */
-    public function data_validate_email() {
+    public static function data_validate_email(): array {
         return [
             // Test addresses that should pass.
             [
@@ -918,7 +1009,7 @@ EXPECTED;
      * @dataProvider    data_validate_email
      * @covers ::validate_email
      */
-    public function test_validate_email($email, $result): void {
+    public function test_validate_email($email, $result) {
         if ($result) {
             $this->assertTrue(validate_email($email));
         } else {
@@ -929,7 +1020,7 @@ EXPECTED;
     /**
      * Data provider for test_get_file_argument.
      */
-    public static function provider_get_file_argument() {
+    public static function provider_get_file_argument(): array {
         return array(
             // Serving SCORM content w/o HTTP GET params.
             array(array(
@@ -1043,7 +1134,7 @@ EXPECTED;
      * @dataProvider provider_get_file_argument
      * @covers ::get_file_argument
      */
-    public function test_get_file_argument($server, $cfgslasharguments, $expected): void {
+    public function test_get_file_argument($server, $cfgslasharguments, $expected) {
         global $CFG;
 
         // Overwrite the related settings.
@@ -1089,7 +1180,7 @@ EXPECTED;
      *
      * @covers ::extract_draft_file_urls_from_text
      */
-    public function test_extract_draft_file_urls_from_text(): void {
+    public function test_extract_draft_file_urls_from_text() {
         global $CFG;
 
         $url1 = "{$CFG->wwwroot}/draftfile.php/5/user/draft/99999999/test1.jpg";
@@ -1137,7 +1228,7 @@ EXPECTED;
     /**
      * @covers ::print_password_policy
      */
-    public function test_print_password_policy(): void {
+    public function test_print_password_policy() {
         $this->resetAfterTest(true);
         global $CFG;
 
@@ -1177,7 +1268,7 @@ EXPECTED;
      *
      * @return string[][]
      */
-    public function get_html_lang_attribute_value_provider() {
+    public static function get_html_lang_attribute_value_provider(): array {
         return [
             'Empty lang code' => ['    ', 'en'],
             'English' => ['en', 'en'],
@@ -1209,7 +1300,7 @@ EXPECTED;
      * @covers \moodle_url::out_as_local_url
      * @dataProvider out_as_local_url_coding_exception_provider
      */
-    public function test_out_as_local_url_coding_exception(\moodle_url $url, string $exmessage): void {
+    public function test_out_as_local_url_coding_exception(\moodle_url $url, string $exmessage) {
         $this->expectException(\coding_exception::class);
         $this->expectExceptionMessage($exmessage);
         $localurl = $url->out_as_local_url();
@@ -1223,7 +1314,7 @@ EXPECTED;
      * @see \moodle_url::out_as_local_url()
      * @see parse_url()
      */
-    public function out_as_local_url_coding_exception_provider() {
+    public static function out_as_local_url_coding_exception_provider(): array {
         return [
             'Google Maps CDN (HTTPS)' => [
                 new \moodle_url('https://maps.googleapis.com/maps/api/js', ['key' => 'googlemapkey3', 'sensor' => 'false']),
@@ -1246,7 +1337,7 @@ EXPECTED;
      * @covers \moodle_url::out_as_local_url
      * @dataProvider out_as_local_url_provider
      */
-    public function test_out_as_local_url(\moodle_url $url, string $expected): void {
+    public function test_out_as_local_url(\moodle_url $url, string $expected) {
         $this->assertEquals($expected, $url->out_as_local_url(false));
     }
 
@@ -1258,7 +1349,7 @@ EXPECTED;
      * @see \moodle_url::out_as_local_url()
      * @see parse_url()
      */
-    public function out_as_local_url_provider() {
+    public static function out_as_local_url_provider(): array {
         global $CFG;
         $wwwroot = rtrim($CFG->wwwroot, '/');
 
@@ -1287,7 +1378,7 @@ EXPECTED;
      * @covers \moodle_url::is_local_url
      * @dataProvider is_local_url_provider
      */
-    public function test_is_local_url(\moodle_url $url, bool $expected): void {
+    public function test_is_local_url(\moodle_url $url, bool $expected) {
         $this->assertEquals($expected, $url->is_local_url(), "'{$url}' is not a local URL!");
     }
 
@@ -1297,7 +1388,7 @@ EXPECTED;
      * @return array
      * @see \moodle_url::is_local_url()
      */
-    public function is_local_url_provider() {
+    public static function is_local_url_provider(): array {
         global $CFG;
         $wwwroot = rtrim($CFG->wwwroot, '/');
 
@@ -1334,7 +1425,7 @@ EXPECTED;
      *
      * @return array
      */
-    public function strip_querystring_provider(): array {
+    public static function strip_querystring_provider(): array {
         return [
             'Null' => [null, ''],
             'Empty string' => ['', ''],

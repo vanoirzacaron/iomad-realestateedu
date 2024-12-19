@@ -24,13 +24,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class CachePoolListCommand extends Command
 {
     protected static $defaultName = 'cache:pool:list';
-    protected static $defaultDescription = 'List available cache pools';
 
     private $poolNames;
 
-    /**
-     * @param string[] $poolNames
-     */
     public function __construct(array $poolNames)
     {
         parent::__construct();
@@ -44,7 +40,7 @@ final class CachePoolListCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription(self::$defaultDescription)
+            ->setDescription('List available cache pools')
             ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command lists all available cache pools.
 EOF

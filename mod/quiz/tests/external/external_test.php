@@ -84,7 +84,6 @@ class testable_mod_quiz_external extends mod_quiz_external {
  * @copyright  2016 Juan Leyva <juan@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since      Moodle 3.1
- * @covers \mod_quiz_external
  */
 class external_test extends externallib_advanced_testcase {
 
@@ -217,7 +216,7 @@ class external_test extends externallib_advanced_testcase {
     /*
      * Test get quizzes by courses
      */
-    public function test_mod_quiz_get_quizzes_by_courses(): void {
+    public function test_mod_quiz_get_quizzes_by_courses() {
         global $DB;
 
         // Create additional course.
@@ -365,7 +364,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test test_view_quiz
      */
-    public function test_view_quiz(): void {
+    public function test_view_quiz() {
         global $DB;
 
         // Test invalid instance id.
@@ -424,10 +423,13 @@ class external_test extends externallib_advanced_testcase {
 
     }
 
-    public function test_get_user_attempts(): void {
+    /**
+     * Test get_user_attempts
+     */
+    public function test_get_user_attempts() {
 
         // Create a quiz with one attempt finished.
-        [$quiz, $context, $quizobj, $attempt, $attemptobj] = $this->create_quiz_with_questions(true, true);
+        list($quiz, $context, $quizobj, $attempt, $attemptobj) = $this->create_quiz_with_questions(true, true);
 
         $this->setUser($this->student);
         $result = mod_quiz_external::get_user_attempts($quiz->id);
@@ -505,45 +507,10 @@ class external_test extends externallib_advanced_testcase {
         }
     }
 
-    public function test_get_user_attempts_with_extra_grades(): void {
-        global $DB;
-
-        // Create a quiz with one attempt finished.
-        [$quiz, , , $attempt, $attemptobj] = $this->create_quiz_with_questions(true, true);
-
-        // Add some extra grade items.
-        $quizgenerator = $this->getDataGenerator()->get_plugin_generator('mod_quiz');
-        $listeninggrade = $quizgenerator->create_grade_item(['quizid' => $attemptobj->get_quizid(), 'name' => 'Listening']);
-        $readinggrade = $quizgenerator->create_grade_item(['quizid' => $attemptobj->get_quizid(), 'name' => 'Reading']);
-        $structure = $attemptobj->get_quizobj()->get_structure();
-        $structure->update_slot_grade_item($structure->get_slot_by_number(1), $listeninggrade->id);
-        $structure->update_slot_grade_item($structure->get_slot_by_number(2), $readinggrade->id);
-
-        $this->setUser($this->student);
-        $result = mod_quiz_external::get_user_attempts($quiz->id);
-        $result = external_api::clean_returnvalue(mod_quiz_external::get_user_attempts_returns(), $result);
-
-        $this->assertCount(1, $result['attempts']);
-        $this->assertEquals($attempt->id, $result['attempts'][0]['id']);
-
-        // Verify additional grades.
-        $this->assertEquals(['name' => 'Listening', 'grade' => 1, 'maxgrade' => 1], $result['attempts'][0]['gradeitemmarks'][0]);
-        $this->assertEquals(['name' => 'Reading', 'grade' => 0, 'maxgrade' => 1], $result['attempts'][0]['gradeitemmarks'][1]);
-
-        // Now change the review options, so marks are not displayed, and check the result.
-        $DB->set_field('quiz', 'reviewmarks', 0, ['id' => $quiz->id]);
-        $result = mod_quiz_external::get_user_attempts($quiz->id);
-        $result = external_api::clean_returnvalue(mod_quiz_external::get_user_attempts_returns(), $result);
-
-        $this->assertCount(1, $result['attempts']);
-        $this->assertEquals($attempt->id, $result['attempts'][0]['id']);
-        $this->assertArrayNotHasKey('gradeitemmarks', $result['attempts'][0]);
-    }
-
     /**
      * Test get_user_attempts with marks hidden
      */
-    public function test_get_user_attempts_with_marks_hidden(): void {
+    public function test_get_user_attempts_with_marks_hidden() {
         // Create quiz with one attempt finished and hide the mark.
         list($quiz, $context, $quizobj, $attempt, $attemptobj) = $this->create_quiz_with_questions(
                 true, true, 'deferredfeedback', false,
@@ -579,7 +546,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_user_best_grade
      */
-    public function test_get_user_best_grade(): void {
+    public function test_get_user_best_grade() {
         $quizgenerator = $this->getDataGenerator()->get_plugin_generator('mod_quiz');
         $questiongenerator = $this->getDataGenerator()->get_plugin_generator('core_question');
         $questioncat = $questiongenerator->create_question_category();
@@ -747,7 +714,7 @@ class external_test extends externallib_advanced_testcase {
      * Test get_combined_review_options.
      * This is a basic test, this is already tested in display_options_testcase.
      */
-    public function test_get_combined_review_options(): void {
+    public function test_get_combined_review_options() {
         global $DB;
 
         // Create a new quiz with attempts.
@@ -964,7 +931,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test start_attempt
      */
-    public function test_start_attempt(): void {
+    public function test_start_attempt() {
         global $DB;
 
         // Create a new quiz with questions.
@@ -1055,7 +1022,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test validate_attempt
      */
-    public function test_validate_attempt(): void {
+    public function test_validate_attempt() {
         global $DB;
 
         // Create a new quiz with one attempt started.
@@ -1164,7 +1131,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_attempt_data
      */
-    public function test_get_attempt_data(): void {
+    public function test_get_attempt_data() {
         global $DB;
 
         $timenow = time();
@@ -1198,9 +1165,7 @@ class external_test extends externallib_advanced_testcase {
         $this->assertArrayNotHasKey('number', $result['questions'][0]);
         $this->assertEquals('1.a', $result['questions'][0]['questionnumber']);
         $this->assertEquals('numerical', $result['questions'][0]['type']);
-        $this->assertEquals('notyetanswered', $result['questions'][0]['stateclass']);
         $this->assertArrayNotHasKey('state', $result['questions'][0]);  // We don't receive the state yet.
-        $this->assertEquals('notyetanswered', $result['questions'][0]['stateclass']);
         $this->assertEquals(get_string('notyetanswered', 'question'), $result['questions'][0]['status']);
         $this->assertFalse($result['questions'][0]['flagged']);
         $this->assertEquals(0, $result['questions'][0]['page']);
@@ -1222,7 +1187,6 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals(2, $result['questions'][0]['questionnumber']);
         $this->assertEquals(2, $result['questions'][0]['number']);
         $this->assertEquals('numerical', $result['questions'][0]['type']);
-        $this->assertEquals('notyetanswered', $result['questions'][0]['stateclass']);
         $this->assertArrayNotHasKey('state', $result['questions'][0]);  // We don't receive the state yet.
         $this->assertEquals(get_string('notyetanswered', 'question'), $result['questions'][0]['status']);
         $this->assertFalse($result['questions'][0]['flagged']);
@@ -1237,7 +1201,6 @@ class external_test extends externallib_advanced_testcase {
         // Now we should receive the question state.
         $result = mod_quiz_external::get_attempt_review($attempt->id, 1);
         $result = external_api::clean_returnvalue(mod_quiz_external::get_attempt_review_returns(), $result);
-        $this->assertEquals('notanswered', $result['questions'][0]['stateclass']);
         $this->assertEquals('gaveup', $result['questions'][0]['state']);
 
         // Change setting and expect two pages.
@@ -1278,7 +1241,7 @@ class external_test extends externallib_advanced_testcase {
      * Test get_attempt_data with blocked questions.
      * @since 3.2
      */
-    public function test_get_attempt_data_with_blocked_questions(): void {
+    public function test_get_attempt_data_with_blocked_questions() {
         global $DB;
 
         // Create a new quiz with one attempt started and using immediatefeedback.
@@ -1322,7 +1285,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_attempt_summary
      */
-    public function test_get_attempt_summary(): void {
+    public function test_get_attempt_summary() {
 
         $timenow = time();
         // Create a new quiz with one attempt started.
@@ -1334,9 +1297,7 @@ class external_test extends externallib_advanced_testcase {
 
         // Check the state, flagged and mark data is correct.
         $this->assertEquals('todo', $result['questions'][0]['state']);
-        $this->assertEquals('notyetanswered', $result['questions'][0]['stateclass']);
         $this->assertEquals('todo', $result['questions'][1]['state']);
-        $this->assertEquals('notyetanswered', $result['questions'][1]['stateclass']);
         $this->assertEquals(1, $result['questions'][0]['number']);
         $this->assertEquals(2, $result['questions'][1]['number']);
         $this->assertFalse($result['questions'][0]['flagged']);
@@ -1354,7 +1315,6 @@ class external_test extends externallib_advanced_testcase {
         $this->assertNotEmpty(5, $result['questions'][0]['settings']);
         // Check at least some settings returned.
         $this->assertCount(4, (array) json_decode($result['questions'][0]['settings']));
-        $this->assertEquals(2, $result['totalunanswered']); // All questions are unanswered.
 
         // Submit a response for the first question.
         $tosubmit = [1 => ['answer' => '3.14']];
@@ -1364,9 +1324,7 @@ class external_test extends externallib_advanced_testcase {
 
         // Check it's marked as completed only the first one.
         $this->assertEquals('complete', $result['questions'][0]['state']);
-        $this->assertEquals('answersaved', $result['questions'][0]['stateclass']);
         $this->assertEquals('todo', $result['questions'][1]['state']);
-        $this->assertEquals('notyetanswered', $result['questions'][1]['stateclass']);
         $this->assertEquals(1, $result['questions'][0]['number']);
         $this->assertEquals(2, $result['questions'][1]['number']);
         $this->assertFalse($result['questions'][0]['flagged']);
@@ -1379,13 +1337,13 @@ class external_test extends externallib_advanced_testcase {
         $this->assertGreaterThanOrEqual($timenow, $result['questions'][1]['lastactiontime']);
         $this->assertEquals(false, $result['questions'][0]['hasautosavedstep']);
         $this->assertEquals(false, $result['questions'][1]['hasautosavedstep']);
-        $this->assertEquals(1, $result['totalunanswered']); // Only one question is unanswered.
+
     }
 
     /**
      * Test save_attempt
      */
-    public function test_save_attempt(): void {
+    public function test_save_attempt() {
 
         $timenow = time();
         // Create a new quiz with one attempt started.
@@ -1412,9 +1370,7 @@ class external_test extends externallib_advanced_testcase {
 
         // Check it's marked as completed only the first one.
         $this->assertEquals('complete', $result['questions'][0]['state']);
-        $this->assertEquals('answersaved', $result['questions'][0]['stateclass']);
         $this->assertEquals('todo', $result['questions'][1]['state']);
-        $this->assertEquals('notyetanswered', $result['questions'][1]['stateclass']);
         $this->assertEquals(1, $result['questions'][0]['number']);
         $this->assertEquals(2, $result['questions'][1]['number']);
         $this->assertFalse($result['questions'][0]['flagged']);
@@ -1447,10 +1403,8 @@ class external_test extends externallib_advanced_testcase {
 
         // Check it's marked as completed only the first one.
         $this->assertEquals('complete', $result['questions'][0]['state']);
-        $this->assertEquals('answersaved', $result['questions'][0]['stateclass']);
         $this->assertEquals(1, $result['questions'][0]['sequencecheck']);
         $this->assertEquals('complete', $result['questions'][1]['state']);
-        $this->assertEquals('answersaved', $result['questions'][1]['stateclass']);
         $this->assertEquals(1, $result['questions'][1]['sequencecheck']);
 
     }
@@ -1458,7 +1412,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test process_attempt
      */
-    public function test_process_attempt(): void {
+    public function test_process_attempt() {
         global $DB;
 
         $timenow = time();
@@ -1586,7 +1540,7 @@ class external_test extends externallib_advanced_testcase {
             $this->assertEquals($quizobj->get_quizid(), $customdata->instance);
             $this->assertEquals($quizobj->get_cmid(), $customdata->cmid);
             $this->assertEquals($attempt->id, $customdata->attemptid);
-            $this->assertObjectHasProperty('notificationiconurl', $customdata);
+            $this->assertObjectHasAttribute('notificationiconurl', $customdata);
         }
 
         // Start new attempt.
@@ -1647,7 +1601,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test validate_attempt_review
      */
-    public function test_validate_attempt_review(): void {
+    public function test_validate_attempt_review() {
         global $DB;
 
         // Create a new quiz with one attempt started.
@@ -1697,14 +1651,15 @@ class external_test extends externallib_advanced_testcase {
         }
     }
 
+
     /**
      * Test get_attempt_review
      */
-    public function test_get_attempt_review(): void {
+    public function test_get_attempt_review() {
         global $DB;
 
         // Create a new quiz with two questions and one attempt finished.
-        [$quiz, , , $attempt] = $this->create_quiz_with_questions(true, true);
+        list($quiz, $context, $quizobj, $attempt, $attemptobj, $quba) = $this->create_quiz_with_questions(true, true);
 
         // Add feedback to the quiz.
         $feedback = new \stdClass();
@@ -1735,6 +1690,11 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals('gaveup', $result['questions'][1]['state']);
         $this->assertEquals(2, $result['questions'][1]['slot']);
 
+        $this->assertCount(1, $result['additionaldata']);
+        $this->assertEquals('feedback', $result['additionaldata'][0]['id']);
+        $this->assertEquals('Feedback', $result['additionaldata'][0]['title']);
+        $this->assertEquals('Feedback text 1', $result['additionaldata'][0]['content']);
+
         // Only first page.
         $result = mod_quiz_external::get_attempt_review($attempt->id, 0);
         $result = external_api::clean_returnvalue(mod_quiz_external::get_attempt_review_returns(), $result);
@@ -1751,71 +1711,13 @@ class external_test extends externallib_advanced_testcase {
         $this->assertEquals('feedback', $result['additionaldata'][0]['id']);
         $this->assertEquals('Feedback', $result['additionaldata'][0]['title']);
         $this->assertEquals('Feedback text 1', $result['additionaldata'][0]['content']);
-    }
 
-    /**
-     * Test get_attempt_review
-     */
-    public function test_get_attempt_review_with_extra_grades(): void {
-        global $DB;
-
-        // Create a new quiz with two questions and one attempt finished.
-        $this->setUser($this->student);
-        [, , , $attempt, $attemptobj] = $this->create_quiz_with_questions(true, true);
-
-        // Add some extra grade items.
-        $quizgenerator = $this->getDataGenerator()->get_plugin_generator('mod_quiz');
-        $listeninggrade = $quizgenerator->create_grade_item(['quizid' => $attemptobj->get_quizid(), 'name' => 'Listening']);
-        $readinggrade = $quizgenerator->create_grade_item(['quizid' => $attemptobj->get_quizid(), 'name' => 'Reading']);
-        $structure = $attemptobj->get_quizobj()->get_structure();
-        $structure->update_slot_grade_item($structure->get_slot_by_number(1), $listeninggrade->id);
-        $structure->update_slot_grade_item($structure->get_slot_by_number(2), $readinggrade->id);
-
-        $result = mod_quiz_external::get_attempt_review($attempt->id);
-        $result = external_api::clean_returnvalue(mod_quiz_external::get_attempt_review_returns(), $result);
-
-        // Two questions, one completed and correct, the other gave up.
-        $this->assertEquals(50, $result['grade']);
-        $this->assertEquals(1, $result['attempt']['attempt']);
-        $this->assertEquals('finished', $result['attempt']['state']);
-        $this->assertEquals(1, $result['attempt']['sumgrades']);
-        $this->assertCount(2, $result['questions']);
-        $this->assertEquals('gradedright', $result['questions'][0]['state']);
-        $this->assertEquals(1, $result['questions'][0]['slot']);
-        $this->assertEquals('gaveup', $result['questions'][1]['state']);
-        $this->assertEquals(2, $result['questions'][1]['slot']);
-
-        // Only first page.
-        $result = mod_quiz_external::get_attempt_review($attempt->id, 0);
-        $result = external_api::clean_returnvalue(mod_quiz_external::get_attempt_review_returns(), $result);
-
-        $this->assertEquals(50, $result['grade']);
-        $this->assertEquals(1, $result['attempt']['attempt']);
-        $this->assertEquals('finished', $result['attempt']['state']);
-        $this->assertEquals(1, $result['attempt']['sumgrades']);
-        $this->assertCount(1, $result['questions']);
-        $this->assertEquals('gradedright', $result['questions'][0]['state']);
-        $this->assertEquals(1, $result['questions'][0]['slot']);
-
-        // Verify additional grades.
-        $this->assertEquals(['name' => 'Listening', 'grade' => 1, 'maxgrade' => 1], $result['attempt']['gradeitemmarks'][0]);
-        $this->assertEquals(['name' => 'Reading', 'grade' => 0, 'maxgrade' => 1], $result['attempt']['gradeitemmarks'][1]);
-
-        // Now change the review options, so marks are not displayed, and check the result.
-        $DB->set_field('quiz', 'reviewmarks', 0, ['id' => $attemptobj->get_quizid()]);
-        $result = mod_quiz_external::get_attempt_review($attempt->id, 0);
-        $result = external_api::clean_returnvalue(mod_quiz_external::get_attempt_review_returns(), $result);
-
-        $this->assertEquals(1, $result['attempt']['attempt']);
-        $this->assertEquals('finished', $result['attempt']['state']);
-        $this->assertNull($result['attempt']['sumgrades']);
-        $this->assertArrayNotHasKey('gradeitemmarks', $result['attempt']);
     }
 
     /**
      * Test test_view_attempt
      */
-    public function test_view_attempt(): void {
+    public function test_view_attempt() {
         global $DB;
 
         // Create a new quiz with two questions and one attempt started.
@@ -1868,7 +1770,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test test_view_attempt_summary
      */
-    public function test_view_attempt_summary(): void {
+    public function test_view_attempt_summary() {
         global $DB;
 
         // Create a new quiz with two questions and one attempt started.
@@ -1909,7 +1811,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test test_view_attempt_summary
      */
-    public function test_view_attempt_review(): void {
+    public function test_view_attempt_review() {
         global $DB;
 
         // Create a new quiz with two questions and one attempt finished.
@@ -1942,7 +1844,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_quiz_feedback_for_grade
      */
-    public function test_get_quiz_feedback_for_grade(): void {
+    public function test_get_quiz_feedback_for_grade() {
         global $DB;
 
         // Add feedback to the quiz.
@@ -1992,7 +1894,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_quiz_access_information
      */
-    public function test_get_quiz_access_information(): void {
+    public function test_get_quiz_access_information() {
         global $DB;
 
         // Create a new quiz.
@@ -2055,7 +1957,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_attempt_access_information
      */
-    public function test_get_attempt_access_information(): void {
+    public function test_get_attempt_access_information() {
         global $DB;
 
         $this->setAdminUser();
@@ -2141,7 +2043,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_quiz_required_qtypes
      */
-    public function test_get_quiz_required_qtypes(): void {
+    public function test_get_quiz_required_qtypes() {
         $this->setAdminUser();
 
         // Create a new quiz.
@@ -2186,7 +2088,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_quiz_required_qtypes for quiz with random questions
      */
-    public function test_get_quiz_required_qtypes_random(): void {
+    public function test_get_quiz_required_qtypes_random() {
         $this->setAdminUser();
 
         // Create a new quiz.
@@ -2237,7 +2139,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test that a sequential navigation quiz is not allowing to see questions in advance except if reviewing
      */
-    public function test_sequential_navigation_view_attempt(): void {
+    public function test_sequential_navigation_view_attempt() {
         // Test user with full capabilities.
         $quiz = $this->prepare_sequential_quiz();
         $attemptobj = $this->create_quiz_attempt_object($quiz);
@@ -2253,27 +2155,23 @@ class external_test extends externallib_advanced_testcase {
     }
 
     /**
-     * Test that a sequential navigation quiz is not allowing to see questions content in advance for a student.
+     * Test that a sequential navigation quiz is not allowing to see questions in advance for a student
      */
-    public function test_sequential_navigation_attempt_summary(): void {
+    public function test_sequential_navigation_attempt_summary() {
         // Test user with full capabilities.
         $quiz = $this->prepare_sequential_quiz();
         $attemptobj = $this->create_quiz_attempt_object($quiz);
         $this->setUser($this->student);
-        // Check that we do not return content from other questions except than the ones currently viewed.
+        // Check that we do not return other questions than the one currently viewed.
         $result = mod_quiz_external::get_attempt_summary($attemptobj->get_attemptid());
-        $this->assertStringContainsString('Question (1)', $result['questions'][0]['html']); // Current question.
-        $this->assertEmpty($result['questions'][1]['html']); // Next question.
-        $this->assertEmpty($result['questions'][2]['html']); // And more.
-        $this->assertEmpty($result['questions'][3]['html']); // And more.
-        $this->assertEmpty($result['questions'][4]['html']); // And more.
-        $this->assertNotContains('totalunanswered', $result);   // For sequential quizzes, unanswered questions are not considered.
+        $this->assertCount(1, $result['questions']);
+        $this->assertStringContainsString('Question (1)', $result['questions'][0]['html']);
     }
 
     /**
      * Test that a sequential navigation quiz is not allowing to see questions in advance for student
      */
-    public function test_sequential_navigation_get_attempt_data(): void {
+    public function test_sequential_navigation_get_attempt_data() {
         // Test user with full capabilities.
         $quiz = $this->prepare_sequential_quiz();
         $attemptobj = $this->create_quiz_attempt_object($quiz);
@@ -2320,7 +2218,6 @@ class external_test extends externallib_advanced_testcase {
         $data = [
             'course' => $this->course->id,
             'sumgrades' => 2,
-            'questionsperpage' => 1,
             'preferredbehaviour' => 'deferredfeedback',
             'navmethod' => QUIZ_NAVMETHOD_SEQ
         ];

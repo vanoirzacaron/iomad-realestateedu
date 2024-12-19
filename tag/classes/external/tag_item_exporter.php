@@ -27,7 +27,6 @@ namespace core_tag\external;
 defined('MOODLE_INTERNAL') || die();
 
 use core\external\exporter;
-use renderer_base;
 
 /**
  * Contains related class for displaying information of a tag item.
@@ -88,35 +87,6 @@ class tag_item_exporter extends exporter {
                 'default' => 0,
                 'null' => NULL_ALLOWED,
             ],
-        ];
-    }
-
-    /**
-     * Return the list of additional properties used only for display.
-     *
-     * @return array
-     */
-    protected static function define_other_properties() {
-        return [
-            'viewurl' => [
-                'type' => PARAM_URL,
-                'description' => 'The url to view the tag.',
-                'optional' => true,
-                'default' => null,
-                'null' => NULL_ALLOWED,
-            ],
-        ];
-    }
-
-    /**
-     * Get the additional values to inject while exporting.
-     *
-     * @param renderer_base $output The renderer.
-     * @return array Keys are the property names, values are their values.
-     */
-    protected function get_other_values(renderer_base $output) {
-        return [
-            'viewurl' => \core_tag_tag::make_url($this->data->tagcollid, $this->data->rawname)->out(false),
         ];
     }
 }

@@ -35,8 +35,7 @@ class mod_instance_helper extends \mod_bigbluebuttonbn\local\extension\mod_insta
         global $DB;
         $DB->insert_record('bbbext_simple', (object) [
             'bigbluebuttonbnid' => $bigbluebuttonbn->id,
-            'newfield' => $bigbluebuttonbn->newfield ?? '',
-            'completionextraisehandtwice' => $bigbluebuttonbn->completionextraisehandtwice ?? '',
+            'newfield' => $bigbluebuttonbn->newfield ?? ''
         ]);
     }
 
@@ -55,11 +54,9 @@ class mod_instance_helper extends \mod_bigbluebuttonbn\local\extension\mod_insta
             $record = new stdClass();
             $record->bigbluebuttonbnid = $bigbluebuttonbn->id;
             $record->newfield = $bigbluebuttonbn->newfield ?? '';
-            $record->completionextraisehandtwice = $bigbluebuttonbn->completionextraisehandtwice ?? 0;
             $DB->insert_record('bbbext_simple', $record);
         } else {
             $record->newfield = $bigbluebuttonbn->newfield ?? '';
-            $record->completionextraisehandtwice = $bigbluebuttonbn->completionextraisehandtwice ?? 0;
             $DB->update_record('bbbext_simple', $record);
         }
     }

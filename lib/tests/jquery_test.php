@@ -32,7 +32,7 @@ namespace core;
  */
 class jquery_test extends \basic_testcase {
 
-    public function test_plugins_file(): void {
+    public function test_plugins_file() {
         global $CFG;
 
         $plugins = null;

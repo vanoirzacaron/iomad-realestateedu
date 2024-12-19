@@ -35,7 +35,7 @@ abstract class type_base {
      *
      * @return string the calendar name
      */
-    abstract public function get_name();
+    public abstract function get_name();
 
     /**
      * Returns a list of all the possible days for all months.
@@ -49,28 +49,28 @@ abstract class type_base {
      *
      * @return array the days
      */
-    abstract public function get_days();
+    public abstract function get_days();
 
     /**
      * Returns a list of all the names of the months.
      *
      * @return array the month names
      */
-    abstract public function get_months();
+    public abstract function get_months();
 
     /**
      * Returns the minimum year for the calendar.
      *
      * @return int The minimum year
      */
-    abstract public function get_min_year();
+    public abstract function get_min_year();
 
     /**
      * Returns the maximum year for the calendar
      *
      * @return int The maximum year
      */
-    abstract public function get_max_year();
+    public abstract function get_max_year();
 
     /**
      * Returns an array of years.
@@ -79,7 +79,7 @@ abstract class type_base {
      * @param int $maxyear
      * @return array the years
      */
-    abstract public function get_years($minyear = null, $maxyear = null);
+    public abstract function get_years($minyear = null, $maxyear = null);
 
     /**
      * Returns a multidimensional array with information for day, month, year
@@ -91,14 +91,14 @@ abstract class type_base {
      * @param int $maxyear The year to finish with
      * @return array Full date information
      */
-    abstract public function get_date_order($minyear = null, $maxyear = null);
+    public abstract function get_date_order($minyear = null, $maxyear = null);
 
     /**
      * Returns the number of days in a week.
      *
      * @return int the number of days
      */
-    abstract public function get_num_weekdays();
+    public abstract function get_num_weekdays();
 
     /**
      * Returns an indexed list of all the names of the weekdays.
@@ -109,7 +109,7 @@ abstract class type_base {
      *
      * @return array array of days
      */
-    abstract public function get_weekdays();
+    public abstract function get_weekdays();
 
     /**
      * Returns the index of the starting week day.
@@ -119,7 +119,7 @@ abstract class type_base {
      *
      * @return int
      */
-    abstract public function get_starting_weekday();
+    public abstract function get_starting_weekday();
 
     /**
      * Returns the index of the weekday for a specific calendar date.
@@ -129,7 +129,7 @@ abstract class type_base {
      * @param int $day
      * @return int
      */
-    abstract public function get_weekday($year, $month, $day);
+    public abstract function get_weekday($year, $month, $day);
 
     /**
      * Returns the number of days in a given month.
@@ -139,7 +139,7 @@ abstract class type_base {
      * @param int $month
      * @return int the number of days
      */
-    abstract public function get_num_days_in_month($year, $month);
+    public abstract function get_num_days_in_month($year, $month);
 
     /**
      * Get the previous month.
@@ -148,7 +148,7 @@ abstract class type_base {
      * @param int $month
      * @return array previous month and year
      */
-    abstract public function get_prev_month($year, $month);
+    public abstract function get_prev_month($year, $month);
 
     /**
      * Get the next month.
@@ -157,7 +157,7 @@ abstract class type_base {
      * @param int $month
      * @return array the following month and year
      */
-    abstract public function get_next_month($year, $month);
+    public abstract function get_next_month($year, $month);
 
     /**
      * Returns a formatted string that represents a date in user time.
@@ -172,7 +172,7 @@ abstract class type_base {
      *        if false then the leading zero is maintained
      * @return string the formatted date/time
      */
-    abstract public function timestamp_to_date_string($time, $format, $timezone, $fixday, $fixhour);
+    public abstract function timestamp_to_date_string($time, $format, $timezone, $fixday, $fixhour);
 
     /**
      * Given a $time timestamp in GMT (seconds since epoch), returns an array that represents
@@ -183,7 +183,7 @@ abstract class type_base {
      *        {@link https://moodledev.io/docs/apis/subsystems/time#timezone}
      * @return array an array that represents the date in user time
      */
-    abstract public function timestamp_to_date_array($time, $timezone = 99);
+    public abstract function timestamp_to_date_array($time, $timezone = 99);
 
     /**
      * Provided with a day, month, year, hour and minute in the specific
@@ -196,7 +196,7 @@ abstract class type_base {
      * @param int $minute
      * @return array the converted date
      */
-    abstract public function convert_to_gregorian($year, $month, $day, $hour = 0, $minute = 0);
+    public abstract function convert_to_gregorian($year, $month, $day, $hour = 0, $minute = 0);
 
     /**
      * Provided with a day, month, year, hour and minute in a Gregorian date
@@ -209,14 +209,14 @@ abstract class type_base {
      * @param int $minute
      * @return array the converted date
      */
-    abstract public function convert_from_gregorian($year, $month, $day, $hour = 0, $minute = 0);
+    public abstract function convert_from_gregorian($year, $month, $day, $hour = 0, $minute = 0);
 
     /**
      * This return locale for windows os.
      *
      * @return string locale
      */
-    abstract public function locale_win_charset();
+    public abstract function locale_win_charset();
 
     /**
      * Provided with a day, month, year, hour and minute in the specific

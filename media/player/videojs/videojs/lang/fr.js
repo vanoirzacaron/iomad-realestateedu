@@ -68,7 +68,7 @@ videojs.addLanguage('fr', {
   "Raised": "Élevé",
   "Depressed": "Enfoncé",
   "Uniform": "Uniforme",
-  "Drop shadow": "Ombre portée",
+  "Dropshadow": "Ombre portée",
   "Font Family": "Famille de polices",
   "Proportional Sans-Serif": "Polices à chasse variable sans empattement (Proportional Sans-Serif)",
   "Monospace Sans-Serif": "Polices à chasse fixe sans empattement (Monospace Sans-Serif)",
@@ -90,7 +90,5 @@ videojs.addLanguage('fr', {
   "Color": "Couleur",
   "Opacity": "Opacité",
   "Text Background": "Arrière-plan du texte",
-  "Caption Area Background": "Arrière-plan de la zone de sous-titre",
-  "Skip backward {1} seconds": "Reculer de {1} secondes",
-  "Skip forward {1} seconds": "Avancer de {1} secondes"
+  "Caption Area Background": "Arrière-plan de la zone de sous-titre"
 });

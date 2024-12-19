@@ -44,19 +44,19 @@ class question_type_test extends \advanced_testcase {
         $this->qtype = null;
     }
 
-    public function test_name(): void {
+    public function test_name() {
         $this->assertEquals($this->qtype->name(), 'random');
     }
 
-    public function test_can_analyse_responses(): void {
+    public function test_can_analyse_responses() {
         $this->assertFalse($this->qtype->can_analyse_responses());
     }
 
-    public function test_get_random_guess_score(): void {
+    public function test_get_random_guess_score() {
         $this->assertNull($this->qtype->get_random_guess_score(null));
     }
 
-    public function test_load_question(): void {
+    public function test_load_question() {
         $this->resetAfterTest();
 
         $syscontext = \context_system::instance();
@@ -100,11 +100,11 @@ class question_type_test extends \advanced_testcase {
         $this->assertEquals([], $questiondata->hints);
     }
 
-    public function test_get_possible_responses(): void {
+    public function test_get_possible_responses() {
         $this->assertEquals(array(), $this->qtype->get_possible_responses(null));
     }
 
-    public function test_question_creation(): void {
+    public function test_question_creation() {
         $this->resetAfterTest();
         question_bank::get_qtype('random')->clear_caches_before_testing();
 

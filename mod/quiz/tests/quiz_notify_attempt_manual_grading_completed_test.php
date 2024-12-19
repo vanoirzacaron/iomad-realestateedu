@@ -113,7 +113,7 @@ class quiz_notify_attempt_manual_grading_completed_test extends advanced_testcas
     /**
      * Test SQL querry get list attempt in condition.
      */
-    public function test_get_list_of_attempts_within_conditions(): void {
+    public function test_get_list_of_attempts_within_conditions() {
         global $DB;
 
         $timenow = time();
@@ -157,7 +157,7 @@ class quiz_notify_attempt_manual_grading_completed_test extends advanced_testcas
     /**
      * Test SQL query does not return attempts if the grading is not complete yet.
      */
-    public function test_get_list_of_attempts_without_manual_graded(): void {
+    public function test_get_list_of_attempts_without_manual_graded() {
 
         $timenow = time();
 
@@ -183,7 +183,7 @@ class quiz_notify_attempt_manual_grading_completed_test extends advanced_testcas
     /**
      * Test notify manual grading completed task which the user attempt has not capability.
      */
-    public function test_notify_manual_grading_completed_task_without_capability(): void {
+    public function test_notify_manual_grading_completed_task_without_capability() {
         global $DB;
 
         // Create an attempt for a user without the capability.
@@ -224,7 +224,7 @@ class quiz_notify_attempt_manual_grading_completed_test extends advanced_testcas
     /**
      * Test notify manual grading completed task which the user attempt has capability.
      */
-    public function test_notify_manual_grading_completed_task_with_capability(): void {
+    public function test_notify_manual_grading_completed_task_with_capability() {
         global $DB;
 
         // Allow student to receive messages.

@@ -26,7 +26,7 @@ final class SheetManager
     /** @var array<string, array<int, string>> Associative array [WORKBOOK_ID] => [[SHEET_INDEX] => [SHEET_NAME]] keeping track of sheets' name to enforce uniqueness per workbook */
     private static array $SHEETS_NAME_USED = [];
 
-    private readonly StringHelper $stringHelper;
+    private StringHelper $stringHelper;
 
     /**
      * SheetManager constructor.
@@ -43,7 +43,7 @@ final class SheetManager
      *
      * @param Sheet $sheet The sheet whose future name is checked
      *
-     * @throws InvalidSheetNameException if the sheet's name is invalid
+     * @throws \OpenSpout\Writer\Exception\InvalidSheetNameException if the sheet's name is invalid
      */
     public function throwIfNameIsInvalid(string $name, Sheet $sheet): void
     {

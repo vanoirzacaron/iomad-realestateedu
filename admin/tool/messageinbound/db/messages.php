@@ -24,26 +24,11 @@
 
 $messageproviders = array (
     // Invalid recipient handler.
-    'invalidrecipienthandler'   => [
-        'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ],
-    ],
+    'invalidrecipienthandler'   => array(),
 
     // A generic message processing error.
-    'messageprocessingerror'    => [
-        'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ],
-    ],
+    'messageprocessingerror'    => array(),
 
     // A generic message processing success message.
-    'messageprocessingsuccess'    => [
-        'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ],
-    ],
+    'messageprocessingsuccess'    => array(),
 );

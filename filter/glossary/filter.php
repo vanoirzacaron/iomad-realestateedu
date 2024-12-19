@@ -38,7 +38,11 @@ class filter_glossary extends moodle_text_filter {
 
     public function setup($page, $context) {
         if ($page->requires->should_create_one_time_item_now('filter_glossary_autolinker')) {
-            $page->requires->js_call_amd('filter_glossary/autolinker', 'init', []);
+            $page->requires->yui_module(
+                    'moodle-filter_glossary-autolinker',
+                    'M.filter_glossary.init_filter_autolinking',
+                    array(array('courseid' => 0)));
+            $page->requires->strings_for_js(array('ok'), 'moodle');
         }
     }
 
@@ -141,9 +145,7 @@ class filter_glossary extends moodle_text_filter {
             $attributes = array(
                     'href'  => $link,
                     'title' => str_replace('&amp;', '&', $title), // Undo the s() mangling.
-                    'class' => 'glossary autolink concept glossaryid' . $concept->glossaryid,
-                    'data-entryid' => $concept->id,
-                );
+                    'class' => 'glossary autolink concept glossaryid' . $concept->glossaryid);
         }
 
         // This flag is optionally set by resource_pluginfile()

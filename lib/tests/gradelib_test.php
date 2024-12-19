@@ -31,7 +31,7 @@ require_once($CFG->libdir . '/gradelib.php');
  */
 class gradelib_test extends \advanced_testcase {
 
-    public function test_grade_update_mod_grades(): void {
+    public function test_grade_update_mod_grades() {
 
         $this->resetAfterTest(true);
 
@@ -61,7 +61,7 @@ class gradelib_test extends \advanced_testcase {
     /**
      * Tests the function remove_grade_letters().
      */
-    public function test_remove_grade_letters(): void {
+    public function test_remove_grade_letters() {
         global $DB;
 
         $this->resetAfterTest();
@@ -104,7 +104,7 @@ class gradelib_test extends \advanced_testcase {
     /**
      * Tests the function grade_course_category_delete().
      */
-    public function test_grade_course_category_delete(): void {
+    public function test_grade_course_category_delete() {
         global $DB;
 
         $this->resetAfterTest();
@@ -127,7 +127,7 @@ class gradelib_test extends \advanced_testcase {
     /**
      * Tests the function grade_regrade_final_grades().
      */
-    public function test_grade_regrade_final_grades(): void {
+    public function test_grade_regrade_final_grades() {
         global $DB;
 
         $this->resetAfterTest();
@@ -188,7 +188,7 @@ class gradelib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function grade_get_date_for_user_grade_provider(): array {
+    public static function grade_get_date_for_user_grade_provider(): array {
         $u1 = (object) [
             'id' => 42,
         ];
@@ -251,7 +251,7 @@ class gradelib_test extends \advanced_testcase {
     /**
      * Test the caching of grade letters.
      */
-    public function test_get_grade_letters(): void {
+    public function test_get_grade_letters() {
 
         $this->resetAfterTest();
 
@@ -276,7 +276,7 @@ class gradelib_test extends \advanced_testcase {
     /**
      * Test custom letters.
      */
-    public function test_get_grade_letters_custom(): void {
+    public function test_get_grade_letters_custom() {
         global $DB;
 
         $this->resetAfterTest();
@@ -309,7 +309,7 @@ class gradelib_test extends \advanced_testcase {
      * @covers \grade_get_grades()
      * @return void
      */
-    public function test_grade_get_grades_errors(): void {
+    public function test_grade_get_grades_errors() {
         $this->resetAfterTest();
 
         // Setup some basics.

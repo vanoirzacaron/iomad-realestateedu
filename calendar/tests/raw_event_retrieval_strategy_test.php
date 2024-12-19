@@ -34,7 +34,7 @@ class raw_event_retrieval_strategy_test extends \advanced_testcase {
     /**
      * Test retrieval strategy when module is disabled.
      */
-    public function test_get_raw_events_with_disabled_module(): void {
+    public function test_get_raw_events_with_disabled_module() {
         global $DB;
 
         $this->resetAfterTest();
@@ -113,7 +113,7 @@ class raw_event_retrieval_strategy_test extends \advanced_testcase {
     /**
      * Test retrieval strategy when there are overrides.
      */
-    public function test_get_raw_event_strategy_with_overrides(): void {
+    public function test_get_raw_event_strategy_with_overrides() {
         $this->resetAfterTest();
 
         $retrievalstrategy = new raw_event_retrieval_strategy();
@@ -298,7 +298,7 @@ class raw_event_retrieval_strategy_test extends \advanced_testcase {
     /**
      * Test retrieval strategy with category specifications.
      */
-    public function test_get_raw_events_category(): void {
+    public function test_get_raw_events_category() {
         $this->resetAfterTest();
         $retrievalstrategy = new raw_event_retrieval_strategy();
         $generator = $this->getDataGenerator();
@@ -359,7 +359,7 @@ class raw_event_retrieval_strategy_test extends \advanced_testcase {
         $this->assertCount(2, $events);
     }
 
-    public function test_get_raw_events_for_multiple_users(): void {
+    public function test_get_raw_events_for_multiple_users() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -402,7 +402,7 @@ class raw_event_retrieval_strategy_test extends \advanced_testcase {
                 array_column($events, 'name'));
     }
 
-    public function test_get_raw_events_for_groups_with_no_members(): void {
+    public function test_get_raw_events_for_groups_with_no_members() {
         $this->resetAfterTest();
 
         $generator = $this->getDataGenerator();
@@ -447,7 +447,7 @@ class raw_event_retrieval_strategy_test extends \advanced_testcase {
      * db compatible. The test is ensuring we don't get a DML Exception with
      * the filters setup this way.
      */
-    public function test_get_raw_events_with_empty_user_and_category_lists(): void {
+    public function test_get_raw_events_with_empty_user_and_category_lists() {
         $retrievalstrategy = new raw_event_retrieval_strategy;
         $retrievalstrategy->get_raw_events([], null, null, []);
     }

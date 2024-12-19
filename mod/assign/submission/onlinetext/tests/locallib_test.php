@@ -48,7 +48,7 @@ class locallib_test extends \advanced_testcase {
      * @param string $submissiontext The online text submission text
      * @param bool $expected The expected return value
      */
-    public function test_submission_is_empty($submissiontext, $expected): void {
+    public function test_submission_is_empty($submissiontext, $expected) {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -75,7 +75,7 @@ class locallib_test extends \advanced_testcase {
      * @param string $submissiontext The file submission data
      * @param bool $expected The expected return value
      */
-    public function test_new_submission_empty($submissiontext, $expected): void {
+    public function test_new_submission_empty($submissiontext, $expected) {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -100,7 +100,7 @@ class locallib_test extends \advanced_testcase {
      *
      * @return array of testcases
      */
-    public function submission_is_empty_testcases() {
+    public static function submission_is_empty_testcases(): array {
         return [
             'Empty submission string' => ['', true],
             'Empty submission null' => [null, true],

@@ -33,22 +33,13 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface
             $class = $reflection->class;
         } else {
             $reflection = new \ReflectionFunction($controller);
-            if ($class = str_contains($reflection->name, '{closure}') ? null : (\PHP_VERSION_ID >= 80111 ? $reflection->getClosureCalledClass() : $reflection->getClosureScopeClass())) {
+            if ($class = str_contains($reflection->name, '{closure}') ? null : $reflection->getClosureScopeClass()) {
                 $class = $class->name;
             }
         }
 
         foreach ($reflection->getParameters() as $param) {
-            $attributes = [];
-            if (\PHP_VERSION_ID >= 80000) {
-                foreach ($param->getAttributes() as $reflectionAttribute) {
-                    if (class_exists($reflectionAttribute->getName())) {
-                        $attributes[] = $reflectionAttribute->newInstance();
-                    }
-                }
-            }
-
-            $arguments[] = new ArgumentMetadata($param->getName(), $this->getType($param, $class), $param->isVariadic(), $param->isDefaultValueAvailable(), $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null, $param->allowsNull(), $attributes);
+            $arguments[] = new ArgumentMetadata($param->getName(), $this->getType($param, $class), $param->isVariadic(), $param->isDefaultValueAvailable(), $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null, $param->allowsNull());
         }
 
         return $arguments;

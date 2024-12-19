@@ -39,7 +39,7 @@ class filter_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_filter(): void {
+    public function test_filter() {
 
         $this->resetAfterTest(true);
         $this->setAdminUser();

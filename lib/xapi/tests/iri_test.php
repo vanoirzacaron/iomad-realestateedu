@@ -53,7 +53,7 @@ class iri_test extends advanced_testcase {
      * @param string $expected Expected result
      * @param string $type = null If some special type is provided
      */
-    public function test_generate(string $value, string $expected, string $type = null): void {
+    public function test_generate(string $value, string $expected, string $type = null) {
         $iri = iri::generate($value, $type);
         $this->assertEquals($iri, $expected);
     }
@@ -66,7 +66,7 @@ class iri_test extends advanced_testcase {
      * @param string $value Value to generate IRI
      * @param string $type = null If some special type is provided
      */
-    public function test_extract(string $expected, string $value, string $type = null): void {
+    public function test_extract(string $expected, string $value, string $type = null) {
         $extract = iri::extract($value, $type);
         $this->assertEquals($extract, $expected);
     }
@@ -76,7 +76,7 @@ class iri_test extends advanced_testcase {
      *
      * @return  array
      */
-    public function iri_samples_provider(): array {
+    public static function iri_samples_provider(): array {
         global $CFG;
 
         return [
@@ -110,7 +110,7 @@ class iri_test extends advanced_testcase {
      * @param string $value Value to generate IRI
      * @param bool $expected Expected result
      */
-    public function test_check(string $value, bool $expected): void {
+    public function test_check(string $value, bool $expected) {
         $check = iri::check($value);
         $this->assertEquals($check, $expected);
     }
@@ -120,7 +120,7 @@ class iri_test extends advanced_testcase {
      *
      * @return  array
      */
-    public function iri_check_provider(): array {
+    public static function iri_check_provider(): array {
         return [
             'Real IRI http' => [
                 'http://adlnet.gov/expapi/activities/example',

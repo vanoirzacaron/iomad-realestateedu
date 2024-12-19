@@ -61,7 +61,6 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
         // A chance for access subplugings to set up their quiz data.
         $this->add_subplugin_structure('quizaccess', $quiz);
 
-        $paths[] = new restore_path_element('quiz_grade_item', '/activity/quiz/quiz_grade_items/quiz_grade_item');
         $quizquestioninstance = new restore_path_element('quiz_question_instance',
             '/activity/quiz/question_instances/question_instance');
         $paths[] = $quizquestioninstance;
@@ -326,21 +325,6 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
     }
 
     /**
-     * Process a quiz grade items.
-     *
-     * @param stdClass|array $data
-     */
-    protected function process_quiz_grade_item($data): void {
-        global $DB;
-
-        $data = (object) $data;
-        $data->quizid = $this->get_new_parentid('quiz');
-        $oldid = $data->id;
-        $newitemid = $DB->insert_record('quiz_grade_items', $data);
-        $this->set_mapping('quiz_grade_item', $oldid, $newitemid, true);
-    }
-
-    /**
      * Process the data for pre 4.0 quiz data where the question_references and question_set_references table introduced.
      *
      * @param stdClass|array $data
@@ -403,7 +387,7 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
      * @param stdClass|array $data
      */
     protected function process_quiz_question_instance($data) {
-        global $DB;
+        global $CFG, $DB;
 
         $data = (object)$data;
         $oldid = $data->id;
@@ -440,10 +424,6 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
                     $this->get_new_parentid('quiz') . ' but not actually used. ' .
                     'The instance has been ignored.', backup::LOG_INFO);
             return;
-        }
-
-        if (isset($data->quizgradeitemid)) {
-            $data->quizgradeitemid = $this->get_mappingid('quiz_grade_item', $data->quizgradeitemid);
         }
 
         $data->quizid = $this->get_new_parentid('quiz');

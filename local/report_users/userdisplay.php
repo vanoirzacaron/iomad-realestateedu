@@ -485,7 +485,7 @@ if ($DB->get_records_sql("SELECT lit.id FROM {iomad_courses} ic
                           AND lit.userid = :userid",
                           array('userid' => $userid))) {
     $columns[] = 'finalscore';
-    $headers[] = get_string('grade', 'iomadcertificate');
+    $headers[] = get_string('grade', 'grades');
 }
 
 if (!$table->is_downloading()){

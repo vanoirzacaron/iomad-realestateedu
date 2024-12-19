@@ -6,7 +6,6 @@ namespace OpenSpout\Reader\CSV;
 
 use OpenSpout\Common\Entity\Cell;
 use OpenSpout\Common\Entity\Row;
-use OpenSpout\Common\Exception\EncodingConversionException;
 use OpenSpout\Common\Helper\EncodingHelper;
 use OpenSpout\Reader\RowIteratorInterface;
 
@@ -27,15 +26,15 @@ final class RowIterator implements RowIteratorInterface
     private int $numReadRows = 0;
 
     /** @var null|Row Buffer used to store the current row, while checking if there are more rows to read */
-    private ?Row $rowBuffer = null;
+    private ?Row $rowBuffer;
 
     /** @var bool Indicates whether all rows have been read */
     private bool $hasReachedEndOfFile = false;
 
-    private readonly Options $options;
+    private Options $options;
 
     /** @var EncodingHelper Helper to work with different encodings */
-    private readonly EncodingHelper $encodingHelper;
+    private EncodingHelper $encodingHelper;
 
     /**
      * @param resource $filePointer Pointer to the CSV file to read
@@ -80,7 +79,7 @@ final class RowIterator implements RowIteratorInterface
      *
      * @see http://php.net/manual/en/iterator.next.php
      *
-     * @throws EncodingConversionException If unable to convert data to UTF-8
+     * @throws \OpenSpout\Common\Exception\EncodingConversionException If unable to convert data to UTF-8
      */
     public function next(): void
     {
@@ -124,7 +123,7 @@ final class RowIterator implements RowIteratorInterface
     }
 
     /**
-     * @throws EncodingConversionException If unable to convert data to UTF-8
+     * @throws \OpenSpout\Common\Exception\EncodingConversionException If unable to convert data to UTF-8
      */
     private function readDataForNextRow(): void
     {
@@ -169,7 +168,7 @@ final class RowIterator implements RowIteratorInterface
      *
      * @return array<int, null|string>|false The row for the current file pointer, encoded in UTF-8 or FALSE if nothing to read
      *
-     * @throws EncodingConversionException If unable to convert data to UTF-8
+     * @throws \OpenSpout\Common\Exception\EncodingConversionException If unable to convert data to UTF-8
      */
     private function getNextUTF8EncodedRow(): array|false
     {

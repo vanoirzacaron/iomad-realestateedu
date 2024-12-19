@@ -50,7 +50,7 @@ final class CachingStrategyFactory implements CachingStrategyFactoryInterface
      */
     public const MAX_NUM_STRINGS_PER_TEMP_FILE = 10000;
 
-    private readonly MemoryLimit $memoryLimit;
+    private MemoryLimit $memoryLimit;
 
     public function __construct(MemoryLimit $memoryLimit)
     {

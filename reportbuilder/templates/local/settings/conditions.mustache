@@ -41,16 +41,17 @@
 <div class="p-2" data-region="settings-conditions">
     {{#conditions}}
         {{#hasavailableconditions}}
-            <div class="reportbuilder-conditions-select">
+            <div>
                 <label for="addconditionselect" class="sr-only">{{#str}} selectacondition, core_reportbuilder {{/str}}</label>
                 <select id="addconditionselect" data-action="report-add-condition" class="w-100 custom-select">
-                    <option value="0"></option>
+                    <option value="0">{{#str}} selectacondition, core_reportbuilder {{/str}}&hellip;</option>
                     {{#availableconditions}}
                         {{#optiongroup}}
-                            <option disabled class="suggestions-heading">{{text}}</option>
-                            {{#values}}
-                                <option value="{{value}}">{{visiblename}}</option>
-                            {{/values}}
+                            <optgroup label="{{text}}">
+                                {{#values}}
+                                    <option value="{{value}}">{{visiblename}}</option>
+                                {{/values}}
+                            </optgroup>
                         {{/optiongroup}}
                     {{/availableconditions}}
                 </select>

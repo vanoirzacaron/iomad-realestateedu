@@ -17,7 +17,7 @@ Feature: Add badges to the system
     And I add the "Navigation" block if not present
     And I click on "Site pages" "list_item" in the "Navigation" "block"
     Given I click on "Site badges" "link" in the "Navigation" "block"
-    Then I should see "There are no matching badges available for users to earn."
+    Then I should see "There are currently no badges available for users to earn."
 
   @javascript @_file_upload
   Scenario: Add a badge

@@ -31,7 +31,7 @@ class block_tag_youtube_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_after_install(): void {
+    public function test_after_install() {
         global $DB;
 
         $this->resetAfterTest(true);

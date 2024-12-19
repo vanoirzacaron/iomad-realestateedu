@@ -28,7 +28,7 @@ class capabilities_test extends \advanced_testcase {
     /**
      * A user who does not have capabilities to add events to the calendar should be able to create activities.
      */
-    public function test_creation_with_no_calendar_capabilities(): void {
+    public function test_creation_with_no_calendar_capabilities() {
         $this->resetAfterTest();
         $course = self::getDataGenerator()->create_course(['enablecompletion' => 1]);
         $context = \context_course::instance($course->id);

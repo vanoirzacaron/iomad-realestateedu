@@ -54,7 +54,7 @@ class writer_test extends advanced_testcase {
      *
      * @covers ::with_context
      */
-    public function test_with_context(): void {
+    public function test_with_context() {
         $writer = writer::with_context(\context_system::instance());
 
         $this->assertSame($writer, writer::with_context(\context_system::instance()));
@@ -65,7 +65,7 @@ class writer_test extends advanced_testcase {
      *
      * @covers ::with_context
      */
-    public function test_with_context_different_context_same_instance(): void {
+    public function test_with_context_different_context_same_instance() {
         $writer = writer::with_context(\context_system::instance());
 
         $this->assertSame($writer, writer::with_context(\context_user::instance(\core_user::get_user_by_username('admin')->id)));
@@ -76,7 +76,7 @@ class writer_test extends advanced_testcase {
      *
      * @covers ::reset
      */
-    public function test_reset(): void {
+    public function test_reset() {
         $writer = writer::with_context(\context_system::instance());
         writer::reset();
 
@@ -88,7 +88,7 @@ class writer_test extends advanced_testcase {
      *
      * @covers ::export_user_preference
      */
-    public function test_export_user_preference_sets_system_context(): void {
+    public function test_export_user_preference_sets_system_context() {
         $writer = writer::with_context(\context_user::instance(\core_user::get_user_by_username('admin')->id));
 
         writer::export_user_preference('core_test', 'key', 'value', 'description');

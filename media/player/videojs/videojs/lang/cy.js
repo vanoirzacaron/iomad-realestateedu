@@ -66,7 +66,7 @@ videojs.addLanguage('cy', {
   "Raised": "Uwch",
   "Depressed": "Is",
   "Uniform": "Unffurf",
-  "Drop shadow": "Cysgod cefn",
+  "Dropshadow": "Cysgod cefn",
   "Font Family": "Teulu y Ffont",
   "Proportional Sans-Serif": "Heb-Seriff Cyfraneddol",
   "Monospace Sans-Serif": "Heb-Seriff Unlled",

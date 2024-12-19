@@ -41,7 +41,7 @@ class category_controller_test extends \advanced_testcase {
     /**
      * Test for the field_controller::__construct function.
      */
-    public function test_constructor(): void {
+    public function test_constructor() {
         $this->resetAfterTest();
 
         $c = category_controller::create(0, (object)['component' => 'core_course', 'area' => 'course', 'itemid' => 0]);
@@ -88,7 +88,7 @@ class category_controller_test extends \advanced_testcase {
     /**
      * Test for function \core_customfield\field_controller::create() in case of wrong parameters
      */
-    public function test_constructor_errors(): void {
+    public function test_constructor_errors() {
         global $DB;
         $this->resetAfterTest();
 
@@ -189,7 +189,7 @@ class category_controller_test extends \advanced_testcase {
      * \core_customfield\category_controller::save()
      * \core_customfield\category_controller::get()
      */
-    public function test_create_category(): void {
+    public function test_create_category() {
         $this->resetAfterTest();
 
         // Create the category.
@@ -218,7 +218,7 @@ class category_controller_test extends \advanced_testcase {
     /**
      * Tests for \core_customfield\category_controller::set() behaviour.
      */
-    public function test_rename_category(): void {
+    public function test_rename_category() {
         $this->resetAfterTest();
 
         // Create the category.
@@ -243,7 +243,7 @@ class category_controller_test extends \advanced_testcase {
     /**
      * Tests for \core_customfield\category_controller::delete() behaviour.
      */
-    public function test_delete_category(): void {
+    public function test_delete_category() {
         $this->resetAfterTest();
 
         // Create the category.

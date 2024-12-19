@@ -217,7 +217,7 @@ abstract class base_converter implements loggable {
     /**
      * Converts the contents of the tempdir into the target format in the workdir
      */
-    abstract protected function execute();
+    protected abstract function execute();
 
     /**
      * Prepares a new empty working directory

@@ -24,40 +24,40 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$functions = [
-    'tool_usertours_fetch_and_start_tour' => [
+$functions = array(
+    'tool_usertours_fetch_and_start_tour' => array(
         'classname'       => 'tool_usertours\external\tour',
         'methodname'      => 'fetch_and_start_tour',
         'description'     => 'Fetch the specified tour',
         'type'            => 'read',
         'capabilities'    => '',
         'ajax'            => true,
-    ],
+    ),
 
-    'tool_usertours_step_shown' => [
+    'tool_usertours_step_shown' => array(
         'classname'       => 'tool_usertours\external\tour',
         'methodname'      => 'step_shown',
         'description'     => 'Mark the specified step as completed for the current user',
         'type'            => 'write',
         'capabilities'    => '',
         'ajax'            => true,
-    ],
+    ),
 
-    'tool_usertours_complete_tour' => [
+    'tool_usertours_complete_tour' => array(
         'classname'       => 'tool_usertours\external\tour',
         'methodname'      => 'complete_tour',
         'description'     => 'Mark the specified tour as completed for the current user',
         'type'            => 'write',
         'capabilities'    => '',
         'ajax'            => true,
-    ],
+    ),
 
-    'tool_usertours_reset_tour' => [
+    'tool_usertours_reset_tour' => array(
         'classname'       => 'tool_usertours\external\tour',
         'methodname'      => 'reset_tour',
         'description'     => 'Remove the specified tour',
         'type'            => 'write',
         'capabilities'    => '',
         'ajax'            => true,
-    ],
-];
+    ),
+);

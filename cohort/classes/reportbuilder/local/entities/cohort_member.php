@@ -35,14 +35,12 @@ use core_reportbuilder\local\report\filter;
 class cohort_member extends base {
 
     /**
-     * Database tables that this entity uses
+     * Database tables that this entity uses and their default aliases
      *
-     * @return string[]
+     * @return array
      */
-    protected function get_default_tables(): array {
-        return [
-            'cohort_members',
-        ];
+    protected function get_default_table_aliases(): array {
+        return ['cohort_members' => 'cm'];
     }
 
     /**

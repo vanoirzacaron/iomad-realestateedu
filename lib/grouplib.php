@@ -145,7 +145,7 @@ function groups_get_group_by_name($courseid, $name) {
  * @category group
  * @param int $courseid The id of the course
  * @param string $idnumber idnumber of group
- * @return stdClass|false group object
+ * @return group object
  */
 function groups_get_group_by_idnumber($courseid, $idnumber) {
     if (empty($idnumber)) {
@@ -186,7 +186,7 @@ function groups_get_grouping_by_name($courseid, $name) {
  * @category group
  * @param int $courseid The id of the course
  * @param string $idnumber idnumber of the group
- * @return stdClass|false grouping object
+ * @return grouping object
  */
 function groups_get_grouping_by_idnumber($courseid, $idnumber) {
     if (empty($idnumber)) {

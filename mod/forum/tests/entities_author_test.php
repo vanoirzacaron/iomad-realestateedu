@@ -29,7 +29,7 @@ class entities_author_test extends \advanced_testcase {
     /**
      * Test the entity returns expected values.
      */
-    public function test_entity(): void {
+    public function test_entity() {
         $this->resetAfterTest();
 
         $author = new author_entity(

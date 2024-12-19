@@ -9,7 +9,7 @@ use OpenSpout\Common\Entity\Style\Style;
 
 final class StringCell extends Cell
 {
-    private readonly string $value;
+    private string $value;
 
     public function __construct(string $value, ?Style $style)
     {

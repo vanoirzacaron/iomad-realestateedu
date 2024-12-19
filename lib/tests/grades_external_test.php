@@ -134,7 +134,7 @@ class grades_external_test extends \externallib_advanced_testcase {
     /**
      * Test update_grades()
      */
-    public function test_update_grades(): void {
+    public function test_update_grades() {
         global $DB;
 
         $this->resetAfterTest(true);

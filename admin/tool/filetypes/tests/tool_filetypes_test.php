@@ -30,7 +30,7 @@ class tool_filetypes_test extends advanced_testcase {
      *
      * @covers ::is_extension_invalid
      */
-    public function test_is_extension_invalid(): void {
+    public function test_is_extension_invalid() {
         // The pdf file extension already exists in default moodle minetypes.
         $this->assertTrue(utils::is_extension_invalid('pdf'));
 
@@ -52,7 +52,7 @@ class tool_filetypes_test extends advanced_testcase {
      *
      * @covers ::is_defaulticon_allowed
      */
-    public function test_is_defaulticon_allowed(): void {
+    public function test_is_defaulticon_allowed() {
         // You ARE allowed to set a default icon for a MIME type that hasn't
         // been used yet.
         $this->assertTrue(utils::is_defaulticon_allowed('application/x-frog'));
@@ -71,7 +71,7 @@ class tool_filetypes_test extends advanced_testcase {
      *
      * @covers ::get_icons_from_path
      */
-    public function test_get_icons_from_path(): void {
+    public function test_get_icons_from_path() {
         // Get icons from the fixtures folder.
         $icons = utils::get_icons_from_path(__DIR__ . '/fixtures');
 
@@ -86,7 +86,7 @@ class tool_filetypes_test extends advanced_testcase {
      *
      * @covers ::get_file_icons
      */
-    public function test_get_file_icons(): void {
+    public function test_get_file_icons() {
         $icons = utils::get_file_icons();
         $filetypes = core_filetypes::get_types();
 

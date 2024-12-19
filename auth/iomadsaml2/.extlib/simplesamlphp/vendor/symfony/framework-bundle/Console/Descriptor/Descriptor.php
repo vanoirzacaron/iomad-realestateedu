@@ -64,9 +64,6 @@ abstract class Descriptor implements DescriptorInterface
             case $object instanceof ContainerBuilder && isset($options['parameter']):
                 $this->describeContainerParameter($object->resolveEnvPlaceholders($object->getParameter($options['parameter'])), $options);
                 break;
-            case $object instanceof ContainerBuilder && isset($options['deprecations']):
-                $this->describeContainerDeprecations($object, $options);
-                break;
             case $object instanceof ContainerBuilder:
                 $this->describeContainerServices($object, $options);
                 break;
@@ -83,7 +80,7 @@ abstract class Descriptor implements DescriptorInterface
                 $this->describeCallable($object, $options);
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Object of type "%s" is not describable.', get_debug_type($object)));
+                throw new \InvalidArgumentException(sprintf('Object of type "%s" is not describable.', \get_class($object)));
         }
     }
 
@@ -113,7 +110,7 @@ abstract class Descriptor implements DescriptorInterface
      *
      * @param Definition|Alias|object $service
      */
-    abstract protected function describeContainerService(object $service, array $options = [], ContainerBuilder $builder = null);
+    abstract protected function describeContainerService($service, array $options = [], ContainerBuilder $builder = null);
 
     /**
      * Describes container services.
@@ -122,8 +119,6 @@ abstract class Descriptor implements DescriptorInterface
      * * tag: filters described services by given tag
      */
     abstract protected function describeContainerServices(ContainerBuilder $builder, array $options = []);
-
-    abstract protected function describeContainerDeprecations(ContainerBuilder $builder, array $options = []): void;
 
     abstract protected function describeContainerDefinition(Definition $definition, array $options = []);
 

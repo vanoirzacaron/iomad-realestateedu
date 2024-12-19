@@ -1440,7 +1440,7 @@ if (!$event = $DB->get_record('trainingevent', array('id' => $cm->instance))) {
                 }
             }
             if (has_capability('mod/trainingevent:grade', $context) && $waitingoption == 0) {
-                $headers[] = get_string('grade', 'iomadcertificate');
+                $headers[] = get_string('grade', 'grades');
                 $columns[] = 'grade';
             }
 

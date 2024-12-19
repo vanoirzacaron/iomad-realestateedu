@@ -31,10 +31,10 @@ final class BorderPart
         Border::WIDTH_THICK,
     ];
 
-    private readonly string $style;
-    private readonly string $name;
-    private readonly string $color;
-    private readonly string $width;
+    private string $style;
+    private string $name;
+    private string $color;
+    private string $width;
 
     /**
      * @param string $name  @see  BorderPart::allowedNames

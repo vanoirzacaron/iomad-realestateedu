@@ -1252,13 +1252,7 @@ ORDER BY
             ) {$alias}", $qubaids->from_where_params());
     }
 
-    /**
-     * Get the subquery which selects the latest step for each question_attempt.
-     *
-     * @param string $questionattemptid column alias for the column to join on which is question_attempt.id.
-     * @return string SQL fragment to include in the query. Has not placeholders.
-     */
-    public function latest_step_for_qa_subquery($questionattemptid = 'qa.id') {
+    protected function latest_step_for_qa_subquery($questionattemptid = 'qa.id') {
         return "(
                 SELECT MAX(sequencenumber)
                 FROM {question_attempt_steps}
@@ -1906,27 +1900,27 @@ abstract class qubaid_condition {
      * @param string $alias
      * @return string SQL fragment.
      */
-    abstract public function from_question_attempts($alias);
+    public abstract function from_question_attempts($alias);
 
     /** @return string the SQL that needs to go in the where clause. */
-    abstract public function where();
+    public abstract function where();
 
     /**
      * @return array the params needed by a query that uses
      * {@link from_question_attempts()} and {@link where()}.
      */
-    abstract public function from_where_params();
+    public abstract function from_where_params();
 
     /**
      * @return string SQL that can use used in a WHERE qubaid IN (...) query.
      * This method returns the "IN (...)" part.
      */
-    abstract public function usage_id_in();
+    public abstract function usage_id_in();
 
     /**
      * @return array the params needed by a query that uses {@link usage_id_in()}.
      */
-    abstract public function usage_id_in_params();
+    public abstract function usage_id_in_params();
 
     /**
      * @return string 40-character hash code that uniquely identifies the combination of properties and class name of this qubaid

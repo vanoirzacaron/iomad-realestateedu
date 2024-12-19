@@ -37,7 +37,7 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
  */
 class question_test extends \advanced_testcase {
 
-    public function test_get_expected_data(): void {
+    public function test_get_expected_data() {
         $question = \test_question_maker::make_question('match');
         $question->start_attempt(new question_attempt_step(), 1);
 
@@ -45,7 +45,7 @@ class question_test extends \advanced_testcase {
                 'sub2' => PARAM_INT, 'sub3' => PARAM_INT), $question->get_expected_data());
     }
 
-    public function test_is_complete_response(): void {
+    public function test_is_complete_response() {
         $question = \test_question_maker::make_question('match');
         $question->start_attempt(new question_attempt_step(), 1);
 
@@ -57,7 +57,7 @@ class question_test extends \advanced_testcase {
                 array('sub0' => '1', 'sub1' => '1', 'sub2' => '1', 'sub3' => '1')));
     }
 
-    public function test_is_gradable_response(): void {
+    public function test_is_gradable_response() {
         $question = \test_question_maker::make_question('match');
         $question->start_attempt(new question_attempt_step(), 1);
 
@@ -71,7 +71,7 @@ class question_test extends \advanced_testcase {
                 array('sub0' => '1', 'sub1' => '1', 'sub2' => '3', 'sub3' => '1')));
     }
 
-    public function test_is_same_response(): void {
+    public function test_is_same_response() {
         $question = \test_question_maker::make_question('match');
         $question->start_attempt(new question_attempt_step(), 1);
 
@@ -96,7 +96,7 @@ class question_test extends \advanced_testcase {
                 array('sub0' => '1', 'sub1' => '2', 'sub2' => '3', 'sub3' => '1')));
     }
 
-    public function test_grading(): void {
+    public function test_grading() {
         $question = \test_question_maker::make_question('match');
         $question->start_attempt(new question_attempt_step(), 1);
 
@@ -125,7 +125,7 @@ class question_test extends \advanced_testcase {
         $this->assertEquals(array(0, question_state::$gradedwrong), $question->grade_response($wrongresponse));
     }
 
-    public function test_get_correct_response(): void {
+    public function test_get_correct_response() {
         $question = \test_question_maker::make_question('match');
         $question->start_attempt(new question_attempt_step(), 1);
 
@@ -136,7 +136,7 @@ class question_test extends \advanced_testcase {
         $this->assertEquals($correct, $question->get_correct_response());
     }
 
-    public function test_get_question_summary(): void {
+    public function test_get_question_summary() {
         $match = \test_question_maker::make_question('match');
         $match->start_attempt(new question_attempt_step(), 1);
         $qsummary = $match->get_question_summary();
@@ -149,7 +149,7 @@ class question_test extends \advanced_testcase {
         }
     }
 
-    public function test_summarise_response(): void {
+    public function test_summarise_response() {
         $match = \test_question_maker::make_question('match');
         $match->start_attempt(new question_attempt_step(), 1);
 
@@ -159,7 +159,7 @@ class question_test extends \advanced_testcase {
         $this->assertMatchesRegularExpression('/Frog -> Mammal/', $summary);
     }
 
-    public function test_classify_response(): void {
+    public function test_classify_response() {
         $match = \test_question_maker::make_question('match');
         $match->start_attempt(new question_attempt_step(), 1);
 
@@ -181,7 +181,7 @@ class question_test extends \advanced_testcase {
                 ), $match->classify_response($response));
     }
 
-    public function test_classify_response_choice_deleted_after_attempt(): void {
+    public function test_classify_response_choice_deleted_after_attempt() {
         $match = \test_question_maker::make_question('match');
         $firststep = new question_attempt_step();
 
@@ -202,7 +202,7 @@ class question_test extends \advanced_testcase {
         ), $match->classify_response($response));
     }
 
-    public function test_classify_response_choice_added_after_attempt(): void {
+    public function test_classify_response_choice_added_after_attempt() {
         $match = \test_question_maker::make_question('match');
         $firststep = new question_attempt_step();
 
@@ -225,7 +225,7 @@ class question_test extends \advanced_testcase {
         ), $match->classify_response($response));
     }
 
-    public function test_prepare_simulated_post_data(): void {
+    public function test_prepare_simulated_post_data() {
         $m = \test_question_maker::make_question('match');
         $m->start_attempt(new question_attempt_step(), 1);
         $postdata = $m->prepare_simulated_post_data(array('Dog' => 'Mammal', 'Frog' => 'Amphibian',
@@ -236,7 +236,7 @@ class question_test extends \advanced_testcase {
     /**
      * test_get_question_definition_for_external_rendering
      */
-    public function test_get_question_definition_for_external_rendering(): void {
+    public function test_get_question_definition_for_external_rendering() {
         $question = \test_question_maker::make_question('match');
         $question->start_attempt(new question_attempt_step(), 1);
         $qa = \test_question_maker::get_a_qa($question);
@@ -246,7 +246,7 @@ class question_test extends \advanced_testcase {
         $this->assertEquals(1, $options['shufflestems']);
     }
 
-    public function test_validate_can_regrade_with_other_version_ok(): void {
+    public function test_validate_can_regrade_with_other_version_ok() {
         $m = \test_question_maker::make_question('match');
 
         $newm = clone($m);
@@ -254,7 +254,7 @@ class question_test extends \advanced_testcase {
         $this->assertNull($newm->validate_can_regrade_with_other_version($m));
     }
 
-    public function test_validate_can_regrade_with_other_version_bad_stems(): void {
+    public function test_validate_can_regrade_with_other_version_bad_stems() {
         $m = \test_question_maker::make_question('match');
 
         $newm = clone($m);
@@ -264,7 +264,7 @@ class question_test extends \advanced_testcase {
                 $newm->validate_can_regrade_with_other_version($m));
     }
 
-    public function test_validate_can_regrade_with_other_version_bad_choices(): void {
+    public function test_validate_can_regrade_with_other_version_bad_choices() {
         $m = \test_question_maker::make_question('match');
 
         $newm = clone($m);
@@ -274,7 +274,7 @@ class question_test extends \advanced_testcase {
                 $newm->validate_can_regrade_with_other_version($m));
     }
 
-    public function test_update_attempt_state_date_from_old_version_bad(): void {
+    public function test_update_attempt_state_date_from_old_version_bad() {
         $m = \test_question_maker::make_question('match');
 
         $newm = clone($m);
@@ -290,7 +290,7 @@ class question_test extends \advanced_testcase {
         $newm->update_attempt_state_data_for_new_version($oldstep, $m);
     }
 
-    public function test_update_attempt_state_date_from_old_version_ok(): void {
+    public function test_update_attempt_state_date_from_old_version_ok() {
         $m = \test_question_maker::make_question('match');
 
         $newm = clone($m);

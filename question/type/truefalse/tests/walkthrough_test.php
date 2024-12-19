@@ -33,7 +33,7 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
  * @covers     \qtype_truefalse_question
  */
 class walkthrough_test extends \qbehaviour_walkthrough_test_base {
-    public function test_false_right_does_not_show_feedback_when_not_answered(): void {
+    public function test_false_right_does_not_show_feedback_when_not_answered() {
 
         // Create a true-false question with correct answer false.
         $tf = \test_question_maker::make_question('truefalse', 'false');
@@ -68,7 +68,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
 
     }
 
-    public function test_each_attempt_builds_on_last_and_regrade(): void {
+    public function test_each_attempt_builds_on_last_and_regrade() {
 
         // Create a true-false question with correct answer false.
         $tf = \test_question_maker::make_question('truefalse', 'false');
@@ -128,7 +128,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
     /**
      * @covers \qtype_truefalse_renderer::formulation_and_controls
      */
-    public function test_deferredfeedback_feedback_multichoice_single_showstandardinstruction_yes(): void {
+    public function test_deferredfeedback_feedback_multichoice_single_showstandardinstruction_yes() {
 
         // Create a true-false question with correct answer false.
         $tf = \test_question_maker::make_question('truefalse', 'false');
@@ -145,7 +145,7 @@ class walkthrough_test extends \qbehaviour_walkthrough_test_base {
     /**
      * @covers \qtype_truefalse_renderer::formulation_and_controls
      */
-    public function test_deferredfeedback_feedback_multichoice_single_showstandardinstruction_no(): void {
+    public function test_deferredfeedback_feedback_multichoice_single_showstandardinstruction_no() {
 
         // Create a true-false question with correct answer false.
         $tf = \test_question_maker::make_question('truefalse', 'false');

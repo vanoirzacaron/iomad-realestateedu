@@ -50,11 +50,11 @@
 }}
 
 <div class="cta alert alert-primary alert-block fade in {{ extraclasses }}" {{# region }}data-region="{{ region }}"{{/ region}}>
-    <div class="d-flex">
-        <div class="cta-icon mr-2 icon-size-5 flex-shrink-0">
+    <div class="media">
+        <div class="cta-icon mr-2 icon-size-5">
             {{# pix }} {{ icon.pix }}, {{ icon.component }} {{/ pix }}
         </div>
-        <div class="align-self-center flex-grow-1">
+        <div class="media-body align-self-center">
             {{{ message }}}<br>
             {{# actions }}
                 <a href="{{ url }}" class="link-underline aalink"

@@ -40,14 +40,12 @@ require_once("{$CFG->dirroot}/notes/lib.php");
 class note extends base {
 
     /**
-     * Database tables that this entity uses
+     * Database tables that this entity uses and their default aliases
      *
-     * @return string[]
+     * @return array
      */
-    protected function get_default_tables(): array {
-        return [
-            'post',
-        ];
+    protected function get_default_table_aliases(): array {
+        return ['post' => 'np'];
     }
 
     /**

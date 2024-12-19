@@ -39,7 +39,7 @@ class asyncpurge_test extends \advanced_testcase {
      * @covers ::get
      * @covers ::purge
      */
-    public function test_cache_async_purge(): void {
+    public function test_cache_async_purge() {
         $this->resetAfterTest(true);
 
         // Cache definition.
@@ -72,7 +72,7 @@ class asyncpurge_test extends \advanced_testcase {
      *
      * @covers \cachestore_file\task
      */
-    public function test_cache_async_purge_cron(): void {
+    public function test_cache_async_purge_cron() {
         global $CFG, $USER;
 
         $this->resetAfterTest(true);
@@ -86,6 +86,7 @@ class asyncpurge_test extends \advanced_testcase {
 
         // Create / execute adhoc task to delete cache revision directory.
         $asynctask = new cachestore_file\task\asyncpurge();
+        $asynctask->set_blocking(false);
         $asynctask->set_custom_data(['path' => $cacherevdir]);
         $asynctask->set_userid($USER->id);
         \core\task\manager::queue_adhoc_task($asynctask);

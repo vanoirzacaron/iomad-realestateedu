@@ -25,7 +25,7 @@ namespace core_competency;
  */
 class template_test extends \advanced_testcase {
 
-    public function test_validate_duedate(): void {
+    public function test_validate_duedate() {
         global $DB;
 
         $this->resetAfterTest();

@@ -61,7 +61,7 @@ class lib_test extends \advanced_testcase {
     /**
      * Tests the core_notes_myprofile_navigation() function.
      */
-    public function test_core_notes_myprofile_navigation(): void {
+    public function test_core_notes_myprofile_navigation() {
         global $USER;
 
         // Set up the test.
@@ -75,13 +75,14 @@ class lib_test extends \advanced_testcase {
         core_notes_myprofile_navigation($this->tree, $USER, $iscurrentuser, $this->course);
         $reflector = new \ReflectionObject($this->tree);
         $nodes = $reflector->getProperty('nodes');
+        $nodes->setAccessible(true);
         $this->assertArrayHasKey('notes', $nodes->getValue($this->tree));
     }
 
     /**
      * Tests the core_notes_myprofile_navigation() function.
      */
-    public function test_core_notes_myprofile_navigation_as_guest(): void {
+    public function test_core_notes_myprofile_navigation_as_guest() {
         global $USER;
 
         $this->setGuestUser();
@@ -91,13 +92,14 @@ class lib_test extends \advanced_testcase {
         core_notes_myprofile_navigation($this->tree, $USER, $iscurrentuser, $this->course);
         $reflector = new \ReflectionObject($this->tree);
         $nodes = $reflector->getProperty('nodes');
+        $nodes->setAccessible(true);
         $this->assertArrayNotHasKey('notes', $nodes->getValue($this->tree));
     }
 
     /**
      * Tests the core_notes_myprofile_navigation() function.
      */
-    public function test_core_notes_myprofile_navigation_notes_disabled(): void {
+    public function test_core_notes_myprofile_navigation_notes_disabled() {
         global $USER;
 
         $this->setAdminUser();
@@ -110,6 +112,7 @@ class lib_test extends \advanced_testcase {
         core_notes_myprofile_navigation($this->tree, $USER, $iscurrentuser, $this->course);
         $reflector = new \ReflectionObject($this->tree);
         $nodes = $reflector->getProperty('nodes');
+        $nodes->setAccessible(true);
         $this->assertArrayNotHasKey('notes', $nodes->getValue($this->tree));
     }
 }

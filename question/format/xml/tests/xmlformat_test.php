@@ -47,6 +47,11 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class xmlformat_test extends \question_testcase {
+    public function assert_same_xml($expectedxml, $xml) {
+        $this->assertEquals(str_replace("\r\n", "\n", $expectedxml),
+                str_replace("\r\n", "\n", $xml));
+    }
+
     public function make_test_question() {
         global $USER;
         $q = new \stdClass();
@@ -115,19 +120,19 @@ class xmlformat_test extends \question_testcase {
         return $newvar;
     }
 
-    public function test_xml_escape_simple_input_not_escaped(): void {
+    public function test_xml_escape_simple_input_not_escaped() {
         $exporter = new qformat_xml();
         $string = 'Nothing funny here. Even if we go to a café or to 日本.';
         $this->assertEquals($string, $exporter->xml_escape($string));
     }
 
-    public function test_xml_escape_html_wrapped_in_cdata(): void {
+    public function test_xml_escape_html_wrapped_in_cdata() {
         $exporter = new qformat_xml();
         $string = '<p>Nothing <b>funny<b> here. Even if we go to a café or to 日本.</p>';
         $this->assertEquals('<![CDATA[' . $string . ']]>', $exporter->xml_escape($string));
     }
 
-    public function test_xml_escape_script_tag_handled_ok(): void {
+    public function test_xml_escape_script_tag_handled_ok() {
         $exporter = new qformat_xml();
         $input = '<script><![CDATA[alert(1<2);]]></script>';
         $expected = '<![CDATA[<script><![CDATA[alert(1<2);]]]]><![CDATA[></script>]]>';
@@ -138,7 +143,7 @@ class xmlformat_test extends \question_testcase {
         $this->assertEquals($input, $parsed->xpath('//div')[0]);
     }
 
-    public function test_xml_escape_code_that_looks_like_cdata_end_ok(): void {
+    public function test_xml_escape_code_that_looks_like_cdata_end_ok() {
         $exporter = new qformat_xml();
         $input = "if (x[[0]]>a) print('hah');";
         $expected = "<![CDATA[if (x[[0]]]]><![CDATA[>a) print('hah');]]>";
@@ -149,7 +154,7 @@ class xmlformat_test extends \question_testcase {
         $this->assertEquals($input, $parsed->xpath('//div')[0]);
     }
 
-    public function test_write_hint_basic(): void {
+    public function test_write_hint_basic() {
         $q = $this->make_test_question();
         $q->contextid = \context_system::instance()->id;
         $q->name = 'Short answer question';
@@ -179,7 +184,7 @@ class xmlformat_test extends \question_testcase {
         $this->assertDoesNotMatchRegularExpression('|<options>|', $xml);
     }
 
-    public function test_write_hint_with_parts(): void {
+    public function test_write_hint_with_parts() {
         $q = $this->make_test_question();
         $q->contextid = \context_system::instance()->id;
         $q->name = 'Matching question';
@@ -219,7 +224,7 @@ class xmlformat_test extends \question_testcase {
         $this->assertDoesNotMatchRegularExpression('|<options>|', $xml);
     }
 
-    public function test_import_hints_no_parts(): void {
+    public function test_import_hints_no_parts() {
         $xml = <<<END
 <question>
     <hint>
@@ -249,7 +254,7 @@ END;
         $this->assertFalse(isset($qo->hintshownumcorrect));
     }
 
-    public function test_import_hints_with_parts(): void {
+    public function test_import_hints_with_parts() {
         $xml = <<<END
 <question>
     <hint>
@@ -279,7 +284,7 @@ END;
         $this->assertEquals(array(0, 1), $qo->hintshownumcorrect);
     }
 
-    public function test_import_no_hints_no_error(): void {
+    public function test_import_no_hints_no_error() {
         $xml = <<<END
 <question>
 </question>
@@ -294,7 +299,7 @@ END;
         $this->assertFalse(isset($qo->hint));
     }
 
-    public function test_import_description(): void {
+    public function test_import_description() {
         $xml = '  <question type="description">
     <name>
       <text>A description</text>
@@ -332,7 +337,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_description(): void {
+    public function test_export_description() {
         $qdata = new \stdClass();
         $qdata->id = 123;
         $qdata->contextid = \context_system::instance()->id;
@@ -372,7 +377,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_import_essay_20(): void {
+    public function test_import_essay_20() {
         $xml = '  <question type="essay">
     <name>
       <text>An essay</text>
@@ -426,7 +431,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_essay_21(): void {
+    public function test_import_essay_21() {
         $xml = '  <question type="essay">
     <name>
       <text>An essay</text>
@@ -491,7 +496,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_essay_311(): void {
+    public function test_import_essay_311() {
         $xml = '  <question type="essay">
     <name>
       <text>An essay</text>
@@ -560,7 +565,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_essay(): void {
+    public function test_export_essay() {
         $qdata = new \stdClass();
         $qdata->id = 123;
         $qdata->contextid = \context_system::instance()->id;
@@ -630,7 +635,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_import_match_19(): void {
+    public function test_import_match_19() {
         $xml = '  <question type="matching">
     <name>
       <text>Matching question</text>
@@ -732,7 +737,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_match(): void {
+    public function test_export_match() {
         $qdata = new \stdClass();
         $qdata->id = 123;
         $qdata->contextid = \context_system::instance()->id;
@@ -857,7 +862,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_import_multichoice_19(): void {
+    public function test_import_multichoice_19() {
         $xml = '  <question type="multichoice">
     <name>
       <text>Multiple choice question</text>
@@ -965,7 +970,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_multichoice(): void {
+    public function test_export_multichoice() {
         $qdata = new \stdClass();
         $qdata->id = 123;
         $qdata->contextid = \context_system::instance()->id;
@@ -1074,7 +1079,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_import_numerical_19(): void {
+    public function test_import_numerical_19() {
         $xml = '  <question type="numerical">
     <name>
       <text>Numerical question</text>
@@ -1140,7 +1145,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_numerical(): void {
+    public function test_export_numerical() {
         question_bank::load_question_definition_classes('numerical');
 
         $qdata = new \stdClass();
@@ -1215,7 +1220,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_import_shortanswer_19(): void {
+    public function test_import_shortanswer_19() {
         $xml = '  <question type="shortanswer">
     <name>
       <text>Short answer question</text>
@@ -1274,7 +1279,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_shortanswer(): void {
+    public function test_export_shortanswer() {
         $qdata = new \stdClass();
         $qdata->id = 123;
         $qdata->contextid = \context_system::instance()->id;
@@ -1346,7 +1351,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_import_truefalse_19(): void {
+    public function test_import_truefalse_19() {
         $xml = '  <question type="truefalse">
     <name>
       <text>True false question</text>
@@ -1397,7 +1402,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_import_truefalse_with_idnumber(): void {
+    public function test_import_truefalse_with_idnumber() {
         $xml = '  <question type="truefalse">
     <name>
       <text>True false question</text>
@@ -1450,7 +1455,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
 
-    public function test_export_truefalse(): void {
+    public function test_export_truefalse() {
         $qdata = new \stdClass();
         $qdata->id = 12;
         $qdata->contextid = \context_system::instance()->id;
@@ -1510,7 +1515,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_export_truefalse_with_idnumber(): void {
+    public function test_export_truefalse_with_idnumber() {
         $qdata = new \stdClass();
         $qdata->id = 12;
         $qdata->contextid = \context_system::instance()->id;
@@ -1570,7 +1575,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_import_multianswer(): void {
+    public function test_import_multianswer() {
         $xml = '  <question type="cloze">
     <name>
       <text>Simple multianswer</text>
@@ -1679,7 +1684,7 @@ END;
         $this->assert(new question_check_specified_fields_expectation($expectedqa), $q);
     }
 
-    public function test_export_multianswer(): void {
+    public function test_export_multianswer() {
         $qdata = \test_question_maker::get_question_data('multianswer', 'twosubq');
         $qdata->contextid = \context_system::instance()->id;
         $exporter = new qformat_xml();
@@ -1711,7 +1716,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_export_multianswer_withdollars(): void {
+    public function test_export_multianswer_withdollars() {
         $qdata = \test_question_maker::get_question_data('multianswer', 'dollarsigns');
         $qdata->contextid = \context_system::instance()->id;
         $exporter = new qformat_xml();
@@ -1737,7 +1742,7 @@ END;
         $this->assert_same_xml($expectedxml, $xml);
     }
 
-    public function test_import_files_as_draft(): void {
+    public function test_import_files_as_draft() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -1763,7 +1768,7 @@ END;
         $this->assertEquals(6,            $file->size);
     }
 
-    public function test_import_truefalse_wih_files(): void {
+    public function test_import_truefalse_wih_files() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -1810,7 +1815,7 @@ END;
         $this->assertEquals(6,            $file->size);
     }
 
-    public function test_create_dummy_question(): void {
+    public function test_create_dummy_question() {
 
         $testobject = new mock_qformat_xml();
         $categoryname = 'name1';

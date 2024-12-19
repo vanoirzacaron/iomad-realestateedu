@@ -64,7 +64,7 @@ class portfolio_caller_test extends \advanced_testcase {
     /**
      * Test the method mod_workshop_portfolio_caller::load_data()
      */
-    public function test_load_data(): void {
+    public function test_load_data() {
         $this->resetAfterTest(true);
 
         $student1 = $this->getDataGenerator()->create_user();
@@ -81,6 +81,7 @@ class portfolio_caller_test extends \advanced_testcase {
 
         $reflector = new \ReflectionObject($portfoliocaller);
         $propertysubmission = $reflector->getProperty('submission');
+        $propertysubmission->setAccessible(true);
         $submission = $propertysubmission->getValue($portfoliocaller);
 
         $this->assertEquals($subid1, $submission->id);
@@ -89,7 +90,7 @@ class portfolio_caller_test extends \advanced_testcase {
     /**
      * Test the method mod_workshop_portfolio_caller::get_return_url()
      */
-    public function test_get_return_url(): void {
+    public function test_get_return_url() {
         $this->resetAfterTest(true);
 
         $student1 = $this->getDataGenerator()->create_user();
@@ -109,7 +110,7 @@ class portfolio_caller_test extends \advanced_testcase {
     /**
      * Test the method mod_workshop_portfolio_caller::get_navigation()
      */
-    public function test_get_navigation(): void {
+    public function test_get_navigation() {
         $this->resetAfterTest(true);
 
         $student1 = $this->getDataGenerator()->create_user();
@@ -127,7 +128,7 @@ class portfolio_caller_test extends \advanced_testcase {
     /**
      * Test the method mod_workshop_portfolio_caller::check_permissions()
      */
-    public function test_check_permissions_exportownsubmissionassessment(): void {
+    public function test_check_permissions_exportownsubmissionassessment() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -154,7 +155,7 @@ class portfolio_caller_test extends \advanced_testcase {
     /**
      * Test the method mod_workshop_portfolio_caller::get_sha1()
      */
-    public function test_get_sha1(): void {
+    public function test_get_sha1() {
         $this->resetAfterTest(true);
 
         $student1 = $this->getDataGenerator()->create_user();
@@ -176,7 +177,7 @@ class portfolio_caller_test extends \advanced_testcase {
      * Test function display_name()
      * Assert that this function can return the name of the module ('Workshop').
      */
-    public function test_display_name(): void {
+    public function test_display_name() {
         $this->resetAfterTest(true);
 
         $name = \mod_workshop_portfolio_caller::display_name();

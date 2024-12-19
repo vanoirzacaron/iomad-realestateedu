@@ -29,7 +29,7 @@ class api_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function has_additional_results_provider() {
+    public static function has_additional_results_provider(): array {
         return [
             'No more results' => [
                 (object) [
@@ -74,7 +74,7 @@ class api_test extends \advanced_testcase {
      * @param   object      $result     The data to test
      * @param   bool        $expected   The expected result
      */
-    public function test_has_additional_results($result, $expected): void {
+    public function test_has_additional_results($result, $expected) {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])
@@ -88,7 +88,7 @@ class api_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function check_and_handle_api_errors_provider() {
+    public static function check_and_handle_api_errors_provider(): array {
         return [
             '200 http_code' => [
                 ['http_code' => 200],
@@ -150,7 +150,7 @@ class api_test extends \advanced_testcase {
      * @param   string      $exception  The name of the expected exception
      * @param   string      $exceptionmessage  The expected message in the exception
      */
-    public function test_check_and_handle_api_errors($info, $data, $exception, $exceptionmessage): void {
+    public function test_check_and_handle_api_errors($info, $data, $exception, $exceptionmessage) {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])
@@ -160,6 +160,7 @@ class api_test extends \advanced_testcase {
 
         $rc = new \ReflectionClass(\repository_dropbox\dropbox::class);
         $rcm = $rc->getMethod('check_and_handle_api_errors');
+        $rcm->setAccessible(true);
 
         if ($exception) {
             $this->expectException($exception);
@@ -179,7 +180,7 @@ class api_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function supports_thumbnail_provider() {
+    public static function supports_thumbnail_provider(): array {
         $tests = [
             'Only files support thumbnails' => [
                 (object) ['.tag' => 'folder'],
@@ -244,7 +245,7 @@ class api_test extends \advanced_testcase {
      * @param   object      $entry      The entry to test
      * @param   bool        $expected   Whether this entry supports thumbnail generation
      */
-    public function test_supports_thumbnail($entry, $expected): void {
+    public function test_supports_thumbnail($entry, $expected) {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])
@@ -256,7 +257,7 @@ class api_test extends \advanced_testcase {
     /**
      * Test that the logout makes a call to the correct revocation endpoint.
      */
-    public function test_logout_revocation(): void {
+    public function test_logout_revocation() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['fetch_dropbox_data'])
@@ -272,7 +273,7 @@ class api_test extends \advanced_testcase {
     /**
      * Test that the logout function catches authentication_exception exceptions and discards them.
      */
-    public function test_logout_revocation_catch_auth_exception(): void {
+    public function test_logout_revocation_catch_auth_exception() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['fetch_dropbox_data'])
@@ -288,7 +289,7 @@ class api_test extends \advanced_testcase {
     /**
      * Test that the logout function does not catch any other exception.
      */
-    public function test_logout_revocation_does_not_catch_other_exceptions(): void {
+    public function test_logout_revocation_does_not_catch_other_exceptions() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['fetch_dropbox_data'])
@@ -305,7 +306,7 @@ class api_test extends \advanced_testcase {
     /**
      * Test basic fetch_dropbox_data function.
      */
-    public function test_fetch_dropbox_data_endpoint(): void {
+    public function test_fetch_dropbox_data_endpoint() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([
@@ -333,13 +334,14 @@ class api_test extends \advanced_testcase {
         // Make the call.
         $rc = new \ReflectionClass(\repository_dropbox\dropbox::class);
         $rcm = $rc->getMethod('fetch_dropbox_data');
+        $rcm->setAccessible(true);
         $rcm->invoke($mock, $endpoint);
     }
 
     /**
      * Some Dropbox endpoints require that the POSTFIELDS be set to null exactly.
      */
-    public function test_fetch_dropbox_data_postfields_null(): void {
+    public function test_fetch_dropbox_data_postfields_null() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([
@@ -359,13 +361,14 @@ class api_test extends \advanced_testcase {
         // Make the call.
         $rc = new \ReflectionClass(\repository_dropbox\dropbox::class);
         $rcm = $rc->getMethod('fetch_dropbox_data');
+        $rcm->setAccessible(true);
         $rcm->invoke($mock, $endpoint, null);
     }
 
     /**
      * When data is specified, it should be json_encoded in POSTFIELDS.
      */
-    public function test_fetch_dropbox_data_postfields_data(): void {
+    public function test_fetch_dropbox_data_postfields_data() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([
@@ -386,13 +389,14 @@ class api_test extends \advanced_testcase {
         // Make the call.
         $rc = new \ReflectionClass(\repository_dropbox\dropbox::class);
         $rcm = $rc->getMethod('fetch_dropbox_data');
+        $rcm->setAccessible(true);
         $rcm->invoke($mock, $endpoint, $data);
     }
 
     /**
      * When more results are available, these should be fetched until there are no more.
      */
-    public function test_fetch_dropbox_data_recurse_on_additional_records(): void {
+    public function test_fetch_dropbox_data_recurse_on_additional_records() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([
@@ -426,6 +430,7 @@ class api_test extends \advanced_testcase {
         // Make the call.
         $rc = new \ReflectionClass(\repository_dropbox\dropbox::class);
         $rcm = $rc->getMethod('fetch_dropbox_data');
+        $rcm->setAccessible(true);
         $result = $rcm->invoke($mock, $endpoint, null, 'matches');
 
         $this->assertEquals([
@@ -442,7 +447,7 @@ class api_test extends \advanced_testcase {
     /**
      * Base tests for the fetch_dropbox_content function.
      */
-    public function test_fetch_dropbox_content(): void {
+    public function test_fetch_dropbox_content() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([
@@ -491,6 +496,7 @@ class api_test extends \advanced_testcase {
         // Make the call.
         $rc = new \ReflectionClass(\repository_dropbox\dropbox::class);
         $rcm = $rc->getMethod('fetch_dropbox_content');
+        $rcm->setAccessible(true);
         $result = $rcm->invoke($mock, $endpoint, $data);
 
         $this->assertEquals($response, $result);
@@ -499,7 +505,7 @@ class api_test extends \advanced_testcase {
     /**
      * Test that the get_file_share_info function returns an existing link if one is available.
      */
-    public function test_get_file_share_info_existing(): void {
+    public function test_get_file_share_info_existing() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([
@@ -532,7 +538,7 @@ class api_test extends \advanced_testcase {
     /**
      * Test that the get_file_share_info function creates a new link if one is not available.
      */
-    public function test_get_file_share_info_new(): void {
+    public function test_get_file_share_info_new() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([
@@ -573,7 +579,7 @@ class api_test extends \advanced_testcase {
     /**
      * Test failure behaviour with get_file_share_info fails to create a new link.
      */
-    public function test_get_file_share_info_new_failure(): void {
+    public function test_get_file_share_info_new_failure() {
         $mock = $this->getMockBuilder(\repository_dropbox\dropbox::class)
             ->disableOriginalConstructor()
             ->onlyMethods([

@@ -387,7 +387,7 @@ function get_role_definitions_uncached(array $roleids) {
  * Get the default guest role, this is used for guest account,
  * search engine spiders, etc.
  *
- * @return stdClass|false role record
+ * @return stdClass role record
  */
 function get_guest_role() {
     global $CFG, $DB;
@@ -974,7 +974,7 @@ function get_empty_accessdata() {
  * @access private
  * @param int $userid
  * @param bool $preloadonly true means do not return access array
- * @return ?array accessdata
+ * @return array accessdata
  */
 function get_user_accessdata($userid, $preloadonly=false) {
     global $CFG, $ACCESSLIB_PRIVATE, $USER;
@@ -1665,6 +1665,18 @@ function role_assign($roleid, $userid, $contextid, $component = '', $itemid = 0,
 
     core_course_category::role_assignment_changed($roleid, $context);
 
+    // Update the room membership and power levels when the user role changes.
+    if (\core_communication\api::is_available() && $coursecontext = $context->get_course_context(false)) {
+        $communication = \core_communication\api::load_by_instance(
+            $coursecontext,
+            'core_course',
+            'coursecommunication',
+            $coursecontext->instanceid,
+        );
+
+        $communication->update_room_membership([$userid]);
+    }
+
     $event = \core\event\role_assigned::create(array(
         'context' => $context,
         'objectid' => $ra->roleid,
@@ -1677,13 +1689,6 @@ function role_assign($roleid, $userid, $contextid, $component = '', $itemid = 0,
     ));
     $event->add_record_snapshot('role_assignments', $ra);
     $event->trigger();
-
-    // Dispatch the hook for post role assignment actions.
-    $hook = new \core\hook\access\after_role_assigned(
-        context: $context,
-        userid: $userid,
-    );
-    \core\di::get(\core\hook\manager::class)->dispatch($hook);
 
     return $ra->id;
 }
@@ -1778,12 +1783,19 @@ function role_unassign_all(array $params, $subcontexts = false, $includemanual =
             $event->trigger();
             core_course_category::role_assignment_changed($ra->roleid, $context);
 
-            // Dispatch the hook for post role assignment actions.
-            $hook = new \core\hook\access\after_role_unassigned(
-                context: $context,
-                userid: $ra->userid,
-            );
-            \core\di::get(\core\hook\manager::class)->dispatch($hook);
+            // Update the room membership and power levels when the user role changes.
+            if (\core_communication\api::is_available() && $coursecontext = $context->get_course_context(false)) {
+                $communication = \core_communication\api::load_by_instance(
+                    $coursecontext,
+                    'core_course',
+                    'coursecommunication',
+                    $coursecontext->instanceid,
+                );
+
+                $communication->update_room_membership([$ra->userid]);
+            }
+
+
         }
     }
     unset($ras);
@@ -2635,7 +2647,7 @@ function is_inside_frontpage(context $context) {
  * Returns capability information (cached)
  *
  * @param string $capabilityname
- * @return ?stdClass object or null if capability not found
+ * @return stdClass or null if capability not found
  */
 function get_capability_info($capabilityname) {
     $caps = get_all_capabilities();
@@ -2667,7 +2679,7 @@ function get_capability_info($capabilityname) {
  * Do not use this function except in the get_capability_info
  *
  * @param string $capabilityname
- * @return array|null with deprecation message and potential replacement if not null
+ * @return stdClass|null with deprecation message and potential replacement if not null
  */
 function get_deprecated_capability_info($capabilityname) {
     $cache = cache::make('core', 'capabilities');

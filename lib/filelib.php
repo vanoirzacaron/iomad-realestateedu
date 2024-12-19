@@ -482,7 +482,7 @@ function file_prepare_draft_area(&$draftitemid, $contextid, $component, $fileare
  * @param   int     $contextid This parameter and the next two identify the file area to use.
  * @param   string  $component
  * @param   string  $filearea helps identify the file area.
- * @param   ?int    $itemid helps identify the file area.
+ * @param   int     $itemid helps identify the file area.
  * @param   array   $options
  *          bool    $options.forcehttps Force the user of https
  *          bool    $options.reverse Reverse the behaviour of the function
@@ -848,7 +848,7 @@ function file_get_drafarea_files($draftitemid, $filepath = '/') {
  * @param  string $filepath path for the uploaded files.
  * @return array An array of files associated with this draft item id.
  */
-function file_get_all_files_in_draftarea(int $draftitemid, string $filepath = '/'): array {
+function file_get_all_files_in_draftarea(int $draftitemid, string $filepath = '/') : array {
     $files = [];
     $draftfiles = file_get_drafarea_files($draftitemid, $filepath);
     file_get_drafarea_folders($draftitemid, $filepath, $draftfiles);
@@ -926,7 +926,7 @@ function file_restore_source_field_from_draft_file($storedfile) {
 /**
  * Removes those files from the user drafts filearea which are not referenced in the editor text.
  *
- * @param array $editor The online text editor element from the submitted form data.
+ * @param stdClass $editor The online text editor element from the submitted form data.
  */
 function file_remove_editor_orphaned_files($editor) {
     global $CFG, $USER;
@@ -1475,7 +1475,7 @@ function format_array_postdata_for_curlcall($arraydata, $currentdata, &$data) {
  * Transform a PHP array into POST parameter
  * (see the recursive function format_array_postdata_for_curlcall)
  * @param array $postdata
- * @return string containing all POST parameters  (1 row = 1 POST parameter)
+ * @return array containing all POST parameters  (1 row = 1 POST parameter)
  */
 function format_postdata_for_curlcall($postdata) {
         $data = array();
@@ -1860,7 +1860,7 @@ function mimeinfo_from_type($element, $mimetype) {
  *
  * @param stored_file|file_info|stdClass|array $file (in case of object attributes $file->filename
  *     and $file->mimetype are expected)
- * @param mixed $unused This parameter has been deprecated since 4.3 and should not be used anymore.
+ * @param null $unused This parameter has been deprecated since 4.3 and should not be used anymore.
  * @return string
  */
 function file_file_icon($file, $unused = null) {
@@ -1911,7 +1911,7 @@ function file_file_icon($file, $unused = null) {
  * echo $OUTPUT->pix_icon(file_folder_icon(), '');
  * </code>
  *
- * @param mixed $unused This parameter has been deprecated since 4.3 and should not be used anymore.
+ * @param null $unused This parameter has been deprecated since 4.3 and should not be used anymore.
  * @return string
  */
 function file_folder_icon($unused = null) {
@@ -1940,7 +1940,7 @@ function file_folder_icon($unused = null) {
  * @todo MDL-31074 When an $OUTPUT->icon method is available this function should be altered
  * to conform with that.
  * @param string $mimetype The mimetype to fetch an icon for
- * @param mixed $unused This parameter has been deprecated since 4.3 and should not be used anymore.
+ * @param null $unused This parameter has been deprecated since 4.3 and should not be used anymore.
  * @return string The relative path to the icon
  */
 function file_mimetype_icon($mimetype, $unused = null) {
@@ -1964,7 +1964,7 @@ function file_mimetype_icon($mimetype, $unused = null) {
  * @todo MDL-31074 Implement $size
  * @category files
  * @param string $filename The filename to get the icon for
- * @param mixed $unused This parameter has been deprecated since 4.3 and should not be used anymore.
+ * @param null $unused This parameter has been deprecated since 4.3 and should not be used anymore.
  * @return string
  */
 function file_extension_icon($filename, $unused = null) {
@@ -3114,23 +3114,23 @@ function get_moodle_proxy_url() {
  */
 class curl {
     /** @var curl_cache|false Caches http request contents */
-    public $cache    = false;
+    public  $cache    = false;
     /** @var bool Uses proxy, null means automatic based on URL */
-    public $proxy    = null;
+    public  $proxy    = null;
     /** @var string library version */
-    public $version  = '0.4 dev';
+    public  $version  = '0.4 dev';
     /** @var array http's response */
-    public $response = array();
+    public  $response = array();
     /** @var array Raw response headers, needed for BC in download_file_content(). */
     public $rawresponse = array();
     /** @var array http header */
-    public $header   = array();
+    public  $header   = array();
     /** @var array cURL information */
-    public $info;
+    public  $info;
     /** @var string error */
-    public $error;
+    public  $error;
     /** @var int error code */
-    public $errno;
+    public  $errno;
     /** @var bool Perform redirects at PHP level instead of relying on native cURL functionality. Always true now. */
     public $emulateredirects = null;
 
@@ -3149,7 +3149,7 @@ class curl {
     private $cookie   = false;
     /** @var bool tracks multiple headers in response - redirect detection */
     private $responsefinished = false;
-    /** @var ?\core\files\curl_security_helper security helper class, responsible for checking host/ports against allowed/blocked entries.*/
+    /** @var security helper class, responsible for checking host/ports against allowed/blocked entries.*/
     private $securityhelper;
     /** @var bool ignoresecurity a flag which can be supplied to the constructor, allowing security to be bypassed. */
     private $ignoresecurity;
@@ -3177,7 +3177,7 @@ class curl {
         if (!function_exists('curl_init')) {
             $this->error = 'cURL module must be enabled!';
             trigger_error($this->error, E_USER_ERROR);
-            return;
+            return false;
         }
 
         // All settings of this class should be init here.
@@ -3379,7 +3379,7 @@ class curl {
     /**
      * Set HTTP Request Header
      *
-     * @param array|string $header
+     * @param array $header
      */
     public function setHeader($header) {
         if (is_array($header)) {
@@ -3718,7 +3718,7 @@ class curl {
      * This augments all installed plugin's security helpers if there is any.
      *
      * @param string $url the url to check.
-     * @return ?string - an error message if URL is blocked or null if URL is not blocked.
+     * @return string - an error message if URL is blocked or null if URL is not blocked.
      */
     protected function check_securityhelper_blocklist(string $url): ?string {
 
@@ -3760,7 +3760,7 @@ class curl {
      *
      * @param string $url The URL to request
      * @param array $options
-     * @return string
+     * @return bool
      */
     protected function request($url, $options = array()) {
         // Reset here so that the data is valid when result returned from cache, or if we return due to a blocked URL hit.
@@ -3981,14 +3981,14 @@ class curl {
         $event->trigger();
     }
 
-    /**
+     /**
      * HTTP HEAD method
      *
      * @see request()
      *
      * @param string $url
      * @param array $options
-     * @return string
+     * @return bool
      */
     public function head($url, $options = array()) {
         $options['CURLOPT_HTTPGET'] = 0;
@@ -4003,7 +4003,7 @@ class curl {
      * @param string $url
      * @param array|string $params
      * @param array $options
-     * @return string
+     * @return bool
      */
     public function patch($url, $params = '', $options = array()) {
         $options['CURLOPT_CUSTOMREQUEST'] = 'PATCH';
@@ -4031,7 +4031,7 @@ class curl {
      * @param string $url
      * @param array|string $params
      * @param array $options
-     * @return string
+     * @return bool
      */
     public function post($url, $params = '', $options = array()) {
         $options['CURLOPT_POST']       = 1;
@@ -4057,9 +4057,9 @@ class curl {
      * HTTP GET method
      *
      * @param string $url
-     * @param ?array $params
+     * @param array $params
      * @param array $options
-     * @return string
+     * @return bool
      */
     public function get($url, $params = array(), $options = array()) {
         $options['CURLOPT_HTTPGET'] = 1;
@@ -4132,7 +4132,7 @@ class curl {
      * @param string $url
      * @param array $params
      * @param array $options
-     * @return ?string
+     * @return bool
      */
     public function put($url, $params = array(), $options = array()) {
         $file = '';
@@ -4169,7 +4169,7 @@ class curl {
      * @param string $url
      * @param array $param
      * @param array $options
-     * @return string
+     * @return bool
      */
     public function delete($url, $param = array(), $options = array()) {
         $options['CURLOPT_CUSTOMREQUEST'] = 'DELETE';
@@ -4185,7 +4185,7 @@ class curl {
      *
      * @param string $url
      * @param array $options
-     * @return string
+     * @return bool
      */
     public function trace($url, $options = array()) {
         $options['CURLOPT_CUSTOMREQUEST'] = 'TRACE';
@@ -4198,7 +4198,7 @@ class curl {
      *
      * @param string $url
      * @param array $options
-     * @return string
+     * @return bool
      */
     public function options($url, $options = array()) {
         $options['CURLOPT_CUSTOMREQUEST'] = 'OPTIONS';

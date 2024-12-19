@@ -170,7 +170,7 @@ class post_statement_test extends externallib_advanced_testcase {
      * @param string $component component name
      * @param array $expected expected results
      */
-    public function test_component_names(string $component, array $expected): void {
+    public function test_component_names(string $component, array $expected) {
 
         $this->resetAfterTest();
 
@@ -187,7 +187,7 @@ class post_statement_test extends externallib_advanced_testcase {
      *
      * @return  array
      */
-    public function components_provider(): array {
+    public static function components_provider(): array {
         return [
             'Inexistent component' => [
                 'inexistent_component', []
@@ -209,7 +209,7 @@ class post_statement_test extends externallib_advanced_testcase {
      * @dataProvider invalid_json_provider
      * @param string $json json string to send
      */
-    public function test_invalid_json(string $json): void {
+    public function test_invalid_json(string $json) {
 
         $this->resetAfterTest();
 
@@ -233,7 +233,7 @@ class post_statement_test extends externallib_advanced_testcase {
      *
      * @return  array
      */
-    public function invalid_json_provider(): array {
+    public static function invalid_json_provider(): array {
         return [
             'Wrong json' => [
                 'This is not { a json object /'
@@ -272,7 +272,7 @@ class post_statement_test extends externallib_advanced_testcase {
      * @param bool $validverb if the verb used is valid
      * @param array $expected expected results
      */
-    public function test_statements_agent(bool $multiple, bool $validactor, bool $validverb, array $expected): void {
+    public function test_statements_agent(bool $multiple, bool $validactor, bool $validverb, array $expected) {
         global $USER;
 
         $this->resetAfterTest();
@@ -325,7 +325,7 @@ class post_statement_test extends externallib_advanced_testcase {
      * @param bool $validverb if the verb used is valid
      * @param array $expected expected results
      */
-    public function test_statements_group(bool $multiple, bool $validactor, bool $validverb, array $expected): void {
+    public function test_statements_group(bool $multiple, bool $validactor, bool $validverb, array $expected) {
         global $USER, $CFG;
 
         $this->resetAfterTest();
@@ -376,7 +376,7 @@ class post_statement_test extends externallib_advanced_testcase {
      *
      * @return  array
      */
-    public function statement_provider(): array {
+    public static function statement_provider(): array {
         return [
             // Single statement with group statements enabled.
             'Single, Valid actor, valid verb' => [
@@ -418,7 +418,7 @@ class post_statement_test extends externallib_advanced_testcase {
      * @param bool $usegroup2 if the 2nd statement must be groupal
      * @param array $expected expected results
      */
-    public function test_group_disabled(bool $usegroup1, bool $usegroup2, array $expected): void {
+    public function test_group_disabled(bool $usegroup1, bool $usegroup2, array $expected) {
         global $USER;
 
         $this->resetAfterTest();
@@ -449,7 +449,7 @@ class post_statement_test extends externallib_advanced_testcase {
      *
      * @return  array
      */
-    public function group_statement_provider(): array {
+    public static function group_statement_provider(): array {
         return [
             // Single statement with group statements enabled.
             'Group statement + group statement without group support' => [
@@ -473,7 +473,7 @@ class post_statement_test extends externallib_advanced_testcase {
      * If all statements from a batch are rejectes by the plugin the full
      * batch is considered rejected and an exception is returned.
      */
-    public function test_full_batch_rejected(): void {
+    public function test_full_batch_rejected() {
         $this->resetAfterTest();
 
         $this->setAdminUser();

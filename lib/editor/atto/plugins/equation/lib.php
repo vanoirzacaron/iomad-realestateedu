@@ -55,16 +55,13 @@ function atto_equation_params_for_js($elementid, $options, $fpoptions) {
 
     // Format a string with the active filter set.
     // If it is modified - we assume that some sort of text filter is working in this context.
-    $formatoptions = [
-        'context' => $options['context'],
-        'noclean' => $options['noclean'] ?? false,
-        'trusted' => $options['trusted'] ?? false,
-    ];
-
-    $result = format_text($texexample, true, $formatoptions);
+    $result = format_text($texexample, true, $options);
 
     $texfilteractive = ($texexample !== $result);
     $context = $options['context'];
+    if (!$context) {
+        $context = context_system::instance();
+    }
 
     // Tex example librarys.
     $library = array(

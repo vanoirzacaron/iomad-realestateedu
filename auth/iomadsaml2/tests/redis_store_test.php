@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Testcase class for auth/saml2 Redis store.
+ * Testcase class for auth/iomadsaml2 Redis store.
  *
  * @package    auth_iomadsaml2
  * @author     Sam Chaffee
@@ -25,7 +25,7 @@
 use auth_iomadsaml2\redis_store;
 
 /**
- * Testcase class for auth/saml2 Redis store.
+ * Testcase class for auth/iomadsaml2 Redis store.
  *
  * @package    auth_iomadsaml2
  * @copyright  Copyright (c) 2017 Blackboard Inc. (http://www.blackboard.com)

@@ -42,7 +42,7 @@ class stats_test extends \advanced_testcase {
     /**
      * Test the {@link \core_analytics\stats::enabled_models()} implementation.
      */
-    public function test_enabled_models(): void {
+    public function test_enabled_models() {
 
         $this->resetAfterTest(true);
 
@@ -68,7 +68,7 @@ class stats_test extends \advanced_testcase {
     /**
      * Test the {@link \core_analytics\stats::predictions()} implementation.
      */
-    public function test_predictions(): void {
+    public function test_predictions() {
 
         $this->resetAfterTest(true);
 
@@ -113,7 +113,7 @@ class stats_test extends \advanced_testcase {
     /**
      * Test the {@link \core_analytics\stats::actions()} and {@link \core_analytics\stats::actions_not_useful()} implementation.
      */
-    public function test_actions(): void {
+    public function test_actions() {
         global $DB;
         $this->resetAfterTest(true);
 

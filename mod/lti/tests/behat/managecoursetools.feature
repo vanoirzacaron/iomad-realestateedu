@@ -8,17 +8,12 @@ Feature: Manage course tools
     Given the following "users" exist:
       | username | firstname | lastname | email                |
       | teacher1 | Terry1    | Teacher1 | teacher1@example.com |
-    And the following "course" exists:
-      | fullname    | Course 1 |
-      | shortname   | C1       |
-      | category    | 0        |
-      | format      | topics   |
-      | numsections | 1        |
+    And the following "courses" exist:
+      | fullname | shortname | category |
+      | Course 1 | C1        | 0        |
     And the following "course enrolments" exist:
       | user     | course | role           |
       | teacher1 | C1     | editingteacher |
-    And the following config values are set as admin:
-      | enableasyncbackup | 0 |
 
   Scenario: Create a course tool from the zero state
     Given I am on the "Course 1" course page logged in as teacher1
@@ -87,12 +82,10 @@ Feature: Manage course tools
     And I navigate to "LTI External tools" in current page administration
     And the "Edit" item should exist in the "Actions" action menu of the "Test tool" "table_row"
     And the "Delete" item should exist in the "Actions" action menu of the "Test tool" "table_row"
-    When I open the action menu in "Test tool" "table_row"
-    And I choose "Edit" in the open action menu
+    When I press "Edit" action in the "Test tool" report row
     And I press "Cancel"
     Then I should see "Test tool" in the "reportbuilder-table" "table"
-    And I open the action menu in "Test tool" "table_row"
-    And I choose "Edit" in the open action menu
+    And I press "Edit" action in the "Test tool" report row
     And I set the following fields to these values:
       | Tool name        | Test tool (edited)                       |
       | Tool URL         | http://example.com                       |
@@ -124,13 +117,11 @@ Feature: Manage course tools
       | Another tool | Example 123         | https://another.example.com/tool | C1     |
     And I am on the "Course 1" course page logged in as teacher1
     And I navigate to "LTI External tools" in current page administration
-    When I open the action menu in "Test tool" "table_row"
-    And I choose "Delete" in the open action menu
+    When I press "Delete" action in the "Test tool" report row
     Then I should see "This will delete Test tool from the available LTI tools in your course."
     And I click on "Cancel" "button" in the "Delete Test tool" "dialogue"
     And I should see "Test tool" in the "reportbuilder-table" "table"
-    And I open the action menu in "Test tool" "table_row"
-    And I choose "Delete" in the open action menu
+    And I press "Delete" action in the "Test tool" report row
     And I should see "This will delete Test tool from the available LTI tools in your course."
     And I click on "Delete" "button" in the "Delete Test tool" "dialogue"
     And I should see "Test tool deleted"
@@ -149,8 +140,7 @@ Feature: Manage course tools
     Then I should see "Test tool 1" in the "reportbuilder-table" "table"
     # The cartridge description, if set, overrides the description set in the type edit form (bug?).
     And I should see "Example tool description" in the "Test tool 1" "table_row"
-    And I open the action menu in "Test tool 1" "table_row"
-    And I choose "Edit" in the open action menu
+    And I press "Edit" action in the "Test tool 1" report row
     And the field "Tool name" matches value "Test tool 1"
     And the field "Tool URL" matches value "http://www.example.com/lti/provider.php"
     And the field "Icon URL" matches value "http://download.moodle.org/unittest/test.jpg"
@@ -171,7 +161,7 @@ Feature: Manage course tools
       | teacher1 | C2     | editingteacher |
     And I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add an activity or resource" "button" in the "Topic 1" "section"
     And I should see "Teaching Tool 1" in the ".modal-body" "css_element"
     And I should not see "Teaching Tool 2" in the ".modal-body" "css_element"
     And I should not see "Teaching Tool 3" in the ".modal-body" "css_element"
@@ -181,7 +171,7 @@ Feature: Manage course tools
     And I click on "Don't show in activity chooser" "field" in the "Teaching Tool 1" "table_row"
     And I click on "Show in activity chooser" "field" in the "Teaching Tool 2" "table_row"
     And I am on "Course 1" course homepage
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add an activity or resource" "button" in the "Topic 1" "section"
     And I should not see "Teaching Tool 1" in the ".modal-body" "css_element"
     And I should see "Teaching Tool 2" in the ".modal-body" "css_element"
     And I should not see "Teaching Tool 3" in the ".modal-body" "css_element"
@@ -189,7 +179,7 @@ Feature: Manage course tools
 
     # Should not affect other courses.
     And I am on "Course 2" course homepage
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add an activity or resource" "button" in the "Topic 1" "section"
     And I should see "Teaching Tool 1" in the ".modal-body" "css_element"
     And I should not see "Teaching Tool 2" in the ".modal-body" "css_element"
     And I should not see "Teaching Tool 3" in the ".modal-body" "css_element"
@@ -200,7 +190,7 @@ Feature: Manage course tools
     And I click on "Show in activity chooser" "field" in the "Teaching Tool 1" "table_row"
     And I click on "Don't show in activity chooser" "field" in the "Teaching Tool 2" "table_row"
     And I am on "Course 1" course homepage
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add an activity or resource" "button" in the "Topic 1" "section"
     And I should see "Teaching Tool 1" in the ".modal-body" "css_element"
     And I should not see "Teaching Tool 2" in the ".modal-body" "css_element"
     And I should not see "Teaching Tool 3" in the ".modal-body" "css_element"
@@ -221,7 +211,7 @@ Feature: Manage course tools
       | Course Tool 2 | /mod/lti/tests/fixtures/tool_provider.php | C1     | 1             |
     And I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add an activity or resource" "button" in the "Topic 1" "section"
     And I should see "Course Tool 1" in the ".modal-body" "css_element"
     And I should not see "Course Tool 2" in the ".modal-body" "css_element"
     And I click on "Close" "button" in the ".modal-dialog" "css_element"
@@ -229,7 +219,7 @@ Feature: Manage course tools
     And I click on "Don't show in activity chooser" "field" in the "Course Tool 1" "table_row"
     And I click on "Show in activity chooser" "field" in the "Course Tool 2" "table_row"
     And I am on "Course 1" course homepage
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add an activity or resource" "button" in the "Topic 1" "section"
     And I should not see "Course Tool 1" in the ".modal-body" "css_element"
     And I should see "Course Tool 2" in the ".modal-body" "css_element"
     And I click on "Close" "button" in the ".modal-dialog" "css_element"
@@ -237,7 +227,7 @@ Feature: Manage course tools
     And I click on "Show in activity chooser" "field" in the "Course Tool 1" "table_row"
     And I click on "Don't show in activity chooser" "field" in the "Course Tool 2" "table_row"
     And I am on "Course 1" course homepage
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add an activity or resource" "button" in the "Topic 1" "section"
     And I should see "Course Tool 1" in the ".modal-body" "css_element"
     And I should not see "Course Tool 2" in the ".modal-body" "css_element"
 
@@ -260,10 +250,10 @@ Feature: Manage course tools
       | Course Tool 1 | Example description | https://example.com/tool | C1     |
     And I log in as "admin"
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "Teaching Tool 1" to section "1" using the activity chooser
+    And I add a "Teaching Tool 1" to section "1"
     And I set the field "Activity name" to "Test tool activity 1"
     And I press "Save and return to course"
-    And I add a "Course Tool 1" to section "1" using the activity chooser
+    And I add a "Course Tool 1" to section "1"
     And I set the field "Activity name" to "Course tool activity 1"
     And I press "Save and return to course"
     And I navigate to "LTI External tools" in current page administration
@@ -271,7 +261,7 @@ Feature: Manage course tools
     And I click on "Show in activity chooser" "field" in the "Teaching Tool 2" "table_row"
     And I click on "Don't show in activity chooser" "field" in the "Course Tool 1" "table_row"
     And I am on "Course 1" course homepage
-    And I add a "Teaching Tool 2" to section "1" using the activity chooser
+    And I add a "Teaching Tool 2" to section "1"
     And I set the field "Activity name" to "Test tool activity 2"
     And I press "Save and return to course"
     When I backup "Course 1" course using this options:
@@ -279,7 +269,7 @@ Feature: Manage course tools
     And I restore "test_backup.mbz" backup into a new course using this options:
       | Schema | Course name | Restored course |
     And I should see "Restored course"
-    And I click on "Add an activity or resource" "button" in the "General" "section"
+    And I click on "Add an activity or resource" "button" in the "Topic 1" "section"
     Then I should not see "Teaching Tool 1" in the ".modal-body" "css_element"
     And I should see "Teaching Tool 2" in the ".modal-body" "css_element"
     And I should not see "Course Tool 2" in the ".modal-body" "css_element"

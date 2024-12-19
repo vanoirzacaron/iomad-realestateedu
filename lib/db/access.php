@@ -2786,13 +2786,6 @@ $capabilities = array(
         ],
     ],
 
-    // Allow users to view all custom reports.
-    'moodle/reportbuilder:viewall' => [
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => [],
-    ],
-
     // Allow users to create/edit their own custom reports.
     'moodle/reportbuilder:edit' => [
         'captype' => 'write',

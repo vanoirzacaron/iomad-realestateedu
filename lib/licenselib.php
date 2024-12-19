@@ -71,7 +71,7 @@ class license_manager {
      *            version  => int a version number used by moodle [required]
      * }
      */
-    public static function save($license) {
+    static public function save($license) {
 
         $existinglicense = self::get_license_by_shortname($license->shortname);
 
@@ -104,7 +104,7 @@ class license_manager {
      *
      * @param object $license the license to create record for.
      */
-    protected static function create($license) {
+    static protected function create($license) {
         global $DB;
 
         $licensecount = count(self::get_licenses());
@@ -128,7 +128,7 @@ class license_manager {
      *
      * @return array $filteredlicenses object[] of licenses.
      */
-    public static function read(array $params = []) {
+    static public function read(array $params = []) {
         $licenses = self::get_licenses();
 
         $filteredlicenses = [];
@@ -155,7 +155,7 @@ class license_manager {
      *
      * @throws \moodle_exception if attempting to update a core license.
      */
-    protected static function update($license) {
+    static protected function update($license) {
         global $DB;
 
         $DB->update_record('license', $license);
@@ -169,7 +169,7 @@ class license_manager {
      *
      * @throws \moodle_exception when attempting to delete a license you are not allowed to.
      */
-    public static function delete($licenseshortname) {
+    static public function delete($licenseshortname) {
         global $DB;
 
         $licensetodelete = self::get_license_by_shortname($licenseshortname);
@@ -212,7 +212,7 @@ class license_manager {
      *
      * @return array|false object[] of license records of false if none.
      */
-    public static function get_licenses() {
+    static public function get_licenses() {
         global $DB;
 
         $cache = \cache::make('core', 'license');
@@ -247,7 +247,7 @@ class license_manager {
      *
      * @throws \moodle_exception if attempting to use invalid direction value.
      */
-    public static function change_license_sortorder(int $direction, string $licenseshortname): void {
+    static public function change_license_sortorder(int $direction, string $licenseshortname) : void {
 
         if ($direction != self::LICENSE_MOVE_UP && $direction != self::LICENSE_MOVE_DOWN) {
             throw new coding_exception(
@@ -278,7 +278,7 @@ class license_manager {
      * @param string $name the shortname of license
      * @return object|null the license or null if no license found.
      */
-    public static function get_license_by_shortname(string $name) {
+    static public function get_license_by_shortname(string $name) {
         $licenses = self::read(['shortname' => $name]);
 
         if (!empty($licenses)) {
@@ -295,7 +295,7 @@ class license_manager {
      * @param string $license the shortname of license
      * @return boolean
      */
-    public static function enable($license) {
+    static public function enable($license) {
         if ($license = self::get_license_by_shortname($license)) {
             $license->enabled = self::LICENSE_ENABLED;
             self::update($license);
@@ -310,7 +310,7 @@ class license_manager {
      * @param string $license the shortname of license
      * @return boolean
      */
-    public static function disable($license) {
+    static public function disable($license) {
         global $CFG;
         // Site default license cannot be disabled!
         if ($license == $CFG->sitedefaultlicense) {
@@ -328,7 +328,7 @@ class license_manager {
     /**
      * Store active licenses in global config.
      */
-    protected static function set_active_licenses() {
+    static protected function set_active_licenses() {
         $licenses = self::read(['enabled' => self::LICENSE_ENABLED]);
         $result = array();
         foreach ($licenses as $l) {
@@ -343,7 +343,7 @@ class license_manager {
      * @return array of license objects.
      * @throws \coding_exception
      */
-    public static function get_active_licenses() {
+    static public function get_active_licenses() {
         global $CFG;
 
         $result = [];
@@ -366,7 +366,7 @@ class license_manager {
      *
      * @return array $licenses an associative array of licenses shaped as ['shortname' => 'fullname']
      */
-    public static function get_active_licenses_as_array() {
+    static public function get_active_licenses_as_array() {
         $activelicenses = self::get_active_licenses();
 
         $licenses = [];
@@ -380,7 +380,7 @@ class license_manager {
     /**
      * Install moodle built-in licenses.
      */
-    public static function install_licenses() {
+    static public function install_licenses() {
         global $CFG;
 
         require_once($CFG->libdir . '/db/upgradelib.php');
@@ -391,7 +391,7 @@ class license_manager {
     /**
      * Reset the license cache so it rebuilds next time licenses are fetched.
      */
-    public static function reset_license_cache() {
+    static public function reset_license_cache() {
         $cache = \cache::make('core', 'license');
         $cache->delete('licenses');
     }

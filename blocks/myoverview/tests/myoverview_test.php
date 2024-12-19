@@ -29,7 +29,7 @@ class myoverview_test extends \advanced_testcase {
     /**
      * Test getting block configuration
      */
-    public function test_get_block_config_for_external(): void {
+    public function test_get_block_config_for_external() {
         global $PAGE, $CFG, $OUTPUT;
         require_once($CFG->dirroot . '/my/lib.php');
 

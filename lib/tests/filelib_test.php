@@ -44,7 +44,7 @@ require_once($CFG->dirroot . '/repository/lib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filelib_test extends \advanced_testcase {
-    public function test_format_postdata_for_curlcall(): void {
+    public function test_format_postdata_for_curlcall() {
 
         // POST params with just simple types.
         $postdatatoconvert = array( 'userid' => 1, 'roleid' => 22, 'name' => 'john');
@@ -94,7 +94,7 @@ class filelib_test extends \advanced_testcase {
         $this->assertEquals($expectedresult, $postdata);
     }
 
-    public function test_download_file_content(): void {
+    public function test_download_file_content() {
         global $CFG;
 
         // Test http success first.
@@ -204,7 +204,7 @@ class filelib_test extends \advanced_testcase {
     /**
      * Test curl basics.
      */
-    public function test_curl_basics(): void {
+    public function test_curl_basics() {
         global $CFG;
 
         // Test HTTP success.
@@ -246,7 +246,7 @@ class filelib_test extends \advanced_testcase {
     /**
      * Test a curl basic request with security enabled.
      */
-    public function test_curl_basics_with_security_helper(): void {
+    public function test_curl_basics_with_security_helper() {
         global $USER;
 
         $this->resetAfterTest();
@@ -307,7 +307,7 @@ class filelib_test extends \advanced_testcase {
         $this->assertCount(2, $events);
     }
 
-    public function test_curl_redirects(): void {
+    public function test_curl_redirects() {
         global $CFG;
 
         $testurl = $this->getExternalTestFileUrl('/test_redir.php');
@@ -408,7 +408,7 @@ class filelib_test extends \advanced_testcase {
     /**
      * Test that redirects to blocked hosts are blocked.
      */
-    public function test_curl_blocked_redirect(): void {
+    public function test_curl_blocked_redirect() {
         $this->resetAfterTest();
 
         $testurl = $this->getExternalTestFileUrl('/test_redir.php');
@@ -440,7 +440,7 @@ class filelib_test extends \advanced_testcase {
         $this->assertDebuggingCalled();
     }
 
-    public function test_curl_relative_redirects(): void {
+    public function test_curl_relative_redirects() {
         // Test relative location redirects.
         $testurl = $this->getExternalTestFileUrl('/test_relative_redir.php');
 
@@ -496,7 +496,7 @@ class filelib_test extends \advanced_testcase {
         $this->assertSame('done', $contents);
     }
 
-    public function test_curl_proxybypass(): void {
+    public function test_curl_proxybypass() {
         global $CFG;
         $testurl = $this->getExternalTestFileUrl('/test.html');
 
@@ -526,7 +526,7 @@ class filelib_test extends \advanced_testcase {
     /**
      * Test that duplicate lines in the curl header are removed.
      */
-    public function test_duplicate_curl_header(): void {
+    public function test_duplicate_curl_header() {
         $testurl = $this->getExternalTestFileUrl('/test_post.php');
 
         $curl = new \curl();
@@ -538,7 +538,7 @@ class filelib_test extends \advanced_testcase {
         $this->assertEquals($headerdata, $curl->header[0]);
     }
 
-    public function test_curl_post(): void {
+    public function test_curl_post() {
         $testurl = $this->getExternalTestFileUrl('/test_post.php');
 
         // Test post request.
@@ -559,7 +559,7 @@ class filelib_test extends \advanced_testcase {
         $this->assertSame('OK', $contents);
     }
 
-    public function test_curl_file(): void {
+    public function test_curl_file() {
         $this->resetAfterTest();
         $testurl = $this->getExternalTestFileUrl('/test_file.php');
 
@@ -582,7 +582,7 @@ class filelib_test extends \advanced_testcase {
         $this->assertSame('OK', $contents);
     }
 
-    public function test_curl_file_name(): void {
+    public function test_curl_file_name() {
         $this->resetAfterTest();
         $testurl = $this->getExternalTestFileUrl('/test_file_name.php');
 
@@ -605,7 +605,7 @@ class filelib_test extends \advanced_testcase {
         $this->assertSame('OK', $contents);
     }
 
-    public function test_curl_protocols(): void {
+    public function test_curl_protocols() {
 
         // HTTP and HTTPS requests were verified in previous requests. Now check
         // that we can selectively disable some protocols.
@@ -650,7 +650,7 @@ class filelib_test extends \advanced_testcase {
      * @copyright 2012 Dongsheng Cai {@link http://dongsheng.org}
      * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
      */
-    public function test_prepare_draft_area(): void {
+    public function test_prepare_draft_area() {
         global $USER, $DB;
 
         $this->resetAfterTest(true);
@@ -761,7 +761,7 @@ class filelib_test extends \advanced_testcase {
      * @copyright 2012 Dongsheng Cai {@link http://dongsheng.org}
      * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
      */
-    public function test_delete_original_file_from_draft(): void {
+    public function test_delete_original_file_from_draft() {
         global $USER, $DB;
 
         $this->resetAfterTest(true);
@@ -832,7 +832,7 @@ class filelib_test extends \advanced_testcase {
     /**
      * Test avoid file merging when working with draft areas.
      */
-    public function test_ignore_file_merging_in_draft_area(): void {
+    public function test_ignore_file_merging_in_draft_area() {
         global $USER, $DB;
 
         $this->resetAfterTest(true);
@@ -901,7 +901,7 @@ class filelib_test extends \advanced_testcase {
     /**
      * Testing deleting file_save_draft_area_files won't accidentally wipe unintended files.
      */
-    public function test_file_save_draft_area_files_itemid_cannot_be_false(): void {
+    public function test_file_save_draft_area_files_itemid_cannot_be_false() {
         global $USER, $DB;
         $this->resetAfterTest();
 
@@ -923,7 +923,7 @@ class filelib_test extends \advanced_testcase {
     /**
      * Tests the strip_double_headers function in the curl class.
      */
-    public function test_curl_strip_double_headers(): void {
+    public function test_curl_strip_double_headers() {
         // Example from issue tracker.
         $mdl30648example = <<<EOF
 HTTP/1.0 407 Proxy Authentication Required
@@ -1168,7 +1168,7 @@ EOF;
     /**
      * Tests the get_mimetype_description function.
      */
-    public function test_get_mimetype_description(): void {
+    public function test_get_mimetype_description() {
         $this->resetAfterTest();
 
         // Test example type (.doc).
@@ -1204,7 +1204,7 @@ EOF;
     /**
      * Tests the get_mimetypes_array function.
      */
-    public function test_get_mimetypes_array(): void {
+    public function test_get_mimetypes_array() {
         $mimeinfo = get_mimetypes_array();
 
         // Test example MIME type (doc).
@@ -1223,7 +1223,7 @@ EOF;
     /**
      * Tests for get_mimetype_for_sending function.
      */
-    public function test_get_mimetype_for_sending(): void {
+    public function test_get_mimetype_for_sending() {
         // Without argument.
         $this->assertEquals('application/octet-stream', get_mimetype_for_sending());
 
@@ -1247,7 +1247,7 @@ EOF;
     /**
      * Test curl agent settings.
      */
-    public function test_curl_useragent(): void {
+    public function test_curl_useragent() {
         $curl = new testable_curl();
         $options = $curl->get_options();
         $this->assertNotEmpty($options);
@@ -1296,7 +1296,7 @@ EOF;
     /**
      * Test file_rewrite_pluginfile_urls.
      */
-    public function test_file_rewrite_pluginfile_urls(): void {
+    public function test_file_rewrite_pluginfile_urls() {
 
         $syscontext = \context_system::instance();
         $originaltext = 'Fake test with an image <img src="@@PLUGINFILE@@/image.png">';
@@ -1316,7 +1316,7 @@ EOF;
     /**
      * Test file_rewrite_pluginfile_urls with includetoken.
      */
-    public function test_file_rewrite_pluginfile_urls_includetoken(): void {
+    public function test_file_rewrite_pluginfile_urls_includetoken() {
         global $USER, $CFG;
 
         $CFG->slasharguments = true;
@@ -1365,7 +1365,7 @@ EOF;
     /**
      * Test file_rewrite_pluginfile_urls with includetoken with slasharguments disabled..
      */
-    public function test_file_rewrite_pluginfile_urls_includetoken_no_slashargs(): void {
+    public function test_file_rewrite_pluginfile_urls_includetoken_no_slashargs() {
         global $USER, $CFG;
 
         $CFG->slasharguments = false;
@@ -1437,7 +1437,7 @@ EOF;
     /**
      * Test file_merge_files_from_draft_area_into_filearea
      */
-    public function test_file_merge_files_from_draft_area_into_filearea(): void {
+    public function test_file_merge_files_from_draft_area_into_filearea() {
         global $USER, $CFG;
 
         $this->resetAfterTest(true);
@@ -1542,7 +1542,7 @@ EOF;
     /**
      * Test max area bytes for file_merge_files_from_draft_area_into_filearea
      */
-    public function test_file_merge_files_from_draft_area_into_filearea_max_area_bytes(): void {
+    public function test_file_merge_files_from_draft_area_into_filearea_max_area_bytes() {
         global $USER;
 
         $this->resetAfterTest(true);
@@ -1565,7 +1565,7 @@ EOF;
     /**
      * Test max file bytes for file_merge_files_from_draft_area_into_filearea
      */
-    public function test_file_merge_files_from_draft_area_into_filearea_max_file_bytes(): void {
+    public function test_file_merge_files_from_draft_area_into_filearea_max_file_bytes() {
         global $USER;
 
         $this->resetAfterTest(true);
@@ -1593,7 +1593,7 @@ EOF;
     /**
      * Test max file number for file_merge_files_from_draft_area_into_filearea
      */
-    public function test_file_merge_files_from_draft_area_into_filearea_max_files(): void {
+    public function test_file_merge_files_from_draft_area_into_filearea_max_files() {
         global $USER;
 
         $this->resetAfterTest(true);
@@ -1619,7 +1619,7 @@ EOF;
     /**
      * Test file_get_draft_area_info.
      */
-    public function test_file_get_draft_area_info(): void {
+    public function test_file_get_draft_area_info() {
         global $USER;
 
         $this->resetAfterTest(true);
@@ -1676,7 +1676,7 @@ EOF;
     /**
      * Test file_get_file_area_info.
      */
-    public function test_file_get_file_area_info(): void {
+    public function test_file_get_file_area_info() {
         global $USER;
 
         $this->resetAfterTest(true);
@@ -1730,7 +1730,7 @@ EOF;
     /**
      * Test confirming that draft files not referenced in the editor text are removed.
      */
-    public function test_file_remove_editor_orphaned_files(): void {
+    public function test_file_remove_editor_orphaned_files() {
         global $USER, $CFG;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -1780,7 +1780,7 @@ EOF;
     /**
      * Test that all files in the draftarea are returned.
      */
-    public function test_file_get_all_files_in_draftarea(): void {
+    public function test_file_get_all_files_in_draftarea() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -1826,7 +1826,7 @@ EOF;
         $this->assertEquals($fifthrecord['filename'], $allfiles[4]->filename);
     }
 
-    public function test_file_copy_file_to_file_area(): void {
+    public function test_file_copy_file_to_file_area() {
         // Create two files in different draft areas but owned by the same user.
         global $USER;
         $this->resetAfterTest(true);
@@ -1866,7 +1866,7 @@ EOF;
     /**
      * Test file_is_draft_areas_limit_reached
      */
-    public function test_file_is_draft_areas_limit_reached(): void {
+    public function test_file_is_draft_areas_limit_reached() {
         global $CFG;
         $this->resetAfterTest(true);
 
@@ -1935,7 +1935,7 @@ EOF;
      *
      * @covers ::file_prepare_standard_editor
      */
-    public function test_file_prepare_standard_editor_clean_text(): void {
+    public function test_file_prepare_standard_editor_clean_text() {
         $text = "lala <object>xx</object>";
 
         $syscontext = \context_system::instance();
@@ -2061,6 +2061,7 @@ class testable_curl extends curl {
     public function get_options() {
         // Access to private property.
         $rp = new \ReflectionProperty('curl', 'options');
+        $rp->setAccessible(true);
         return $rp->getValue($this);
     }
 
@@ -2072,6 +2073,7 @@ class testable_curl extends curl {
     public function set_options($options) {
         // Access to private property.
         $rp = new \ReflectionProperty('curl', 'options');
+        $rp->setAccessible(true);
         $rp->setValue($this, $options);
     }
 
@@ -2105,6 +2107,7 @@ class testable_curl extends curl {
     public function call_apply_opt($options = null) {
         // Access to private method.
         $rm = new \ReflectionMethod('curl', 'apply_opt');
+        $rm->setAccessible(true);
         $ch = curl_init();
         return $rm->invoke($this, $ch, $options);
     }

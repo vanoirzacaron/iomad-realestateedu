@@ -56,7 +56,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * test_get_trusted_h5p_file description
      */
-    public function test_get_trusted_h5p_file(): void {
+    public function test_get_trusted_h5p_file() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -101,7 +101,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * test_h5p_invalid_url description
      */
-    public function test_h5p_invalid_url(): void {
+    public function test_h5p_invalid_url() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -131,7 +131,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * test_h5p_file_not_found description
      */
-    public function test_h5p_file_not_found(): void {
+    public function test_h5p_file_not_found() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -160,7 +160,7 @@ class external_test extends externallib_advanced_testcase {
      * Test the request to get_trusted_h5p_file
      * using webservice/pluginfile.php as url param.
      */
-    public function test_allow_webservice_pluginfile_in_url_param(): void {
+    public function test_allow_webservice_pluginfile_in_url_param() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -202,7 +202,7 @@ class external_test extends externallib_advanced_testcase {
      * Test the request to get_trusted_h5p_file
      * using tokenpluginfile.php as url param.
      */
-    public function test_allow_tokenluginfile_in_url_param(): void {
+    public function test_allow_tokenluginfile_in_url_param() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 

@@ -30,7 +30,7 @@ class user_menu_test extends \advanced_testcase {
      *
      * @return array containing testing data
      */
-    public function custom_user_menu_data() {
+    public static function custom_user_menu_data(): array {
         return array(
             // These are fillers only.
             array('###', 0, 1),
@@ -79,7 +79,7 @@ test
      * @param string $input The menu text to test
      * @param int $entrycount The numbers of entries expected
      */
-    public function test_custom_user_menu($data, $entrycount, $dividercount): void {
+    public function test_custom_user_menu($data, $entrycount, $dividercount) {
         global $CFG, $OUTPUT, $USER, $PAGE;
 
         // Must reset because of config and user modifications.

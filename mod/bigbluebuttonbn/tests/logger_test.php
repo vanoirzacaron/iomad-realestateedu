@@ -42,7 +42,7 @@ class logger_test extends \advanced_testcase {
     /**
      * Test delete instance logs
      */
-    public function test_log_instance_deleted(): void {
+    public function test_log_instance_deleted() {
         global $DB;
 
         $this->resetAfterTest();
@@ -59,7 +59,7 @@ class logger_test extends \advanced_testcase {
     /**
      * Test log method
      */
-    public function test_log_recording_played_event(): void {
+    public function test_log_recording_played_event() {
         global $DB;
 
         $this->resetAfterTest();

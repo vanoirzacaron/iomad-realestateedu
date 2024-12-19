@@ -158,7 +158,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_subscribe_to_forum
      */
-    public function test_can_subscribe_to_forum(): void {
+    public function test_can_subscribe_to_forum() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -174,7 +174,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_create_discussions
      */
-    public function test_can_create_discussions(): void {
+    public function test_can_create_discussions() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -255,7 +255,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_access_all_groups
      */
-    public function test_can_access_all_groups(): void {
+    public function test_can_access_all_groups() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -274,7 +274,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_access_group
      */
-    public function test_can_access_group(): void {
+    public function test_can_access_group() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -298,7 +298,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_view_discussions
      */
-    public function test_can_view_discussions(): void {
+    public function test_can_view_discussions() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -317,7 +317,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_move_discussions
      */
-    public function test_can_move_discussions(): void {
+    public function test_can_move_discussions() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -341,7 +341,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_pin_discussions
      */
-    public function test_can_pin_discussions(): void {
+    public function test_can_pin_discussions() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -360,7 +360,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_split_discussions
      */
-    public function test_can_split_discussions(): void {
+    public function test_can_split_discussions() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -384,7 +384,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_export_discussions
      */
-    public function test_can_export_discussions(): void {
+    public function test_can_export_discussions() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -409,7 +409,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_manually_control_post_read_status
      */
-    public function test_can_manually_control_post_read_status(): void {
+    public function test_can_manually_control_post_read_status() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -438,7 +438,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::must_post_before_viewing_discussion
      */
-    public function test_must_post_before_viewing_discussion(): void {
+    public function test_must_post_before_viewing_discussion() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -469,7 +469,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_subscribe_to_discussion
      */
-    public function test_can_subscribe_to_discussion(): void {
+    public function test_can_subscribe_to_discussion() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -486,7 +486,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_move_discussion
      */
-    public function test_can_move_discussion(): void {
+    public function test_can_move_discussion() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -511,7 +511,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_pin_discussion
      */
-    public function test_can_pin_discussion(): void {
+    public function test_can_pin_discussion() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -531,7 +531,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_post_in_discussion
      */
-    public function test_can_post_in_discussion(): void {
+    public function test_can_post_in_discussion() {
         $this->resetAfterTest();
 
         $discussion = $this->discussion;
@@ -649,7 +649,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_edit_post
      */
-    public function test_can_edit_post(): void {
+    public function test_can_edit_post() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -747,7 +747,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_delete_post
      */
-    public function test_can_delete_post(): void {
+    public function test_can_delete_post() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -824,7 +824,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_split_post
      */
-    public function test_can_split_post(): void {
+    public function test_can_split_post() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -875,7 +875,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_reply_to_post
      */
-    public function test_can_reply_to_post(): void {
+    public function test_can_reply_to_post() {
         $this->resetAfterTest();
 
         $discussion = $this->discussion;
@@ -988,7 +988,7 @@ class managers_capability_test extends \advanced_testcase {
     /**
      * Test for \mod_forum\local\managers\capability::can_reply_to_post() involving Q & A forums.
      */
-    public function test_can_reply_to_post_in_qanda_forum(): void {
+    public function test_can_reply_to_post_in_qanda_forum() {
         global $CFG;
 
         $this->resetAfterTest();
@@ -1036,7 +1036,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_reply_privately_to_post
      */
-    public function test_can_reply_privately_to_post(): void {
+    public function test_can_reply_privately_to_post() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -1067,7 +1067,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_view_post
      */
-    public function test_can_view_post(): void {
+    public function test_can_view_post() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -1093,7 +1093,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_view_post_shell
      */
-    public function test_can_view_post_shell(): void {
+    public function test_can_view_post_shell() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -1146,7 +1146,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_export_post
      */
-    public function test_can_export_post(): void {
+    public function test_can_export_post() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -1184,7 +1184,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_view_participants
      */
-    public function test_can_view_participants(): void {
+    public function test_can_view_participants() {
         $this->resetAfterTest();
 
         $discussion = $this->discussion;
@@ -1225,7 +1225,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_view_hidden_posts
      */
-    public function test_can_view_hidden_posts(): void {
+    public function test_can_view_hidden_posts() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -1244,7 +1244,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_manage_forum
      */
-    public function test_can_manage_forum(): void {
+    public function test_can_manage_forum() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -1263,7 +1263,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_manage_tags
      */
-    public function test_can_manage_tags(): void {
+    public function test_can_manage_tags() {
         global $DB;
         $this->resetAfterTest();
 
@@ -1285,7 +1285,7 @@ class managers_capability_test extends \advanced_testcase {
      *
      * @covers ::can_view_any_private_reply
      */
-    public function test_can_view_any_private_reply(): void {
+    public function test_can_view_any_private_reply() {
         $this->resetAfterTest();
 
         $forum = $this->create_forum();
@@ -1301,7 +1301,7 @@ class managers_capability_test extends \advanced_testcase {
     /**
      * Test delete a post with ratings.
      */
-    public function test_validate_delete_post_with_ratings(): void {
+    public function test_validate_delete_post_with_ratings() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -1343,7 +1343,7 @@ class managers_capability_test extends \advanced_testcase {
     /**
      * Test delete a post with replies.
      */
-    public function test_validate_delete_post_with_replies(): void {
+    public function test_validate_delete_post_with_replies() {
         global $DB;
         $this->resetAfterTest(true);
 

@@ -38,15 +38,12 @@ class events_test extends \advanced_testcase {
      */
     public function setUp(): void {
         $this->resetAfterTest();
-        // Survey module is disabled by default, enable it for testing.
-        $manager = \core_plugin_manager::resolve_plugininfo_class('mod');
-        $manager::enable_plugin('survey', 1);
     }
 
     /**
      * Test report downloaded event.
      */
-    public function test_report_downloaded(): void {
+    public function test_report_downloaded() {
         // There is no proper API to call to generate chapters for a book, so what we are
         // doing here is simply making sure that the events returns the right information.
 
@@ -78,7 +75,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test report viewed event.
      */
-    public function test_report_viewed(): void {
+    public function test_report_viewed() {
         // There is no proper API to call to generate chapters for a book, so what we are
         // doing here is simply making sure that the events returns the right information.
 
@@ -108,7 +105,7 @@ class events_test extends \advanced_testcase {
     /**
      * Test response submitted event.
      */
-    public function test_response_submitted(): void {
+    public function test_response_submitted() {
         // There is no proper API to call to generate chapters for a book, so what we are
         // doing here is simply making sure that the events returns the right information.
 

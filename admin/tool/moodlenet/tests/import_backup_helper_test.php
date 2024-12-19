@@ -29,7 +29,7 @@ class import_backup_helper_test extends \advanced_testcase {
     /**
      * Test that the first available context with the capability to upload backup files is returned.
      */
-    public function test_get_context_for_user(): void {
+    public function test_get_context_for_user() {
         global $DB;
 
         $this->resetAfterTest();

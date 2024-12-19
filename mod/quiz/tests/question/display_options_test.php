@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/mod/quiz/locallib.php');
  * @covers \mod_quiz\question\display_options
  */
 class display_options_test extends \basic_testcase {
-    public function test_num_attempts_access_rule(): void {
+    public function test_num_attempts_access_rule() {
         $quiz = new \stdClass();
         $quiz->decimalpoints = 2;
         $quiz->questiondecimalpoints = -1;

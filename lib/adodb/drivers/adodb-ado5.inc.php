@@ -233,6 +233,7 @@ class ADODB_ado extends ADOConnection {
 		return $arr;
 	}
 
+	/* returns queryID or false */
 	function _query($sql,$inputarr=false)
 	{
 		try { // In PHP5, all COM errors are exceptions, so to maintain old behaviour...
@@ -544,13 +545,13 @@ class ADORecordSet_ado extends ADORecordSet {
 			$t = $fieldobj->type;
 			$len = $fieldobj->max_length;
 		}
-
+		
 		$t = strtoupper($t);
-
+		
 		if (array_key_exists($t,$this->connection->customActualTypes))
 			return  $this->connection->customActualTypes[$t];
 
-		if (!is_numeric($t))
+		if (!is_numeric($t)) 
 			return $t;
 
 		switch ($t) {

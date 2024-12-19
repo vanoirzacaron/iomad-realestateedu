@@ -42,7 +42,7 @@ class accesslib_has_capability_test extends \advanced_testcase {
      * @param   string[]    $lockedcontexts The list of contexts, by name, to mark as locked
      * @param   string[]    $blocked The list of contexts which will be 'blocked' by has_capability
      */
-    public function test_locked_contexts($lockedcontexts, $blocked): void {
+    public function test_locked_contexts($lockedcontexts, $blocked) {
         global $DB;
 
         $this->resetAfterTest();
@@ -207,7 +207,7 @@ class accesslib_has_capability_test extends \advanced_testcase {
      * @param   string[]    $lockedcontexts The list of contexts, by name, to mark as locked
      * @param   string[]    $blocked The list of contexts which will be 'blocked' by has_capability
      */
-    public function test_locked_contexts_for_admin_with_config($lockedcontexts, $blocked): void {
+    public function test_locked_contexts_for_admin_with_config($lockedcontexts, $blocked) {
         global $DB;
 
         $this->resetAfterTest();
@@ -364,7 +364,7 @@ class accesslib_has_capability_test extends \advanced_testcase {
      *
      * @return  array
      */
-    public function locked_context_provider() {
+    public static function locked_context_provider(): array {
         return [
             'All unlocked' => [
                 'locked' => [
@@ -447,7 +447,7 @@ class accesslib_has_capability_test extends \advanced_testcase {
      *
      * @return  array
      */
-    public function login_as_provider(): array {
+    public static function login_as_provider(): array {
         return [
             [
                 'system',

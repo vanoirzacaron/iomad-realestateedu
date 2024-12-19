@@ -66,7 +66,7 @@ class plan_test extends \advanced_testcase {
     /**
      * test base_plan class
      */
-    function test_base_plan(): void {
+    function test_base_plan() {
 
         // Instantiate
         $bp = new \mock_base_plan('name');
@@ -81,7 +81,7 @@ class plan_test extends \advanced_testcase {
     /**
      * test backup_plan class
      */
-    function test_backup_plan(): void {
+    function test_backup_plan() {
 
         // We need one (non interactive) controller for instantiating plan
         $bc = new backup_controller(backup::TYPE_1ACTIVITY, $this->moduleid, backup::FORMAT_MOODLE,
@@ -101,7 +101,7 @@ class plan_test extends \advanced_testcase {
     /**
      * wrong base_plan class tests
      */
-    function test_base_plan_wrong(): void {
+    function test_base_plan_wrong() {
 
         // We need one (non interactive) controller for instantiating plan
         $bc = new backup_controller(backup::TYPE_1ACTIVITY, $this->moduleid, backup::FORMAT_MOODLE,
@@ -121,7 +121,7 @@ class plan_test extends \advanced_testcase {
     /**
      * wrong backup_plan class tests
      */
-    function test_backup_plan_wrong(): void {
+    function test_backup_plan_wrong() {
 
         // Try to pass one wrong controller
         try {

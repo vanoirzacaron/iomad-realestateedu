@@ -877,9 +877,7 @@ function chat_format_message_manually($message, $courseid, $sender, $currentuser
             case 'me':
                 $outinfo = $message->strtime;
                 $text = '*** <b>'.$sender->firstname.' '.substr($rawtext, 4).'</b>';
-                $outmain = format_text($text, FORMAT_MOODLE, array_merge((array) $options, [
-                    'context' => \core\context\course::instance($courseid),
-                ]));
+                $outmain = format_text($text, FORMAT_MOODLE, $options, $courseid);
                 break;
             default:
                 // Error, we set special back to false to use the classic message output.
@@ -891,9 +889,7 @@ function chat_format_message_manually($message, $courseid, $sender, $currentuser
         $matches = array();
         preg_match($patternto, $rawtext, $matches);
         if (isset($matches[1]) && isset($matches[2])) {
-            $text = format_text($matches[2], FORMAT_MOODLE, array_merge((array) $options, [
-                'context' => \core\context\course::instance($courseid),
-            ]));
+            $text = format_text($matches[2], FORMAT_MOODLE, $options, $courseid);
             $outinfo = $message->strtime;
             $outmain = $sender->firstname.' '.get_string('saidto', 'chat').' <i>'.$matches[1].'</i>: '.$text;
         } else {
@@ -903,9 +899,7 @@ function chat_format_message_manually($message, $courseid, $sender, $currentuser
     }
 
     if (!$special) {
-        $text = format_text($rawtext, FORMAT_MOODLE, array_merge((array) $options, [
-            'context' => \core\context\course::instance($courseid),
-        ]));
+        $text = format_text($rawtext, FORMAT_MOODLE, $options, $courseid);
         $outinfo = $message->strtime.' '.$sender->firstname;
         $outmain = $text;
     }
@@ -1025,10 +1019,9 @@ function chat_format_message_theme ($message, $chatuser, $currentuser, $grouping
     // It cannot be called here as HTML-isation interferes with special case
     // recognition, but *must* be called on any user-sourced text to be inserted
     // into $outmain.
-    $options = [
-        'para' => false,
-        'blanktarget' => true,
-    ];
+    $options = new stdClass();
+    $options->para = false;
+    $options->blanktarget = true;
 
     // And now check for special cases.
     $special = false;
@@ -1071,9 +1064,7 @@ function chat_format_message_theme ($message, $chatuser, $currentuser, $grouping
         switch ($command) {
             case 'me':
                 $text = '*** <b>'.$sender->firstname.' '.substr($rawtext, 4).'</b>';
-                $outmain = format_text($text, FORMAT_MOODLE, array_merge($options, [
-                    'context' => \core\context\course::instance($courseid),
-                ]));
+                $outmain = format_text($text, FORMAT_MOODLE, $options, $courseid);
                 break;
             default:
                 // Error, we set special back to false to use the classic message output.
@@ -1086,9 +1077,7 @@ function chat_format_message_theme ($message, $chatuser, $currentuser, $grouping
         $matches = array();
         preg_match($patternto, $rawtext, $matches);
         if (isset($matches[1]) && isset($matches[2])) {
-            $text = format_text($matches[2], FORMAT_MOODLE, array_merge($options, [
-                'context' => \core\context\course::instance($courseid),
-            ]));
+            $text = format_text($matches[2], FORMAT_MOODLE, $options, $courseid);
             $outmain = $sender->firstname.' <b>'.get_string('saidto', 'chat').'</b> <i>'.$matches[1].'</i>: '.$text;
         } else {
             // Error, we set special back to false to use the classic message output.
@@ -1097,9 +1086,7 @@ function chat_format_message_theme ($message, $chatuser, $currentuser, $grouping
     }
 
     if (!$special) {
-        $text = format_text($rawtext, FORMAT_MOODLE, array_merge($options, [
-            'context' => \core\context\course::instance($courseid),
-        ]));
+        $text = format_text($rawtext, FORMAT_MOODLE, $options, $courseid);
         $outmain = $text;
     }
 

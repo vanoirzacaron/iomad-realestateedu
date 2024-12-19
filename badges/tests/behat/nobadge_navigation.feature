@@ -99,7 +99,4 @@ Feature: Manage badges is not shown when there are no existing badges.
     And I follow "Badges"
     And "Manage badges" "button" should not exist
     And "Add a new badge" "button" should not exist
-    And I should not see "There are no matching badges available for users to earn"
-    And the following should exist in the "Course badges" table:
-      | Name                  | Description                       | Criteria            |
-      | Testing course badge  | Testing course badge description  | Awarded by: Teacher |
+    And I should not see "There are currently no badges available for users to earn."

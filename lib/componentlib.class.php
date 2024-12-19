@@ -792,7 +792,7 @@ class lang_installer {
      *
      * @uses component_installer
      * @param string $langcode
-     * @return string return status
+     * @return int return status
      */
     protected function install_language_pack($langcode) {
 

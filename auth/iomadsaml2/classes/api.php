@@ -30,7 +30,7 @@ class api {
 
     /**
      * IdP logout callback. Called only when logout is initiated from IdP.
-     * {@see \auth_iomadsaml2\sp\saml2-logout}
+     * {@see \auth_iomadsaml2\sp\iomadsaml2-logout}
      */
     public static function logout_from_idp_front_channel(): void {
         // The SP session will be cleaned up. Log user out of Moodle.
@@ -83,7 +83,7 @@ class api {
     }
 
     /**
-     * Helper method to find unique key {@see self::saml2_authproc_filters_hook}.
+     * Helper method to find unique key {@see self::iomadsaml2_authproc_filters_hook}.
      *
      * @param int $priority
      * @param array $filters

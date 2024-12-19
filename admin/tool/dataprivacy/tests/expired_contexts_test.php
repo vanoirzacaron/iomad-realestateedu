@@ -33,7 +33,7 @@ class expired_contexts_test extends \advanced_testcase {
      * @param   string  $course Retention policy for courses.
      * @param   string  $activity Retention policy for activities.
      */
-    protected function setup_basics(string $system, string $user, string $course = null, string $activity = null): \stdClass {
+    protected function setup_basics(string $system, string $user, string $course = null, string $activity = null) : \stdClass {
         $this->resetAfterTest();
 
         $purposes = (object) [
@@ -59,7 +59,7 @@ class expired_contexts_test extends \advanced_testcase {
      * @param   int     $contextlevel
      * @return  purpose
      */
-    protected function create_and_set_purpose_for_contextlevel(string $retention, int $contextlevel): purpose {
+    protected function create_and_set_purpose_for_contextlevel(string $retention, int $contextlevel) : purpose {
         $purpose = new purpose(0, (object) [
             'name' => 'Test purpose ' . rand(1, 1000),
             'retentionperiod' => $retention,
@@ -90,7 +90,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with no lastaccess is not flagged for deletion.
      */
-    public function test_flag_not_setup(): void {
+    public function test_flag_not_setup() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
@@ -111,7 +111,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with no lastaccess is not flagged for deletion.
      */
-    public function test_flag_user_no_lastaccess(): void {
+    public function test_flag_user_no_lastaccess() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -134,7 +134,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a recent lastaccess is not flagged for deletion.
      */
-    public function test_flag_user_recent_lastaccess(): void {
+    public function test_flag_user_recent_lastaccess() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -157,7 +157,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a lastaccess in the past is flagged for deletion.
      */
-    public function test_flag_user_past_lastaccess(): void {
+    public function test_flag_user_past_lastaccess() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -181,7 +181,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a lastaccess in the past but active enrolments is not flagged for deletion.
      */
-    public function test_flag_user_past_lastaccess_still_enrolled(): void {
+    public function test_flag_user_past_lastaccess_still_enrolled() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -209,7 +209,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a lastaccess in the past and no active enrolments is flagged for deletion.
      */
-    public function test_flag_user_update_existing(): void {
+    public function test_flag_user_update_existing() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'P5Y');
@@ -241,7 +241,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a lastaccess in the past and expired enrolments.
      */
-    public function test_flag_user_past_lastaccess_unexpired_past_enrolment(): void {
+    public function test_flag_user_past_lastaccess_unexpired_past_enrolment() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'P1Y');
@@ -269,7 +269,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a lastaccess in the past and expired enrolments.
      */
-    public function test_flag_user_past_override_role(): void {
+    public function test_flag_user_past_override_role() {
         global $DB;
         $this->resetAfterTest();
 
@@ -303,7 +303,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a lastaccess in the past and expired enrolments.
      */
-    public function test_flag_user_past_lastaccess_expired_enrolled(): void {
+    public function test_flag_user_past_lastaccess_expired_enrolled() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -332,7 +332,7 @@ class expired_contexts_test extends \advanced_testcase {
      * Ensure that a user with a lastaccess in the past and enrolments without a course end date are respected
      * correctly.
      */
-    public function test_flag_user_past_lastaccess_missing_enddate_required(): void {
+    public function test_flag_user_past_lastaccess_missing_enddate_required() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -364,7 +364,7 @@ class expired_contexts_test extends \advanced_testcase {
      * Ensure that a user with a lastaccess in the past and enrolments without a course end date are respected
      * correctly when the end date is not required.
      */
-    public function test_flag_user_past_lastaccess_missing_enddate_not_required(): void {
+    public function test_flag_user_past_lastaccess_missing_enddate_not_required() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -395,7 +395,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a recent lastaccess is not flagged for deletion.
      */
-    public function test_flag_user_recent_lastaccess_existing_record(): void {
+    public function test_flag_user_recent_lastaccess_existing_record() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -429,7 +429,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a recent lastaccess is not flagged for deletion.
      */
-    public function test_flag_user_retention_changed(): void {
+    public function test_flag_user_retention_changed() {
         $this->resetAfterTest();
 
         $purposes = $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -469,7 +469,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a historically expired expired block record child is cleaned up.
      */
-    public function test_flag_user_historic_block_unapproved(): void {
+    public function test_flag_user_historic_block_unapproved() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -506,7 +506,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a block which has a default retention period which has not expired, is still expired.
      */
-    public function test_flag_user_historic_unexpired_child(): void {
+    public function test_flag_user_historic_unexpired_child() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -534,7 +534,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a course with no end date is not flagged.
      */
-    public function test_flag_course_no_enddate(): void {
+    public function test_flag_course_no_enddate() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -553,7 +553,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a course with an end date in the distant past, but a child which is unexpired is not flagged.
      */
-    public function test_flag_course_past_enddate_future_child(): void {
+    public function test_flag_course_past_enddate_future_child() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'P5Y');
@@ -575,7 +575,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a course with an end date in the distant past is flagged.
      */
-    public function test_flag_course_past_enddate(): void {
+    public function test_flag_course_past_enddate() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -597,7 +597,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a course with an end date in the distant past is flagged.
      */
-    public function test_flag_course_past_enddate_multiple(): void {
+    public function test_flag_course_past_enddate_multiple() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -625,7 +625,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a course with an end date in the future is not flagged.
      */
-    public function test_flag_course_future_enddate(): void {
+    public function test_flag_course_future_enddate() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -644,7 +644,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a course with an end date in the future is not flagged.
      */
-    public function test_flag_course_recent_unexpired_enddate(): void {
+    public function test_flag_course_recent_unexpired_enddate() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -662,7 +662,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a course with an end date in the distant past is flagged, taking into account any purpose override
      */
-    public function test_flag_course_past_enddate_with_override_unexpired_role(): void {
+    public function test_flag_course_past_enddate_with_override_unexpired_role() {
         global $DB;
         $this->resetAfterTest();
 
@@ -701,7 +701,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a course with an end date in the distant past is flagged, and any expired role is ignored.
      */
-    public function test_flag_course_past_enddate_with_override_expired_role(): void {
+    public function test_flag_course_past_enddate_with_override_expired_role() {
         global $DB;
         $this->resetAfterTest();
 
@@ -740,7 +740,7 @@ class expired_contexts_test extends \advanced_testcase {
      * Ensure that where a course has explicitly expired one role, but that role is explicitly not expired in a child
      * context, does not have the parent context role expired.
      */
-    public function test_flag_course_override_expiredwith_override_unexpired_on_child(): void {
+    public function test_flag_course_override_expiredwith_override_unexpired_on_child() {
         global $DB;
         $this->resetAfterTest();
 
@@ -809,7 +809,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user context previously flagged as approved is not removed if the user has any unexpired roles.
      */
-    public function test_process_user_context_with_override_unexpired_role(): void {
+    public function test_process_user_context_with_override_unexpired_role() {
         global $DB;
         $this->resetAfterTest();
 
@@ -867,7 +867,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a module context previously flagged as approved is removed with appropriate unexpiredroles kept.
      */
-    public function test_process_course_context_with_override_unexpired_role(): void {
+    public function test_process_course_context_with_override_unexpired_role() {
         global $DB;
         $this->resetAfterTest();
 
@@ -955,7 +955,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a module context previously flagged as approved is removed with appropriate expiredroles kept.
      */
-    public function test_process_course_context_with_override_expired_role(): void {
+    public function test_process_course_context_with_override_expired_role() {
         global $DB;
         $this->resetAfterTest();
 
@@ -1043,7 +1043,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a module context previously flagged as approved is removed with appropriate expiredroles kept.
      */
-    public function test_process_course_context_with_user_in_both_lists(): void {
+    public function test_process_course_context_with_user_in_both_lists() {
         global $DB;
         $this->resetAfterTest();
 
@@ -1132,7 +1132,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a module context previously flagged as approved is removed with appropriate expiredroles kept.
      */
-    public function test_process_course_context_with_user_in_both_lists_expired(): void {
+    public function test_process_course_context_with_user_in_both_lists_expired() {
         global $DB;
         $this->resetAfterTest();
 
@@ -1228,7 +1228,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a site not setup will not process anything.
      */
-    public function test_process_not_setup(): void {
+    public function test_process_not_setup() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user(['lastaccess' => time() - YEARSECS]);
@@ -1265,7 +1265,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with no lastaccess is not flagged for deletion.
      */
-    public function test_process_none_approved(): void {
+    public function test_process_none_approved() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -1304,7 +1304,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with no lastaccess is not flagged for deletion.
      */
-    public function test_process_no_context(): void {
+    public function test_process_no_context() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -1343,7 +1343,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user context previously flagged as approved is removed.
      */
-    public function test_process_user_context(): void {
+    public function test_process_user_context() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -1405,7 +1405,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a course context previously flagged as approved is removed.
      */
-    public function test_process_course_context(): void {
+    public function test_process_course_context() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -1450,7 +1450,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user context previously flagged as approved is not removed if the user then logs in.
      */
-    public function test_process_user_context_logged_in_after_approval(): void {
+    public function test_process_user_context_logged_in_after_approval() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -1502,7 +1502,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user context previously flagged as approved is not removed if the purpose has changed.
      */
-    public function test_process_user_context_changed_after_approved(): void {
+    public function test_process_user_context_changed_after_approved() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -1554,7 +1554,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a historically expired expired block record child is cleaned up.
      */
-    public function test_process_user_historic_block_unapproved(): void {
+    public function test_process_user_historic_block_unapproved() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -1613,7 +1613,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that a user with a block which has a default retention period which has not expired, is still expired.
      */
-    public function test_process_user_historic_unexpired_child(): void {
+    public function test_process_user_historic_unexpired_child() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H');
@@ -1667,7 +1667,7 @@ class expired_contexts_test extends \advanced_testcase {
      * Ensure that a course context previously flagged as approved for deletion which now has an unflagged child, is
      * updated.
      */
-    public function test_process_course_context_updated(): void {
+    public function test_process_course_context_updated() {
         $this->resetAfterTest();
 
         $purposes = $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -1718,7 +1718,7 @@ class expired_contexts_test extends \advanced_testcase {
      * Ensure that a course context previously flagged as approved for deletion which now has an unflagged child, is
      * updated.
      */
-    public function test_process_course_context_outstanding_children(): void {
+    public function test_process_course_context_outstanding_children() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -1767,7 +1767,7 @@ class expired_contexts_test extends \advanced_testcase {
      * Ensure that a course context previously flagged as approved for deletion which now has an unflagged child, is
      * updated.
      */
-    public function test_process_course_context_pending_children(): void {
+    public function test_process_course_context_pending_children() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -1825,7 +1825,7 @@ class expired_contexts_test extends \advanced_testcase {
      * Ensure that a course context previously flagged as approved for deletion which now has an unflagged child, is
      * updated.
      */
-    public function test_process_course_context_approved_children(): void {
+    public function test_process_course_context_approved_children() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -1903,7 +1903,7 @@ class expired_contexts_test extends \advanced_testcase {
      * @param       int     $status
      * @param       bool    $expected
      */
-    public function test_can_process_deletion($status, $expected): void {
+    public function test_can_process_deletion($status, $expected) {
         $purpose = new expired_context(0, (object) [
             'status' => $status,
 
@@ -1918,7 +1918,7 @@ class expired_contexts_test extends \advanced_testcase {
      *
      * @return  array
      */
-    public function can_process_deletion_provider(): array {
+    public static function can_process_deletion_provider(): array {
         return [
             'Pending' => [
                 expired_context::STATUS_EXPIRED,
@@ -1942,7 +1942,7 @@ class expired_contexts_test extends \advanced_testcase {
      * @param       int     $status
      * @param       bool    $expected
      */
-    public function test_is_complete($status, $expected): void {
+    public function test_is_complete($status, $expected) {
         $purpose = new expired_context(0, (object) [
             'status' => $status,
             'contextid' => \context_system::instance()->id,
@@ -1956,7 +1956,7 @@ class expired_contexts_test extends \advanced_testcase {
      *
      * @return  array
      */
-    public function is_complete_provider(): array {
+    public static function is_complete_provider(): array {
         return [
             'Pending' => [
                 expired_context::STATUS_EXPIRED,
@@ -1980,7 +1980,7 @@ class expired_contexts_test extends \advanced_testcase {
      * @param       array   $record
      * @param       bool    $expected
      */
-    public function test_is_fully_expired($record, $expected): void {
+    public function test_is_fully_expired($record, $expected) {
         $purpose = new expired_context(0, (object) $record);
 
         $this->assertEquals($expected, $purpose->is_fully_expired());
@@ -1991,7 +1991,7 @@ class expired_contexts_test extends \advanced_testcase {
      *
      * @return  array
      */
-    public function is_fully_expired_provider(): array {
+    public static function is_fully_expired_provider(): array {
         return [
             'Fully expired' => [
                 [
@@ -2022,7 +2022,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that any orphaned records are removed once the context has been removed.
      */
-    public function test_orphaned_records_are_cleared(): void {
+    public function test_orphaned_records_are_cleared() {
         $this->resetAfterTest();
 
         $this->setup_basics('PT1H', 'PT1H', 'PT1H', 'PT1H');
@@ -2073,19 +2073,20 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that the progres tracer works as expected out of the box.
      */
-    public function test_progress_tracer_default(): void {
+    public function test_progress_tracer_default() {
         $manager = new \tool_dataprivacy\expired_contexts_manager();
 
         $rc = new \ReflectionClass(\tool_dataprivacy\expired_contexts_manager::class);
         $rcm = $rc->getMethod('get_progress');
 
+        $rcm->setAccessible(true);
         $this->assertInstanceOf(\text_progress_trace::class, $rcm->invoke($manager));
     }
 
     /**
      * Ensure that the progres tracer works as expected when given a specific traer.
      */
-    public function test_progress_tracer_set(): void {
+    public function test_progress_tracer_set() {
         $manager = new \tool_dataprivacy\expired_contexts_manager();
         $mytrace = new \null_progress_trace();
         $manager->set_progress($mytrace);
@@ -2093,6 +2094,7 @@ class expired_contexts_test extends \advanced_testcase {
         $rc = new \ReflectionClass(\tool_dataprivacy\expired_contexts_manager::class);
         $rcm = $rc->getMethod('get_progress');
 
+        $rcm->setAccessible(true);
         $this->assertSame($mytrace, $rcm->invoke($manager));
     }
 
@@ -2164,7 +2166,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Test the is_context_expired functions when supplied with the system context.
      */
-    public function test_is_context_expired_system(): void {
+    public function test_is_context_expired_system() {
         $this->resetAfterTest();
         $this->setup_basics('PT1H', 'PT1H', 'P1D');
         $user = $this->getDataGenerator()->create_user(['lastaccess' => time() - YEARSECS]);
@@ -2180,7 +2182,7 @@ class expired_contexts_test extends \advanced_testcase {
      * Children of a user context always follow the user expiry rather than any context level defaults (e.g. at the
      * block level.
      */
-    public function test_is_context_expired_user_block(): void {
+    public function test_is_context_expired_user_block() {
         $this->resetAfterTest();
 
         $purposes = $this->setup_basics('PT1H', 'PT1H', 'P1D');
@@ -2205,7 +2207,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Test the is_context_expired functions when supplied with the front page course.
      */
-    public function test_is_context_expired_frontpage(): void {
+    public function test_is_context_expired_frontpage() {
         $this->resetAfterTest();
 
         $purposes = $this->setup_basics('PT1H', 'PT1H', 'P1D');
@@ -2239,7 +2241,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Test the is_context_expired functions when supplied with an expired course.
      */
-    public function test_is_context_expired_course_expired(): void {
+    public function test_is_context_expired_course_expired() {
         $this->resetAfterTest();
 
         $purposes = $this->setup_basics('PT1H', 'PT1H', 'P1D');
@@ -2262,7 +2264,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Test the is_context_expired functions when supplied with an unexpired course.
      */
-    public function test_is_context_expired_course_unexpired(): void {
+    public function test_is_context_expired_course_unexpired() {
         $this->resetAfterTest();
 
         $purposes = $this->setup_basics('PT1H', 'PT1H', 'P1D');
@@ -2291,7 +2293,7 @@ class expired_contexts_test extends \advanced_testcase {
      * If the course is still within the expiry period for the child context, then that child's protected flag should be
      * respected, even when the course may have expired.
      */
-    public function test_is_child_context_expired_course_unexpired_with_child(): void {
+    public function test_is_child_context_expired_course_unexpired_with_child() {
         $this->resetAfterTest();
 
         $purposes = $this->setup_basics('PT1H', 'PT1H', 'P1D', 'P1D');
@@ -2321,7 +2323,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Test the is_context_expired functions when supplied with an expired course which has role overrides.
      */
-    public function test_is_context_expired_course_expired_override(): void {
+    public function test_is_context_expired_course_expired_override() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2356,7 +2358,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Test the is_context_expired functions when supplied with an expired course which has role overrides.
      */
-    public function test_is_context_expired_course_expired_override_parent(): void {
+    public function test_is_context_expired_course_expired_override_parent() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2405,7 +2407,7 @@ class expired_contexts_test extends \advanced_testcase {
      * Test the is_context_expired functions when supplied with an expired course which has role overrides but the user
      * does not hold the role.
      */
-    public function test_is_context_expired_course_expired_override_parent_no_role(): void {
+    public function test_is_context_expired_course_expired_override_parent_no_role() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2434,7 +2436,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Test the is_context_expired functions when supplied with an unexpired course which has role overrides.
      */
-    public function test_is_context_expired_course_expired_override_inverse(): void {
+    public function test_is_context_expired_course_expired_override_inverse() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2463,7 +2465,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Test the is_context_expired functions when supplied with an unexpired course which has role overrides.
      */
-    public function test_is_context_expired_course_expired_override_inverse_parent(): void {
+    public function test_is_context_expired_course_expired_override_inverse_parent() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2496,7 +2498,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Test the is_context_expired functions when supplied with an unexpired course which has role overrides.
      */
-    public function test_is_context_expired_course_expired_override_inverse_parent_not_assigned(): void {
+    public function test_is_context_expired_course_expired_override_inverse_parent_not_assigned() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2528,7 +2530,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that context expired checks for a specific user taken into account roles.
      */
-    public function test_is_context_expired_or_unprotected_for_user_role_mixtures_protected(): void {
+    public function test_is_context_expired_or_unprotected_for_user_role_mixtures_protected() {
         global $DB;
 
         $this->resetAfterTest();
@@ -2583,7 +2585,7 @@ class expired_contexts_test extends \advanced_testcase {
     /**
      * Ensure that context expired checks for a specific user taken into account roles when retention is inversed.
      */
-    public function test_is_context_expired_or_unprotected_for_user_role_mixtures_protected_inverse(): void {
+    public function test_is_context_expired_or_unprotected_for_user_role_mixtures_protected_inverse() {
         global $DB;
 
         $this->resetAfterTest();

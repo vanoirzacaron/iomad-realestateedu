@@ -12,19 +12,19 @@ use OpenSpout\Reader\SheetWithVisibilityInterface;
 final class Sheet implements SheetWithVisibilityInterface
 {
     /** @var RowIterator To iterate over sheet's rows */
-    private readonly RowIterator $rowIterator;
+    private RowIterator $rowIterator;
 
     /** @var int Index of the sheet, based on order in the workbook (zero-based) */
-    private readonly int $index;
+    private int $index;
 
     /** @var string Name of the sheet */
-    private readonly string $name;
+    private string $name;
 
     /** @var bool Whether the sheet was the active one */
-    private readonly bool $isActive;
+    private bool $isActive;
 
     /** @var bool Whether the sheet is visible */
-    private readonly bool $isVisible;
+    private bool $isVisible;
 
     /**
      * @param RowIterator $rowIterator    The corresponding row iterator

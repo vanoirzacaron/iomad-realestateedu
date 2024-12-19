@@ -39,7 +39,7 @@ class tool_uploadcourse_step2_form extends tool_uploadcourse_base_form {
      * The standard form definiton.
      * @return void.
      */
-    public function definition() {
+    public function definition () {
         global $CFG;
 
         $mform   = $this->_form;
@@ -82,7 +82,7 @@ class tool_uploadcourse_step2_form extends tool_uploadcourse_base_form {
         $mform->addElement('header', 'defaultheader', get_string('defaultvalues', 'tool_uploadcourse'));
         $mform->setExpanded('defaultheader', true);
 
-        $displaylist = core_course_category::make_categories_list('tool/uploadcourse:use');
+        $displaylist = core_course_category::make_categories_list('moodle/course:create');
         $mform->addElement('autocomplete', 'defaults[category]', get_string('coursecategory'), $displaylist);
         $mform->addRule('defaults[category]', null, 'required', null, 'client');
         $mform->addHelpButton('defaults[category]', 'coursecategory');
@@ -120,28 +120,12 @@ class tool_uploadcourse_step2_form extends tool_uploadcourse_base_form {
         $mform->addHelpButton('defaults[enddate]', 'enddate');
 
         $courseformats = get_sorted_course_formats(true);
-        $formcourseformats = new core\output\choicelist();
-        $formcourseformats->set_allow_empty(false);
+        $formcourseformats = array();
         foreach ($courseformats as $courseformat) {
-            $definition = [];
-            $component = "format_$courseformat";
-            if (get_string_manager()->string_exists('plugin_description', $component)) {
-                $definition['description'] = get_string('plugin_description', $component);
-            }
-            $formcourseformats->add_option(
-                $courseformat,
-                get_string('pluginname', "format_$courseformat"),
-                [
-                    'description' => $definition,
-                ],
-            );
+            $formcourseformats[$courseformat] = get_string('pluginname', "format_$courseformat");
         }
-        $mform->addElement(
-            'choicedropdown',
-            'defaults[format]',
-            get_string('format'),
-            $formcourseformats,
-        );
+        $mform->addElement('select', 'defaults[format]', get_string('format'), $formcourseformats);
+        $mform->addHelpButton('defaults[format]', 'format');
         $mform->setDefault('defaults[format]', $courseconfig->format);
 
         if (!empty($CFG->allowcoursethemes)) {
@@ -222,9 +206,6 @@ class tool_uploadcourse_step2_form extends tool_uploadcourse_base_form {
 
         $mform->addElement('hidden', 'previewrows');
         $mform->setType('previewrows', PARAM_INT);
-
-        $mform->addElement('hidden', 'categoryid');
-        $mform->setType('categoryid', PARAM_INT);
 
         $this->add_action_buttons(true, get_string('uploadcourses', 'tool_uploadcourse'));
 

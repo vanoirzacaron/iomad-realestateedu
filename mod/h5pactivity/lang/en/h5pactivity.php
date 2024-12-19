@@ -50,7 +50,6 @@ $string['attempt_success_fail'] = 'Fail';
 $string['attempt_success_pass'] = 'Pass';
 $string['attempt_success_unknown'] = 'Not reported';
 $string['attempts'] = 'Attempts';
-$string['attempts_report_header_label'] = 'Attempts ({$a})';
 $string['attempts_report'] = 'Attempts report';
 $string['attempts_none'] = 'This user has no attempts to display.';
 $string['choice'] = 'Choice';
@@ -81,7 +80,7 @@ $string['grade_highest_attempt'] = 'Highest grade';
 $string['grade_average_attempt'] = 'Average grade';
 $string['grade_last_attempt'] = 'Last attempt';
 $string['grade_first_attempt'] = 'First attempt';
-$string['gradenoun_h5p'] = 'Grade: {$a}';
+$string['grade_h5p'] = 'Grade: {$a}';
 $string['h5pactivity:addinstance'] = 'Add a new H5P';
 $string['h5pactivity:reviewattempts'] = 'Review H5P attempts';
 $string['h5pactivity:submit'] = 'Submit H5P attempts';
@@ -128,9 +127,10 @@ $string['result_other'] = 'Unknown interaction type';
 $string['result_sequencing_choice'] = 'Positions';
 $string['result_sequencing_answer'] = 'Position value';
 $string['result_sequencing_position'] = '#{$a}';
+$string['review_all_attempts'] = 'View all attempts ({$a} submitted)';
 $string['review_mode'] = 'Review attempts';
 $string['review_my_attempts'] = 'View my attempts';
-$string['review_user_attempts'] = 'View ({$a})';
+$string['review_user_attempts'] = 'View user attempts ({$a})';
 $string['review_none'] = 'Participants cannot review their own attempts';
 $string['review_on_completion'] = 'Participants can review their own attempts';
 $string['savestatefreq'] = 'Save state frequency';
@@ -147,8 +147,4 @@ $string['tracking_messages'] = 'Some H5P provide attempt tracking data for advan
 $string['true'] = 'True';
 $string['usecontentbank'] = 'Use the <a href="{$a}" target="_blank">content bank (opens in new window)</a> to manage your H5P files';
 $string['view'] = 'View';
-$string['viewattempts'] = 'View attempts ({$a})';
 $string['view_report'] = 'View report';
-
-// Deprecated since Moodle 4.4.
-$string['grade_h5p'] = 'Grade: {$a}';

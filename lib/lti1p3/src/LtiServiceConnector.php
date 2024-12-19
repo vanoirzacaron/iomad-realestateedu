@@ -6,38 +6,39 @@ use Exception;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Response;
 use Packback\Lti1p3\Interfaces\ICache;
 use Packback\Lti1p3\Interfaces\ILtiRegistration;
 use Packback\Lti1p3\Interfaces\ILtiServiceConnector;
 use Packback\Lti1p3\Interfaces\IServiceRequest;
-use Psr\Http\Message\ResponseInterface;
 
 class LtiServiceConnector implements ILtiServiceConnector
 {
     public const NEXT_PAGE_REGEX = '/<([^>]*)>; ?rel="next"/i';
-    private bool $debuggingMode = false;
+    private $cache;
+    private $client;
+    private $debuggingMode = false;
 
     public function __construct(
-        private ICache $cache,
-        private Client $client
+        ICache $cache,
+        Client $client
     ) {
+        $this->cache = $cache;
+        $this->client = $client;
     }
 
-    public function setDebuggingMode(bool $enable): self
+    public function setDebuggingMode(bool $enable): void
     {
         $this->debuggingMode = $enable;
-
-        return $this;
     }
 
-    public function getAccessToken(ILtiRegistration $registration, array $scopes): string
+    public function getAccessToken(ILtiRegistration $registration, array $scopes)
     {
         // Get a unique cache key for the access token
         $accessTokenKey = $this->getAccessTokenCacheKey($registration, $scopes);
         // Get access token from cache if it exists
         $accessToken = $this->cache->getAccessToken($accessTokenKey);
-
-        if (isset($accessToken)) {
+        if ($accessToken) {
             return $accessToken;
         }
 
@@ -69,8 +70,7 @@ class LtiServiceConnector implements ILtiServiceConnector
             $registration->getAuthTokenUrl(),
             ServiceRequest::TYPE_AUTH
         );
-        $request->setPayload(['form_params' => $authRequest])
-            ->setMaskResponseLogs(true);
+        $request->setPayload(['form_params' => $authRequest]);
         $response = $this->makeRequest($request);
 
         $tokenData = $this->getResponseBody($response);
@@ -81,7 +81,7 @@ class LtiServiceConnector implements ILtiServiceConnector
         return $tokenData['access_token'];
     }
 
-    public function makeRequest(IServiceRequest $request): ResponseInterface
+    public function makeRequest(IServiceRequest $request)
     {
         $response = $this->client->request(
             $request->getMethod(),
@@ -100,7 +100,7 @@ class LtiServiceConnector implements ILtiServiceConnector
         return $response;
     }
 
-    public function getResponseHeaders(ResponseInterface $response): ?array
+    public function getResponseHeaders(Response $response): ?array
     {
         $responseHeaders = $response->getHeaders();
         array_walk($responseHeaders, function (&$value) {
@@ -110,7 +110,7 @@ class LtiServiceConnector implements ILtiServiceConnector
         return $responseHeaders;
     }
 
-    public function getResponseBody(ResponseInterface $response): ?array
+    public function getResponseBody(Response $response): ?array
     {
         $responseBody = (string) $response->getBody();
 
@@ -153,7 +153,7 @@ class LtiServiceConnector implements ILtiServiceConnector
         ILtiRegistration $registration,
         array $scopes,
         IServiceRequest $request,
-        ?string $key = null
+        string $key = null
     ): array {
         if ($request->getMethod() !== ServiceRequest::METHOD_GET) {
             throw new Exception('An invalid method was specified by an LTI service requesting all items.');
@@ -163,44 +163,18 @@ class LtiServiceConnector implements ILtiServiceConnector
         $nextUrl = $request->getUrl();
 
         while ($nextUrl) {
-            $request->setUrl($nextUrl);
             $response = $this->makeServiceRequest($registration, $scopes, $request);
-            $pageResults = $this->getResultsFromResponse($response, $key);
-            $results = array_merge($results, $pageResults);
+
+            $page_results = $key === null ? ($response['body'] ?? []) : ($response['body'][$key] ?? []);
+            $results = array_merge($results, $page_results);
+
             $nextUrl = $this->getNextUrl($response['headers']);
+            if ($nextUrl) {
+                $request->setUrl($nextUrl);
+            }
         }
 
         return $results;
-    }
-
-    public static function getLogMessage(
-        IServiceRequest $request,
-        array $responseHeaders,
-        ?array $responseBody
-    ): string {
-        if ($request->getMaskResponseLogs()) {
-            $responseHeaders = self::maskValues($responseHeaders);
-            $responseBody = self::maskValues($responseBody);
-        }
-
-        $contextArray = [
-            'request_method' => $request->getMethod(),
-            'request_url' => $request->getUrl(),
-            'response_headers' => $responseHeaders,
-            'response_body' => $responseBody,
-        ];
-
-        $requestBody = $request->getPayload()['body'] ?? null;
-
-        if (isset($requestBody)) {
-            $contextArray['request_body'] = $requestBody;
-        }
-
-        return implode(' ', array_filter([
-            $request->getErrorPrefix(),
-            json_decode($requestBody)->userId ?? null,
-            json_encode($contextArray),
-        ]));
     }
 
     private function logRequest(
@@ -208,23 +182,27 @@ class LtiServiceConnector implements ILtiServiceConnector
         array $responseHeaders,
         ?array $responseBody
     ): void {
-        error_log(self::getLogMessage($request, $responseHeaders, $responseBody));
-    }
+        $contextArray = [
+            'request_method' => $request->getMethod(),
+            'request_url' => $request->getUrl(),
+            'response_headers' => $responseHeaders,
+            'response_body' => json_encode($responseBody),
+        ];
 
-    private static function maskValues(?array $payload): ?array
-    {
-        if (!isset($payload) || empty($payload)) {
-            return $payload;
+        $requestBody = $request->getPayload()['body'] ?? null;
+
+        if (!empty($requestBody)) {
+            $contextArray['request_body'] = $requestBody;
         }
 
-        foreach ($payload as $key => $value) {
-            $payload[$key] = '***';
-        }
-
-        return $payload;
+        error_log(implode(' ', array_filter([
+            $request->getErrorPrefix(),
+            json_decode($requestBody)->userId ?? null,
+            print_r($contextArray, true),
+        ])));
     }
 
-    private function getAccessTokenCacheKey(ILtiRegistration $registration, array $scopes): string
+    private function getAccessTokenCacheKey(ILtiRegistration $registration, array $scopes)
     {
         sort($scopes);
         $scopeKey = md5(implode('|', $scopes));
@@ -232,16 +210,7 @@ class LtiServiceConnector implements ILtiServiceConnector
         return $registration->getIssuer().$registration->getClientId().$scopeKey;
     }
 
-    private function getResultsFromResponse(array $response, ?string $key = null): array
-    {
-        if (isset($key)) {
-            return $response['body'][$key] ?? [];
-        }
-
-        return $response['body'] ?? [];
-    }
-
-    private function getNextUrl(array $headers): ?string
+    private function getNextUrl(array $headers)
     {
         $subject = $headers['Link'] ?? $headers['link'] ?? '';
         preg_match(static::NEXT_PAGE_REGEX, $subject, $matches);

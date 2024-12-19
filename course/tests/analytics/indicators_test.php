@@ -38,7 +38,7 @@ class indicators_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_no_teacher(): void {
+    public function test_no_teacher() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -77,7 +77,7 @@ class indicators_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_completion_enabled(): void {
+    public function test_completion_enabled() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -145,7 +145,7 @@ class indicators_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_potential_cognitive(): void {
+    public function test_potential_cognitive() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -230,7 +230,7 @@ class indicators_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_potential_social(): void {
+    public function test_potential_social() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -313,7 +313,7 @@ class indicators_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_activities_due(): void {
+    public function test_activities_due() {
         global $DB;
 
         $this->resetAfterTest(true);

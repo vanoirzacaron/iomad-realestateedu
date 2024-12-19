@@ -68,7 +68,7 @@ videojs.addLanguage('tr', {
   "Raised": "Kabarık",
   "Depressed": "Yassı",
   "Uniform": "Düz",
-  "Drop shadow": "Gölgeli",
+  "Dropshadow": "Gölgeli",
   "Font Family": "Yazı Tipi",
   "Proportional Sans-Serif": "Orantılı Sans-Serif",
   "Monospace Sans-Serif": "Eşaralıklı Sans-Serif",

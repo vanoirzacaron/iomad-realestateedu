@@ -93,7 +93,7 @@ abstract class restore_plan_builder {
     /**
      * Dispatches, based on type to specialised builders
      */
-    public static function build_plan($controller) {
+    static public function build_plan($controller) {
 
         $plan = $controller->get_plan();
 
@@ -131,7 +131,7 @@ abstract class restore_plan_builder {
     /**
      * Restore one 1-activity backup
      */
-    protected static function build_activity_plan($controller, $activityid) {
+    static protected function build_activity_plan($controller, $activityid) {
 
         $plan = $controller->get_plan();
         $info = $controller->get_info();
@@ -164,7 +164,7 @@ abstract class restore_plan_builder {
     /**
      * Restore one 1-section backup
      */
-    protected static function build_section_plan($controller, $sectionid) {
+    static protected function build_section_plan($controller, $sectionid) {
 
         $plan = $controller->get_plan();
         $info = $controller->get_info();
@@ -190,7 +190,7 @@ abstract class restore_plan_builder {
     /**
      * Restore one 1-course backup
      */
-    protected static function build_course_plan($controller, $courseid) {
+    static protected function build_course_plan($controller, $courseid) {
 
         $plan = $controller->get_plan();
         $info = $controller->get_info();

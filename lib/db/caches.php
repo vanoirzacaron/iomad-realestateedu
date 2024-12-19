@@ -238,16 +238,6 @@ $definitions = array(
         'simplekeys' => true,
         'simpledata' => true,
     ],
-    // Course actions instances cache.
-    'courseactionsinstances' => [
-        'mode' => cache_store::MODE_REQUEST,
-        'simplekeys' => true,
-        'simpledata' => false,
-        'staticacceleration' => true,
-        // Executing actions in more than 10 courses usually means executing the same action on each course
-        // so there is no need for caching individual course instances.
-        'staticaccelerationsize' => 10,
-    ],
     // Used to store data for repositories to avoid repetitive DB queries within one request.
     'repositories' => array(
         'mode' => cache_store::MODE_REQUEST,
@@ -608,15 +598,6 @@ $definitions = array(
             'changesincategoryenrolment',
             'changesincourse',
         ],
-    ],
-
-    // A theme has been used in context to override the default theme.
-    // Applies to user, cohort, category and course.
-    'theme_usedincontext' => [
-        'mode' => cache_store::MODE_APPLICATION,
-        'simplekeys' => true,
-        'simpledata' => true,
-        'staticacceleration' => true,
     ],
     // The navigation_cache class used this cache to store the navigation nodes.
     'navigation_cache' => [

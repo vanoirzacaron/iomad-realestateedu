@@ -44,24 +44,23 @@ class renderer extends \plugin_renderer_base {
 
         switch ($state) {
             case factor::STATE_PASS:
-                return html_writer::tag('span', get_string('state:pass', 'tool_mfa'), ['class' => 'badge bg-success text-white']);
+                return html_writer::tag('span', get_string('state:pass', 'tool_mfa'), ['class' => 'badge badge-success']);
 
             case factor::STATE_FAIL:
-                return html_writer::tag('span', get_string('state:fail', 'tool_mfa'), ['class' => 'badge bg-danger text-white']);
+                return html_writer::tag('span', get_string('state:fail', 'tool_mfa'), ['class' => 'badge badge-danger']);
 
             case factor::STATE_NEUTRAL:
-                return html_writer::tag('span', get_string('state:neutral', 'tool_mfa'),
-                    ['class' => 'badge bg-warning text-dark']);
+                return html_writer::tag('span', get_string('state:neutral', 'tool_mfa'), ['class' => 'badge badge-warning']);
 
             case factor::STATE_UNKNOWN:
                 return html_writer::tag('span', get_string('state:unknown', 'tool_mfa'),
-                    ['class' => 'badge bg-secondary text-dark']);
+                        ['class' => 'badge badge-secondary']);
 
             case factor::STATE_LOCKED:
-                return html_writer::tag('span', get_string('state:locked', 'tool_mfa'), ['class' => 'badge bg-danger text-white']);
+                return html_writer::tag('span', get_string('state:locked', 'tool_mfa'), ['class' => 'badge badge-error']);
 
             default:
-                return html_writer::tag('span', get_string('pending', 'tool_mfa'), ['class' => 'badge bg-secondary text-dark']);
+                return html_writer::tag('span', get_string('pending', 'tool_mfa'), ['class' => 'badge badge-secondary']);
         }
     }
 
@@ -71,77 +70,18 @@ class renderer extends \plugin_renderer_base {
      * @return string
      */
     public function available_factors(): string {
-        global $USER;
+        $html = $this->output->heading(get_string('preferences:availablefactors', 'tool_mfa'), 2);
+
         $factors = factor::get_enabled_factors();
-        $data = [];
-
         foreach ($factors as $factor) {
-
-            // Allow all factors with setup and button.
-            // Make an exception for email factor as this is currently set up by admins only and required on this list.
-            if ((!$factor->has_setup() || !$factor->show_setup_buttons()) && !$factor instanceof \factor_email\factor) {
+            // TODO is_configured / is_ready.
+            if (!$factor->has_setup() || !$factor->show_setup_buttons()) {
                 continue;
             }
-
-            $userfactors = $factor->get_active_user_factors($USER);
-            $active = !empty($userfactors) ?? false;
-            $button = null;
-            $icon = $factor->get_icon();
-            $params = [
-                'action' => 'setup',
-                'factor' => $factor->name,
-            ];
-
-            if (!$active) {
-                // Not active yet and requires set up.
-                $info = $factor->get_info();
-
-                if ($factor->show_setup_buttons()) {
-                    $params['action'] = 'setup';
-                    $button = new \single_button(
-                        url: new \moodle_url('action.php', $params),
-                        label: $factor->get_setup_string(),
-                        method: 'post',
-                        type: \single_button::BUTTON_PRIMARY,
-                        attributes: [
-                            'aria-label' => get_string('setupfactor', 'factor_' . $factor->name),
-                        ],
-                    );
-                    $button = $button->export_for_template($this->output);
-                }
-
-            } else {
-                // Active and can be managed.
-                $factorid = reset($userfactors)->id;
-                $info = $factor->get_manage_info($factorid);
-
-                if ($factor->show_setup_buttons()) {
-                    $params['action'] = 'manage';
-                    $button = new \single_button(
-                        url: new \moodle_url('action.php', $params),
-                        label: $factor->get_manage_string(),
-                        method: 'post',
-                        type: \single_button::BUTTON_PRIMARY,
-                        attributes: [
-                            'aria-label' => get_string('managefactor', 'factor_' . $factor->name),
-                        ],
-                    );
-                    $button = $button->export_for_template($this->output);
-                }
-            }
-
-            // Prepare data for template.
-            $data['factors'][] = [
-                'active' => $active,
-                'label' => $factor->get_display_name(),
-                'name' => $factor->name,
-                'info' => $info,
-                'icon' => $icon,
-                'button' => $button,
-            ];
+            $html .= $this->setup_factor($factor);
         }
 
-        return $this->render_from_template('tool_mfa/mfa_selector', $data);
+        return $html;
     }
 
     /**
@@ -149,12 +89,8 @@ class renderer extends \plugin_renderer_base {
      *
      * @param object $factor object of the factor class
      * @return string
-     * @deprecated since Moodle 4.4
-     * @todo Final deprecation in Moodle 4.8 MDL-80995
      */
     public function setup_factor(object $factor): string {
-        debugging('The method setup_factor() has been deprecated. The HTML derived from this method is no longer needed.
-            Similar HTML is now achieved as part of available_factors().', DEBUG_DEVELOPER);
         $html = '';
 
         $html .= html_writer::start_tag('div', ['class' => 'card']);
@@ -174,56 +110,53 @@ class renderer extends \plugin_renderer_base {
     }
 
     /**
-     * Show a table displaying a users active factors.
+     * Defines section with active user's factors.
      *
-     * @param string|null $filterfactor The factor name to filter on.
      * @return string $html
      * @throws \coding_exception
      */
-    public function active_factors(string $filterfactor = null): string {
+    public function active_factors(): string {
         global $USER, $CFG;
 
         require_once($CFG->dirroot . '/iplookup/lib.php');
 
-        $html = '';
+        $html = $this->output->heading(get_string('preferences:activefactors', 'tool_mfa'), 2);
 
         $headers = get_strings([
+            'factor',
             'devicename',
-            'added',
-            'lastused',
-            'replace',
-            'remove',
+            'created',
+            'createdfromip',
+            'lastverified',
+            'revoke',
         ], 'tool_mfa');
 
         $table = new \html_table();
         $table->id = 'active_factors';
         $table->attributes['class'] = 'generaltable table table-bordered';
         $table->head  = [
+            $headers->factor,
             $headers->devicename,
-            $headers->added,
-            $headers->lastused,
-            $headers->replace,
-            $headers->remove,
+            $headers->created,
+            $headers->createdfromip,
+            $headers->lastverified,
+            $headers->revoke,
         ];
         $table->colclasses = [
-            'text-left',
-            'text-left',
-            'text-left',
-            'text-center',
-            'text-center',
+            'leftalign',
+            'leftalign',
+            'centeralign',
+            'centeralign',
+            'centeralign',
+            'centeralign',
+            'centeralign',
+            'centeralign',
         ];
         $table->data  = [];
 
         $factors = factor::get_enabled_factors();
-        $hasmorethanone = factor::user_has_more_than_one_active_factors();
 
         foreach ($factors as $factor) {
-
-            // Filter results to match the specified factor.
-            if (!empty($filterfactor) && $factor->name !== $filterfactor) {
-                continue;
-            }
-
             $userfactors = $factor->get_active_user_factors($USER);
 
             if (!$factor->has_setup()) {
@@ -231,39 +164,15 @@ class renderer extends \plugin_renderer_base {
             }
 
             foreach ($userfactors as $userfactor) {
-
-                // Revoke option.
-                if ($factor->has_revoke() && $hasmorethanone) {
-                    $content = $headers->remove;
-                    $attributes = [
-                        'data-action' => 'revoke',
-                        'data-factor' => $factor->name,
-                        'data-factorid' => $userfactor->id,
-                        'data-factorname' => $factor->get_display_name(),
-                        'data-devicename' => $userfactor->label,
-                        'aria-label' => get_string('revokefactor', 'tool_mfa'),
-                        'class' => 'btn btn-primary mfa-action-button',
+                if ($factor->has_revoke()) {
+                    $revokeparams = [
+                        'action' => 'revoke', 'factor' => $factor->name,
+                        'factorid' => $userfactor->id, 'sesskey' => sesskey(),
                     ];
-                    $revokebutton = \html_writer::tag('button', $content, $attributes);
+                    $revokeurl = new \moodle_url('action.php', $revokeparams);
+                    $revokelink = \html_writer::link($revokeurl, $headers->revoke);
                 } else {
-                    $revokebutton = get_string('statusna');
-                }
-
-                // Replace option.
-                if ($factor->has_replace()) {
-                    $content = $headers->replace;
-                    $attributes = [
-                        'data-action' => 'replace',
-                        'data-factor' => $factor->name,
-                        'data-factorid' => $userfactor->id,
-                        'data-factorname' => $factor->get_display_name(),
-                        'data-devicename' => $userfactor->label,
-                        'aria-label' => get_string('replacefactor', 'tool_mfa'),
-                        'class' => 'btn btn-primary mfa-action-button',
-                    ];
-                    $replacebutton = \html_writer::tag('button', $content, $attributes);
-                } else {
-                    $replacebutton = get_string('statusna');
+                    $revokelink = '';
                 }
 
                 $timecreated  = $userfactor->timecreated == '-' ? '-'
@@ -277,12 +186,17 @@ class renderer extends \plugin_renderer_base {
                     $lastverified .= get_string('ago', 'core_message', format_time(time() - $userfactor->lastverified));
                 }
 
+                $info = iplookup_find_location($userfactor->createdfromip);
+                $ip = $userfactor->createdfromip;
+                $ip .= '<br>' . $info['country'] . ' - ' . $info['city'];
+
                 $row = new \html_table_row([
+                    $factor->get_display_name(),
                     $userfactor->label,
                     $timecreated,
+                    $ip,
                     $lastverified,
-                    $replacebutton,
-                    $revokebutton,
+                    $revokelink,
                 ]);
                 $table->data[] = $row;
             }

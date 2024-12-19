@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace OpenSpout\Writer\ODS\Helper;
 
 use DateTimeImmutable;
-use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Helper\FileSystemHelper as CommonFileSystemHelper;
 use OpenSpout\Writer\Common\Entity\Worksheet;
 use OpenSpout\Writer\Common\Helper\FileSystemWithRootFolderHelperInterface;
@@ -28,11 +27,11 @@ final class FileSystemHelper implements FileSystemWithRootFolderHelperInterface
     public const MIMETYPE_FILE_NAME = 'mimetype';
     public const STYLES_XML_FILE_NAME = 'styles.xml';
 
-    private readonly string $baseFolderRealPath;
+    private string $baseFolderRealPath;
 
     /** @var string document creator */
-    private readonly string $creator;
-    private readonly CommonFileSystemHelper $baseFileSystemHelper;
+    private string $creator;
+    private CommonFileSystemHelper $baseFileSystemHelper;
 
     /** @var string Path to the root folder inside the temp folder where the files to create the ODS will be stored */
     private string $rootFolder;
@@ -44,7 +43,7 @@ final class FileSystemHelper implements FileSystemWithRootFolderHelperInterface
     private string $sheetsContentTempFolder;
 
     /** @var ZipHelper Helper to perform tasks with Zip archive */
-    private readonly ZipHelper $zipHelper;
+    private ZipHelper $zipHelper;
 
     /**
      * @param string    $baseFolderPath The path of the base folder where all the I/O can occur
@@ -92,7 +91,7 @@ final class FileSystemHelper implements FileSystemWithRootFolderHelperInterface
     /**
      * Creates all the folders needed to create a ODS file, as well as the files that won't change.
      *
-     * @throws IOException If unable to create at least one of the base folders
+     * @throws \OpenSpout\Common\Exception\IOException If unable to create at least one of the base folders
      */
     public function createBaseFilesAndFolders(): void
     {
@@ -215,7 +214,7 @@ final class FileSystemHelper implements FileSystemWithRootFolderHelperInterface
     /**
      * Creates the folder that will be used as root.
      *
-     * @throws IOException If unable to create the folder
+     * @throws \OpenSpout\Common\Exception\IOException If unable to create the folder
      */
     private function createRootFolder(): self
     {
@@ -227,7 +226,7 @@ final class FileSystemHelper implements FileSystemWithRootFolderHelperInterface
     /**
      * Creates the "META-INF" folder under the root folder as well as the "manifest.xml" file in it.
      *
-     * @throws IOException If unable to create the folder or the "manifest.xml" file
+     * @throws \OpenSpout\Common\Exception\IOException If unable to create the folder or the "manifest.xml" file
      */
     private function createMetaInfoFolderAndFile(): self
     {
@@ -241,7 +240,7 @@ final class FileSystemHelper implements FileSystemWithRootFolderHelperInterface
     /**
      * Creates the "manifest.xml" file under the "META-INF" folder (under root).
      *
-     * @throws IOException If unable to create the file
+     * @throws \OpenSpout\Common\Exception\IOException If unable to create the file
      */
     private function createManifestFile(): self
     {
@@ -264,7 +263,7 @@ final class FileSystemHelper implements FileSystemWithRootFolderHelperInterface
      * Creates the temp folder where specific sheets content will be written to.
      * This folder is not part of the final ODS file and is only used to be able to jump between sheets.
      *
-     * @throws IOException If unable to create the folder
+     * @throws \OpenSpout\Common\Exception\IOException If unable to create the folder
      */
     private function createSheetsContentTempFolder(): self
     {
@@ -276,7 +275,7 @@ final class FileSystemHelper implements FileSystemWithRootFolderHelperInterface
     /**
      * Creates the "meta.xml" file under the root folder.
      *
-     * @throws IOException If unable to create the file
+     * @throws \OpenSpout\Common\Exception\IOException If unable to create the file
      */
     private function createMetaFile(): self
     {
@@ -301,7 +300,7 @@ final class FileSystemHelper implements FileSystemWithRootFolderHelperInterface
     /**
      * Creates the "mimetype" file under the root folder.
      *
-     * @throws IOException If unable to create the file
+     * @throws \OpenSpout\Common\Exception\IOException If unable to create the file
      */
     private function createMimetypeFile(): self
     {

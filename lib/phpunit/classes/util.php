@@ -23,9 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use core\di;
-use core\hook;
-
 require_once(__DIR__.'/../../testing/classes/util.php');
 require_once(__DIR__ . "/coverage_info.php");
 
@@ -108,7 +105,7 @@ class phpunit_util extends testing_util {
         global $DB, $CFG, $USER, $SITE, $COURSE, $PAGE, $OUTPUT, $SESSION, $FULLME, $FILTERLIB_PRIVATE;
 
         // Stop all hook redirections.
-        di::get(hook\manager::class)->phpunit_stop_redirections();
+        \core\hook\manager::get_instance()->phpunit_stop_redirections();
 
         // Stop any message redirection.
         self::stop_message_redirection();
@@ -302,9 +299,6 @@ class phpunit_util extends testing_util {
 
         // Reset user agent.
         core_useragent::instance(true, null);
-
-        // Reset the DI container.
-        \core\di::reset_container();
 
         // verify db writes just in case something goes wrong in reset
         if (self::$lastdbwrites != $DB->perf_get_writes()) {
@@ -978,6 +972,7 @@ class phpunit_util extends testing_util {
     public static function call_internal_method($object, $methodname, array $params, $classname) {
         $reflection = new \ReflectionClass($classname);
         $method = $reflection->getMethod($methodname);
+        $method->setAccessible(true);
         return $method->invokeArgs($object, $params);
     }
 
@@ -988,18 +983,8 @@ class phpunit_util extends testing_util {
      * @param   int     $level The number of levels of indentation to pad
      * @return  string
      */
-    protected static function pad(string $string, int $level): string {
+    protected static function pad(string $string, int $level) : string {
         return str_repeat(" ", $level * 2) . "{$string}\n";
-    }
-
-    /**
-     * Normalise any text to always use unix line endings (line-feeds).
-     *
-     * @param   string  $text The text to normalize
-     * @return  string
-     */
-    public static function normalise_line_endings(string $text): string {
-        return str_replace(["\r\n", "\r"], "\n", $text);
     }
 
     /**
@@ -1009,7 +994,7 @@ class phpunit_util extends testing_util {
      * @param   string[] $excludelists The list of files/folders in the excludelist.
      * @return  string
      */
-    protected static function get_coverage_config(array $includelists, array $excludelists): string {
+    protected static function get_coverage_config(array $includelists, array $excludelists) : string {
         $coverages = '';
         if (!empty($includelists)) {
             $coverages .= self::pad("<include>", 2);

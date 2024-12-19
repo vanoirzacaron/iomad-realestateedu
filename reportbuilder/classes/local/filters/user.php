@@ -107,14 +107,8 @@ class user extends base {
                 $params[$paramuserid] = $USER->id;
             break;
             case self::USER_SELECT:
-                [$useridselect, $useridparams] = $DB->get_in_or_equal(
-                    $userids,
-                    SQL_PARAMS_NAMED,
-                    database::generate_param_name('_'),
-                    true,
-                    null,
-                );
-
+                $paramuserid = database::generate_param_name();
+                [$useridselect, $useridparams] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED, "{$paramuserid}_", true, null);
                 $sql = "{$fieldsql} {$useridselect}";
                 $params = array_merge($params, $useridparams);
             break;

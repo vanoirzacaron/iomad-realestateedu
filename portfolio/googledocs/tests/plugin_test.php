@@ -54,7 +54,7 @@ class plugin_test extends \advanced_testcase {
     /**
      * Test for method enable_plugin()
      */
-    public function test_enable(): void {
+    public function test_enable() {
         global $DB;
         $this->resetAfterTest();
         $instance = $this->enable_plugin();
@@ -67,7 +67,7 @@ class plugin_test extends \advanced_testcase {
     /**
      * Test submitting a form for creating an instance
      */
-    public function test_create_form(): void {
+    public function test_create_form() {
         $formdata = ['name' => 'Instance name', 'clientid' => 'CLIENT', 'secret' => 'SECRET'];
         portfolio_admin_form::mock_submit($formdata);
 
@@ -86,7 +86,7 @@ class plugin_test extends \advanced_testcase {
     /**
      * Test submitting a form for editing an instance
      */
-    public function test_edit_form(): void {
+    public function test_edit_form() {
         $this->resetAfterTest();
         $instance = $this->enable_plugin();
 

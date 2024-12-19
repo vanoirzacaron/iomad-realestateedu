@@ -63,7 +63,7 @@ class template_test extends \advanced_testcase {
         bool $enableratings = false,
         array $options = [],
         bool $otherauthor = false
-    ): void {
+    ) {
         global $DB, $PAGE;
         // Comments, tags, approval, user role.
         $this->resetAfterTest();
@@ -173,7 +173,7 @@ class template_test extends \advanced_testcase {
      *
      * @return array of scenarios
      */
-    public function parse_entries_provider(): array {
+    public static function parse_entries_provider(): array {
         return [
             // Teacher scenarios.
             'Teacher id tag' => [
@@ -852,7 +852,7 @@ class template_test extends \advanced_testcase {
         string $templatecontent,
         string $expected,
         bool $newentry = false
-    ): void {
+    ) {
         global $DB, $PAGE;
         // Comments, tags, approval, user role.
         $this->resetAfterTest();
@@ -928,7 +928,7 @@ class template_test extends \advanced_testcase {
      *
      * @return array of scenarios
      */
-    public function parse_add_entry_provider(): array {
+    public static function parse_add_entry_provider(): array {
         return [
             // Editing an entry.
             'Teacher editing entry tags tag' => [

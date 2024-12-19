@@ -101,7 +101,7 @@ class pgsql_native_recordset_test extends basic_testcase {
      * Tests that get_recordset_sql works when using cursors, which it does when no limit is
      * specified.
      */
-    public function test_recordset_cursors(): void {
+    public function test_recordset_cursors() {
         $this->init_db(3);
 
         // Query the table and check the actual queries using debug mode, also check the count.
@@ -163,7 +163,7 @@ class pgsql_native_recordset_test extends basic_testcase {
      * Tests that get_recordset_sql works when using cursors and when there are two overlapping
      * recordsets being used.
      */
-    public function test_recordset_cursors_overlapping(): void {
+    public function test_recordset_cursors_overlapping() {
         $this->init_db(3);
 
         $rs1 = $this->specialdb->get_recordset('silly_test_table', null, 'id');
@@ -221,7 +221,7 @@ class pgsql_native_recordset_test extends basic_testcase {
     /**
      * Tests that get_recordset_sql works when using cursors and transactions inside.
      */
-    public function test_recordset_cursors_transaction_inside(): void {
+    public function test_recordset_cursors_transaction_inside() {
         $this->init_db(3);
 
         // Transaction inside the recordset processing.
@@ -239,7 +239,7 @@ class pgsql_native_recordset_test extends basic_testcase {
     /**
      * Tests that get_recordset_sql works when using cursors and a transaction outside.
      */
-    public function test_recordset_cursors_transaction_outside(): void {
+    public function test_recordset_cursors_transaction_outside() {
         $this->init_db(3);
 
         // Transaction outside the recordset processing.
@@ -257,7 +257,7 @@ class pgsql_native_recordset_test extends basic_testcase {
     /**
      * Tests that get_recordset_sql works when using cursors and a transaction overlapping.
      */
-    public function test_recordset_cursors_transaction_overlapping_before(): void {
+    public function test_recordset_cursors_transaction_overlapping_before() {
         $this->init_db(3);
 
         // Transaction outside the recordset processing.
@@ -275,7 +275,7 @@ class pgsql_native_recordset_test extends basic_testcase {
     /**
      * Tests that get_recordset_sql works when using cursors and a transaction overlapping.
      */
-    public function test_recordset_cursors_transaction_overlapping_after(): void {
+    public function test_recordset_cursors_transaction_overlapping_after() {
         $this->init_db(3);
 
         // Transaction outside the recordset processing.
@@ -294,7 +294,7 @@ class pgsql_native_recordset_test extends basic_testcase {
      * Tests that get_recordset_sql works when using cursors and a transaction that 'fails' and gets
      * rolled back.
      */
-    public function test_recordset_cursors_transaction_rollback(): void {
+    public function test_recordset_cursors_transaction_rollback() {
         $this->init_db(3);
 
         try {
@@ -332,7 +332,7 @@ class pgsql_native_recordset_test extends basic_testcase {
     /**
      * Tests that get_recordset_sql works when not using cursors, because a limit is specified.
      */
-    public function test_recordset_no_cursors_limit(): void {
+    public function test_recordset_no_cursors_limit() {
         $this->init_db(3);
 
         $this->specialdb->set_debug(true);
@@ -362,7 +362,7 @@ class pgsql_native_recordset_test extends basic_testcase {
      * Tests that get_recordset_sql works when not using cursors, because the config setting turns
      * them off.
      */
-    public function test_recordset_no_cursors_config(): void {
+    public function test_recordset_no_cursors_config() {
         $this->init_db(0);
 
         $this->specialdb->set_debug(true);

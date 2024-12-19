@@ -1,6 +1,6 @@
 This files describes API changes for the core question engine.
 
-=== 4.4 ===
+=== 4.3.4 ===
 
 * The method question_usage_by_activity::add_question_in_place_of_other has been made more flexible.
   There is a new argument $keepoldquestionattempt. That defaults to true, which behaves the same as

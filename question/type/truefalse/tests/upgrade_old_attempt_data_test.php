@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/question/engine/upgrade/tests/helper.php');
  */
 class upgrade_old_attempt_data_test extends \question_attempt_upgrader_test_base {
 
-    public function test_truefalse_deferredfeedback_history620(): void {
+    public function test_truefalse_deferredfeedback_history620() {
         $quiz = (object) array(
             'id' => '203',
             'course' => '2359',
@@ -220,7 +220,7 @@ class upgrade_old_attempt_data_test extends \question_attempt_upgrader_test_base
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_truefalse_deferredfeedback_history20(): void {
+    public function test_truefalse_deferredfeedback_history20() {
         $quiz = (object) array(
             'id' => '551',
             'course' => '2828',
@@ -398,7 +398,7 @@ class upgrade_old_attempt_data_test extends \question_attempt_upgrader_test_base
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_truefalse_deferredfeedback_history90(): void {
+    public function test_truefalse_deferredfeedback_history90() {
         $quiz = (object) array(
             'id' => '3',
             'course' => '1095',
@@ -574,7 +574,7 @@ class upgrade_old_attempt_data_test extends \question_attempt_upgrader_test_base
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_truefalse_adaptive_qsession119(): void {
+    public function test_truefalse_adaptive_qsession119() {
         $quiz = (object) array(
             'id' => '6',
             'course' => '3',
@@ -764,7 +764,7 @@ class upgrade_old_attempt_data_test extends \question_attempt_upgrader_test_base
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_truefalse_adaptive_qsession120(): void {
+    public function test_truefalse_adaptive_qsession120() {
         $quiz = (object) array(
             'id' => '6',
             'course' => '3',
@@ -953,7 +953,7 @@ class upgrade_old_attempt_data_test extends \question_attempt_upgrader_test_base
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_truefalse_adaptive_qsession3(): void {
+    public function test_truefalse_adaptive_qsession3() {
         $quiz = (object) array(
             'id' => '1',
             'course' => '2',

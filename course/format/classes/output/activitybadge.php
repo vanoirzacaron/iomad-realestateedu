@@ -37,10 +37,10 @@ abstract class activitybadge implements named_templatable, \renderable {
     /** @var array Badge defined styles. */
     public const STYLES = [
         'none' => 'badge-none',
-        'dark' => 'bg-dark text-white',
-        'danger' => 'bg-danger text-white',
-        'warning' => 'bg-warning text-dark',
-        'info' => 'bg-info text-white',
+        'dark' => 'badge-dark',
+        'danger' => 'badge-danger',
+        'warning' => 'badge-warning',
+        'info' => 'badge-info',
     ];
 
     /** @var cm_info The course module information. */

@@ -100,7 +100,7 @@ class report_helper {
      * @param moodle_url $url The moodle url
      * @return void
      */
-    public static function save_selected_report(int $id, moodle_url $url): void {
+    public static function save_selected_report(int $id, moodle_url $url):void {
         global $USER;
 
         debugging('save_selected_report() has been deprecated because it is no longer used and will be '.

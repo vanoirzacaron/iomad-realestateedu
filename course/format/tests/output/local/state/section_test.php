@@ -58,7 +58,7 @@ class section_test extends \advanced_testcase {
         bool $hasavailability = false,
         bool $available = false,
         bool $expected = false
-    ): void {
+    ) {
         $data = $this->setup_hasrestrictions_scenario($format, $rolename, $hasavailability, $available);
 
         // Get the cm state.
@@ -143,7 +143,7 @@ class section_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function hasrestrictions_state_provider(): array {
+    public static function hasrestrictions_state_provider(): array {
         return [
             // Teacher scenarios (topics).
             'Teacher, Topics, can edit, has availability and is available' => [

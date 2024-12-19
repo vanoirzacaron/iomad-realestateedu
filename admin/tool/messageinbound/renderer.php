@@ -67,6 +67,7 @@ class tool_messageinbound_renderer extends plugin_renderer_base {
         $descriptionoptions = new stdClass();
         $descriptionoptions->trusted = false;
         $descriptionoptions->noclean = false;
+        $descriptionoptions->smiley = false;
         $descriptionoptions->filter = false;
         $descriptionoptions->para = true;
         $descriptionoptions->newlines = false;

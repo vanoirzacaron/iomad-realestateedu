@@ -7,7 +7,6 @@ namespace OpenSpout\Reader\XLSX;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Helper\Escaper\XLSX;
 use OpenSpout\Reader\AbstractReader;
-use OpenSpout\Reader\Exception\NoSheetsFoundException;
 use OpenSpout\Reader\XLSX\Manager\SharedStringsCaching\CachingStrategyFactory;
 use OpenSpout\Reader\XLSX\Manager\SharedStringsCaching\CachingStrategyFactoryInterface;
 use OpenSpout\Reader\XLSX\Manager\SharedStringsCaching\MemoryLimit;
@@ -29,8 +28,8 @@ final class Reader extends AbstractReader
     /** @var SheetIterator To iterator over the XLSX sheets */
     private SheetIterator $sheetIterator;
 
-    private readonly Options $options;
-    private readonly CachingStrategyFactoryInterface $cachingStrategyFactory;
+    private Options $options;
+    private CachingStrategyFactoryInterface $cachingStrategyFactory;
 
     public function __construct(
         ?Options $options = null,
@@ -67,8 +66,8 @@ final class Reader extends AbstractReader
      *
      * @param string $filePath Path of the file to be read
      *
-     * @throws IOException            If the file at the given path or its content cannot be read
-     * @throws NoSheetsFoundException If there are no sheets in the file
+     * @throws \OpenSpout\Common\Exception\IOException            If the file at the given path or its content cannot be read
+     * @throws \OpenSpout\Reader\Exception\NoSheetsFoundException If there are no sheets in the file
      */
     protected function openReader(string $filePath): void
     {

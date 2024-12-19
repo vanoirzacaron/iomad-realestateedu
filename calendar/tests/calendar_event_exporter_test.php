@@ -34,7 +34,7 @@ class calendar_event_exporter_test extends \advanced_testcase {
      * Data provider for the timestamp min limit test case to confirm
      * that the minimum time limit is set correctly on the boundary cases.
      */
-    public function get_timestamp_min_limit_test_cases() {
+    public static function get_timestamp_min_limit_test_cases(): array {
         $now = time();
         $todaymidnight = usergetmidnight($now);
         $tomorrowmidnight = $todaymidnight + DAYSECS;
@@ -70,9 +70,9 @@ class calendar_event_exporter_test extends \advanced_testcase {
     }
 
     /**
-     * @dataProvider get_timestamp_min_limit_test_cases()
+     * @dataProvider get_timestamp_min_limit_test_cases
      */
-    public function test_get_timestamp_min_limit($starttime, $min, $expected): void {
+    public function test_get_timestamp_min_limit($starttime, $min, $expected) {
         $class = calendar_event_exporter::class;
         $mock = $this->getMockBuilder($class)
             ->disableOriginalConstructor()
@@ -80,6 +80,7 @@ class calendar_event_exporter_test extends \advanced_testcase {
             ->getMock();
         $reflector = new \ReflectionClass($class);
         $method = $reflector->getMethod('get_timestamp_min_limit');
+        $method->setAccessible(true);
 
         $result = $method->invoke($mock, $starttime, $min);
         $this->assertEquals($expected, $result['mindaytimestamp']);
@@ -90,7 +91,7 @@ class calendar_event_exporter_test extends \advanced_testcase {
      * Data provider for the timestamp max limit test case to confirm
      * that the maximum time limit is set correctly on the boundary cases.
      */
-    public function get_timestamp_max_limit_test_cases() {
+    public static function get_timestamp_max_limit_test_cases(): array {
         $now = time();
         $todaymidnight = usergetmidnight($now);
         $yesterdaymidnight = $todaymidnight - DAYSECS;
@@ -126,9 +127,9 @@ class calendar_event_exporter_test extends \advanced_testcase {
     }
 
     /**
-     * @dataProvider get_timestamp_max_limit_test_cases()
+     * @dataProvider get_timestamp_max_limit_test_cases
      */
-    public function test_get_timestamp_max_limit($starttime, $max, $expected): void {
+    public function test_get_timestamp_max_limit($starttime, $max, $expected) {
         $class = calendar_event_exporter::class;
         $mock = $this->getMockBuilder($class)
             ->disableOriginalConstructor()
@@ -136,6 +137,7 @@ class calendar_event_exporter_test extends \advanced_testcase {
             ->getMock();
         $reflector = new \ReflectionClass($class);
         $method = $reflector->getMethod('get_timestamp_max_limit');
+        $method->setAccessible(true);
 
         $result = $method->invoke($mock, $starttime, $max);
         $this->assertEquals($expected, $result['maxdaytimestamp']);
@@ -145,7 +147,7 @@ class calendar_event_exporter_test extends \advanced_testcase {
     /**
      * Exporting a course event should generate the course URL.
      */
-    public function test_calendar_event_exporter_course_url_course_event(): void {
+    public function test_calendar_event_exporter_course_url_course_event() {
         global $CFG, $PAGE;
         require_once($CFG->dirroot . '/course/lib.php');
 
@@ -185,7 +187,7 @@ class calendar_event_exporter_test extends \advanced_testcase {
     /**
      * Exporting a user event should generate the site course URL.
      */
-    public function test_calendar_event_exporter_course_url_user_event(): void {
+    public function test_calendar_event_exporter_course_url_user_event() {
         global $CFG, $PAGE;
         require_once($CFG->dirroot . '/course/lib.php');
 
@@ -224,7 +226,7 @@ class calendar_event_exporter_test extends \advanced_testcase {
     /**
      * Popup name respects filters for course shortname.
      */
-    public function test_calendar_event_exporter_popupname_course_shortname_strips_links(): void {
+    public function test_calendar_event_exporter_popupname_course_shortname_strips_links() {
         global $CFG, $PAGE;
 
         $this->resetAfterTest(true);
@@ -262,7 +264,7 @@ class calendar_event_exporter_test extends \advanced_testcase {
     /**
      * Exported event contains the exported course.
      */
-    public function test_calendar_event_exporter_exports_course(): void {
+    public function test_calendar_event_exporter_exports_course() {
         global $CFG, $PAGE;
 
         $this->resetAfterTest(true);

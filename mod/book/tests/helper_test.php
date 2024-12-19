@@ -27,7 +27,7 @@ class helper_test extends \advanced_testcase {
      * Test view_book
      * @covers \mod_book\helper::is_last_visible_chapter
      */
-    public function test_is_last_chapter(): void {
+    public function test_is_last_chapter() {
         $this->resetAfterTest(true);
 
         $this->setAdminUser();

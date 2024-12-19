@@ -53,6 +53,7 @@ return new class extends phpunit_coverage_info {
         'cronlib.php',
         'csslib.php',
         'customcheckslib.php',
+        'dataformatlib.php',
         'datalib.php',
         'ddllib.php',
         'deprecatedlib.php',

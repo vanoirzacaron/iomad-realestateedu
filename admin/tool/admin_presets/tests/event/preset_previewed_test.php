@@ -30,7 +30,7 @@ class preset_previewed_test extends \advanced_testcase {
     /**
      * Test preset_previewed event.
      */
-    public function test_preset_previewed_event(): void {
+    public function test_preset_previewed_event() {
         $this->resetAfterTest();
         $this->setAdminUser();
 

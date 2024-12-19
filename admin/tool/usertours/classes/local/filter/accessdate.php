@@ -13,7 +13,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Access Date filter.
+ *
+ * @package    tool_usertours
+ * @copyright  2019 Tom Dickman <tomdickman@catalyst-au.net>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace tool_usertours\local\filter;
+
+defined('MOODLE_INTERNAL') || die();
 
 use context;
 use tool_usertours\tour;
@@ -21,11 +31,11 @@ use tool_usertours\tour;
 /**
  * Access date filter. Used to determine if USER should see a tour based on a particular access date.
  *
- * @package    tool_usertours
  * @copyright  2019 Tom Dickman <tomdickman@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class accessdate extends base {
+
     /**
      * Access date filtering constant for setting base date as account creation date.
      */
@@ -64,11 +74,12 @@ class accessdate extends base {
      */
     public static function get_filter_options() {
 
-        return [
+        return array(
             self::FILTER_ACCOUNT_CREATION => get_string('filter_date_account_creation', 'tool_usertours'),
             self::FILTER_FIRST_LOGIN => get_string('filter_date_first_login', 'tool_usertours'),
             self::FILTER_LAST_LOGIN => get_string('filter_date_last_login', 'tool_usertours'),
-        ];
+        );
+
     }
 
     /**
@@ -85,14 +96,8 @@ class accessdate extends base {
         $range = "{$key}_range";
         $enabled = "{$key}_enabled";
 
-        $mform->addElement(
-            'advcheckbox',
-            $enabled,
-            get_string($key, 'tool_usertours'),
-            get_string('filter_accessdate_enabled', 'tool_usertours'),
-            null,
-            [0, 1]
-        );
+        $mform->addElement('advcheckbox', $enabled, get_string($key, 'tool_usertours'),
+            get_string('filter_accessdate_enabled', 'tool_usertours'), null, array(0, 1));
         $mform->addHelpButton($enabled, $enabled, 'tool_usertours');
 
         $mform->addElement('select', $key, ' ', self::get_filter_options());
@@ -105,6 +110,7 @@ class accessdate extends base {
         ]);
         $mform->setDefault($range, 90 * DAYSECS);
         $mform->hideIf($range, $enabled, 'notchecked');
+
     }
 
     /**

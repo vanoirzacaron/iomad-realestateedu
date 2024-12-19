@@ -65,7 +65,7 @@ final class Color
     /**
      * Throws an exception is the color component value is outside of bounds (0 - 255).
      *
-     * @throws InvalidColorException
+     * @throws \OpenSpout\Common\Exception\InvalidColorException
      */
     private static function throwIfInvalidColorComponentValue(int $colorComponent): void
     {

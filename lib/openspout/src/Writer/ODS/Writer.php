@@ -19,7 +19,7 @@ final class Writer extends AbstractWriterMultiSheets
 {
     /** @var string Content-Type value for the header */
     protected static string $headerContentType = 'application/vnd.oasis.opendocument.spreadsheet';
-    private readonly Options $options;
+    private Options $options;
 
     public function __construct(?Options $options = null)
     {

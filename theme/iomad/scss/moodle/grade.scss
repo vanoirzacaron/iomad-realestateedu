@@ -430,6 +430,12 @@
                             .itemselect {
                                 margin-right: 15px;
                             }
+
+                            .itemicon {
+                                font-size: 18px;
+                                width: 18px;
+                                height: 18px;
+                            }
                         }
 
                         &.column-weight {
@@ -614,15 +620,12 @@
         }
 
         tr.lastrow {
+            position: sticky;
+            // Hack used by the observer to help detecting when the sticky 'Overall average' row is pinned. */
+            bottom: -1px;
 
-            &:not(.userrow) {
-                position: sticky;
-                // Hack used by the observer to help detecting when the sticky last row is pinned. */
-                bottom: -1px;
-
-                &.pinned {
-                    z-index: 4;
-                }
+            &.pinned {
+                z-index: 4;
             }
 
             td,

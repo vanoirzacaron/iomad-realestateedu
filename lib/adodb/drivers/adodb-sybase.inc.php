@@ -170,6 +170,7 @@ class ADODB_sybase extends ADOConnection {
 		return true;
 	}
 
+	// returns query ID if successful, otherwise false
 	function _query($sql,$inputarr=false)
 	{
 	global $ADODB_COUNTRECS;

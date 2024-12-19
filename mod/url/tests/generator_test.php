@@ -26,7 +26,7 @@ namespace mod_url;
  */
 class generator_test extends \advanced_testcase {
 
-    public function test_create_instance(): void {
+    public function test_create_instance() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();

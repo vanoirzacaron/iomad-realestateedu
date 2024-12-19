@@ -42,17 +42,17 @@ use stdClass;
 class completion extends base {
 
     /**
-     * Database tables that this entity uses
+     * Database tables that this entity uses and their default aliases
      *
-     * @return string[]
+     * @return array
      */
-    protected function get_default_tables(): array {
+    protected function get_default_table_aliases(): array {
         return [
-            'course_completion',
-            'course',
-            'grade_grades' ,
-            'grade_items',
-            'user',
+            'course_completion' => 'ccomp',
+            'course' => 'c',
+            'grade_grades' => 'gg',
+            'grade_items' => 'gi',
+            'user' => 'u',
         ];
     }
 
@@ -91,13 +91,11 @@ class completion extends base {
      * @return column[]
      */
     protected function get_all_columns(): array {
-        [
-            'course_completion' => $coursecompletion,
-            'course' => $course,
-            'grade_grades' => $grade,
-            'grade_items' => $gradeitem,
-            'user' => $user,
-        ] = $this->get_table_aliases();
+        $coursecompletion = $this->get_table_alias('course_completion');
+        $course = $this->get_table_alias('course');
+        $grade = $this->get_table_alias('grade_grades');
+        $gradeitem = $this->get_table_alias('grade_items');
+        $user = $this->get_table_alias('user');
 
         // Completed column.
         $columns[] = (new column(

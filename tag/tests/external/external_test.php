@@ -38,7 +38,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test update_categories
      */
-    public function test_update_tags(): void {
+    public function test_update_tags() {
         global $DB;
         $this->resetAfterTest();
         $context = \context_system::instance();
@@ -154,7 +154,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test update_inplace_editable()
      */
-    public function test_update_inplace_editable(): void {
+    public function test_update_inplace_editable() {
         global $CFG, $DB, $PAGE;
         require_once($CFG->dirroot . '/lib/external/externallib.php');
 
@@ -189,7 +189,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_tagindex_per_area.
      */
-    public function test_get_tagindex_per_area(): void {
+    public function test_get_tagindex_per_area() {
         global $USER;
         $this->resetAfterTest(true);
 
@@ -242,7 +242,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_tag_areas.
      */
-    public function test_get_tag_areas(): void {
+    public function test_get_tag_areas() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -260,7 +260,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_tag_collections.
      */
-    public function test_get_tag_collections(): void {
+    public function test_get_tag_collections() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -283,7 +283,7 @@ class external_test extends externallib_advanced_testcase {
     /**
      * Test get_tag_cloud.
      */
-    public function test_get_tag_cloud(): void {
+    public function test_get_tag_cloud() {
         global $USER, $DB;
         $this->resetAfterTest(true);
 

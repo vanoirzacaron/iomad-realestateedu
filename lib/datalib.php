@@ -63,7 +63,7 @@ define('USER_SEARCH_EXACT_MATCH', 2);
  * Returns $user object of the main admin user
  *
  * @static stdClass $mainadmin
- * @return stdClass|false {user} record from DB, false if not found
+ * @return stdClass {@link $USER} record from DB, false if not found
  */
 function get_admin() {
     global $CFG, $DB;
@@ -1205,7 +1205,7 @@ function increment_revision_number($table, $field, $select, array $params = null
  *
  * @global object
  * @param int $courseid The id of the course as found in the 'course' table.
- * @return array|false
+ * @return array
  */
 function get_course_mods($courseid) {
     global $DB;
@@ -1236,7 +1236,7 @@ function get_course_mods($courseid) {
  * @param int $strictness IGNORE_MISSING means compatible mode, false returned if record not found, debug message if more found;
  *                        IGNORE_MULTIPLE means return first, ignore multiple records found(not recommended);
  *                        MUST_EXIST means throw exception if no record or multiple records found
- * @return stdClass|false
+ * @return stdClass
  */
 function get_coursemodule_from_id($modulename, $cmid, $courseid=0, $sectionnum=false, $strictness=IGNORE_MISSING) {
     global $DB;
@@ -1815,7 +1815,7 @@ function print_object($item, array $expandclasses = ['/./'], bool $textonly = fa
                 $out .= '[' . get_class($item) . ']';
             } else {
                 // Objects display the class name as a badge. Content goes within a <dl>.
-                $badge = html_writer::span(get_class($item), 'badge bg-primary text-white');
+                $badge = html_writer::span(get_class($item), 'badge badge-primary');
                 $out .= html_writer::tag('h5', $badge);
                 $out .= html_writer::start_tag('dl', ['class' => 'row']);
                 $dl = true;
@@ -1832,7 +1832,7 @@ function print_object($item, array $expandclasses = ['/./'], bool $textonly = fa
                 $out .= $arrayinfo;
             } else {
                 // Arrays show the same as objects but the badge is grey.
-                $badge = html_writer::span($arrayinfo, 'badge bg-secondary text-dark');
+                $badge = html_writer::span($arrayinfo, 'badge badge-secondary');
                 // Decide if there will be a <dl> tag - only if there is some content.
                 $dl = count($item) > 0;
                 $attributes = [];

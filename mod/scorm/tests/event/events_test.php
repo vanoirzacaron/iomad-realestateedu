@@ -64,7 +64,7 @@ class events_test extends \advanced_testcase {
     /**
      * Tests for attempt deleted event
      */
-    public function test_attempt_deleted_event(): void {
+    public function test_attempt_deleted_event() {
 
         global $USER;
 
@@ -96,7 +96,7 @@ class events_test extends \advanced_testcase {
     /**
      * Tests for interactions viewed validations.
      */
-    public function test_interactions_viewed_event_validations(): void {
+    public function test_interactions_viewed_event_validations() {
         $this->resetAfterTest();
         try {
             \mod_scorm\event\interactions_viewed::create(array(
@@ -125,7 +125,7 @@ class events_test extends \advanced_testcase {
     /**
      * Tests for tracks viewed event validations.
      */
-    public function test_tracks_viewed_event_validations(): void {
+    public function test_tracks_viewed_event_validations() {
         $this->resetAfterTest();
         try {
             \mod_scorm\event\tracks_viewed::create(array(
@@ -166,7 +166,7 @@ class events_test extends \advanced_testcase {
     /**
      * Tests for userreport viewed event validations.
      */
-    public function test_user_report_viewed_event_validations(): void {
+    public function test_user_report_viewed_event_validations() {
         $this->resetAfterTest();
         try {
             \mod_scorm\event\user_report_viewed::create(array(
@@ -195,7 +195,7 @@ class events_test extends \advanced_testcase {
     /**
      * dataProvider for test_scoreraw_submitted_event().
      */
-    public function get_scoreraw_submitted_event_provider() {
+    public static function get_scoreraw_submitted_event_provider() {
         return array(
             // SCORM 1.2.
             // - cmi.core.score.raw.
@@ -219,7 +219,7 @@ class events_test extends \advanced_testcase {
     /**
      * dataProvider for test_scoreraw_submitted_event_validations().
      */
-    public function get_scoreraw_submitted_event_validations() {
+    public static function get_scoreraw_submitted_event_validations(): array {
         return array(
             'scoreraw_submitted => missing cmielement' => array(
                 null, '50',
@@ -255,7 +255,7 @@ class events_test extends \advanced_testcase {
      * @param string $failmessage the message used to fail the test in case of missing to violate a validation rule
      * @param string $excmessage the exception message when violating the validations rules
      */
-    public function test_scoreraw_submitted_event_validations($cmielement, $cmivalue, $failmessage, $excmessage): void {
+    public function test_scoreraw_submitted_event_validations($cmielement, $cmivalue, $failmessage, $excmessage) {
         $this->resetAfterTest();
         try {
             $data = array(
@@ -280,7 +280,7 @@ class events_test extends \advanced_testcase {
     /**
      * dataProvider for test_status_submitted_event().
      */
-    public function get_status_submitted_event_provider() {
+    public static function get_status_submitted_event_provider() {
         return array(
             // SCORM 1.2.
             // 1. Status: cmi.core.lesson_status.
@@ -306,7 +306,7 @@ class events_test extends \advanced_testcase {
     /**
      * dataProvider for test_status_submitted_event_validations().
      */
-    public function get_status_submitted_event_validations() {
+    public static function get_status_submitted_event_validations(): array {
         return array(
             'status_submitted => missing cmielement' => array(
                 null, 'passed',
@@ -349,7 +349,7 @@ class events_test extends \advanced_testcase {
      * @param string $failmessage the message used to fail the test in case of missing to violate a validation rule
      * @param string $excmessage the exception message when violating the validations rules
      */
-    public function test_status_submitted_event_validations($cmielement, $cmivalue, $failmessage, $excmessage): void {
+    public function test_status_submitted_event_validations($cmielement, $cmivalue, $failmessage, $excmessage) {
         $this->resetAfterTest();
         try {
             $data = array(

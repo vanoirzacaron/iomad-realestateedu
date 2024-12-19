@@ -36,7 +36,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::create_from_plugin
      */
-    public function test_create_from_plugin(): void {
+    public function test_create_from_plugin() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -62,7 +62,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::create_from_storedfile
      */
-    public function test_create_from_storedfile(): void {
+    public function test_create_from_storedfile() {
         global $USER;
 
         $this->resetAfterTest();
@@ -114,7 +114,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::create_from_instance
      */
-    public function test_create_from_instance(): void {
+    public function test_create_from_instance() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -161,7 +161,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::create_from_fullname
      */
-    public function test_create_from_fullname(): void {
+    public function test_create_from_fullname() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -208,7 +208,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::save
      */
-    public function test_save_new_preset(): void {
+    public function test_save_new_preset() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -264,7 +264,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::save
      */
-    public function test_save_existing_preset(): void {
+    public function test_save_existing_preset() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -351,7 +351,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::export
      */
-    public function test_export(): void {
+    public function test_export() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -411,7 +411,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::get_userid
      */
-    public function test_get_userid(): void {
+    public function test_get_userid() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -445,7 +445,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::get_path
      */
-    public function test_get_path(): void {
+    public function test_get_path() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -495,7 +495,7 @@ class preset_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function is_directory_a_preset_provider(): array {
+    public static function is_directory_a_preset_provider(): array {
         global $CFG;
 
         return [
@@ -519,7 +519,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::get_name_from_plugin
      */
-    public function test_get_name_from_plugin(): void {
+    public function test_get_name_from_plugin() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -538,7 +538,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::get_description_from_plugin
      */
-    public function test_get_description_from_plugin(): void {
+    public function test_get_description_from_plugin() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -560,13 +560,14 @@ class preset_test extends \advanced_testcase {
      * @param array $params activity config settings
      * @param string|null $description preset description
      */
-    public function test_generate_preset_xml(array $params, ?string $description): void {
+    public function test_generate_preset_xml(array $params, ?string $description) {
         $this->resetAfterTest();
         $this->setAdminUser();
 
         // Make accessible the method.
         $reflection = new \ReflectionClass(preset::class);
         $method = $reflection->getMethod('generate_preset_xml');
+        $method->setAccessible(true);
 
         // The method should return empty string when trying to generate preset.xml for a plugin preset.
         $preset = preset::create_from_plugin(null, 'imagegallery');
@@ -607,7 +608,7 @@ class preset_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function generate_preset_xml_provider(): array {
+    public static function generate_preset_xml_provider(): array {
         return [
             'Generate preset.xml with the default params and empty description' => [
                 'params' => [],
@@ -639,7 +640,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::get_file
      */
-    public function test_get_file(): void {
+    public function test_get_file() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -671,7 +672,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::can_manage
      */
-    public function test_can_manage(): void {
+    public function test_can_manage() {
         $this->resetAfterTest();
 
         // Create course, database activity and users.
@@ -727,7 +728,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::delete
      */
-    public function test_delete(): void {
+    public function test_delete() {
         $this->resetAfterTest();
 
         // Create course, database activity and users.
@@ -787,7 +788,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::get_fields
      */
-    public function test_get_fields(): void {
+    public function test_get_fields() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -837,7 +838,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::get_sample_entries
      */
-    public function test_get_sample_entries(): void {
+    public function test_get_sample_entries() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
@@ -881,7 +882,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::get_template_content
      */
-    public function test_get_template_content(): void {
+    public function test_get_template_content() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
@@ -938,7 +939,7 @@ class preset_test extends \advanced_testcase {
      *
      * @covers ::get_fullname
      */
-    public function test_get_fullname(): void {
+    public function test_get_fullname() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();

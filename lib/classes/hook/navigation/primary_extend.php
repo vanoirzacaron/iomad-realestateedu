@@ -16,6 +16,7 @@
 
 namespace core\hook\navigation;
 
+use core\hook\described_hook;
 use core\hook\stoppable_trait;
 use core\navigation\views\primary;
 
@@ -26,9 +27,8 @@ use core\navigation\views\primary;
  * @copyright  2023 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[\core\attribute\label('Allows plugins to insert nodes into site primary navigation')]
-#[\core\attribute\tags('navigation')]
-class primary_extend implements \Psr\EventDispatcher\StoppableEventInterface {
+class primary_extend implements described_hook,
+        \Psr\EventDispatcher\StoppableEventInterface {
     use stoppable_trait;
 
     /**
@@ -36,9 +36,7 @@ class primary_extend implements \Psr\EventDispatcher\StoppableEventInterface {
      *
      * @param primary $primaryview Primary navigation view
      */
-    public function __construct(
-        public readonly primary $primaryview,
-    ) {
+    public function __construct(protected primary $primaryview) {
     }
 
     /**
@@ -48,5 +46,23 @@ class primary_extend implements \Psr\EventDispatcher\StoppableEventInterface {
      */
     public function get_primaryview(): primary {
         return $this->primaryview;
+    }
+
+    /**
+     * Describes the hook purpose.
+     *
+     * @return string
+     */
+    public static function get_hook_description(): string {
+        return 'Allows plugins to insert nodes into site primary navigation';
+    }
+
+    /**
+     * List of tags that describe this hook.
+     *
+     * @return string[]
+     */
+    public static function get_hook_tags(): array {
+        return ['navigation'];
     }
 }

@@ -68,7 +68,7 @@ videojs.addLanguage('sl', {
   "Raised": "Dvignjeno",
   "Depressed": "Vtisnjeno",
   "Uniform": "Enakomerno",
-  "Drop shadow": "S senco",
+  "Dropshadow": "S senco",
   "Font Family": "Družina pisave",
   "Small Caps": "Male črke",
   "Reset": "Ponastavi",

@@ -57,16 +57,13 @@ function(
             root.on('change', CalendarSelectors.courseSelector, function() {
                 var selectElement = $(this);
                 var courseId = selectElement.val();
-                const courseName = $("option:selected", selectElement).text();
                 CalendarViewManager[reloadFunction](root, courseId, null)
                     .then(function() {
                         // We need to get the selector again because the content has changed.
                         return root.find(CalendarSelectors.courseSelector).val(courseId);
                     })
                     .then(function() {
-                        CalendarViewManager.updateUrl('?view=' + type + '&course=' + courseId);
-                        CalendarViewManager.handleCourseChange(Number(courseId), courseName);
-                        return;
+                        CalendarViewManager.updateUrl('?view=upcoming&course=' + courseId);
                     })
                     .fail(Notification.exception);
             });

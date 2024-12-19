@@ -24,6 +24,7 @@ import search_combobox from 'core/comboboxsearch/search_combobox';
 import {getStrings} from 'core/str';
 import {renderForPromise, replaceNodeContents} from 'core/templates';
 import $ from 'jquery';
+import Notification from 'core/notification';
 
 export default class UserSearch extends search_combobox {
 
@@ -35,18 +36,13 @@ export default class UserSearch extends search_combobox {
 
     constructor() {
         super();
-        // Register a couple of events onto the document since we need to check if they are moving off the component.
-        ['click', 'focus'].forEach(eventType => {
-            // Since we are handling dropdowns manually, ensure we can close it when moving off.
-            document.addEventListener(eventType, e => {
-                if (this.searchDropdown.classList.contains('show') && !this.combobox.contains(e.target)) {
-                    this.toggleDropdown();
-                }
-            }, true);
+        // Register a small click event onto the document since we need to check if they are clicking off the component.
+        document.addEventListener('click', (e) => {
+            // Since we are handling dropdowns manually, ensure we can close it when clicking off.
+            if (!e.target.closest(this.selectors.component) && this.searchDropdown.classList.contains('show')) {
+                this.toggleDropdown();
+            }
         });
-
-        // Register keyboard events.
-        this.component.addEventListener('keydown', this.keyHandler.bind(this));
 
         // Define our standard lookups.
         this.selectors = {...this.selectors,
@@ -55,12 +51,9 @@ export default class UserSearch extends search_combobox {
             resetPageButton: '[data-action="resetpage"]',
         };
 
-        this.courseID = this.component.querySelector(this.selectors.courseid).dataset.courseid;
+        const component = document.querySelector(this.componentSelector());
+        this.courseID = component.querySelector(this.selectors.courseid).dataset.courseid;
         this.groupID = document.querySelector(this.selectors.groupid)?.dataset?.groupid;
-        this.instance = this.component.querySelector(this.selectors.instance).dataset.instance;
-
-        // We need to render some content by default for ARIA purposes.
-        this.renderDefault();
     }
 
     static init() {
@@ -86,30 +79,26 @@ export default class UserSearch extends search_combobox {
     }
 
     /**
+     * The triggering div that contains the searching widget.
+     *
+     * @returns {string}
+     */
+    triggerSelector() {
+        return '.usersearchwidget';
+    }
+
+    /**
      * Build the content then replace the node.
      */
     async renderDropdown() {
         const {html, js} = await renderForPromise('core_user/comboboxsearch/resultset', {
             users: this.getMatchedResults().slice(0, 5),
             hasresults: this.getMatchedResults().length > 0,
-            instance: this.instance,
             matches: this.getMatchedResults().length,
             searchterm: this.getSearchTerm(),
             selectall: this.selectAllResultsLink(),
         });
         replaceNodeContents(this.getHTMLElements().searchDropdown, html, js);
-        // Remove aria-activedescendant when the available options change.
-        this.searchInput.removeAttribute('aria-activedescendant');
-    }
-
-    /**
-     * Build the content then replace the node by default we want our form to exist.
-     */
-    async renderDefault() {
-        this.setMatchedResults(await this.filterDataset(await this.getDataset()));
-        this.filterMatchDataset();
-
-        await this.renderDropdown();
     }
 
     /**
@@ -128,17 +117,13 @@ export default class UserSearch extends search_combobox {
      * @returns {Array} The users that match the given criteria.
      */
     async filterDataset(filterableData) {
-        if (this.getPreppedSearchTerm()) {
-            const stringMap = await this.getStringMap();
-            return filterableData.filter((user) => Object.keys(user).some((key) => {
-                if (user[key] === "" || user[key] === null || !stringMap.get(key)) {
-                    return false;
-                }
-                return user[key].toString().toLowerCase().includes(this.getPreppedSearchTerm());
-            }));
-        } else {
-            return [];
-        }
+        const stringMap = await this.getStringMap();
+        return filterableData.filter((user) => Object.keys(user).some((key) => {
+            if (user[key] === "" || user[key] === null || !stringMap.get(key)) {
+                return false;
+            }
+            return user[key].toString().toLowerCase().includes(this.getPreppedSearchTerm());
+        }));
     }
 
     /**
@@ -177,6 +162,7 @@ export default class UserSearch extends search_combobox {
                         } else {
                             user.matchingField = escapedMatchingField;
                         }
+                        user.link = this.selectOneLink(user.id);
                         break;
                     }
                 }
@@ -186,17 +172,22 @@ export default class UserSearch extends search_combobox {
     }
 
     /**
-     * The handler for when a user changes the value of the component (selects an option from the dropdown).
+     * The handler for when a user interacts with the component.
      *
-     * @param {Event} e The change event.
+     * @param {MouseEvent} e The triggering event that we are working with.
      */
-    changeHandler(e) {
-        this.toggleDropdown(); // Otherwise the dropdown stays open when user choose an option using keyboard.
-
-        if (e.target.value === '0') {
+    clickHandler(e) {
+        super.clickHandler(e).catch(Notification.exception);
+        if (e.target.closest(this.selectors.component)) {
+            // Forcibly prevent BS events so that we can control the open and close.
+            // Really needed because by default input elements cant trigger a dropdown.
+            e.stopImmediatePropagation();
+        }
+        if (e.target === this.getHTMLElements().currentViewAll && e.button === 0) {
             window.location = this.selectAllResultsLink();
-        } else {
-            window.location = this.selectOneLink(e.target.value);
+        }
+        if (e.target.closest(this.selectors.resetPageButton)) {
+            window.location = e.target.closest(this.selectors.resetPageButton).href;
         }
     }
 
@@ -206,29 +197,49 @@ export default class UserSearch extends search_combobox {
      * @param {KeyboardEvent} e The triggering event that we are working with.
      */
     keyHandler(e) {
+        super.keyHandler(e);
+
+        if (e.target === this.getHTMLElements().currentViewAll && (e.key === 'Enter' || e.key === 'Space')) {
+            window.location = this.selectAllResultsLink();
+        }
+
         // Switch the key presses to handle keyboard nav.
         switch (e.key) {
-            case 'ArrowUp':
-            case 'ArrowDown':
-                if (
-                    this.getSearchTerm() !== ''
-                    && !this.searchDropdown.classList.contains('show')
-                    && e.target.contains(this.combobox)
-                ) {
-                    this.renderAndShow();
-                }
-                break;
             case 'Enter':
             case ' ':
+                if (document.activeElement === this.getHTMLElements().searchInput) {
+                    if (e.key === 'Enter' && this.selectAllResultsLink() !== null) {
+                        window.location = this.selectAllResultsLink();
+                    }
+                }
+                if (document.activeElement === this.getHTMLElements().clearSearchButton) {
+                    this.closeSearch(true);
+                    break;
+                }
                 if (e.target.closest(this.selectors.resetPageButton)) {
-                    e.stopPropagation();
                     window.location = e.target.closest(this.selectors.resetPageButton).href;
+                    break;
+                }
+                if (e.target.closest('.dropdown-item')) {
+                    e.preventDefault();
+                    window.location = e.target.closest('.dropdown-item').href;
                     break;
                 }
                 break;
             case 'Escape':
                 this.toggleDropdown();
                 this.searchInput.focus({preventScroll: true});
+                break;
+            case 'Tab':
+                // If the current focus is on clear search, then check if viewall exists then around tab to it.
+                if (e.target.closest(this.selectors.clearSearch)) {
+                    if (this.currentViewAll && !e.shiftKey) {
+                        e.preventDefault();
+                        this.currentViewAll.focus({preventScroll: true});
+                    } else {
+                        this.closeSearch();
+                    }
+                }
                 break;
         }
     }
@@ -242,18 +253,11 @@ export default class UserSearch extends search_combobox {
         if (on) {
             this.searchDropdown.classList.add('show');
             $(this.searchDropdown).show();
-            this.getHTMLElements().searchInput.setAttribute('aria-expanded', 'true');
-            this.searchInput.focus({preventScroll: true});
+            this.component.setAttribute('aria-expanded', 'true');
         } else {
             this.searchDropdown.classList.remove('show');
             $(this.searchDropdown).hide();
-
-            // As we are manually handling the dropdown, we need to do some housekeeping manually.
-            this.getHTMLElements().searchInput.setAttribute('aria-expanded', 'false');
-            this.searchInput.removeAttribute('aria-activedescendant');
-            this.searchDropdown.querySelectorAll('.active[role="option"]').forEach(option => {
-                option.classList.remove('active');
-            });
+            this.component.setAttribute('aria-expanded', 'false');
         }
     }
 
@@ -266,7 +270,6 @@ export default class UserSearch extends search_combobox {
 
     /**
      * Build up the view all link that is dedicated to a particular result.
-     * We will call this function when a user interacts with the combobox to redirect them to show their results in the page.
      *
      * @param {Number} userID The ID of the user selected.
      */

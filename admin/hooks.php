@@ -30,7 +30,7 @@ require_once($CFG->libdir . '/tablelib.php');
 admin_externalpage_setup('hooksoverview');
 require_capability('moodle/site:config', \core\context\system::instance());
 
-$hookmanager = \core\di::get(\core\hook\manager::class);
+$hookmanager = \core\hook\manager::get_instance();
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('hooksoverview', 'core_admin'));

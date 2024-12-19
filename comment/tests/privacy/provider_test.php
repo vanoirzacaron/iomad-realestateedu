@@ -48,7 +48,7 @@ class provider_test extends provider_testcase {
     /**
      * Check the exporting of comments for a user id in a context.
      */
-    public function test_export_comments(): void {
+    public function test_export_comments() {
         $course = $this->getDataGenerator()->create_course();
         $context = \context_course::instance($course->id);
 
@@ -98,7 +98,7 @@ class provider_test extends provider_testcase {
     /**
      * Tests the deletion of all comments in a context.
      */
-    public function test_delete_comments_for_all_users(): void {
+    public function test_delete_comments_for_all_users() {
         global $DB;
 
         $course1 = $this->getDataGenerator()->create_course();
@@ -166,7 +166,7 @@ class provider_test extends provider_testcase {
     /**
      * Tests the deletion of all comments in a context.
      */
-    public function test_delete_comments_for_all_users_select(): void {
+    public function test_delete_comments_for_all_users_select() {
         global $DB;
 
         $course1 = $this->getDataGenerator()->create_course();
@@ -236,7 +236,7 @@ class provider_test extends provider_testcase {
     /**
      * Tests deletion of comments for a specified user and contexts.
      */
-    public function test_delete_comments_for_user(): void {
+    public function test_delete_comments_for_user() {
         global $DB;
 
         $course1 = $this->getDataGenerator()->create_course();
@@ -319,7 +319,7 @@ class provider_test extends provider_testcase {
     /**
      * Tests deletion of comments for a specified userlist and context.
      */
-    public function test_delete_comments_for_users(): void {
+    public function test_delete_comments_for_users() {
         global $DB;
 
         $course1 = $this->getDataGenerator()->create_course();

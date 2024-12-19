@@ -85,7 +85,7 @@ class context_repository_test extends \advanced_testcase {
      *
      * @covers ::save
      */
-    public function test_save_new(): void {
+    public function test_save_new() {
         $this->resetAfterTest();
         $context = $this->create_test_context();
         $contextrepo = new context_repository();
@@ -101,7 +101,7 @@ class context_repository_test extends \advanced_testcase {
      *
      * @covers ::save
      */
-    public function test_save_existing(): void {
+    public function test_save_existing() {
         $this->resetAfterTest();
         $context = $this->create_test_context();
         $contextrepo = new context_repository();
@@ -125,7 +125,7 @@ class context_repository_test extends \advanced_testcase {
      *
      * @covers ::save
      */
-    public function test_save_unique_constraints_not_met(): void {
+    public function test_save_unique_constraints_not_met() {
         $this->resetAfterTest();
         $context = $this->create_test_context();
         $context2 = clone $context;
@@ -143,7 +143,7 @@ class context_repository_test extends \advanced_testcase {
      *
      * @covers ::exists
      */
-    public function test_exists(): void {
+    public function test_exists() {
         $this->resetAfterTest();
         $contextrepo = new context_repository();
         $context = $this->create_test_context();
@@ -158,7 +158,7 @@ class context_repository_test extends \advanced_testcase {
      *
      * @covers ::find
      */
-    public function test_find(): void {
+    public function test_find() {
         $this->resetAfterTest();
         $context = $this->create_test_context();
         $contextrepo = new context_repository();
@@ -175,7 +175,7 @@ class context_repository_test extends \advanced_testcase {
      *
      * @covers ::find_by_contextid
      */
-    public function test_find_by_contextid(): void {
+    public function test_find_by_contextid() {
         $this->resetAfterTest();
         $context = $this->create_test_context();
         $contextrepo = new context_repository();
@@ -193,7 +193,7 @@ class context_repository_test extends \advanced_testcase {
      *
      * @covers ::delete
      */
-    public function test_delete(): void {
+    public function test_delete() {
         $this->resetAfterTest();
         $context = $this->create_test_context();
         $contextrepo = new context_repository();
@@ -211,7 +211,7 @@ class context_repository_test extends \advanced_testcase {
      *
      * @covers ::delete_by_deployment
      */
-    public function test_delete_by_deployment(): void {
+    public function test_delete_by_deployment() {
         $this->resetAfterTest();
         $context = $this->create_test_context();
         $contextrepo = new context_repository();

@@ -23,7 +23,6 @@ use coding_exception;
 use context_course;
 use context_module;
 use course_modinfo;
-use core_courseformat\formatactions;
 use moodle_exception;
 use moodle_url;
 use Exception;
@@ -37,16 +36,7 @@ use Exception;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class modinfolib_test extends advanced_testcase {
-    /**
-     * Setup to ensure that fixtures are loaded.
-     */
-    public static function setUpBeforeClass(): void {
-        global $CFG;
-        require_once($CFG->dirroot . '/course/lib.php');
-        require_once($CFG->libdir . '/tests/fixtures/sectiondelegatetest.php');
-    }
-
-    public function test_section_info_properties(): void {
+    public function test_section_info_properties() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -114,7 +104,7 @@ class modinfolib_test extends advanced_testcase {
         set_config('enablecompletion', $oldcfgenablecompletion);
     }
 
-    public function test_cm_info_properties(): void {
+    public function test_cm_info_properties() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -248,7 +238,7 @@ class modinfolib_test extends advanced_testcase {
         set_config('enablecompletion', $oldcfgenablecompletion);
     }
 
-    public function test_matching_cacherev(): void {
+    public function test_matching_cacherev() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -407,7 +397,7 @@ class modinfolib_test extends advanced_testcase {
         $this->assertEquals($newcourse->cacherev, $SITE->cacherev);
     }
 
-    public function test_course_modinfo_properties(): void {
+    public function test_course_modinfo_properties() {
         global $USER, $DB;
 
         $this->resetAfterTest();
@@ -491,7 +481,7 @@ class modinfolib_test extends advanced_testcase {
         $this->assertNotEquals('Illegal overwriting', $modinfo->cms);
     }
 
-    public function test_is_user_access_restricted_by_capability(): void {
+    public function test_is_user_access_restricted_by_capability() {
         global $DB;
 
         $this->resetAfterTest();
@@ -549,7 +539,7 @@ class modinfolib_test extends advanced_testcase {
     /**
      * Tests for function cm_info::get_course_module_record()
      */
-    public function test_cm_info_get_course_module_record(): void {
+    public function test_cm_info_get_course_module_record() {
         global $DB;
 
         $this->resetAfterTest();
@@ -693,7 +683,7 @@ class modinfolib_test extends advanced_testcase {
      * Tests the availability property that has been added to course modules
      * and sections (just to see that it is correctly saved and accessed).
      */
-    public function test_availability_property(): void {
+    public function test_availability_property() {
         global $DB, $CFG;
 
         $this->resetAfterTest();
@@ -739,7 +729,7 @@ class modinfolib_test extends advanced_testcase {
     /**
      * Tests for get_groups() method.
      */
-    public function test_get_groups(): void {
+    public function test_get_groups() {
         $this->resetAfterTest();
         $generator = $this->getDataGenerator();
 
@@ -802,7 +792,7 @@ class modinfolib_test extends advanced_testcase {
     /**
      * Tests the function for constructing a cm_info from mixed data.
      */
-    public function test_create(): void {
+    public function test_create() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -861,7 +851,7 @@ class modinfolib_test extends advanced_testcase {
      * Tests function for getting $course and $cm at once quickly from modinfo
      * based on cmid or cm record.
      */
-    public function test_get_course_and_cm_from_cmid(): void {
+    public function test_get_course_and_cm_from_cmid() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -954,7 +944,7 @@ class modinfolib_test extends advanced_testcase {
      * Tests function for getting $course and $cm at once quickly from modinfo
      * based on instance id or record.
      */
-    public function test_get_course_and_cm_from_instance(): void {
+    public function test_get_course_and_cm_from_instance() {
         global $CFG, $DB;
         $this->resetAfterTest();
 
@@ -1040,35 +1030,6 @@ class modinfolib_test extends advanced_testcase {
     }
 
     /**
-     * Test for get_listed_section_info_all method.
-     * @covers \course_modinfo::get_listed_section_info_all
-     * @covers \course_modinfo::get_section_info_all
-     */
-    public function test_get_listed_section_info_all(): void {
-        $this->resetAfterTest();
-
-        // Create a course with 4 sections.
-        $course = $this->getDataGenerator()->create_course(['numsections' => 3]);
-
-        $listed = get_fast_modinfo($course)->get_section_info_all();
-        $this->assertCount(4, $listed);
-
-        // Generate some delegated sections (not listed).
-        formatactions::section($course)->create_delegated('mod_label', 0);
-        formatactions::section($course)->create_delegated('mod_label', 1);
-
-        $this->assertCount(6, get_fast_modinfo($course)->get_section_info_all());
-
-        $result = get_fast_modinfo($course)->get_listed_section_info_all();
-
-        $this->assertCount(4, $result);
-        $this->assertEquals($listed[0]->id, $result[0]->id);
-        $this->assertEquals($listed[1]->id, $result[1]->id);
-        $this->assertEquals($listed[2]->id, $result[2]->id);
-        $this->assertEquals($listed[3]->id, $result[3]->id);
-    }
-
-    /**
      * Test test_get_section_info_by_id method
      *
      * @dataProvider get_section_info_by_id_provider
@@ -1084,7 +1045,7 @@ class modinfolib_test extends advanced_testcase {
         int $strictness = IGNORE_MISSING,
         bool $expectnull = false,
         bool $expectexception = false
-    ): void {
+    ) {
         global $DB;
 
         $this->resetAfterTest();
@@ -1121,7 +1082,7 @@ class modinfolib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function get_section_info_by_id_provider() {
+    public static function get_section_info_by_id_provider(): array {
         return [
             'Valid section id' => [
                 'sectionnum' => 1,
@@ -1151,123 +1112,6 @@ class modinfolib_test extends advanced_testcase {
     }
 
     /**
-     * Test get_section_info_by_component method
-     *
-     * @covers \course_modinfo::get_section_info_by_component
-     * @dataProvider get_section_info_by_component_provider
-     *
-     * @param string $component the component name
-     * @param int $itemid the section number
-     * @param int $strictness the search strict mode
-     * @param bool $expectnull if the function will return a null
-     * @param bool $expectexception if the function will throw an exception
-     */
-    public function test_get_section_info_by_component(
-        string $component,
-        int $itemid,
-        int $strictness,
-        bool $expectnull,
-        bool $expectexception
-    ): void {
-        $this->resetAfterTest();
-        $course = $this->getDataGenerator()->create_course(['numsections' => 1]);
-
-        formatactions::section($course)->create_delegated('mod_forum', 42);
-
-        $modinfo = get_fast_modinfo($course);
-
-        if ($expectexception) {
-            $this->expectException(moodle_exception::class);
-        }
-
-        $section = $modinfo->get_section_info_by_component($component, $itemid, $strictness);
-
-        if ($expectnull) {
-            $this->assertNull($section);
-        } else {
-            $this->assertEquals($component, $section->component);
-            $this->assertEquals($itemid, $section->itemid);
-        }
-    }
-
-    /**
-     * Data provider for test_get_section_info_by_component().
-     *
-     * @return array
-     */
-    public static function get_section_info_by_component_provider(): array {
-        return [
-            'Valid component and itemid' => [
-                'component' => 'mod_forum',
-                'itemid' => 42,
-                'strictness' => IGNORE_MISSING,
-                'expectnull' => false,
-                'expectexception' => false,
-            ],
-            'Invalid component' => [
-                'component' => 'mod_nonexisting',
-                'itemid' => 42,
-                'strictness' => IGNORE_MISSING,
-                'expectnull' => true,
-                'expectexception' => false,
-            ],
-            'Invalid itemid' => [
-                'component' => 'mod_forum',
-                'itemid' => 0,
-                'strictness' => IGNORE_MISSING,
-                'expectnull' => true,
-                'expectexception' => false,
-            ],
-            'Invalid component and itemid' => [
-                'component' => 'mod_nonexisting',
-                'itemid' => 0,
-                'strictness' => IGNORE_MISSING,
-                'expectnull' => true,
-                'expectexception' => false,
-            ],
-            'Invalid component must exists' => [
-                'component' => 'mod_nonexisting',
-                'itemid' => 42,
-                'strictness' => MUST_EXIST,
-                'expectnull' => true,
-                'expectexception' => true,
-            ],
-            'Invalid itemid must exists' => [
-                'component' => 'mod_forum',
-                'itemid' => 0,
-                'strictness' => MUST_EXIST,
-                'expectnull' => true,
-                'expectexception' => true,
-            ],
-            'Invalid component and itemid must exists' => [
-                'component' => 'mod_nonexisting',
-                'itemid' => 0,
-                'strictness' => MUST_EXIST,
-                'expectnull' => false,
-                'expectexception' => true,
-            ],
-        ];
-    }
-
-    /**
-     * Test has_delegated_sections method
-     *
-     * @covers \course_modinfo::has_delegated_sections
-     */
-    public function test_has_delegated_sections(): void {
-        $this->resetAfterTest();
-        $course = $this->getDataGenerator()->create_course(['numsections' => 1]);
-
-        $modinfo = get_fast_modinfo($course);
-        $this->assertFalse($modinfo->has_delegated_sections());
-
-        formatactions::section($course)->create_delegated('mod_forum', 42);
-
-        $modinfo = get_fast_modinfo($course);
-        $this->assertTrue($modinfo->has_delegated_sections());
-    }
-
-    /**
      * Test purge_section_cache_by_id method
      *
      * @covers \course_modinfo::purge_course_section_cache_by_id
@@ -1283,26 +1127,21 @@ class modinfolib_test extends advanced_testcase {
         // Reset course cache.
         rebuild_course_cache($course->id, true);
         // Build course cache.
-        $modinfo = get_fast_modinfo($course->id);
+        get_fast_modinfo($course->id);
         // Get the course modinfo cache.
         $coursemodinfo = $cache->get_versioned($course->id, $course->cacherev);
         // Get the section cache.
         $sectioncaches = $coursemodinfo->sectioncache;
 
-        $numberedsections = $modinfo->get_section_info_all();
-
         // Make sure that we will have 4 section caches here.
         $this->assertCount(4, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[0]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[1]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[2]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[3]->id, $sectioncaches);
+        $this->assertArrayHasKey(0, $sectioncaches);
+        $this->assertArrayHasKey(1, $sectioncaches);
+        $this->assertArrayHasKey(2, $sectioncaches);
+        $this->assertArrayHasKey(3, $sectioncaches);
 
         // Purge cache for the section by id.
-        course_modinfo::purge_course_section_cache_by_id(
-            $course->id,
-            $numberedsections[1]->id
-        );
+        course_modinfo::purge_course_section_cache_by_id($course->id, $sectioncaches[1]->id);
         // Get the course modinfo cache.
         $coursemodinfo = $cache->get_versioned($course->id, $course->cacherev);
         // Get the section cache.
@@ -1310,10 +1149,10 @@ class modinfolib_test extends advanced_testcase {
 
         // Make sure that we will have 3 section caches left.
         $this->assertCount(3, $sectioncaches);
-        $this->assertArrayNotHasKey($numberedsections[1]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[0]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[2]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[3]->id, $sectioncaches);
+        $this->assertArrayNotHasKey(1, $sectioncaches);
+        $this->assertArrayHasKey(0, $sectioncaches);
+        $this->assertArrayHasKey(2, $sectioncaches);
+        $this->assertArrayHasKey(3, $sectioncaches);
         // Make sure that the cacherev will be reset.
         $this->assertEquals(-1, $coursemodinfo->cacherev);
     }
@@ -1334,20 +1173,18 @@ class modinfolib_test extends advanced_testcase {
         // Reset course cache.
         rebuild_course_cache($course->id, true);
         // Build course cache.
-        $modinfo = get_fast_modinfo($course->id);
+        get_fast_modinfo($course->id);
         // Get the course modinfo cache.
         $coursemodinfo = $cache->get_versioned($course->id, $course->cacherev);
         // Get the section cache.
         $sectioncaches = $coursemodinfo->sectioncache;
 
-        $numberedsections = $modinfo->get_section_info_all();
-
         // Make sure that we will have 4 section caches here.
         $this->assertCount(4, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[0]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[1]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[2]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[3]->id, $sectioncaches);
+        $this->assertArrayHasKey(0, $sectioncaches);
+        $this->assertArrayHasKey(1, $sectioncaches);
+        $this->assertArrayHasKey(2, $sectioncaches);
+        $this->assertArrayHasKey(3, $sectioncaches);
 
         // Purge cache for the section with section number is 1.
         course_modinfo::purge_course_section_cache_by_number($course->id, 1);
@@ -1358,10 +1195,10 @@ class modinfolib_test extends advanced_testcase {
 
         // Make sure that we will have 3 section caches left.
         $this->assertCount(3, $sectioncaches);
-        $this->assertArrayNotHasKey($numberedsections[1]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[0]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[2]->id, $sectioncaches);
-        $this->assertArrayHasKey($numberedsections[3]->id, $sectioncaches);
+        $this->assertArrayNotHasKey(1, $sectioncaches);
+        $this->assertArrayHasKey(0, $sectioncaches);
+        $this->assertArrayHasKey(2, $sectioncaches);
+        $this->assertArrayHasKey(3, $sectioncaches);
         // Make sure that the cacherev will be reset.
         $this->assertEquals(-1, $coursemodinfo->cacherev);
     }
@@ -1521,215 +1358,5 @@ class modinfolib_test extends advanced_testcase {
 
         // Obviously, modinfo should include the Page now.
         $this->assertCount(1, $modinfo->get_instances_of('page'));
-    }
-
-    /**
-     * Test for get_component_instance.
-     * @covers \section_info::get_component_instance
-     */
-    public function test_get_component_instance(): void {
-        global $DB;
-        $this->resetAfterTest();
-
-        $course = $this->getDataGenerator()->create_course(['format' => 'topics', 'numsections' => 2]);
-
-        course_update_section(
-            $course,
-            $DB->get_record('course_sections', ['course' => $course->id, 'section' => 2]),
-            [
-                'component' => 'test_component',
-                'itemid' => 1,
-            ]
-        );
-
-        $modinfo = get_fast_modinfo($course->id);
-        $sectioninfos = $modinfo->get_section_info_all();
-
-        $this->assertNull($sectioninfos[1]->get_component_instance());
-        $this->assertNull($sectioninfos[1]->component);
-        $this->assertNull($sectioninfos[1]->itemid);
-
-        $this->assertInstanceOf('\core_courseformat\sectiondelegate', $sectioninfos[2]->get_component_instance());
-        $this->assertInstanceOf('\test_component\courseformat\sectiondelegate', $sectioninfos[2]->get_component_instance());
-        $this->assertEquals('test_component', $sectioninfos[2]->component);
-        $this->assertEquals(1, $sectioninfos[2]->itemid);
-    }
-
-    /**
-     * Test for section_info is_delegated.
-     * @covers \section_info::is_delegated
-     */
-    public function test_is_delegated(): void {
-        $this->resetAfterTest();
-
-        $course = $this->getDataGenerator()->create_course(['format' => 'topics', 'numsections' => 1]);
-
-        formatactions::section($course)->create_delegated('mod_label', 0);
-
-        $modinfo = get_fast_modinfo($course->id);
-        $sectioninfos = $modinfo->get_section_info_all();
-
-        $this->assertFalse($sectioninfos[1]->is_delegated());
-        $this->assertTrue($sectioninfos[2]->is_delegated());
-    }
-
-    /**
-     * Test the course_modinfo::purge_course_caches() function with a
-     * one-course array, a two-course array, and an empty array, and ensure
-     * that only the courses specified have their course cache version
-     * incremented (or all course caches if none specified).
-     *
-     * @covers \course_modinfo
-     */
-    public function test_multiple_modinfo_cache_purge(): void {
-        global $DB;
-
-        $this->resetAfterTest();
-        $this->setAdminUser();
-        $cache = cache::make('core', 'coursemodinfo');
-
-        // Generate two courses and pre-requisite modules for targeted course
-        // cache tests.
-        $courseone = $this->getDataGenerator()->create_course(
-            [
-                'format' => 'topics',
-                'numsections' => 3,
-            ],
-            [
-                'createsections' => true,
-            ]
-        );
-        $coursetwo = $this->getDataGenerator()->create_course(
-            [
-                'format' => 'topics',
-                'numsections' => 3,
-            ],
-            [
-                'createsections' => true,
-            ]
-        );
-        $coursethree = $this->getDataGenerator()->create_course(
-            [
-                'format' => 'topics',
-                'numsections' => 3,
-            ],
-            [
-                'createsections' => true,
-            ]
-        );
-
-        // Make sure the cacherev is set for all three.
-        $cacherevone = $DB->get_field('course', 'cacherev', ['id' => $courseone->id]);
-        $this->assertGreaterThan(0, $cacherevone);
-        $prevcacherevone = $cacherevone;
-
-        $cacherevtwo = $DB->get_field('course', 'cacherev', ['id' => $coursetwo->id]);
-        $this->assertGreaterThan(0, $cacherevtwo);
-        $prevcacherevtwo = $cacherevtwo;
-
-        $cacherevthree = $DB->get_field('course', 'cacherev', ['id' => $coursethree->id]);
-        $this->assertGreaterThan(0, $cacherevthree);
-        $prevcacherevthree = $cacherevthree;
-
-        // Reset course caches and make sure cacherev is bumped up but cache is empty.
-        rebuild_course_cache($courseone->id, true);
-        $cacherevone = $DB->get_field('course', 'cacherev', ['id' => $courseone->id]);
-        $this->assertGreaterThan($prevcacherevone, $cacherevone);
-        $this->assertEmpty($cache->get_versioned($courseone->id, $prevcacherevone));
-        $prevcacherevone = $cacherevone;
-
-        rebuild_course_cache($coursetwo->id, true);
-        $cacherevtwo = $DB->get_field('course', 'cacherev', ['id' => $coursetwo->id]);
-        $this->assertGreaterThan($prevcacherevtwo, $cacherevtwo);
-        $this->assertEmpty($cache->get_versioned($coursetwo->id, $prevcacherevtwo));
-        $prevcacherevtwo = $cacherevtwo;
-
-        rebuild_course_cache($coursethree->id, true);
-        $cacherevthree = $DB->get_field('course', 'cacherev', ['id' => $coursethree->id]);
-        $this->assertGreaterThan($prevcacherevthree, $cacherevthree);
-        $this->assertEmpty($cache->get_versioned($coursethree->id, $prevcacherevthree));
-        $prevcacherevthree = $cacherevthree;
-
-        // Build course caches. Cacherev should not change but caches are now not empty. Make sure cacherev is the same everywhere.
-        $modinfoone = get_fast_modinfo($courseone->id);
-        $cacherevone = $DB->get_field('course', 'cacherev', ['id' => $courseone->id]);
-        $this->assertEquals($prevcacherevone, $cacherevone);
-        $cachedvalueone = $cache->get_versioned($courseone->id, $cacherevone);
-        $this->assertNotEmpty($cachedvalueone);
-        $this->assertEquals($cacherevone, $cachedvalueone->cacherev);
-        $this->assertEquals($cacherevone, $modinfoone->get_course()->cacherev);
-        $prevcacherevone = $cacherevone;
-
-        $modinfotwo = get_fast_modinfo($coursetwo->id);
-        $cacherevtwo = $DB->get_field('course', 'cacherev', ['id' => $coursetwo->id]);
-        $this->assertEquals($prevcacherevtwo, $cacherevtwo);
-        $cachedvaluetwo = $cache->get_versioned($coursetwo->id, $cacherevtwo);
-        $this->assertNotEmpty($cachedvaluetwo);
-        $this->assertEquals($cacherevtwo, $cachedvaluetwo->cacherev);
-        $this->assertEquals($cacherevtwo, $modinfotwo->get_course()->cacherev);
-        $prevcacherevtwo = $cacherevtwo;
-
-        $modinfothree = get_fast_modinfo($coursethree->id);
-        $cacherevthree = $DB->get_field('course', 'cacherev', ['id' => $coursethree->id]);
-        $this->assertEquals($prevcacherevthree, $cacherevthree);
-        $cachedvaluethree = $cache->get_versioned($coursethree->id, $cacherevthree);
-        $this->assertNotEmpty($cachedvaluethree);
-        $this->assertEquals($cacherevthree, $cachedvaluethree->cacherev);
-        $this->assertEquals($cacherevthree, $modinfothree->get_course()->cacherev);
-        $prevcacherevthree = $cacherevthree;
-
-        // Purge course one's cache. Cacherev must be incremented (but only for
-        // course one, check course two and three in next step).
-        course_modinfo::purge_course_caches([$courseone->id]);
-
-        get_fast_modinfo($courseone->id);
-        $cacherevone = $DB->get_field('course', 'cacherev', ['id' => $courseone->id]);
-        $this->assertGreaterThan($prevcacherevone, $cacherevone);
-        $prevcacherevone = $cacherevone;
-
-        // Confirm course two and three's cache shouldn't have been affected.
-        get_fast_modinfo($coursetwo->id);
-        $cacherevtwo = $DB->get_field('course', 'cacherev', ['id' => $coursetwo->id]);
-        $this->assertEquals($prevcacherevtwo, $cacherevtwo);
-        $prevcacherevtwo = $cacherevtwo;
-
-        get_fast_modinfo($coursethree->id);
-        $cacherevthree = $DB->get_field('course', 'cacherev', ['id' => $coursethree->id]);
-        $this->assertEquals($prevcacherevthree, $cacherevthree);
-        $prevcacherevthree = $cacherevthree;
-
-        // Purge course two and three's cache. Cacherev must be incremented (but only for
-        // course two and three, then check course one hasn't changed in next step).
-        course_modinfo::purge_course_caches([$coursetwo->id, $coursethree->id]);
-
-        get_fast_modinfo($coursetwo->id);
-        $cacherevtwo = $DB->get_field('course', 'cacherev', ['id' => $coursetwo->id]);
-        $this->assertGreaterThan($prevcacherevtwo, $cacherevtwo);
-        $prevcacherevtwo = $cacherevtwo;
-
-        get_fast_modinfo($coursethree->id);
-        $cacherevthree = $DB->get_field('course', 'cacherev', ['id' => $coursethree->id]);
-        $this->assertGreaterThan($prevcacherevthree, $cacherevthree);
-        $prevcacherevthree = $cacherevthree;
-
-        // Confirm course one's cache shouldn't have been affected.
-        get_fast_modinfo($courseone->id);
-        $cacherevone = $DB->get_field('course', 'cacherev', ['id' => $courseone->id]);
-        $this->assertEquals($prevcacherevone, $cacherevone);
-        $prevcacherevone = $cacherevone;
-
-        // Purge all course caches. Cacherev must be incremented for all three courses.
-        course_modinfo::purge_course_caches();
-        get_fast_modinfo($courseone->id);
-        $cacherevone = $DB->get_field('course', 'cacherev', ['id' => $courseone->id]);
-        $this->assertGreaterThan($prevcacherevone, $cacherevone);
-
-        get_fast_modinfo($coursetwo->id);
-        $cacherevtwo = $DB->get_field('course', 'cacherev', ['id' => $coursetwo->id]);
-        $this->assertGreaterThan($prevcacherevtwo, $cacherevtwo);
-
-        get_fast_modinfo($coursethree->id);
-        $cacherevthree = $DB->get_field('course', 'cacherev', ['id' => $coursethree->id]);
-        $this->assertGreaterThan($prevcacherevthree, $cacherevthree);
     }
 }

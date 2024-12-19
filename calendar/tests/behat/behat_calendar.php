@@ -187,6 +187,16 @@ class behat_calendar extends behat_base {
     }
 
     /**
+     * Hover over today in the calendar.
+     *
+     * @Given /^I hover over today in the calendar$/
+     */
+    public function i_hover_over_today_in_the_calendar() {
+        $todaysday = date('j');
+        return $this->i_hover_over_day_of_this_month_in_calendar($todaysday);
+    }
+
+    /**
      * Click on today in the mini-calendar.
      *
      * @Given /^I click on today in the mini-calendar block( responsive view|)( to view the detail|)$/

@@ -125,7 +125,7 @@ EOD;
     /**
      * Test for rowspan and colspan
      */
-    public function test_check_fail(): void {
+    public function test_check_fail() {
         $results = $this->get_checker_results($this->htmlfail1);
         $this->assertNotEmpty($results);
 
@@ -136,7 +136,7 @@ EOD;
     /**
      * Test for rowspan and colspan
      */
-    public function test_check_pass(): void {
+    public function test_check_pass() {
         $results = $this->get_checker_results($this->htmlpass);
         $this->assertEmpty($results);
     }

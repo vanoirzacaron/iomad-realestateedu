@@ -27,7 +27,7 @@ class condition_test extends \advanced_testcase {
     /**
      * Tests constructing and using grade condition.
      */
-    public function test_usage(): void {
+    public function test_usage() {
         global $USER, $CFG;
         require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
@@ -141,7 +141,7 @@ class condition_test extends \advanced_testcase {
      * Tests the constructor including error conditions. Also tests the
      * string conversion feature (intended for debugging only).
      */
-    public function test_constructor(): void {
+    public function test_constructor() {
         // No parameters.
         $structure = new \stdClass();
         try {
@@ -205,7 +205,7 @@ class condition_test extends \advanced_testcase {
     /**
      * Tests the save() function.
      */
-    public function test_save(): void {
+    public function test_save() {
         $structure = (object)array('id' => 19);
         $cond = new condition($structure);
         $structure->type = 'grade';
@@ -235,7 +235,7 @@ class condition_test extends \advanced_testcase {
     /**
      * Tests the update_dependency_id() function.
      */
-    public function test_update_dependency_id(): void {
+    public function test_update_dependency_id() {
         $cond = new condition((object)array('id' => 123));
         $this->assertFalse($cond->update_dependency_id('frogs', 123, 456));
         $this->assertFalse($cond->update_dependency_id('grade_items', 12, 34));

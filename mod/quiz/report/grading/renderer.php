@@ -48,7 +48,7 @@ class quiz_grading_renderer extends plugin_renderer_base {
      * @throws coding_exception
      */
     public function render_quiz_no_grade_question_notification() {
-        return $this->notification(get_string('nothingfound', 'quiz_grading'), 'info', false);
+        return $this->notification(get_string('nothingfound', 'quiz_grading'));
     }
 
     /**
@@ -99,18 +99,17 @@ class quiz_grading_renderer extends plugin_renderer_base {
      *
      * @param stdClass $counts
      * @param string $type Type of grade.
-     * @param string $string Lang string.
-     * @param string $component Lang string component.
+     * @param string $gradestring Lang string.
      * @param moodle_url $gradequestionurl Url to grade question.
      * @return string The HTML for the question grade link.
      * @throws coding_exception
      */
-    public function render_grade_link($counts, $type, $string, $component, $gradequestionurl) {
+    public function render_grade_link($counts, $type, $gradestring, $gradequestionurl) {
         $output = '';
         if ($counts->$type > 0) {
             $output .= ' ' . html_writer::link(
                             $gradequestionurl,
-                            get_string($string, $component),
+                            get_string($gradestring, 'quiz_grading'),
                             ['class' => 'gradetheselink']);
         }
         return $output;

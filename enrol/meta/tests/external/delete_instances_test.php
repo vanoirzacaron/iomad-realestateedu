@@ -44,7 +44,7 @@ class delete_instances_test extends \externallib_advanced_testcase {
     /**
      * Test delete_instances no instances.
      */
-    public function test_delete_instances_no_instances(): void {
+    public function test_delete_instances_no_instances() {
         $this->expectException(\invalid_parameter_exception::class);
         delete_instances::execute([]);
     }
@@ -52,7 +52,7 @@ class delete_instances_test extends \externallib_advanced_testcase {
     /**
      * Test delete_instances missing courses.
      */
-    public function test_delete_instances_missing_courses(): void {
+    public function test_delete_instances_missing_courses() {
         $course = self::getDataGenerator()->create_course();
 
         // Missing meta course.
@@ -75,7 +75,7 @@ class delete_instances_test extends \externallib_advanced_testcase {
     /**
      * Test delete_instances missing capabilities.
      */
-    public function test_delete_instances_missing_capabilities(): void {
+    public function test_delete_instances_missing_capabilities() {
         $metacourse = self::getDataGenerator()->create_course();
         $course = self::getDataGenerator()->create_course();
         $user = self::getDataGenerator()->create_user();
@@ -102,7 +102,7 @@ class delete_instances_test extends \externallib_advanced_testcase {
     /**
      * Test delete_instances.
      */
-    public function test_delete_instances(): void {
+    public function test_delete_instances() {
         global $DB;
         $metacourse = self::getDataGenerator()->create_course();
         $course = self::getDataGenerator()->create_course();

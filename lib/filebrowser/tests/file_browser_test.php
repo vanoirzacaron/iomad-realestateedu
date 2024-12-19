@@ -109,7 +109,7 @@ class file_browser_test extends \advanced_testcase {
     /**
      * Test "Server files" from the system context
      */
-    public function test_file_info_context_system(): void {
+    public function test_file_info_context_system() {
 
         // There is one non-empty category child and two category children.
 
@@ -126,7 +126,7 @@ class file_browser_test extends \advanced_testcase {
     /**
      * Test "Server files" from the system context, hide Misc category
      */
-    public function test_file_info_context_system_hidden(): void {
+    public function test_file_info_context_system_hidden() {
 
         // Hide the course category that contains our two courses. Teacher does not have cap to view hidden categories.
         \core_course_category::get($this->course1->category)->update(['visible' => 0]);
@@ -153,7 +153,7 @@ class file_browser_test extends \advanced_testcase {
     /**
      * Test "Server files" from the course category context
      */
-    public function test_file_info_context_coursecat(): void {
+    public function test_file_info_context_coursecat() {
 
         // There are two non-empty courses.
 
@@ -170,7 +170,7 @@ class file_browser_test extends \advanced_testcase {
     /**
      * Test "Server files" from the course category context, only look for .jpg
      */
-    public function test_file_info_context_coursecat_jpg(): void {
+    public function test_file_info_context_coursecat_jpg() {
 
         // There is one non-empty category child and two category children.
 
@@ -183,7 +183,7 @@ class file_browser_test extends \advanced_testcase {
     /**
      * Test "Server files" from the course context (course1)
      */
-    public function test_file_info_context_course_1(): void {
+    public function test_file_info_context_course_1() {
 
         $browser = get_file_browser();
         $fileinfo = $browser->get_file_info(\context_course::instance($this->course1->id));
@@ -214,7 +214,7 @@ class file_browser_test extends \advanced_testcase {
     /**
      * Test "Server files" from the course context (course1)
      */
-    public function test_file_info_context_course_2(): void {
+    public function test_file_info_context_course_2() {
 
         // 2. Start from the course level.
         $browser = get_file_browser();
@@ -236,7 +236,7 @@ class file_browser_test extends \advanced_testcase {
     /**
      * Test "Server files" from the course context (module1)
      */
-    public function test_file_info_context_module_1(): void {
+    public function test_file_info_context_module_1() {
 
         $module1context = \context_module::instance($this->module1->cmid);
         $browser = get_file_browser();
@@ -252,7 +252,7 @@ class file_browser_test extends \advanced_testcase {
     /**
      * Test "Server files" from the course context (module1)
      */
-    public function test_file_info_context_module_2(): void {
+    public function test_file_info_context_module_2() {
 
         $module2context = \context_module::instance($this->module2->cmid);
         $browser = get_file_browser();

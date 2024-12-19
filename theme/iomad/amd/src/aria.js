@@ -23,7 +23,6 @@
 
 import $ from 'jquery';
 import Pending from 'core/pending';
-import * as FocusLockManager from 'core/local/aria/focuslock';
 
 /**
  * Drop downs from bootstrap don't support keyboard accessibility by default.
@@ -79,10 +78,13 @@ const dropdownFix = () => {
         const menu = e.target.parentElement.querySelector('[role="menu"]');
         let menuItems = false;
         let foundMenuItem = false;
+        let textInput = false;
 
         if (menu) {
             menuItems = menu.querySelectorAll('[role="menuitem"]');
+            textInput = e.target.parentElement.querySelector('[data-action="search"]');
         }
+
         if (menuItems && menuItems.length > 0) {
             // Up key opens the menu at the end.
             if (trigger === 'ArrowUp') {
@@ -99,7 +101,10 @@ const dropdownFix = () => {
             }
         }
 
-        if (foundMenuItem) {
+        if (textInput) {
+            shiftFocus(textInput);
+        }
+        if (foundMenuItem && textInput === null) {
             shiftFocus(foundMenuItem);
         }
     };
@@ -193,26 +198,10 @@ const dropdownFix = () => {
         }
     });
 
-    $('.dropdown').on('shown.bs.dropdown', e => {
-        const dialog = e.target.querySelector(`#${e.relatedTarget.getAttribute('aria-controls')}[role="dialog"]`);
-        if (dialog) {
-            // Use setTimeout to make sure the dialog is positioned correctly to prevent random scrolling.
-            setTimeout(() => {
-                FocusLockManager.trapFocus(dialog);
-            });
-        }
-    });
-
     $('.dropdown').on('hidden.bs.dropdown', e => {
-        const dialog = e.target.querySelector(`#${e.relatedTarget.getAttribute('aria-controls')}[role="dialog"]`);
-        if (dialog) {
-            FocusLockManager.untrapFocus();
-        }
-
         // We need to focus on the menu trigger.
         const trigger = e.target.querySelector('[data-toggle="dropdown"]');
-        // If it's a click event, then no element is focused because the clicked element is inside a closed dropdown.
-        const focused = e.clickEvent?.target || (document.activeElement !== document.body ? document.activeElement : null);
+        const focused = document.activeElement != document.body ? document.activeElement : null;
         if (trigger && focused && e.target.contains(focused)) {
             shiftFocus(trigger, () => {
                 if (document.activeElement === document.body) {
@@ -308,9 +297,9 @@ const comboboxFix = () => {
                     if (editable && !next) {
                         next = options[options.length - 1];
                     }
-                } else if (trigger == 'Home' && !editable) {
+                } else if (trigger == 'Home') {
                     next = options[0];
-                } else if (trigger == 'End' && !editable) {
+                } else if (trigger == 'End') {
                     next = options[options.length - 1];
                 } else if ((trigger == ' ' && !editable) || trigger == 'Enter') {
                     e.preventDefault();
@@ -349,6 +338,7 @@ const comboboxFix = () => {
             const listbox = option.closest('[role="listbox"]');
             const combobox = document.querySelector(`[role="combobox"][aria-controls="${listbox.id}"]`);
             if (combobox) {
+                combobox.focus();
                 selectOption(combobox, option);
             }
         }
@@ -378,9 +368,9 @@ const comboboxFix = () => {
         }
 
         if (combobox.hasAttribute('value')) {
-            combobox.value = option.dataset.shortText || option.textContent.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim();
+            combobox.value = option.textContent.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim();
         } else {
-            combobox.textContent = option.dataset.shortText || option.textContent;
+            combobox.textContent = option.textContent;
         }
 
         if (combobox.dataset.inputElement) {

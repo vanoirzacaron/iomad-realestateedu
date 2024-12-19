@@ -68,7 +68,7 @@ videojs.addLanguage('th', {
   "Raised": "ยกขึ้น",
   "Depressed": "ปล่อยออก",
   "Uniform": "รูปแบบ",
-  "Drop shadow": "เพิ่มเงา",
+  "Dropshadow": "เพิ่มเงา",
   "Font Family": "ตระกูลแบบอักษร",
   "Proportional Sans-Serif": "Sans-Serif ตามสัดส่วน",
   "Monospace Sans-Serif": "Sans-Serif ช่องว่างเดี่ยว",

@@ -91,7 +91,7 @@ abstract class handler {
     /**
      * Init session handler.
      */
-    abstract public function init();
+    public abstract function init();
 
     /**
      * Check the backend contains data for this session id.
@@ -101,17 +101,17 @@ abstract class handler {
      * @param string $sid
      * @return bool true if session found.
      */
-    abstract public function session_exists($sid);
+    public abstract function session_exists($sid);
 
     /**
      * Kill all active sessions, the core sessions table is
      * purged afterwards.
      */
-    abstract public function kill_all_sessions();
+    public abstract function kill_all_sessions();
 
     /**
      * Kill one session, the session record is removed afterwards.
      * @param string $sid
      */
-    abstract public function kill_session($sid);
+    public abstract function kill_session($sid);
 }

@@ -36,17 +36,12 @@ class setup_factor_form extends \moodleform {
      */
     public function definition(): void {
         $mform = $this->_form;
-        // Indicate a factor id that will be replaced with this setup.
-        $replaceid = $this->_customdata['replaceid'] ?? null;
-        if (!empty($replaceid)) {
-            $mform->addelement('hidden', 'replaceid', $replaceid);
-            $mform->setType('replaceid', PARAM_INT);
-        }
 
         $factorname = $this->_customdata['factorname'];
         $factor = \tool_mfa\plugininfo\factor::get_factor($factorname);
         $mform = $factor->setup_factor_form_definition($mform);
         $this->xss_whitelist_static_form_elements($mform);
+
     }
 
     /**
@@ -76,7 +71,7 @@ class setup_factor_form extends \moodleform {
         $factor = \tool_mfa\plugininfo\factor::get_factor($factorname);
         $mform = $factor->setup_factor_form_definition_after_data($mform);
         $this->xss_whitelist_static_form_elements($mform);
-        $this->add_action_buttons(true, $factor->setup_factor_form_submit_button_string());
+        $this->add_action_buttons();
     }
 
     /**

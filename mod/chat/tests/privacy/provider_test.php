@@ -52,13 +52,9 @@ class provider_test extends provider_testcase {
         global $PAGE;
         $this->resetAfterTest();
         $PAGE->get_renderer('core');
-
-        // Chat module is disabled by default, enable it for testing.
-        $manager = \core_plugin_manager::resolve_plugininfo_class('mod');
-        $manager::enable_plugin('chat', 1);
     }
 
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         global $DB;
         $dg = $this->getDataGenerator();
         $c1 = $dg->create_course();
@@ -105,7 +101,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that only users with relevant contexts are fetched.
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         $component = 'mod_chat';
         $dg = $this->getDataGenerator();
         $c1 = $dg->create_course();
@@ -167,7 +163,7 @@ class provider_test extends provider_testcase {
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
         $dg = $this->getDataGenerator();
         $c1 = $dg->create_course();
@@ -215,7 +211,7 @@ class provider_test extends provider_testcase {
         $this->assert_has_data_in_chat($u2, $chat1b);
     }
 
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
         $dg = $this->getDataGenerator();
         $c1 = $dg->create_course();
@@ -264,7 +260,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that data for users in approved userlist is deleted.
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         global $DB;
         $component = 'mod_chat';
         $dg = $this->getDataGenerator();
@@ -317,7 +313,7 @@ class provider_test extends provider_testcase {
         $this->assert_has_data_in_chat($u3, $chat2);
     }
 
-    public function test_export_data_for_user(): void {
+    public function test_export_data_for_user() {
         global $DB;
         $dg = $this->getDataGenerator();
         $c1 = $dg->create_course();

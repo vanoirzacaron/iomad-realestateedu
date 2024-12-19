@@ -39,7 +39,7 @@ class content_item_readonly_repository_test extends \advanced_testcase {
     /**
      * Test the repository method, find_all_for_course().
      */
-    public function test_find_all_for_course(): void {
+    public function test_find_all_for_course() {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -57,7 +57,7 @@ class content_item_readonly_repository_test extends \advanced_testcase {
     /**
      * Test verifying that content items for hidden modules are not returned.
      */
-    public function test_find_all_for_course_hidden_module(): void {
+    public function test_find_all_for_course_hidden_module() {
         $this->resetAfterTest();
         global $DB;
 
@@ -76,7 +76,7 @@ class content_item_readonly_repository_test extends \advanced_testcase {
     /**
      * Test confirming that all content items can be fetched, even those which require certain caps when in a course.
      */
-    public function test_find_all(): void {
+    public function test_find_all() {
         $this->resetAfterTest();
 
         global $DB, $CFG;

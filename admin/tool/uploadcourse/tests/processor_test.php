@@ -32,10 +32,9 @@ require_once($CFG->libdir . '/csvlib.class.php');
  */
 class processor_test extends \advanced_testcase {
 
-    public function test_basic(): void {
+    public function test_basic() {
         global $DB;
         $this->resetAfterTest(true);
-        $this->setAdminUser();
 
         $content = array(
             "shortname,fullname,summary",
@@ -59,7 +58,7 @@ class processor_test extends \advanced_testcase {
         $this->assertTrue($DB->record_exists('course', array('shortname' => 'c2')));
     }
 
-    public function test_restore_template_course(): void {
+    public function test_restore_template_course() {
         global $DB;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -95,7 +94,7 @@ class processor_test extends \advanced_testcase {
         $this->assertTrue($found);
     }
 
-    public function test_restore_restore_file(): void {
+    public function test_restore_restore_file() {
         global $DB;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -132,10 +131,9 @@ class processor_test extends \advanced_testcase {
         $this->assertTrue($found);
     }
 
-    public function test_shortname_template(): void {
+    public function test_shortname_template() {
         global $DB;
         $this->resetAfterTest(true);
-        $this->setAdminUser();
 
         $content = array(
             "shortname,fullname,summary,idnumber",
@@ -158,7 +156,7 @@ class processor_test extends \advanced_testcase {
         $this->assertEquals('ID123: Course 1', $c->shortname);
     }
 
-    public function test_empty_csv(): void {
+    public function test_empty_csv() {
         $this->resetAfterTest(true);
 
         $content = array();
@@ -173,7 +171,7 @@ class processor_test extends \advanced_testcase {
         $p = new tool_uploadcourse_processor($cir, $options, array());
     }
 
-    public function test_not_enough_columns(): void {
+    public function test_not_enough_columns() {
         $this->resetAfterTest(true);
 
         $content = array(
@@ -191,7 +189,7 @@ class processor_test extends \advanced_testcase {
         $p = new tool_uploadcourse_processor($cir, $options, array());
     }
 
-    public function test_preview(): void {
+    public function test_preview() {
         global $DB;
         $this->resetAfterTest(true);
 

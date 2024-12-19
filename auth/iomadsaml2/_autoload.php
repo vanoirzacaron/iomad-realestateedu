@@ -29,7 +29,7 @@ require_once('.extlib/simplesamlphp/vendor/autoload.php');
 spl_autoload_register(
     function($classname) {
         $map = [
-            'SAML2'      => 'saml2/src/',
+            'SAML2'      => 'iomadsaml2/src/',
         ];
         foreach ($map as $namespace => $subpath) {
             $classpath = explode('_', $classname);

@@ -181,25 +181,25 @@ abstract class texteditor {
      * Is editor supported in current browser?
      * @return bool
      */
-    abstract public function supported_by_browser();
+    public abstract function supported_by_browser();
 
     /**
      * Returns list of supported text formats
      * @return array Array (FORMAT=>FORMAT)
      */
-    abstract public function get_supported_formats();
+    public abstract function get_supported_formats();
 
     /**
      * Returns main preferred text format.
      * @return int text format
      */
-    abstract public function get_preferred_format();
+    public abstract function get_preferred_format();
 
     /**
      * Supports file picker and repos?
      * @return object book object
      */
-    abstract public function supports_repositories();
+    public abstract function supports_repositories();
 
     /**
      * @var string $text The text set to the editor in the form.
@@ -234,7 +234,7 @@ abstract class texteditor {
      * @param obejct $fpoptions file picker options
      * @return void
      */
-    abstract public function use_editor($elementid, array $options=null, $fpoptions = null);
+    public abstract function use_editor($elementid, array $options=null, $fpoptions = null);
 
     /**
      * Setup all JS and CSS needed for editor.

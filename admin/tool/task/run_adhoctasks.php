@@ -115,8 +115,6 @@ if (!$confirmed) {
 require_sesskey();
 
 \core\session\manager::write_close();
-echo $OUTPUT->footer();
-echo $OUTPUT->select_element_for_append();
 
 // Prepare to handle output via mtrace.
 require_once("{$CFG->dirroot}/{$CFG->admin}/tool/task/lib.php");
@@ -126,7 +124,7 @@ $CFG->mtrace_wrapper = 'tool_task_mtrace_wrapper';
 if ($taskid) {
     $repeat = $DB->get_record('task_adhoc', ['id' => $taskid]);
 
-    echo html_writer::start_tag('pre', ['class' => 'task-output']);
+    echo html_writer::start_tag('pre');
     \core\task\manager::run_adhoc_from_cli($taskid);
     echo html_writer::end_tag('pre');
 } else {
@@ -135,13 +133,13 @@ if ($taskid) {
     // Run failed first (if any). We have to run them separately anyway,
     // because faildelay is observed if failed flag is not true.
     echo html_writer::tag('p', get_string('runningfailedtasks', 'tool_task'), ['class' => 'lead']);
-    echo html_writer::start_tag('pre', ['class' => 'task-output']);
+    echo html_writer::start_tag('pre');
     \core\task\manager::run_all_adhoc_from_cli(true, $classname);
     echo html_writer::end_tag('pre');
 
     if (!$failedonly) {
         echo html_writer::tag('p', get_string('runningalltasks', 'tool_task'), ['class' => 'lead']);
-        echo html_writer::start_tag('pre', ['class' => 'task-output']);
+        echo html_writer::start_tag('pre');
         \core\task\manager::run_all_adhoc_from_cli(false, $classname);
         echo html_writer::end_tag('pre');
     }
@@ -163,3 +161,4 @@ echo html_writer::div(
     )
 );
 
+echo $OUTPUT->footer();

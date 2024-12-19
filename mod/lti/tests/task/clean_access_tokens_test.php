@@ -38,7 +38,7 @@ class clean_access_tokens_test extends \advanced_testcase {
     /**
      * Test the cleanup task.
      */
-    public function test_cleanup_task(): void {
+    public function test_cleanup_task() {
         global $DB;
 
         $time = time();

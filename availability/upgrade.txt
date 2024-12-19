@@ -2,7 +2,7 @@ This files describes API changes in /availability/*.
 
 The information here is intended only for developers.
 
-=== 4.4.1 ===
+=== 4.3.5 ===
 * The base class `info::get_groups` method has a `$userid` parameter to specify for which user you want to retrieve course groups (defaults
   to current user)
 

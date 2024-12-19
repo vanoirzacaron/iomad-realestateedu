@@ -209,10 +209,12 @@ class iomadnavbar_test extends \advanced_testcase {
 
         $rc = new \ReflectionClass(iomadnavbar::class);
         $rcp = $rc->getProperty('items');
+        $rcp->setAccessible(true);
         $rcp->setValue($iomadnavbar, $page->navbar->get_items());
 
         // Make the call to the function.
         $rcm = $rc->getMethod('remove_no_link_items');
+        $rcm->setAccessible(true);
         $rcm->invoke($iomadnavbar, $removesectionnodes);
 
         // Get the value for the class variable that the function modifies.
@@ -386,10 +388,12 @@ class iomadnavbar_test extends \advanced_testcase {
 
         $rc = new \ReflectionClass(iomadnavbar::class);
         $rcp = $rc->getProperty('items');
+        $rcp->setAccessible(true);
         $rcp->setValue($iomadnavbar, $page->navbar->get_items());
 
         // Make the call to the function.
         $rcm = $rc->getMethod('remove_duplicate_items');
+        $rcm->setAccessible(true);
         $rcm->invoke($iomadnavbar);
 
         // Get the value for the class variable that the function modifies.
@@ -523,10 +527,12 @@ class iomadnavbar_test extends \advanced_testcase {
 
         $rc = new \ReflectionClass(iomadnavbar::class);
         $rcp = $rc->getProperty('items');
+        $rcp->setAccessible(true);
         $rcp->setValue($iomadnavbar, $page->navbar->get_items());
 
         // Make the call to the function.
         $rcm = $rc->getMethod('remove_items_that_exist_in_navigation');
+        $rcm->setAccessible(true);
         $rcm->invoke($iomadnavbar, $navigationmenu);
 
         // Get the value for the class variable that the function modifies.

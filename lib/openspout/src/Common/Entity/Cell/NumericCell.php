@@ -9,15 +9,15 @@ use OpenSpout\Common\Entity\Style\Style;
 
 final class NumericCell extends Cell
 {
-    private readonly float|int $value;
+    private int|float $value;
 
-    public function __construct(float|int $value, ?Style $style)
+    public function __construct(int|float $value, ?Style $style)
     {
         $this->value = $value;
         parent::__construct($style);
     }
 
-    public function getValue(): float|int
+    public function getValue(): int|float
     {
         return $this->value;
     }

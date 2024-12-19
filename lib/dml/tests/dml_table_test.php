@@ -35,7 +35,7 @@ class dml_table_test extends \database_driver_testcase {
      *
      * @return  array
      */
-    public function get_field_select_provider(): array {
+    public static function get_field_select_provider(): array {
         return [
             'single field' => [
                 'tablename' => 'test_table_single',
@@ -81,7 +81,7 @@ class dml_table_test extends \database_driver_testcase {
         string $fieldprefix,
         string $tablealias,
         string $expected
-    ): void {
+    ) {
         $dbman = $this->tdb->get_manager();
 
         $xmldbtable = new xmldb_table($tablename);
@@ -102,7 +102,7 @@ class dml_table_test extends \database_driver_testcase {
      *
      * @return  array
      */
-    public function extract_from_result_provider(): array {
+    public static function extract_from_result_provider(): array {
         return [
             'single table' => [
                 'fieldlist' => [
@@ -165,7 +165,7 @@ class dml_table_test extends \database_driver_testcase {
         string $fieldprefix,
         \stdClass $result,
         \stdClass $expected
-    ): void {
+    ) {
         $dbman = $this->tdb->get_manager();
 
         $tablename = 'test_table_extraction';
@@ -201,7 +201,7 @@ class dml_table_test extends \database_driver_testcase {
         string $fieldprefix,
         string $tablealias,
         string $expected
-    ): void {
+    ) {
         $dbman = $this->tdb->get_manager();
 
         $tablename = 'test_table_extraction';

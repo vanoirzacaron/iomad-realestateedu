@@ -62,7 +62,7 @@ class backup_cleanup_task_test extends \advanced_testcase {
     /**
      * Test the task idle run. Nothing should explode.
      */
-    public function test_backup_cleanup_task_idle(): void {
+    public function test_backup_cleanup_task_idle() {
         $task = new \core\task\backup_cleanup_task();
         $task->execute();
     }
@@ -70,7 +70,7 @@ class backup_cleanup_task_test extends \advanced_testcase {
     /**
      * Test the task exits when backup | loglifetime setting is not set.
      */
-    public function test_backup_cleanup_task_exits(): void {
+    public function test_backup_cleanup_task_exits() {
         set_config('loglifetime', 0, 'backup');
         $task = new \core\task\backup_cleanup_task();
         ob_start();
@@ -83,7 +83,7 @@ class backup_cleanup_task_test extends \advanced_testcase {
     /**
      * Test the task deletes records from DB.
      */
-    public function test_backup_cleanup_task_deletes_records(): void {
+    public function test_backup_cleanup_task_deletes_records() {
         global $DB;
 
         // Create a course.
@@ -115,7 +115,7 @@ class backup_cleanup_task_test extends \advanced_testcase {
     /**
      * Test the task deletes files from file system.
      */
-    public function test_backup_cleanup_task_deletes_files(): void {
+    public function test_backup_cleanup_task_deletes_files() {
         global $CFG;
 
         // Create a course.

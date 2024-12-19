@@ -55,7 +55,7 @@ class exporters_discussion_test extends \advanced_testcase {
     /**
      * Test the export function returns expected values.
      */
-    public function test_export(): void {
+    public function test_export() {
         global $PAGE;
         $this->resetAfterTest();
 

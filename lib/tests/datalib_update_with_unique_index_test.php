@@ -26,40 +26,40 @@ namespace core;
  */
 class datalib_update_with_unique_index_test extends \advanced_testcase {
 
-    public function test_decompose_update_into_safe_changes_identity(): void {
+    public function test_decompose_update_into_safe_changes_identity() {
         $this->assertEquals(array(), decompose_update_into_safe_changes(
                 array(1 => 1, 2 => 2), -1));
     }
 
-    public function test_decompose_update_into_safe_changes_no_overlap(): void {
+    public function test_decompose_update_into_safe_changes_no_overlap() {
         $this->assertEquals(array(array(1, 3), array(2, 4)), decompose_update_into_safe_changes(
                 array(1 => 3, 2 => 4), -1));
     }
 
-    public function test_decompose_update_into_safe_changes_shift(): void {
+    public function test_decompose_update_into_safe_changes_shift() {
         $this->assertSame(array(array(3, 4), array(2, 3), array(1, 2)), decompose_update_into_safe_changes(
                 array(1 => 2, 2 => 3, 3 => 4), -1));
     }
 
-    public function test_decompose_decompose_update_into_safe_changes_simple_swap(): void {
+    public function test_decompose_decompose_update_into_safe_changes_simple_swap() {
         $this->assertEquals(array(array(1, -1), array(2, 1), array(-1, 2)), decompose_update_into_safe_changes(
                 array(1 => 2, 2 => 1), -1));
     }
 
-    public function test_decompose_update_into_safe_changes_cycle(): void {
+    public function test_decompose_update_into_safe_changes_cycle() {
         $this->assertEquals(array(array(1, -2), array(3, 1), array(2, 3), array(-2, 2)),
                 decompose_update_into_safe_changes(
                 array(1 => 2, 2 => 3 , 3 => 1), -2));
     }
 
-    public function test_decompose_update_into_safe_changes_complex(): void {
+    public function test_decompose_update_into_safe_changes_complex() {
         $this->assertEquals(array(array(9, 10), array(8, 9),
                 array(1, -1), array(5, 1), array(7, 5), array(-1, 7),
                 array(4, -1), array(6, 4), array(-1, 6)), decompose_update_into_safe_changes(
                 array(1 => 7, 2 => 2, 3 => 3, 4 => 6, 5 => 1, 6 => 4, 7 => 5, 8 => 9, 9 => 10), -1));
     }
 
-    public function test_decompose_update_into_safe_changes_unused_value_id_used(): void {
+    public function test_decompose_update_into_safe_changes_unused_value_id_used() {
         try {
             decompose_update_into_safe_changes(array(1 => 1), 1);
             $this->fail('Expected exception was not thrown');
@@ -68,7 +68,7 @@ class datalib_update_with_unique_index_test extends \advanced_testcase {
         }
     }
 
-    public function test_decompose_update_into_safe_changes_string_values(): void {
+    public function test_decompose_update_into_safe_changes_string_values() {
         // Sometimes this happens when data has been loaded from the database.
         $this->assertEquals(array(array(1, -1), array(2, 1),
                     array(3, 2), array(4, 3), array(-1, 4)),
@@ -76,7 +76,7 @@ class datalib_update_with_unique_index_test extends \advanced_testcase {
                     array(1 => '4', 2 => '1', 3 => '2', 4 => '3'), -1));
     }
 
-    public function test_reorder_rows(): void {
+    public function test_reorder_rows() {
         global $DB;
         $dbman = $DB->get_manager();
         $this->resetAfterTest();

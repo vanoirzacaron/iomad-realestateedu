@@ -1929,7 +1929,7 @@ class file_storage {
     /**
      * When user referring to a moodle file, we build the reference field
      *
-     * @param array|stdClass $params
+     * @param array $params
      * @return string
      */
     public static function pack_reference($params) {

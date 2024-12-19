@@ -66,7 +66,7 @@ EOD;
     /**
      * Test for missing embed element within object element.
      */
-    public function test_check_fail(): void {
+    public function test_check_fail() {
         $results = $this->get_checker_results($this->htmlfail);
         $this->assertTrue($results[0]->element->tagName == 'object');
     }
@@ -74,7 +74,7 @@ EOD;
     /**
      * Test for present embed element within object element.
      */
-    public function test_check_pass(): void {
+    public function test_check_pass() {
         $results = $this->get_checker_results($this->htmlpass);
         $this->assertEmpty($results);
     }

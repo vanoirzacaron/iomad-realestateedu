@@ -40,7 +40,7 @@ class services_content_item_service_test extends \advanced_testcase {
     /**
      * Test confirming that content items are returned by the service.
      */
-    public function test_get_content_items_for_user_in_course_basic(): void {
+    public function test_get_content_items_for_user_in_course_basic() {
         $this->resetAfterTest();
 
         // Create a user in a course.
@@ -51,21 +51,21 @@ class services_content_item_service_test extends \advanced_testcase {
         $contentitems = $cis->get_content_items_for_user_in_course($user, $course);
 
         foreach ($contentitems as $key => $contentitem) {
-            $this->assertObjectHasProperty('id', $contentitem);
-            $this->assertObjectHasProperty('name', $contentitem);
-            $this->assertObjectHasProperty('title', $contentitem);
-            $this->assertObjectHasProperty('link', $contentitem);
-            $this->assertObjectHasProperty('icon', $contentitem);
-            $this->assertObjectHasProperty('help', $contentitem);
-            $this->assertObjectHasProperty('archetype', $contentitem);
-            $this->assertObjectHasProperty('componentname', $contentitem);
+            $this->assertObjectHasAttribute('id', $contentitem);
+            $this->assertObjectHasAttribute('name', $contentitem);
+            $this->assertObjectHasAttribute('title', $contentitem);
+            $this->assertObjectHasAttribute('link', $contentitem);
+            $this->assertObjectHasAttribute('icon', $contentitem);
+            $this->assertObjectHasAttribute('help', $contentitem);
+            $this->assertObjectHasAttribute('archetype', $contentitem);
+            $this->assertObjectHasAttribute('componentname', $contentitem);
         }
     }
 
     /**
      * Test confirming that access control is performed when asking the service to return content items for a user in a course.
      */
-    public function test_get_content_items_for_user_in_course_permissions(): void {
+    public function test_get_content_items_for_user_in_course_permissions() {
         $this->resetAfterTest();
         global $DB;
 
@@ -89,7 +89,7 @@ class services_content_item_service_test extends \advanced_testcase {
     /**
      * Test confirming that params can be added to the content item's link.
      */
-    public function test_get_content_item_for_user_in_course_link_params(): void {
+    public function test_get_content_item_for_user_in_course_link_params() {
         $this->resetAfterTest();
 
         // Create a user in a course.
@@ -107,7 +107,7 @@ class services_content_item_service_test extends \advanced_testcase {
     /**
      * Test confirming that all content items can be fetched irrespective of permissions.
      */
-    public function test_get_all_content_items(): void {
+    public function test_get_all_content_items() {
         $this->resetAfterTest();
         global $DB;
 
@@ -147,7 +147,7 @@ class services_content_item_service_test extends \advanced_testcase {
     /**
      * Test confirming that content items which title match a certain pattern can be fetched irrespective of permissions.
      */
-    public function test_get_content_items_by_name_pattern(): void {
+    public function test_get_content_items_by_name_pattern() {
         $this->resetAfterTest();
 
         // Create a user in a course.
@@ -176,7 +176,7 @@ class services_content_item_service_test extends \advanced_testcase {
     /**
      * Test confirming that a content item can be added to a user's favourites.
      */
-    public function test_add_to_user_favourites(): void {
+    public function test_add_to_user_favourites() {
         $this->resetAfterTest();
 
         // Create a user in a course.
@@ -206,7 +206,7 @@ class services_content_item_service_test extends \advanced_testcase {
     /**
      * Test verifying that content items can be removed from a user's favourites.
      */
-    public function test_remove_from_user_favourites(): void {
+    public function test_remove_from_user_favourites() {
         $this->resetAfterTest();
 
         // Create a user in a course.
@@ -238,7 +238,7 @@ class services_content_item_service_test extends \advanced_testcase {
     /**
      * Test that toggling a recommendation works as anticipated.
      */
-    public function test_toggle_recommendation(): void {
+    public function test_toggle_recommendation() {
         $this->resetAfterTest();
 
         // Create a user in a course.

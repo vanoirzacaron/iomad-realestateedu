@@ -33,7 +33,7 @@ class user_test extends \advanced_testcase {
         $this->resetAfterTest(true);
     }
 
-    public function test_get_user(): void {
+    public function test_get_user() {
         global $CFG;
 
 
@@ -83,7 +83,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test get_user_by_username method.
      */
-    public function test_get_user_by_username(): void {
+    public function test_get_user_by_username() {
         $record = array();
         $record['username'] = 'johndoe';
         $record['email'] = 'johndoe@example.com';
@@ -112,7 +112,7 @@ class user_test extends \advanced_testcase {
         $this->assertFalse(\core_user::get_user_by_username('janedoe'));
     }
 
-    public function test_search(): void {
+    public function test_search() {
         global $DB;
 
         self::init_search_tests();
@@ -178,12 +178,12 @@ class user_test extends \advanced_testcase {
         $this->assertEquals('House', $result[0]->lastname);
         $this->assertEquals('house@x.x', $result[0]->email);
         $this->assertEquals(0, $result[0]->deleted);
-        $this->assertObjectHasProperty('firstnamephonetic', $result[0]);
-        $this->assertObjectHasProperty('lastnamephonetic', $result[0]);
-        $this->assertObjectHasProperty('middlename', $result[0]);
-        $this->assertObjectHasProperty('alternatename', $result[0]);
-        $this->assertObjectHasProperty('imagealt', $result[0]);
-        $this->assertObjectHasProperty('username', $result[0]);
+        $this->assertObjectHasAttribute('firstnamephonetic', $result[0]);
+        $this->assertObjectHasAttribute('lastnamephonetic', $result[0]);
+        $this->assertObjectHasAttribute('middlename', $result[0]);
+        $this->assertObjectHasAttribute('alternatename', $result[0]);
+        $this->assertObjectHasAttribute('imagealt', $result[0]);
+        $this->assertObjectHasAttribute('username', $result[0]);
 
         // Now search by lastname, both names, and partials, case-insensitive.
         $this->assertEquals($result, \core_user::search('House'));
@@ -317,7 +317,7 @@ class user_test extends \advanced_testcase {
     /**
      * Tests the search() function with limits on the number to return.
      */
-    public function test_search_with_count(): void {
+    public function test_search_with_count() {
         self::init_search_tests();
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
@@ -346,7 +346,7 @@ class user_test extends \advanced_testcase {
      * are not in the same group. This is checked by the user profile permission thing and not
      * currently by the original query.
      */
-    public function test_search_group_permissions(): void {
+    public function test_search_group_permissions() {
         global $DB;
 
         self::init_search_tests();
@@ -389,7 +389,7 @@ class user_test extends \advanced_testcase {
      * are not in the same group. This is checked by the user profile permission thing and not
      * currently by the original query.
      */
-    public function test_search_deleted_users(): void {
+    public function test_search_deleted_users() {
         self::init_search_tests();
 
         // Create one user to do the searching.
@@ -443,7 +443,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test require_active_user
      */
-    public function test_require_active_user(): void {
+    public function test_require_active_user() {
         global $DB;
 
         // Create a default user for the test.
@@ -511,7 +511,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test get_property_definition() method.
      */
-    public function test_get_property_definition(): void {
+    public function test_get_property_definition() {
         // Try to get a existing property.
         $properties = \core_user::get_property_definition('id');
         $this->assertEquals($properties['type'], PARAM_INT);
@@ -536,7 +536,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test validate() method.
      */
-    public function test_validate(): void {
+    public function test_validate() {
 
         // Create user with just with username and firstname.
         $record = array('username' => 's10', 'firstname' => 'Bebe Stevens');
@@ -566,7 +566,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test clean_data() method.
      */
-    public function test_clean_data(): void {
+    public function test_clean_data() {
         $this->resetAfterTest(false);
 
         $user = new \stdClass();
@@ -593,7 +593,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test clean_field() method.
      */
-    public function test_clean_field(): void {
+    public function test_clean_field() {
 
         // Create a 'malicious' user object/
         $user = new \stdClass();
@@ -619,7 +619,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test get_property_type() method.
      */
-    public function test_get_property_type(): void {
+    public function test_get_property_type() {
 
         // Fetch valid properties and verify if the type is correct.
         $type = \core_user::get_property_type('username');
@@ -642,7 +642,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test get_property_null() method.
      */
-    public function test_get_property_null(): void {
+    public function test_get_property_null() {
         // Fetch valid properties and verify if it is NULL_ALLOWED or NULL_NOT_ALLOWED.
         $property = \core_user::get_property_null('username');
         $this->assertEquals(NULL_NOT_ALLOWED, $property);
@@ -666,7 +666,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test get_property_choices() method.
      */
-    public function test_get_property_choices(): void {
+    public function test_get_property_choices() {
 
         // Test against country property choices.
         $choices = \core_user::get_property_choices('country');
@@ -701,7 +701,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test get_property_default().
      */
-    public function test_get_property_default(): void {
+    public function test_get_property_default() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -735,7 +735,7 @@ class user_test extends \advanced_testcase {
     /**
      * Ensure that the noreply user is not cached.
      */
-    public function test_get_noreply_user(): void {
+    public function test_get_noreply_user() {
         global $CFG;
 
         // Create a new fake language 'xx' with the 'noreplyname'.
@@ -758,7 +758,7 @@ class user_test extends \advanced_testcase {
     /**
      * Test is_real_user method.
      */
-    public function test_is_real_user(): void {
+    public function test_is_real_user() {
         global $CFG, $USER;
 
         // Real users are real users.
@@ -798,7 +798,7 @@ class user_test extends \advanced_testcase {
     /**
      * Tests for the {@see \core_user::awaiting_action()} method.
      */
-    public function test_awaiting_action(): void {
+    public function test_awaiting_action() {
         global $CFG, $DB, $USER;
 
         $guest = \core_user::get_user($CFG->siteguest);
@@ -850,7 +850,7 @@ class user_test extends \advanced_testcase {
      *
      * @covers \core_user::get_fullname
      */
-    public function test_display_name(): void {
+    public function test_display_name() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user(['firstname' => 'John', 'lastname' => 'Doe']);
@@ -880,7 +880,7 @@ class user_test extends \advanced_testcase {
      *
      * @covers \core_user::get_profile_url
      */
-    public function test_display_profile_url(): void {
+    public function test_display_profile_url() {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user(['firstname' => 'John', 'lastname' => 'Doe']);
@@ -907,7 +907,7 @@ class user_test extends \advanced_testcase {
      *
      * @covers \core_user::get_profile_picture
      */
-    public function test_display_profile_picture(): void {
+    public function test_display_profile_picture() {
         global $OUTPUT, $CFG;
         $this->resetAfterTest();
 

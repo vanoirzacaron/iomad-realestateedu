@@ -14,8 +14,9 @@ final class ColumnWidth
      * @param positive-int $end
      */
     public function __construct(
-        public readonly int $start,
-        public readonly int $end,
-        public readonly float $width,
-    ) {}
+        public int $start,
+        public int $end,
+        public float $width,
+    ) {
+    }
 }

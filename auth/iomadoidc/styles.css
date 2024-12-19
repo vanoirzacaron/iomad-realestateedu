@@ -11,7 +11,3 @@
 .auth_iomadoidc_ucp_indicator h5 + span {
     display: block;
 }
-
-.cert_textarea textarea {
-    font-family: 'Courier New', Courier, monospace;
-}

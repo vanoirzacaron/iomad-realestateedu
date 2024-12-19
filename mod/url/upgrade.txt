@@ -1,8 +1,4 @@
-This files describes API changes in the URL code.
-
-=== 4.4 ===
-
-* A new admin setting "Allow URL variables" has been added, which allows/disallows the use of variables for URL resources. Variables enable you to pass internal information, such as the user's name, as part of the URL.
+This files describes API changes in the quiz code.
 
 === 4.0 ===
 

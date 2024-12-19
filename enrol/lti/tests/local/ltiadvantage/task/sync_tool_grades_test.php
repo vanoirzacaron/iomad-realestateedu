@@ -217,7 +217,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_grade_sync_chronological_syncs(): void {
+    public function test_grade_sync_chronological_syncs() {
         $this->resetAfterTest();
 
         [$course, $resource] = $this->create_test_environment();
@@ -316,7 +316,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_grade_sync_multiple_resource_links(): void {
+    public function test_grade_sync_multiple_resource_links() {
         $this->resetAfterTest();
 
         [$course, $resource] = $this->create_test_environment();
@@ -389,7 +389,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_sync_grades_no_service_endpoint(): void {
+    public function test_sync_grades_no_service_endpoint() {
         $this->resetAfterTest();
         [$course, $resource] = $this->create_test_environment();
         $launchservice = $this->get_tool_launch_service();
@@ -420,7 +420,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_sync_grades_disabled_instance(): void {
+    public function test_sync_grades_disabled_instance() {
         $this->resetAfterTest();
         global $DB;
 
@@ -450,7 +450,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_sync_grades_deleted_context(): void {
+    public function test_sync_grades_deleted_context() {
         $this->resetAfterTest();
         global $DB;
 
@@ -487,7 +487,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_sync_grades_completion_required(): void {
+    public function test_sync_grades_completion_required() {
         $this->resetAfterTest();
         global $CFG;
         require_once($CFG->libdir . '/completionlib.php');
@@ -681,7 +681,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_sync_grades_failed_service_call(): void {
+    public function test_sync_grades_failed_service_call() {
         $this->resetAfterTest();
         [$course, $resource] = $this->create_test_environment();
         $launchservice = $this->get_tool_launch_service();
@@ -743,7 +743,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_sync_grades_coupled_lineitem(): void {
+    public function test_sync_grades_coupled_lineitem() {
         $this->resetAfterTest();
 
         [$course, $resource] = $this->create_test_environment();
@@ -817,7 +817,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_sync_grades_none_or_many_lineitems_activity_context(): void {
+    public function test_sync_grades_none_or_many_lineitems_activity_context() {
         $this->resetAfterTest();
 
         [$course, $resource] = $this->create_test_environment();
@@ -894,7 +894,7 @@ class sync_tool_grades_test extends \lti_advantage_testcase {
      *
      * @covers ::execute
      */
-    public function test_sync_grades_none_or_many_lineitems_course_context(): void {
+    public function test_sync_grades_none_or_many_lineitems_course_context() {
         $this->resetAfterTest();
 
         [$course, $tool1, $tool2, $resource] = $this->create_test_environment();

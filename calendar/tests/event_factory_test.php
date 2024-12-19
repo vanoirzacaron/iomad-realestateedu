@@ -35,7 +35,7 @@ class event_factory_test extends \advanced_testcase {
     /**
      * Test event class getters.
      *
-     * @dataProvider create_instance_testcases()
+     * @dataProvider create_instance_testcases
      * @param \stdClass $dbrow Row from the event table.
      * @param callable  $actioncallbackapplier     Action callback applier.
      * @param callable  $visibilitycallbackapplier Visibility callback applier.
@@ -50,7 +50,7 @@ class event_factory_test extends \advanced_testcase {
         callable $bailoutcheck,
         $expectedclass,
         $expectedattributevalue
-    ): void {
+    ) {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $event = $this->create_event();
@@ -85,7 +85,7 @@ class event_factory_test extends \advanced_testcase {
     /**
      * Test invalid callback exception.
      */
-    public function test_invalid_action_callback(): void {
+    public function test_invalid_action_callback() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $event = $this->create_event();
@@ -135,7 +135,7 @@ class event_factory_test extends \advanced_testcase {
     /**
      * Test invalid callback exception.
      */
-    public function test_invalid_visibility_callback(): void {
+    public function test_invalid_visibility_callback() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $event = $this->create_event();
@@ -185,7 +185,7 @@ class event_factory_test extends \advanced_testcase {
     /**
      * Test invalid callback exception.
      */
-    public function test_invalid_bail_callback(): void {
+    public function test_invalid_bail_callback() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $event = $this->create_event();
@@ -235,7 +235,7 @@ class event_factory_test extends \advanced_testcase {
     /**
      * Test the factory's course cache.
      */
-    public function test_course_cache(): void {
+    public function test_course_cache() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $course = self::getDataGenerator()->create_course();
@@ -288,7 +288,7 @@ class event_factory_test extends \advanced_testcase {
     /**
      * Test the factory's module cache.
      */
-    public function test_module_cache(): void {
+    public function test_module_cache() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $course = self::getDataGenerator()->create_course();
@@ -346,7 +346,7 @@ class event_factory_test extends \advanced_testcase {
      *
      * @return array Array of testcases.
      */
-    public function create_instance_testcases() {
+    public static function create_instance_testcases(): array {
         return [
             'Sample event record with event exposed' => [
                 'dbrow' => (object)[

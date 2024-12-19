@@ -43,7 +43,7 @@ class moodlenet_get_shared_course_info_test extends externallib_advanced_testcas
      *
      * @covers ::execute
      */
-    public function test_moodlenet_get_shared_course_info(): void {
+    public function test_moodlenet_get_shared_course_info() {
         global $CFG;
         $this->resetAfterTest();
         $this->setAdminUser();

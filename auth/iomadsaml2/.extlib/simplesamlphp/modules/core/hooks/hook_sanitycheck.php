@@ -2,35 +2,33 @@
 
 declare(strict_types=1);
 
-use SimpleSAML\Assert\Assert;
-use SimpleSAML\Configuration;
-use SimpleSAML\Module;
-
 /**
  * Hook to do sanitycheck
  *
  * @param array &$hookinfo  hookinfo
+ * @return void
  */
-function core_hook_sanitycheck(array &$hookinfo): void
+function core_hook_sanitycheck(&$hookinfo)
 {
-    Assert::keyExists($hookinfo, 'errors');
-    Assert::keyExists($hookinfo, 'info');
+    assert(is_array($hookinfo));
+    assert(array_key_exists('errors', $hookinfo));
+    assert(array_key_exists('info', $hookinfo));
 
-    $config = Configuration::getInstance();
+    $config = \SimpleSAML\Configuration::getInstance();
 
-    if ($config->getOptionalString('auth.adminpassword', '123') === '123') {
+    if ($config->getString('auth.adminpassword', '123') === '123') {
         $hookinfo['errors'][] = '[core] Password in config.php is not set properly';
     } else {
         $hookinfo['info'][] = '[core] Password in config.php is set properly';
     }
 
-    if ($config->getOptionalString('technicalcontact_email', 'na@example.org') === 'na@example.org') {
+    if ($config->getString('technicalcontact_email', 'na@example.org') === 'na@example.org') {
         $hookinfo['errors'][] = '[core] In config.php technicalcontact_email is not set properly';
     } else {
         $hookinfo['info'][] = '[core] In config.php technicalcontact_email is set properly';
     }
 
-    if (version_compare(phpversion(), '7.4', '>=')) {
+    if (version_compare(phpversion(), '7.1', '>=')) {
         $hookinfo['info'][] = '[core] You are running a PHP version suitable for SimpleSAMLphp.';
     } else {
         $hookinfo['errors'][] = '[core] You are running an old PHP installation. ' .
@@ -41,8 +39,8 @@ function core_hook_sanitycheck(array &$hookinfo): void
     $mihookinfo = [
         'info' => &$info,
     ];
-    $availmodules = Module::getModules();
-    Module::callHooks('moduleinfo', $mihookinfo);
+    $availmodules = SimpleSAML\Module::getModules();
+    SimpleSAML\Module::callHooks('moduleinfo', $mihookinfo);
     foreach ($info as $mi => $i) {
         if (isset($i['dependencies']) && is_array($i['dependencies'])) {
             foreach ($i['dependencies'] as $dep) {

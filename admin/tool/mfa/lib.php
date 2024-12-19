@@ -107,6 +107,24 @@ function tool_mfa_after_config(): void {
 }
 
 /**
+ * Any plugin typically an admin tool can add new bulk user actions
+ *
+ * @return array
+ */
+function tool_mfa_bulk_user_actions(): array {
+    if (!has_capability('moodle/site:config', context_system::instance())) {
+        return [];
+    }
+
+    return [
+        'tool_mfa_reset_factors' => new action_link(
+            new moodle_url('/admin/tool/mfa/reset_factor.php'),
+            get_string('resetfactor', 'tool_mfa')
+        ),
+    ];
+}
+
+/**
  * Serves any files for the guidance page.
  *
  * @param stdClass $course
@@ -137,36 +155,4 @@ function tool_mfa_pluginfile(stdClass $course, stdClass $cm, context $context, s
     send_file($file, $file->get_filename());
 
     return true;
-}
-
-/**
- * Fragment to confirm a factor action using the confirmation form.
- *
- * @param array $args Arguments to the form.
- * @return null|string The rendered form.
- */
-function tool_mfa_output_fragment_factor_action_confirmation_form(
-    array $args,
-): ?string {
-    // Check args are not empty.
-    foreach ($args as $key => $arg) {
-        if (empty($arg)) {
-            throw new \moodle_exception('missingparam', 'error', '', $key);
-        }
-    }
-
-    $customdata = [
-        'action' => $args['action'],
-        'factor' => $args['factor'],
-        'factorid' => $args['factorid'],
-        'devicename' => $args['devicename'],
-    ];
-    // Indicate we are performing a replacement by include the replace id.
-    if ($args['action'] === 'replace') {
-        $customdata['replaceid'] = $args['factorid'];
-    }
-
-    $mform = new tool_mfa\local\form\factor_action_confirmation_form($args['actionurl'], $customdata);
-
-    return $mform->render();
 }

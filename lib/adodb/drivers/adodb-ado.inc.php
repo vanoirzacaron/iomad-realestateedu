@@ -208,6 +208,10 @@ class ADODB_ado extends ADOConnection {
 		return empty($arr) ? $false : $arr;
 	}
 
+
+
+
+	/* returns queryID or false */
 	function _query($sql,$inputarr=false)
 	{
 
@@ -500,7 +504,7 @@ class ADORecordSet_ado extends ADORecordSet {
 			$t = $fieldobj->type;
 			$len = $fieldobj->max_length;
 		}
-
+		
 		if (array_key_exists($t,$this->connection->customActualTypes))
 			return  $this->connection->customActualTypes[$t];
 

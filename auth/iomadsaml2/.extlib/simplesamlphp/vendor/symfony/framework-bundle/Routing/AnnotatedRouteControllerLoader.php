@@ -24,8 +24,10 @@ class AnnotatedRouteControllerLoader extends AnnotationClassLoader
 {
     /**
      * Configures the _controller default parameter of a given Route instance.
+     *
+     * @param object $annot The annotation class instance
      */
-    protected function configureRoute(Route $route, \ReflectionClass $class, \ReflectionMethod $method, object $annot)
+    protected function configureRoute(Route $route, \ReflectionClass $class, \ReflectionMethod $method, $annot)
     {
         if ('__invoke' === $method->getName()) {
             $route->setDefault('_controller', $class->getName());
@@ -41,12 +43,14 @@ class AnnotatedRouteControllerLoader extends AnnotationClassLoader
      */
     protected function getDefaultRouteName(\ReflectionClass $class, \ReflectionMethod $method)
     {
-        $name = preg_replace('/(bundle|controller)_/', '_', parent::getDefaultRouteName($class, $method));
-
-        if (str_ends_with($method->name, 'Action') || str_ends_with($method->name, '_action')) {
-            $name = preg_replace('/action(_\d+)?$/', '\\1', $name);
-        }
-
-        return str_replace('__', '_', $name);
+        return preg_replace([
+            '/(bundle|controller)_/',
+            '/action(_\d+)?$/',
+            '/__/',
+        ], [
+            '_',
+            '\\1',
+            '_',
+        ], parent::getDefaultRouteName($class, $method));
     }
 }

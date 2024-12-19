@@ -70,16 +70,7 @@ class ADODB_oci8po extends ADODB_oci8 {
 		return ADOConnection::SelectLimit($sql, $nrows, $offset, $inputarr, $secs2cache);
 	}
 
-	/**
-	 * Execute a query.
-	 *
-	 * Emulate handling of parameters ? ?, replacing with :bind0 :bind1
-	 *
-	 * @param string|array $sql        Query to execute.
-	 * @param array        $inputarr   An optional array of parameters.
-	 *
-	 * @return mixed|bool Query identifier or true if execution successful, false if failed.
-	 */
+	// emulate handling of parameters ? ?, replacing with :bind0 :bind1
 	function _query($sql,$inputarr=false)
 	{
 		if (is_array($inputarr)) {

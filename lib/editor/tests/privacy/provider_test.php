@@ -41,7 +41,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * When no preference exists, there should be no export.
      */
-    public function test_no_preference(): void {
+    public function test_no_preference() {
         global $USER;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -55,7 +55,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * When preference exists but is empty, there should be no export.
      */
-    public function test_empty_preference(): void {
+    public function test_empty_preference() {
         $this->resetAfterTest();
 
         // Create test user, add some preferences.
@@ -77,7 +77,7 @@ class provider_test extends \core_privacy\tests\provider_testcase {
     /**
      * When an editor is set, the name of that editor will be reported.
      */
-    public function test_editor_atto(): void {
+    public function test_editor_atto() {
         $this->resetAfterTest();
 
         // Create test user, add some preferences.

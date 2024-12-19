@@ -47,7 +47,7 @@ class provider_test extends provider_testcase {
     /**
      * Test getting the context for the user ID related to this plugin.
      */
-    public function test_get_contexts_for_userid(): void {
+    public function test_get_contexts_for_userid() {
         global $DB;
         // Create profile category.
         $categoryid = $this->add_profile_category();
@@ -68,7 +68,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that data is exported correctly for this plugin.
      */
-    public function test_export_user_data(): void {
+    public function test_export_user_data() {
         // Create profile category.
         $categoryid = $this->add_profile_category();
         // Create datetime profile field.
@@ -96,7 +96,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that user data is deleted using the context.
      */
-    public function test_delete_data_for_all_users_in_context(): void {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
         // Create profile category.
         $categoryid = $this->add_profile_category();
@@ -124,7 +124,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that user data is deleted for this user.
      */
-    public function test_delete_data_for_user(): void {
+    public function test_delete_data_for_user() {
         global $DB;
         // Create profile category.
         $categoryid = $this->add_profile_category();
@@ -154,7 +154,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that only users with a user context are fetched.
      */
-    public function test_get_users_in_context(): void {
+    public function test_get_users_in_context() {
         $this->resetAfterTest();
 
         $component = 'profilefield_datetime';
@@ -192,7 +192,7 @@ class provider_test extends provider_testcase {
     /**
      * Test that data for users in approved userlist is deleted.
      */
-    public function test_delete_data_for_users(): void {
+    public function test_delete_data_for_users() {
         $this->resetAfterTest();
 
         $component = 'profilefield_datetime';

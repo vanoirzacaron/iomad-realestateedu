@@ -29,7 +29,7 @@ class printable_test extends \advanced_testcase {
     /**
      * Test tool name.
      */
-    public function test_toolname(): void {
+    public function test_toolname() {
         $this->resetAfterTest();
 
         $object = new printable();
@@ -40,7 +40,7 @@ class printable_test extends \advanced_testcase {
     /**
      * Test tool short name.
      */
-    public function test_toolshortname(): void {
+    public function test_toolshortname() {
         $this->resetAfterTest();
 
         $object = new printable();
@@ -51,7 +51,7 @@ class printable_test extends \advanced_testcase {
     /**
      * Test plugin name.
      */
-    public function test_pluginname(): void {
+    public function test_pluginname() {
         $this->resetAfterTest();
 
         $object = new printable();
@@ -77,7 +77,7 @@ class printable_test extends \advanced_testcase {
     /**
      * Test get output.
      */
-    public function test_get_output(): void {
+    public function test_get_output() {
         $this->resetAfterTest();
         $category = $this->getDataGenerator()->create_category();
 

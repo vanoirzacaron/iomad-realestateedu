@@ -48,7 +48,7 @@ class events_test extends \advanced_testcase {
      *
      * @covers \quizaccess_seb\event\access_prevented
      */
-    public function test_event_access_prevented(): void {
+    public function test_event_access_prevented() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -98,7 +98,7 @@ class events_test extends \advanced_testcase {
      *
      * @covers \quizaccess_seb\event\access_prevented
      */
-    public function test_event_access_prevented_with_keys(): void {
+    public function test_event_access_prevented_with_keys() {
         $this->resetAfterTest();
 
         $this->setAdminUser();
@@ -146,7 +146,7 @@ class events_test extends \advanced_testcase {
      *
      * @covers \quizaccess_seb\event\template_created
      */
-    public function test_event_create_template(): void {
+    public function test_event_create_template() {
         $this->resetAfterTest();
         // Set up event with data.
         $user = $this->getDataGenerator()->create_user();

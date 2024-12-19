@@ -46,7 +46,7 @@ class admintree_test extends \advanced_testcase {
     /**
      * Adding nodes into the admin tree.
      */
-    public function test_add_nodes(): void {
+    public function test_add_nodes() {
 
         $tree = new admin_root(true);
         $tree->add('root', $one = new admin_category('one', 'One'));
@@ -104,13 +104,13 @@ class admintree_test extends \advanced_testcase {
         $this->assertEquals(array('zero', 'one', 'two', 'three', 'four', 'five', 'six'), $map);
     }
 
-    public function test_add_nodes_before_invalid1(): void {
+    public function test_add_nodes_before_invalid1() {
         $tree = new admin_root(true);
         $this->expectException(\coding_exception::class);
         $tree->add('root', new admin_externalpage('foo', 'Foo', 'http://foo.bar'), array('moodle:site/config'));
     }
 
-    public function test_add_nodes_before_invalid2(): void {
+    public function test_add_nodes_before_invalid2() {
         $tree = new admin_root(true);
         $this->expectException(\coding_exception::class);
         $tree->add('root', new admin_category('bar', 'Bar'), '');
@@ -119,7 +119,7 @@ class admintree_test extends \advanced_testcase {
     /**
      * Test that changes to config trigger events.
      */
-    public function test_config_log_created_event(): void {
+    public function test_config_log_created_event() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -156,7 +156,7 @@ class admintree_test extends \advanced_testcase {
     /**
      * Testing whether a configexecutable setting is executable.
      */
-    public function test_admin_setting_configexecutable(): void {
+    public function test_admin_setting_configexecutable() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -193,7 +193,7 @@ class admintree_test extends \advanced_testcase {
     /**
      * Saving of values.
      */
-    public function test_config_logging(): void {
+    public function test_config_logging() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -291,7 +291,7 @@ class admintree_test extends \advanced_testcase {
         return $count;
     }
 
-    public function test_preventexecpath(): void {
+    public function test_preventexecpath() {
         $this->resetAfterTest();
 
         set_config('preventexecpath', 0);
@@ -369,7 +369,7 @@ class admintree_test extends \advanced_testcase {
     /**
      * Test setting an empty duration displays the correct validation message.
      */
-    public function test_emptydurationvalue(): void {
+    public function test_emptydurationvalue() {
         $this->resetAfterTest();
         $adminsetting = new admin_setting_configduration('abc_cde/duration', 'some desc', '', '');
 
@@ -383,7 +383,7 @@ class admintree_test extends \advanced_testcase {
      * For testing the admin settings element only. Test for blocked hosts functionality can be found
      * in lib/tests/curl_security_helper_test.php
      */
-    public function test_mixedhostiplist(): void {
+    public function test_mixedhostiplist() {
         $this->resetAfterTest();
 
         $adminsetting = new admin_setting_configmixedhostiplist('abc_cde/hostiplist', 'some desc', '', '');
@@ -434,7 +434,7 @@ class admintree_test extends \advanced_testcase {
     /**
      * Verifies the $ADMIN global (adminroot cache) is properly reset when changing users, which might occur naturally during cron.
      */
-    public function test_adminroot_cache_reset(): void {
+    public function test_adminroot_cache_reset() {
         $this->resetAfterTest();
         global $DB;
         // Current user is a manager at site context, which won't have access to the 'debugging' section of the admin tree.

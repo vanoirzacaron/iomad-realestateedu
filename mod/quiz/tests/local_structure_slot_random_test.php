@@ -41,7 +41,7 @@ class local_structure_slot_random_test extends \advanced_testcase {
     /**
      * Constructor test.
      */
-    public function test_constructor(): void {
+    public function test_constructor() {
         global $SITE;
 
         $this->resetAfterTest();
@@ -82,6 +82,7 @@ class local_structure_slot_random_test extends \advanced_testcase {
 
         $rc = new \ReflectionClass('\mod_quiz\local\structure\slot_random');
         $rcp = $rc->getProperty('filtercondition');
+        $rcp->setAccessible(true);
         $record = json_decode($rcp->getValue($randomslot));
 
         $this->assertEquals($quiz->id, $randomslot->get_quiz()->id);
@@ -89,11 +90,12 @@ class local_structure_slot_random_test extends \advanced_testcase {
         $this->assertTrue($record->filters->category->filteroptions->includesubcategories);
 
         $rcp = $rc->getProperty('record');
+        $rcp->setAccessible(true);
         $record = $rcp->getValue($randomslot);
         $this->assertEquals(1, $record->maxmark);
     }
 
-    public function test_get_quiz_quiz(): void {
+    public function test_get_quiz_quiz() {
         global $SITE, $DB;
 
         $this->resetAfterTest();
@@ -129,7 +131,7 @@ class local_structure_slot_random_test extends \advanced_testcase {
         $this->assertEquals($quiz, $randomslot->get_quiz());
     }
 
-    public function test_set_quiz(): void {
+    public function test_set_quiz() {
         global $SITE, $DB;
 
         $this->resetAfterTest();
@@ -166,6 +168,7 @@ class local_structure_slot_random_test extends \advanced_testcase {
 
         $rc = new \ReflectionClass('\mod_quiz\local\structure\slot_random');
         $rcp = $rc->getProperty('quiz');
+        $rcp->setAccessible(true);
         $quizpropery = $rcp->getValue($randomslot);
 
         $this->assertEquals($quiz, $quizpropery);
@@ -207,7 +210,7 @@ class local_structure_slot_random_test extends \advanced_testcase {
         return [$randomslot, $tags];
     }
 
-    public function test_set_tags_filter(): void {
+    public function test_set_tags_filter() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -220,13 +223,14 @@ class local_structure_slot_random_test extends \advanced_testcase {
 
         $rc = new \ReflectionClass('\mod_quiz\local\structure\slot_random');
         $rcp = $rc->getProperty('filtercondition');
+        $rcp->setAccessible(true);
         $tagspropery = $rcp->getValue($randomslot);
 
         $this->assertEquals([$tags['foo']->id, $tags['bar']->id],
             (array)json_decode($tagspropery)->filters->qtagids->values);
     }
 
-    public function test_insert(): void {
+    public function test_insert() {
         global $SITE;
 
         $this->resetAfterTest();

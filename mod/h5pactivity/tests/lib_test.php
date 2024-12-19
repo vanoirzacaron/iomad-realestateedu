@@ -42,7 +42,7 @@ final class lib_test extends advanced_testcase {
      *
      * @covers ::h5pactivity_delete_instance
      */
-    public function test_h5pactivity_delete_instance(): void {
+    public function test_h5pactivity_delete_instance() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -110,7 +110,7 @@ final class lib_test extends advanced_testcase {
      *
      * @covers ::h5pactivity_print_recent_activity
      */
-    public function test_print_recent_activity(): void {
+    public function test_print_recent_activity() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -137,7 +137,7 @@ final class lib_test extends advanced_testcase {
      *
      * @covers ::h5pactivity_print_recent_activity
      */
-    public function test_print_recent_activity_fullname(): void {
+    public function test_print_recent_activity_fullname() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -168,7 +168,7 @@ final class lib_test extends advanced_testcase {
      *
      * @covers ::h5pactivity_get_recent_mod_activity
      */
-    public function test_h5pactivity_get_recent_mod_activity(): void {
+    public function test_h5pactivity_get_recent_mod_activity() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -208,7 +208,7 @@ final class lib_test extends advanced_testcase {
      *
      * @covers ::h5pactivity_fetch_recent_activity
      */
-    public function test_h5pactivity_fetch_recent_activity(): void {
+    public function test_h5pactivity_fetch_recent_activity() {
         global $DB;
 
         $this->resetAfterTest();
@@ -335,7 +335,7 @@ final class lib_test extends advanced_testcase {
      *
      * @covers ::h5pactivity_reset_userdata
      */
-    public function test_h5pactivity_reset_userdata(): void {
+    public function test_h5pactivity_reset_userdata() {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();

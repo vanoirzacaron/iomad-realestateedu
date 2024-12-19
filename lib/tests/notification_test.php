@@ -59,7 +59,7 @@ class notification_test extends \advanced_testcase {
     /**
      * Test the way in which notifications are added to the session in different stages of the page load.
      */
-    public function test_add_during_output_stages(): void {
+    public function test_add_during_output_stages() {
         global $PAGE, $SESSION;
 
         \core\notification::add('Example before header', \core\notification::INFO);
@@ -91,7 +91,7 @@ class notification_test extends \advanced_testcase {
     /**
      * Test fetching of notifications from the session.
      */
-    public function test_fetch(): void {
+    public function test_fetch() {
         // Initially there won't be any notifications.
         $this->assertCount(0, \core\notification::fetch());
 
@@ -104,7 +104,7 @@ class notification_test extends \advanced_testcase {
     /**
      * Test that session notifications are persisted across session clears.
      */
-    public function test_session_persistance(): void {
+    public function test_session_persistance() {
         global $PAGE, $SESSION;
 
         // Initially there won't be any notifications.

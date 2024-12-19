@@ -35,7 +35,7 @@ class accessibility_test extends \advanced_testcase {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public function test_get_title(): void {
+    public function test_get_title() {
         $this->resetAfterTest();
         $object = new accessibility();
         $filter = new filter();
@@ -57,7 +57,7 @@ class accessibility_test extends \advanced_testcase {
      *
      * @throws \dml_exception
      */
-    public function test_check_ids(): void {
+    public function test_check_ids() {
         $this->resetAfterTest();
         $object = new accessibility();
 
@@ -74,7 +74,7 @@ class accessibility_test extends \advanced_testcase {
      *
      * @throws \dml_exception
      */
-    public function test_get_translations(): void {
+    public function test_get_translations() {
         $this->resetAfterTest();
         $object = new accessibility();
 
@@ -90,7 +90,7 @@ class accessibility_test extends \advanced_testcase {
      *
      * @throws \dml_exception
      */
-    public function test_get_category_courseids(): void {
+    public function test_get_category_courseids() {
         $this->resetAfterTest();
         $object = new accessibility();
         $category = $this->getDataGenerator()->create_category();

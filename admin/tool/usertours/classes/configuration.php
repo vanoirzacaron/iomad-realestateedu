@@ -14,16 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Step configuration detail class.
+ *
+ * @package    tool_usertours
+ * @copyright  2016 Andrew Nicols <andrew@nicols.co.uk>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace tool_usertours;
+
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Step configuration detail class.
  *
- * @package tool_usertours
- * @copyright  2024 Andrew Nicols <andrew@nicols.co.uk>
+ * @copyright  2016 Andrew Nicols <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class configuration {
+
     /**
      * @var TOURDEFAULT
      */
@@ -50,7 +60,7 @@ class configuration {
      * @return  mixed
      */
     public static function get_default_value($key) {
-        switch ($key) {
+        switch($key) {
             case 'placement':
                 return 'bottom';
             case 'orphan':
@@ -67,7 +77,7 @@ class configuration {
      * @return  mixed
      */
     public static function get_step_default_value($key) {
-        switch ($key) {
+        switch($key) {
             case 'placement':
             case 'orphan':
             case 'backdrop':
@@ -84,10 +94,10 @@ class configuration {
      */
     public static function get_placement_options($default = null) {
         $values = [
-            'top'    => get_string('above', 'tool_usertours'),
-            'bottom' => get_string('below', 'tool_usertours'),
-            'left'   => get_string('left', 'tool_usertours'),
-            'right'  => get_string('right', 'tool_usertours'),
+            'top'    => get_string('above',   'tool_usertours'),
+            'bottom' => get_string('below',   'tool_usertours'),
+            'left'   => get_string('left',    'tool_usertours'),
+            'right'  => get_string('right',   'tool_usertours'),
         ];
 
         if ($default === null) {
@@ -104,4 +114,5 @@ class configuration {
 
         return $values;
     }
+
 }

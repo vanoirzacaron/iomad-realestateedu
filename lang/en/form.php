@@ -87,6 +87,5 @@ $string['suggestions'] = 'Suggestions';
 $string['time'] = 'Time';
 $string['timeunit'] = 'Time unit';
 $string['timing'] = 'Timing';
-$string['togglesensitive'] = 'Toggle sensitive';
 $string['unmaskpassword'] = 'Unmask';
 $string['year'] = 'Year';

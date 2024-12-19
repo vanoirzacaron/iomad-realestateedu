@@ -1,17 +1,12 @@
 This file describes API changes in /grade/* ;
 Information provided here is intended especially for developers.
 
-=== 4.4.2 ===
+=== 4.3.6 ===
 * The grade `itemname` property contained in the return structure of the following external methods is now PARAM_RAW:
   - `core_grades_get_gradeitems`
   - `gradereport_user_get_grade_items`
 
-=== 4.4 ===
-* The grade_structure::get_element_icon() function has been deprecated. Please use grade_helper::get_element_icon() instead.
-* The grade_structure::get_element_type_string() function has been deprecated. Please use grade_helper::get_element_type_string() instead.
-* The grade_structure::get_element_header() function has been deprecated. Please use grade_helper::get_element_header() instead.
-* The grade_structure::get_activity_link() functions has been deprecated. Please use grade_helper::get_activity_link() instead.
-* The `grade_helper::get_activity_link` method will only return URL to activities view.php page (no longer to the grade.php page)
+=== 4.3.1 ===
 * Some changes to how print_grade_page_head() sets the page title:
   * If a non-empty `$heading` parameter is passed, it will be used as the page title's unique identifying information.
   * Add support for grade report plugins that define an `editingmode_title` lang string. If the grade report plugin defines this
@@ -20,9 +15,6 @@ Information provided here is intended especially for developers.
   for validation.
 * The function get_gradable_users() in grade/lib.php has extra param now to retrieve only active enrolments.
 * A new webservice core_grades_get_gradable_users has been added to retrieve gradable users for a course.
-* The following previously deprecated methods have been removed and can no longer be used:
-  - `grade_print_tabs`
-  - `print_grade_plugin_selector`
 
 === 4.3 ===
 * The $showtitle parameter in the print_grade_page_head function located inside grade/lib.php has been deprecated and is not used anymore.

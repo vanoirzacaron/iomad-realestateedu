@@ -36,14 +36,12 @@ use core_reportbuilder\local\filters\text;
 class config_change extends base {
 
     /**
-     * Database tables that this entity uses
+     * Database tables that this entity uses and their default aliases
      *
-     * @return string[]
+     * @return array
      */
-    protected function get_default_tables(): array {
-        return [
-            'config_log',
-        ];
+    protected function get_default_table_aliases(): array {
+        return ['config_log' => 'cl'];
     }
 
     /**
@@ -173,16 +171,6 @@ class config_change extends base {
                 date::DATE_PREVIOUS,
                 date::DATE_CURRENT,
             ]);
-
-        // Plugin filter.
-        $filters[] = (new filter(
-            text::class,
-            'plugin',
-            new lang_string('plugin', 'report_configlog'),
-            $this->get_entity_name(),
-            "COALESCE({$tablealias}.plugin, 'core')"
-        ))
-            ->add_joins($this->get_joins());
 
         // Setting filter.
         $filters[] = (new filter(

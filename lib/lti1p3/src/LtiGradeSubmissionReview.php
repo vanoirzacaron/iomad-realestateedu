@@ -2,17 +2,14 @@
 
 namespace Packback\Lti1p3;
 
-use Packback\Lti1p3\Concerns\JsonStringable;
-
 class LtiGradeSubmissionReview
 {
-    use JsonStringable;
     private $reviewable_status;
     private $label;
     private $url;
     private $custom;
 
-    public function __construct(?array $gradeSubmission = null)
+    public function __construct(array $gradeSubmission = null)
     {
         $this->reviewable_status = $gradeSubmission['reviewableStatus'] ?? null;
         $this->label = $gradeSubmission['label'] ?? null;
@@ -20,20 +17,21 @@ class LtiGradeSubmissionReview
         $this->custom = $gradeSubmission['custom'] ?? null;
     }
 
-    public function getArray(): array
+    public function __toString()
     {
-        return [
+        // Additionally, includes the call back to filter out only NULL values
+        return json_encode(array_filter([
             'reviewableStatus' => $this->reviewable_status,
             'label' => $this->label,
             'url' => $this->url,
             'custom' => $this->custom,
-        ];
+        ], '\Packback\Lti1p3\Helpers\Helpers::checkIfNullValue'));
     }
 
     /**
      * Static function to allow for method chaining without having to assign to a variable first.
      */
-    public static function new(): self
+    public static function new()
     {
         return new LtiGradeSubmissionReview();
     }
@@ -43,7 +41,7 @@ class LtiGradeSubmissionReview
         return $this->reviewable_status;
     }
 
-    public function setReviewableStatus($value): self
+    public function setReviewableStatus($value)
     {
         $this->reviewable_status = $value;
 
@@ -55,7 +53,7 @@ class LtiGradeSubmissionReview
         return $this->label;
     }
 
-    public function setLabel($value): self
+    public function setLabel($value)
     {
         $this->label = $value;
 
@@ -67,7 +65,7 @@ class LtiGradeSubmissionReview
         return $this->url;
     }
 
-    public function setUrl($url): self
+    public function setUrl($url)
     {
         $this->url = $url;
 
@@ -79,7 +77,7 @@ class LtiGradeSubmissionReview
         return $this->custom;
     }
 
-    public function setCustom($value): self
+    public function setCustom($value)
     {
         $this->custom = $value;
 

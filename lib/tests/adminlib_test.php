@@ -35,7 +35,7 @@ class adminlib_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function db_should_replace_dataprovider() {
+    public static function db_should_replace_dataprovider(): array {
         return [
             // Skipped tables.
             ['block_instances', '', false],
@@ -75,7 +75,7 @@ class adminlib_test extends \advanced_testcase {
      * @param string $column name
      * @param bool $expected whether it should be replaced
      */
-    public function test_db_should_replace(string $table, string $column, bool $expected): void {
+    public function test_db_should_replace(string $table, string $column, bool $expected) {
         $actual = db_should_replace($table, $column);
         $this->assertSame($actual, $expected);
     }
@@ -86,7 +86,7 @@ class adminlib_test extends \advanced_testcase {
      * @covers ::db_should_replace
      * @return array
      */
-    public function db_should_replace_additional_skip_tables_dataprovider() {
+    public static function db_should_replace_additional_skip_tables_dataprovider(): array {
         return [
             // Skipped tables.
             ['block_instances', '', false],
@@ -120,7 +120,7 @@ class adminlib_test extends \advanced_testcase {
      * @param string $column name
      * @param bool $expected whether it should be replaced
      */
-    public function test_db_should_replace_additional_skip_tables(string $table, string $column, bool $expected): void {
+    public function test_db_should_replace_additional_skip_tables(string $table, string $column, bool $expected) {
         $this->resetAfterTest();
         $additionalskiptables = 'context, quiz_attempts, role_assignments ';
         $actual = db_should_replace($table, $column, $additionalskiptables);
@@ -132,7 +132,7 @@ class adminlib_test extends \advanced_testcase {
      *
      * @covers ::admin_output_new_settings_by_page
      */
-    public function test_admin_output_new_settings_by_page(): void {
+    public function test_admin_output_new_settings_by_page() {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -163,7 +163,7 @@ class adminlib_test extends \advanced_testcase {
      *
      * @covers ::admin_apply_default_settings
      */
-    public function test_admin_apply_default_settings(): void {
+    public function test_admin_apply_default_settings() {
         global $DB;
 
         $this->resetAfterTest();

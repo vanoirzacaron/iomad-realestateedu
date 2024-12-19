@@ -49,7 +49,7 @@ class wikiparser_test extends \advanced_testcase {
      * @param string $input The input text.
      * @param string $output The expected output HTML as a result of the parsed input text.
      */
-    public function test_urls_inside_link_text(string $markup, string $input, string $output): void {
+    public function test_urls_inside_link_text(string $markup, string $input, string $output) {
 
         $parsingresult = wiki_parser_proxy::parse($input, $markup, [
             'link_callback' => '/mod/wiki/locallib.php:wiki_parser_link',
@@ -64,7 +64,7 @@ class wikiparser_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function urls_inside_link_text_provider() {
+    public static function urls_inside_link_text_provider(): array {
         return [
             'creole implicit link' => [
                 'markup' => 'creole',
@@ -171,7 +171,7 @@ class wikiparser_test extends \advanced_testcase {
      * - The edit link points to the right page,
      * - The links properly works with get_section.
      */
-    public function test_special_headings(): void {
+    public function test_special_headings() {
 
         // First testing HTML markup.
 
@@ -340,7 +340,7 @@ class wikiparser_test extends \advanced_testcase {
      * @covers \wiki_parser_proxy::parse
      * @dataProvider format_parser_provider
      */
-    public function test_format_parser(string $format, string $expected): void {
+    public function test_format_parser(string $format, string $expected) {
         $this->resetAfterTest();
         $this->setAdminUser();
         $generator = $this->getDataGenerator();

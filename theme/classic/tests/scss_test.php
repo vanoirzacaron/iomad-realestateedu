@@ -28,7 +28,7 @@ class scss_test extends \advanced_testcase {
     /**
      * Test that classic can be compiled using SassC (the defacto implemention).
      */
-    public function test_scss_compilation_with_sassc(): void {
+    public function test_scss_compilation_with_sassc() {
         if (!defined('PHPUNIT_PATH_TO_SASSC')) {
             $this->markTestSkipped('Path to SassC not provided');
         }

@@ -30,7 +30,7 @@ class lock_config_test extends \advanced_testcase {
      * Tests the static parse charset method
      * @return void
      */
-    public function test_lock_config(): void {
+    public function test_lock_config() {
         global $CFG;
         $original = null;
         if (isset($CFG->lock_factory)) {

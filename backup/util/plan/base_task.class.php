@@ -162,7 +162,7 @@ abstract class base_task implements checksumable, executable, loggable {
      * Function responsible for building the steps of any task
      * (must set the $built property to true)
      */
-    abstract public function build();
+    public abstract function build();
 
     /**
      * Function responsible for executing the steps of any task
@@ -264,7 +264,7 @@ abstract class base_task implements checksumable, executable, loggable {
      * that are associated with one task. The function will, directly, inject the settings
      * in the task.
      */
-    abstract protected function define_settings();
+    protected abstract function define_settings();
 
     protected function add_setting($setting) {
         if (! $setting instanceof base_setting) {

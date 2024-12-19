@@ -32,7 +32,7 @@ class area_test extends area_test_base {
     /**
      * Test for the area assign intro
      */
-    public function test_assign(): void {
+    public function test_assign() {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
         $assign1 = $this->getDataGenerator()->create_module('assign', array(
@@ -87,7 +87,7 @@ class area_test extends area_test_base {
     /**
      * Test for the area questiontext
      */
-    public function test_questiontext(): void {
+    public function test_questiontext() {
         $this->resetAfterTest();
         /** @var \core_question_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_question');
@@ -147,7 +147,7 @@ class area_test extends area_test_base {
     /**
      * test for the area questionanswers
      */
-    public function test_questionanswers(): void {
+    public function test_questionanswers() {
         global $DB;
 
         $this->resetAfterTest();
@@ -191,7 +191,7 @@ class area_test extends area_test_base {
     /**
      * Test for the areas choice intro and choice options
      */
-    public function test_choice(): void {
+    public function test_choice() {
         global $DB;
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();

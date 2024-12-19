@@ -90,7 +90,7 @@ EOD;
     /**
      * Test for anchor tags not containing susplicious link text
      */
-    public function test_check(): void {
+    public function test_check() {
         $results = $this->get_checker_results($this->htmlpass);
         $this->assertEmpty($results);
 

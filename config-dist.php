@@ -347,9 +347,7 @@ $CFG->admin = 'admin';
 //
 //   Redis session handler (requires redis server and redis extension):
 //      $CFG->session_handler_class = '\core\session\redis';
-//      $CFG->session_redis_host = '127.0.0.1';  or...              // If there is only one host, use the single Redis connection.
-//      $CFG->session_redis_host = '127.0.0.1:7000,127.0.0.1:7001'; // If there are multiple hosts (separated by a comma),
-//                                                                  // use the Redis cluster connection.
+//      $CFG->session_redis_host = '127.0.0.1';
 //      Use TLS to connect to Redis. An array of SSL context options. Usually:
 //      $CFG->session_redis_encrypt = ['cafile' => '/path/to/ca.crt']; or...
 //      $CFG->session_redis_encrypt = ['verify_peer' => false, 'verify_peer_name' => false];
@@ -783,28 +781,6 @@ $CFG->admin = 'admin';
 // @ini_set('display_errors', '1');    // NOT FOR PRODUCTION SERVERS!
 // $CFG->debug = (E_ALL | E_STRICT);   // === DEBUG_DEVELOPER - NOT FOR PRODUCTION SERVERS!
 // $CFG->debugdisplay = 1;             // NOT FOR PRODUCTION SERVERS!
-//
-// Display exceptions using the 'pretty' Whoops! utility.
-// This is only used when the following conditions are met:
-// - Composer dependencies are installed
-// - $CFG->debug and $CFG->debugdisplay are set
-// - the request is not a CLI, or AJAX request
-//
-// To further control this, the debug_developer_use_pretty_exceptions setting can be set to false.
-// $CFG->debug_developer_use_pretty_exceptions = true;
-//
-// In many development situations it is desirable to have debugging() calls treated as errors rather than
-// as exceptions.
-// If this property is not specified then it will be true if pretty exceptions are usable.
-// $CFG->debug_developer_debugging_as_error = true;
-//
-// The Whoops! UI can also provide a link to open files in  your preferred editor.
-// You can set your preferred editor by setting:
-// $CFG->debug_developer_editor = 'vscode';
-//
-// See https://github.com/filp/whoops/blob/master/docs/Open%20Files%20In%20An%20Editor.md for more information on
-// supported editors.
-// If your editor is not listed you can provide a callback as documented.
 //
 // You can specify a comma separated list of user ids that that always see
 // debug messages, this overrides the debug flag in $CFG->debug and $CFG->debugdisplay

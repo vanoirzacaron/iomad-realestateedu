@@ -25,7 +25,7 @@ namespace core_auth;
  */
 class digital_consent_test extends \advanced_testcase {
 
-    public function test_is_age_digital_consent_verification_enabled(): void {
+    public function test_is_age_digital_consent_verification_enabled() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -36,7 +36,7 @@ class digital_consent_test extends \advanced_testcase {
         $this->assertFalse($isenabled);
     }
 
-    public function test_is_minor(): void {
+    public function test_is_minor() {
         global $CFG;
         $this->resetAfterTest();
 
@@ -69,7 +69,7 @@ class digital_consent_test extends \advanced_testcase {
         $this->assertFalse($isminor);
     }
 
-    public function test_parse_age_digital_consent_map_valid_format(): void {
+    public function test_parse_age_digital_consent_map_valid_format() {
 
         // Value of agedigitalconsentmap has a valid format.
         $agedigitalconsentmap = implode(PHP_EOL, [
@@ -88,7 +88,7 @@ class digital_consent_test extends \advanced_testcase {
         );
     }
 
-    public function test_parse_age_digital_consent_map_invalid_format_missing_spaces(): void {
+    public function test_parse_age_digital_consent_map_invalid_format_missing_spaces() {
 
         // Value of agedigitalconsentmap has an invalid format (missing space separator between values).
         $agedigitalconsentmap = implode(PHP_EOL, [
@@ -102,7 +102,7 @@ class digital_consent_test extends \advanced_testcase {
         \core_auth\digital_consent::parse_age_digital_consent_map($agedigitalconsentmap);
     }
 
-    public function test_parse_age_digital_consent_map_invalid_format_missing_default_value(): void {
+    public function test_parse_age_digital_consent_map_invalid_format_missing_default_value() {
 
         // Value of agedigitalconsentmap has an invalid format (missing default value).
         $agedigitalconsentmap = implode(PHP_EOL, [
@@ -116,7 +116,7 @@ class digital_consent_test extends \advanced_testcase {
         \core_auth\digital_consent::parse_age_digital_consent_map($agedigitalconsentmap);
     }
 
-    public function test_parse_age_digital_consent_map_invalid_format_invalid_country(): void {
+    public function test_parse_age_digital_consent_map_invalid_format_invalid_country() {
 
         // Value of agedigitalconsentmap has an invalid format (invalid value for country).
         $agedigitalconsentmap = implode(PHP_EOL, [
@@ -130,7 +130,7 @@ class digital_consent_test extends \advanced_testcase {
         \core_auth\digital_consent::parse_age_digital_consent_map($agedigitalconsentmap);
     }
 
-    public function test_parse_age_digital_consent_map_invalid_format_invalid_age_string(): void {
+    public function test_parse_age_digital_consent_map_invalid_format_invalid_age_string() {
 
         // Value of agedigitalconsentmap has an invalid format (string value for age).
         $agedigitalconsentmap = implode(PHP_EOL, [
@@ -144,7 +144,7 @@ class digital_consent_test extends \advanced_testcase {
         \core_auth\digital_consent::parse_age_digital_consent_map($agedigitalconsentmap);
     }
 
-    public function test_parse_age_digital_consent_map_invalid_format_missing_age(): void {
+    public function test_parse_age_digital_consent_map_invalid_format_missing_age() {
 
         // Value of agedigitalconsentmap has an invalid format (missing value for age).
         $agedigitalconsentmap = implode(PHP_EOL, [
@@ -158,7 +158,7 @@ class digital_consent_test extends \advanced_testcase {
         \core_auth\digital_consent::parse_age_digital_consent_map($agedigitalconsentmap);
     }
 
-    public function test_parse_age_digital_consent_map_invalid_format_missing_country(): void {
+    public function test_parse_age_digital_consent_map_invalid_format_missing_country() {
 
         // Value of agedigitalconsentmap has an invalid format (missing value for country).
         $agedigitalconsentmap = implode(PHP_EOL, [

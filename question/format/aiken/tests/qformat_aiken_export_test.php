@@ -47,13 +47,11 @@ class qformat_aiken_export_test extends advanced_testcase {
      * @param   string    $text The actual string.
      */
     public function assert_same_aiken($expectedtext, $text) {
-        $this->assertEquals(
-            phpunit_util::normalise_line_endings($expectedtext),
-            phpunit_util::normalise_line_endings($text)
-        );
+        $this->assertEquals(str_replace("\r\n", "\n", $expectedtext),
+                str_replace("\r\n", "\n", $text));
     }
 
-    public function test_export_questions(): void {
+    public function test_export_questions() {
         $this->resetAfterTest();
         $this->setAdminUser();
         // Create a new course category and and a new course in that.
@@ -87,7 +85,7 @@ EOT;
         $this->assert_same_aiken($expectedoutput, $exporter->exportprocess());
     }
 
-    public function test_export_multiline_question(): void {
+    public function test_export_multiline_question() {
         $this->resetAfterTest();
         $this->setAdminUser();
         // Create a new course category and and a new course in that.

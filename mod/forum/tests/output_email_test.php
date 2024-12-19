@@ -29,7 +29,7 @@ class output_email_test extends \advanced_testcase {
     /**
      * Data provider for the postdate function tests.
      */
-    public function postdate_provider() {
+    public static function postdate_provider(): array {
         return array(
             'Timed discussions disabled, timestart unset' => array(
                 'globalconfig'      => array(
@@ -127,7 +127,7 @@ class output_email_test extends \advanced_testcase {
      * @param array  $discussionconfig  The configuration for this discussion
      * @param string $expectation       The expected date
      */
-    public function test_postdate($globalconfig, $forumconfig, $postconfig, $discussionconfig, $expectation): void {
+    public function test_postdate($globalconfig, $forumconfig, $postconfig, $discussionconfig, $expectation) {
         global $CFG, $DB;
         $this->resetAfterTest(true);
 

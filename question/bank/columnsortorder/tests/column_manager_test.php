@@ -226,9 +226,9 @@ class column_manager_test extends advanced_testcase {
         $questionlistcolumns = $columnmanager->get_columns();
         $this->assertIsArray($questionlistcolumns);
         foreach ($questionlistcolumns as $columnnobject) {
-            $this->assertObjectHasProperty('class', $columnnobject);
-            $this->assertObjectHasProperty('name', $columnnobject);
-            $this->assertObjectHasProperty('colname', $columnnobject);
+            $this->assertObjectHasAttribute('class', $columnnobject);
+            $this->assertObjectHasAttribute('name', $columnnobject);
+            $this->assertObjectHasAttribute('colname', $columnnobject);
         }
     }
 
@@ -335,7 +335,7 @@ class column_manager_test extends advanced_testcase {
      *
      * @return void
      */
-    public function test_enable_columns(): void {
+    public function test_enable_columns() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $questionbank = $this->get_question_bank();

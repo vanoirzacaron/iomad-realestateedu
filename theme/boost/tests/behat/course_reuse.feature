@@ -18,29 +18,25 @@ Feature: Course reuse navigation
     Given I log in as "teacher1"
     When I am on "Course 1" course homepage
     And I navigate to "Course reuse" in current page administration
-    Then I should not see "Find a course to import data from:"
-    And I should see "Import"
-    And I should see "Backup"
-    And I should see "Restore"
-    And I should not see "Copy course"
+    Then I should see "Find a course to import data from:"
 
   Scenario Outline: A Teacher can navigate to other Course reuse pages.
     Given I log in as "teacher1"
     When I am on "Course 1" course homepage
     And I navigate to "Course reuse" in current page administration
-    And I follow "<adminpage>"
-    Then I should see "<content>"
+    And I select "<adminpage>" from the "jump" singleselect
+    Then I should see "<title>"
 
     Examples:
-      | adminpage     | content                                                           |
-      |   Backup      | Backup settings                                                   |
-      |   Restore     | Upload a backup file                                              |
-      |   Import      | Find a course to import data from:                                |
-      |   Reset       | Delete all user data and reset this course to its original state  |
+      | adminpage     | title                              |
+      |   Backup      | Backup settings                    |
+      |   Restore     | Import a backup file               |
+      |   Import      | Find a course to import data from: |
+      |   Reset       | Reset course                       |
 
   Scenario: An Administrator can view the course copy page.
     Given I log in as "admin"
     When I am on "Course 1" course homepage
     And I navigate to "Course reuse" in current page administration
-    And I follow "Copy course"
-    Then I should see "Create a copy of this course in any course category"
+    And I select "Copy course" from the "jump" singleselect
+    Then I should see "This course will be duplicated and put into the selected course category"

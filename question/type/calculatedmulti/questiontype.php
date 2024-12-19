@@ -40,28 +40,14 @@ require_once($CFG->dirroot . '/question/type/calculated/questiontype.php');
 class qtype_calculatedmulti extends qtype_calculated {
 
     public function save_question_options($question) {
-        global $DB;
+        global $CFG, $DB;
         $context = $question->context;
-
-        // During validation, we will call the parent's validation method. It will check
-        // the answer options (choices) for formula errors. This method is shared with
-        // calculated and calculatedsimple types for which the text is just a formula and
-        // thus plain text from a regular text field. Therefore, we must transform the answers
-        // before sending them upstream. We save the original data for later.
-        $question->originalanswer = [];
-        foreach ($question->answer as $key => $answerdata) {
-            $question->originalanswer[$key] = $answerdata;
-            if (is_array($answerdata)) {
-                $question->answer[$key] = $answerdata['text'];
-            } else {
-                $question->answer[$key] = $answerdata;
-            }
-        }
 
         // Make it impossible to save bad formulas anywhere.
         $this->validate_question_data($question);
 
         // Calculated options.
+        $update = true;
         $options = $DB->get_record('question_calculated_options',
                 array('question' => $question->id));
         if (!$options) {
@@ -90,16 +76,11 @@ class qtype_calculatedmulti extends qtype_calculated {
         }
 
         // Insert all the new answers.
-        foreach ($question->originalanswer as $key => $answerdata) {
+        foreach ($question->answer as $key => $answerdata) {
             if (is_array($answerdata)) {
-                $answertext = $answerdata['text'];
-                $answerformat = $answerdata['format'];
-            } else {
-                $answertext = $answerdata;
-                // If no format is set, assume it is a legacy question and use FORMAT_PLAIN.
-                $answerformat = FORMAT_PLAIN;
+                $answerdata = $answerdata['text'];
             }
-            if (trim($answertext) == '') {
+            if (trim($answerdata) == '') {
                 continue;
             }
 
@@ -113,9 +94,16 @@ class qtype_calculatedmulti extends qtype_calculated {
                 $answer->id       = $DB->insert_record('question_answers', $answer);
             }
 
-            $answer->answer = $this->import_or_save_files($question->originalanswer[$key], $context,
-                    'question', 'answer', $answer->id);
-            $answer->answerformat = $answerformat;
+            if (is_array($answerdata)) {
+                // Doing an import.
+                $answer->answer = $this->import_or_save_files($answerdata,
+                        $context, 'question', 'answer', $answer->id);
+                $answer->answerformat = $answerdata['format'];
+            } else {
+                // Saving the form.
+                $answer->answer = $answerdata;
+                $answer->answerformat = FORMAT_HTML;
+            }
             $answer->fraction = $question->fraction[$key];
             $answer->feedback = $this->import_or_save_files($question->feedback[$key],
                     $context, 'question', 'answerfeedback', $answer->id);
@@ -161,6 +149,10 @@ class qtype_calculatedmulti extends qtype_calculated {
         if (isset($question->import_process) && $question->import_process) {
             $this->import_datasets($question);
         }
+        // Report any problems.
+        if (!empty($result->notice)) {
+            return $result;
+        }
 
         return true;
     }
@@ -203,7 +195,7 @@ class qtype_calculatedmulti extends qtype_calculated {
         $question->synchronised = $questiondata->options->synchronize;
 
         $this->initialise_combined_feedback($question, $questiondata, true);
-        $this->initialise_question_answers($question, $questiondata, false);
+        $this->initialise_question_answers($question, $questiondata);
 
         foreach ($questiondata->options->answers as $a) {
             $question->answers[$a->id]->correctanswerlength = $a->correctanswerlength;

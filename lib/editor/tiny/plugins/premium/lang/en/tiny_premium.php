@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['apikey'] = 'API key';
-$string['apikey_desc'] = 'Your API key is available on your <a href="https://www.tiny.cloud">Tiny Cloud</a> account page if you have purchased a subscription, or if you are on a free trial.';
+$string['apikey_desc'] = 'Your API key is available on your <a target="_blank" href="https://www.tiny.cloud">Tiny Cloud</a> account page if you have purchased a subscription, or if you are on a free trial.';
 $string['emptyapikeywarning'] = 'Enabled TinyMCE Premium plugins will not be available until an API key is added.';
 $string['helplinktext'] = 'Premium plugins';
 $string['pluginname'] = 'TinyMCE Premium';

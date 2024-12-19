@@ -29,7 +29,7 @@ class entities_post_test extends \advanced_testcase {
     /**
      * Test the entity returns expected values.
      */
-    public function test_entity(): void {
+    public function test_entity() {
         $this->resetAfterTest();
 
         $owner = $this->getDataGenerator()->create_user();

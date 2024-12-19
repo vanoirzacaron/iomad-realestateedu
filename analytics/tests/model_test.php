@@ -63,7 +63,7 @@ class model_test extends \advanced_testcase {
         $this->modelobj = $this->model->get_model_obj();
     }
 
-    public function test_enable(): void {
+    public function test_enable() {
         $this->resetAfterTest(true);
 
         $this->assertEquals(0, $this->model->get_model_obj()->enabled);
@@ -76,7 +76,7 @@ class model_test extends \advanced_testcase {
         $this->assertEquals('\core\analytics\time_splitting\quarters', $this->model->get_model_obj()->timesplitting);
     }
 
-    public function test_create(): void {
+    public function test_create() {
         $this->resetAfterTest(true);
 
         $target = \core_analytics\manager::get_target('\core_course\analytics\target\course_dropout');
@@ -91,7 +91,7 @@ class model_test extends \advanced_testcase {
     /**
      * test_delete
      */
-    public function test_delete(): void {
+    public function test_delete() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -136,7 +136,7 @@ class model_test extends \advanced_testcase {
     /**
      * test_clear
      */
-    public function test_clear(): void {
+    public function test_clear() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -187,7 +187,7 @@ class model_test extends \advanced_testcase {
     /**
      * Test behaviour of {\core_analytics\model::clear()} for static models.
      */
-    public function test_clear_static(): void {
+    public function test_clear_static() {
         global $DB;
         $this->resetAfterTest();
 
@@ -205,7 +205,7 @@ class model_test extends \advanced_testcase {
         $this->assertEquals(1, $DB->get_field('analytics_models', 'trained', array('id' => $modelobj->id)));
     }
 
-    public function test_model_manager(): void {
+    public function test_model_manager() {
         $this->resetAfterTest(true);
 
         $this->assertCount(3, $this->model->get_indicators());
@@ -219,7 +219,7 @@ class model_test extends \advanced_testcase {
         $this->assertInstanceOf('\core\analytics\analyser\site_courses', $this->model->get_analyser());
     }
 
-    public function test_output_dir(): void {
+    public function test_output_dir() {
         $this->resetAfterTest(true);
 
         $dir = make_request_directory();
@@ -230,7 +230,7 @@ class model_test extends \advanced_testcase {
         $this->assertEquals($modeldir . DIRECTORY_SEPARATOR . 'testing', $this->model->get_output_dir(array('testing')));
     }
 
-    public function test_unique_id(): void {
+    public function test_unique_id() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -277,7 +277,7 @@ class model_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_exists(): void {
+    public function test_exists() {
         $this->resetAfterTest(true);
 
         $target = \core_analytics\manager::get_target('\core_course\analytics\target\no_teaching');
@@ -295,7 +295,7 @@ class model_test extends \advanced_testcase {
      *
      * @return null
      */
-    public function test_model_timelimit(): void {
+    public function test_model_timelimit() {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -359,7 +359,7 @@ class model_test extends \advanced_testcase {
     /**
      * Test model_config::get_class_component.
      */
-    public function test_model_config_get_class_component(): void {
+    public function test_model_config_get_class_component() {
         $this->resetAfterTest(true);
 
         $this->assertEquals('core',
@@ -377,7 +377,7 @@ class model_test extends \advanced_testcase {
     /**
      * Test that import_model import models' configurations.
      */
-    public function test_import_model_config(): void {
+    public function test_import_model_config() {
         $this->resetAfterTest(true);
 
         $this->model->enable('\\core\\analytics\\time_splitting\\quarters');
@@ -398,7 +398,7 @@ class model_test extends \advanced_testcase {
     /**
      * Test can export configuration
      */
-    public function test_can_export_configuration(): void {
+    public function test_can_export_configuration() {
         $this->resetAfterTest(true);
 
         // No time splitting method.
@@ -419,7 +419,7 @@ class model_test extends \advanced_testcase {
     /**
      * Test export_config
      */
-    public function test_export_config(): void {
+    public function test_export_config() {
         $this->resetAfterTest(true);
 
         $this->model->enable('\\core\\analytics\\time_splitting\\quarters');
@@ -427,6 +427,7 @@ class model_test extends \advanced_testcase {
         $modelconfig = new \core_analytics\model_config($this->model);
 
         $method = new \ReflectionMethod('\\core_analytics\\model_config', 'export_model_data');
+        $method->setAccessible(true);
 
         $modeldata = $method->invoke($modelconfig);
 
@@ -447,7 +448,7 @@ class model_test extends \advanced_testcase {
     /**
      * Test the implementation of {@link \core_analytics\model::inplace_editable_name()}.
      */
-    public function test_inplace_editable_name(): void {
+    public function test_inplace_editable_name() {
         global $PAGE;
 
         $this->resetAfterTest();
@@ -473,7 +474,7 @@ class model_test extends \advanced_testcase {
     /**
      * Test how the models present themselves in the UI and that they can be renamed.
      */
-    public function test_get_name_and_rename(): void {
+    public function test_get_name_and_rename() {
         global $PAGE;
 
         $this->resetAfterTest();
@@ -504,7 +505,7 @@ class model_test extends \advanced_testcase {
     /**
      * Tests model::get_potential_timesplittings()
      */
-    public function test_potential_timesplittings(): void {
+    public function test_potential_timesplittings() {
         $this->resetAfterTest();
 
         $this->assertArrayNotHasKey('\core\analytics\time_splitting\no_splitting', $this->model->get_potential_timesplittings());
@@ -517,7 +518,7 @@ class model_test extends \advanced_testcase {
      *
      * @return null
      */
-    public function test_get_samples(): void {
+    public function test_get_samples() {
         $this->resetAfterTest();
 
         if (!PHPUNIT_LONGTEST) {

@@ -199,7 +199,7 @@ class ADODB_csv extends ADOConnection {
 	}
 } // class
 
-class ADORecordset_csv extends ADORecordSet {
+class ADORecordset_csv extends ADORecordset {
 
 	function _close()
 	{

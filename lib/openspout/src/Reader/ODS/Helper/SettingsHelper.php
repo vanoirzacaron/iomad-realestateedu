@@ -43,7 +43,7 @@ final class SettingsHelper
                     break;
                 }
             }
-        } catch (XMLProcessingException) {  // @codeCoverageIgnore
+        } catch (XMLProcessingException $exception) {  // @codeCoverageIgnore
             // do nothing
         }
 

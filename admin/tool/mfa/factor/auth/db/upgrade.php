@@ -28,6 +28,7 @@
  * @param int $oldversion
  */
 function xmldb_factor_auth_upgrade($oldversion) {
+
     if ($oldversion < 2021020500) {
         $authtypes = get_enabled_auth_plugins(true);
         // Upgrade goodauth config from number to name.
@@ -46,9 +47,6 @@ function xmldb_factor_auth_upgrade($oldversion) {
     }
 
     // Automatically generated Moodle v4.3.0 release upgrade line.
-    // Put any upgrade step following this.
-
-    // Automatically generated Moodle v4.4.0 release upgrade line.
     // Put any upgrade step following this.
 
     return true;

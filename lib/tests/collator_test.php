@@ -83,7 +83,7 @@ class collator_test extends \advanced_testcase {
     /**
      * Tests the static asort method.
      */
-    public function test_asort(): void {
+    public function test_asort() {
         $arr = array('b' => 'ab', 1 => 'aa', 0 => 'cc');
         $result = core_collator::asort($arr);
         $this->assertSame(array('aa', 'ab', 'cc'), array_values($arr));
@@ -155,7 +155,7 @@ class collator_test extends \advanced_testcase {
     /**
      * Tests the static asort_objects_by_method method.
      */
-    public function test_asort_objects_by_method(): void {
+    public function test_asort_objects_by_method() {
         $objects = array(
             'b' => new string_test_class('ab'),
             1 => new string_test_class('aa'),
@@ -180,7 +180,7 @@ class collator_test extends \advanced_testcase {
     /**
      * Tests the static asort_objects_by_method method.
      */
-    public function test_asort_objects_by_property(): void {
+    public function test_asort_objects_by_property() {
         $objects = array(
             'b' => new string_test_class('ab'),
             1 => new string_test_class('aa'),
@@ -205,7 +205,7 @@ class collator_test extends \advanced_testcase {
     /**
      * Tests the sorting of an array of arrays by key.
      */
-    public function test_asort_array_of_arrays_by_key(): void {
+    public function test_asort_array_of_arrays_by_key() {
         $array = array(
             'a' => array('name' => 'bravo'),
             'b' => array('name' => 'charlie'),
@@ -265,7 +265,7 @@ class collator_test extends \advanced_testcase {
     /**
      * Tests the static ksort method.
      */
-    public function test_ksort(): void {
+    public function test_ksort() {
         $arr = array('b' => 'ab', 1 => 'aa', 0 => 'cc');
         $result = core_collator::ksort($arr);
         $this->assertSame(array(0, 1, 'b'), array_keys($arr));

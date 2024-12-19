@@ -31,7 +31,7 @@ require_once($CFG->libdir . '/ldaplib.php');
  */
 class ldaplib_test extends \advanced_testcase {
 
-    public function test_ldap_addslashes(): void {
+    public function test_ldap_addslashes() {
         // See http://tools.ietf.org/html/rfc4514#section-5.2 if you want
         // to add additional tests.
 
@@ -76,7 +76,7 @@ class ldaplib_test extends \advanced_testcase {
         }
     }
 
-    public function test_ldap_stripslashes(): void {
+    public function test_ldap_stripslashes() {
         // See http://tools.ietf.org/html/rfc4514#section-5.2 if you want
         // to add additional tests.
 
@@ -175,7 +175,7 @@ class ldaplib_test extends \advanced_testcase {
      * @param array $args Arguments passed to ldap_normalise_objectclass
      * @param string $expected The expected objectclass filter
      */
-    public function test_ldap_normalise_objectclass($args, $expected): void {
+    public function test_ldap_normalise_objectclass($args, $expected) {
         $this->assertEquals($expected, call_user_func_array('ldap_normalise_objectclass', $args));
     }
 
@@ -184,7 +184,7 @@ class ldaplib_test extends \advanced_testcase {
      *
      * @return array of testcases.
      */
-    public function ldap_normalise_objectclass_provider() {
+    public static function ldap_normalise_objectclass_provider(): array {
         return array(
             'Empty value' => array(
                 array(null),
@@ -223,7 +223,7 @@ class ldaplib_test extends \advanced_testcase {
      * define('TEST_LDAPLIB_DOMAIN',  'dc=example,dc=local');
      *
      */
-    public function test_ldap_get_entries_moodle(): void {
+    public function test_ldap_get_entries_moodle() {
         $this->resetAfterTest();
 
         if (!defined('TEST_LDAPLIB_HOST_URL') or !defined('TEST_LDAPLIB_BIND_DN') or

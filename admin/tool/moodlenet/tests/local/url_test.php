@@ -37,7 +37,7 @@ class url_test extends \advanced_testcase {
      * @param string $path the expected path component of the URL.
      * @param bool $exception whether or not an exception is expected during construction.
      */
-    public function test_parsing($urlstring, $host, $path, $exception): void {
+    public function test_parsing($urlstring, $host, $path, $exception) {
         if ($exception) {
             $this->expectException(\coding_exception::class);
             $url = new url($urlstring);
@@ -55,7 +55,7 @@ class url_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function url_provider() {
+    public static function url_provider(): array {
         return [
             'No path' => [
                 'url' => 'https://example.moodle.net',

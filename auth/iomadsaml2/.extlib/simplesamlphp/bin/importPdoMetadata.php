@@ -1,9 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-$baseDir = dirname(__FILE__, 2);
+$baseDir = dirname(dirname(__FILE__));
 
-require_once $baseDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . '_autoload.php';
+require_once $baseDir . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . '_autoload.php';
 require_once \SimpleSAML\Utils\Config::getConfigDir() . DIRECTORY_SEPARATOR . 'config.php';
 
 # Iterate through configured metadata sources and ensure

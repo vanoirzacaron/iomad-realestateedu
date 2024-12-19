@@ -76,7 +76,7 @@ class async_helper  {
      * @param int $id The backup id to get.
      * @return object $backuprec The backup controller record.
      */
-    public static function get_backup_record($id) {
+    static public function get_backup_record($id) {
         global $DB;
 
         $backuprec = $DB->get_record('backup_controllers', array('backupid' => $id), '*', MUST_EXIST);
@@ -203,7 +203,7 @@ class async_helper  {
      *
      * @return bool $async True if async mode enabled false otherwise.
      */
-    public static function is_async_enabled() {
+    static public function is_async_enabled() {
         global $CFG;
 
         $async = false;

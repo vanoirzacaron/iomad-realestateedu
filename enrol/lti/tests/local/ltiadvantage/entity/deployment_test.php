@@ -34,7 +34,7 @@ class deployment_test extends \advanced_testcase {
      * @param array $expectations various expectations for the test cases.
      * @covers ::create
      */
-    public function test_creation(array $args, array $expectations): void {
+    public function test_creation(array $args, array $expectations) {
         if (!$expectations['valid']) {
             $this->expectException($expectations['exception']);
             $this->expectExceptionMessage($expectations['exceptionmessage']);
@@ -53,7 +53,7 @@ class deployment_test extends \advanced_testcase {
      * Data provider for testing object instantiation.
      * @return array the data for testing.
      */
-    public function instantiation_data_provider(): array {
+    public static function instantiation_data_provider(): array {
         return [
             'Valid deployment creation, no id or legacy consumer key' => [
                 'args' => [
@@ -141,7 +141,7 @@ class deployment_test extends \advanced_testcase {
      *
      * @covers ::add_context
      */
-    public function test_add_context(): void {
+    public function test_add_context() {
         $deploymentwithid = deployment::create(123, 'deploymentid123', 'Global tool deployment', 55);
         $context = $deploymentwithid->add_context('context-id-123', ['CourseSection']);
         $this->assertInstanceOf(context::class, $context);
@@ -158,7 +158,7 @@ class deployment_test extends \advanced_testcase {
      *
      * @covers ::add_resource_link
      */
-    public function test_add_resource_link(): void {
+    public function test_add_resource_link() {
         $deploymentwithid = deployment::create(123, 'deploymentid123', 'Global tool deployment', 55);
         $resourcelink = $deploymentwithid->add_resource_link('res-link-id-123', 45);
         $this->assertInstanceOf(resource_link::class, $resourcelink);
@@ -178,7 +178,7 @@ class deployment_test extends \advanced_testcase {
      *
      * @covers ::set_legacy_consumer_key
      */
-    public function test_set_legacy_consumer_key(): void {
+    public function test_set_legacy_consumer_key() {
         $deployment = deployment::create(12, 'deploy-id-123', 'Global tool deployment');
         $deployment->set_legacy_consumer_key(str_repeat('a', 255));
         $this->assertEquals(str_repeat('a', 255), $deployment->get_legacy_consumer_key());

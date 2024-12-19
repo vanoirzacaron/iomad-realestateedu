@@ -18,6 +18,7 @@ namespace core\oauth2\service;
 
 use core\oauth2\issuer;
 use core\oauth2\discovery\openidconnect;
+use core\oauth2\endpoint;
 use core\oauth2\user_field_mapping;
 
 /**
@@ -38,7 +39,7 @@ class clever extends openidconnect implements issuer_interface {
             'name' => 'Clever',
             'image' => 'https://apps.clever.com/favicon.ico',
             'basicauth' => 1,
-            'baseurl' => 'https://clever.com',
+            'baseurl' => '',
             'showonloginpage' => issuer::LOGINONLY,
             'servicetype' => 'clever',
         ];
@@ -47,21 +48,45 @@ class clever extends openidconnect implements issuer_interface {
     }
 
     /**
-     * Create field mappings for this issuer.
+     * Create endpoints for this issuer.
      *
-     * @param issuer $issuer Issuer the field mappings should be created for.
+     * @param issuer $issuer Issuer the endpoints should be created for.
+     * @return issuer
      */
-    public static function create_field_mappings(issuer $issuer): void {
-        // Perform OIDC default field mapping.
-        parent::create_field_mappings($issuer);
-
-        // Create the additional 'sub' field mapping.
-        $record = (object) [
-            'issuerid' => $issuer->get('id'),
-            'externalfield' => 'sub',
-            'internalfield' => 'idnumber',
+    public static function create_endpoints(issuer $issuer): issuer {
+        $endpoints = [
+            'authorization_endpoint' => 'https://clever.com/oauth/authorize',
+            'token_endpoint' => 'https://clever.com/oauth/tokens',
+            'userinfo_endpoint' => 'https://api.clever.com/v3.0/me',
+            'userdata_endpoint' => 'https://api.clever.com/v3.0/users'
         ];
-        $userfieldmapping = new user_field_mapping(0, $record);
-        $userfieldmapping->create();
+        foreach ($endpoints as $name => $url) {
+            $record = (object) [
+                'issuerid' => $issuer->get('id'),
+                'name' => $name,
+                'url' => $url
+            ];
+            $endpoint = new endpoint(0, $record);
+            $endpoint->create();
+        }
+
+        // Create the field mappings.
+        $mapping = [
+            'data-id' => 'idnumber',
+            'data-name-first' => 'firstname',
+            'data-name-last' => 'lastname',
+            'data-email' => 'email'
+        ];
+        foreach ($mapping as $external => $internal) {
+            $record = (object) [
+                'issuerid' => $issuer->get('id'),
+                'externalfield' => $external,
+                'internalfield' => $internal
+            ];
+            $userfieldmapping = new user_field_mapping(0, $record);
+            $userfieldmapping->create();
+        }
+
+        return $issuer;
     }
 }

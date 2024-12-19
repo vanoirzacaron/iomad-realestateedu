@@ -167,14 +167,14 @@ class badgeslib_test extends advanced_testcase {
             '"@context":"https:\/\/w3id.org\/openbadges\/v2","id":"%s","type":"Issuer"}';
     }
 
-    public function test_create_badge(): void {
+    public function test_create_badge() {
         $badge = new badge($this->badgeid);
 
         $this->assertInstanceOf('badge', $badge);
         $this->assertEquals($this->badgeid, $badge->id);
     }
 
-    public function test_clone_badge(): void {
+    public function test_clone_badge() {
         $badge = new badge($this->badgeid);
         $newid = $badge->make_clone();
         $clonedbadge = new badge($newid);
@@ -200,7 +200,7 @@ class badgeslib_test extends advanced_testcase {
         $this->assertEquals($badge->imageauthorurl, $clonedbadge->imageauthorurl);
     }
 
-    public function test_badge_status(): void {
+    public function test_badge_status() {
         $badge = new badge($this->badgeid);
         $old_status = $badge->status;
         $badge->set_status(BADGE_STATUS_ACTIVE);
@@ -208,7 +208,7 @@ class badgeslib_test extends advanced_testcase {
         $this->assertEquals(BADGE_STATUS_ACTIVE, $badge->status);
     }
 
-    public function test_delete_badge(): void {
+    public function test_delete_badge() {
         $badge = new badge($this->badgeid);
         $badge->delete();
         // We don't actually delete badges. We archive them.
@@ -218,7 +218,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Really delete the badge.
      */
-    public function test_delete_badge_for_real(): void {
+    public function test_delete_badge_for_real() {
         global $DB;
 
         $badge = new badge($this->badgeid);
@@ -262,7 +262,7 @@ class badgeslib_test extends advanced_testcase {
         $this->assertFalse($DB->record_exists('tag_instance', ['itemid' => $this->badgeid]));
     }
 
-    public function test_create_badge_criteria(): void {
+    public function test_create_badge_criteria() {
         $badge = new badge($this->badgeid);
         $criteria_overall = award_criteria::build(array('criteriatype' => BADGE_CRITERIA_TYPE_OVERALL, 'badgeid' => $badge->id));
         $criteria_overall->save(array('agg' => BADGE_CRITERIA_AGGREGATION_ALL));
@@ -276,7 +276,7 @@ class badgeslib_test extends advanced_testcase {
         $this->assertCount(2, $badge->get_criteria());
     }
 
-    public function test_add_badge_criteria_description(): void {
+    public function test_add_badge_criteria_description() {
         $criteriaoverall = award_criteria::build(array('criteriatype' => BADGE_CRITERIA_TYPE_OVERALL, 'badgeid' => $this->badgeid));
         $criteriaoverall->save(array(
                 'agg' => BADGE_CRITERIA_AGGREGATION_ALL,
@@ -298,7 +298,7 @@ class badgeslib_test extends advanced_testcase {
         $this->assertEquals('Description', $badge->criteria[BADGE_CRITERIA_TYPE_PROFILE]->description);
     }
 
-    public function test_delete_badge_criteria(): void {
+    public function test_delete_badge_criteria() {
         $criteria_overall = award_criteria::build(array('criteriatype' => BADGE_CRITERIA_TYPE_OVERALL, 'badgeid' => $this->badgeid));
         $criteria_overall->save(array('agg' => BADGE_CRITERIA_AGGREGATION_ALL));
         $badge = new badge($this->badgeid);
@@ -309,7 +309,7 @@ class badgeslib_test extends advanced_testcase {
         $this->assertEmpty($badge->get_criteria());
     }
 
-    public function test_badge_awards(): void {
+    public function test_badge_awards() {
         global $DB;
         $this->preventResetByRollback(); // Messaging is not compatible with transactions.
         $badge = new badge($this->badgeid);
@@ -330,8 +330,8 @@ class badgeslib_test extends advanced_testcase {
         $message = array_pop($messages);
         // Check we have the expected data.
         $customdata = json_decode($message->customdata);
-        $this->assertObjectHasProperty('notificationiconurl', $customdata);
-        $this->assertObjectHasProperty('hash', $customdata);
+        $this->assertObjectHasAttribute('notificationiconurl', $customdata);
+        $this->assertObjectHasAttribute('hash', $customdata);
 
         $user2 = $this->getDataGenerator()->create_user();
         $badge->issue($user2->id, true);
@@ -343,7 +343,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test the {@link badges_get_user_badges()} function in lib/badgeslib.php
      */
-    public function test_badges_get_user_badges(): void {
+    public function test_badges_get_user_badges() {
         global $DB;
 
         // Messaging is not compatible with transactions.
@@ -482,7 +482,7 @@ class badgeslib_test extends advanced_testcase {
 
     }
 
-    public function data_for_message_from_template() {
+    public static function data_for_message_from_template(): array {
         return array(
             array(
                 'This is a message with no variables',
@@ -520,7 +520,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * @dataProvider data_for_message_from_template
      */
-    public function test_badge_message_from_template($message, $params, $result): void {
+    public function test_badge_message_from_template($message, $params, $result) {
         $this->assertEquals(badge_message_from_template($message, $params), $result);
     }
 
@@ -529,7 +529,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @covers \core_badges\badge::review_all_criteria
      */
-    public function test_badge_activity_criteria_with_a_huge_number_of_coursemodules(): void {
+    public function test_badge_activity_criteria_with_a_huge_number_of_coursemodules() {
         global $CFG;
         require_once($CFG->dirroot.'/completion/criteria/completion_criteria_activity.php');
 
@@ -605,7 +605,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test badges observer when course module completion event id fired.
      */
-    public function test_badges_observer_course_module_criteria_review(): void {
+    public function test_badges_observer_course_module_criteria_review() {
         $this->preventResetByRollback(); // Messaging is not compatible with transactions.
         $badge = new badge($this->coursebadge);
         $this->assertFalse($badge->is_issued($this->user->id));
@@ -643,7 +643,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test badges observer when course_completed event is fired.
      */
-    public function test_badges_observer_course_criteria_review(): void {
+    public function test_badges_observer_course_criteria_review() {
         $this->preventResetByRollback(); // Messaging is not compatible with transactions.
         $badge = new badge($this->coursebadge);
         $this->assertFalse($badge->is_issued($this->user->id));
@@ -678,7 +678,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test badges observer when user_updated event is fired.
      */
-    public function test_badges_observer_profile_criteria_review(): void {
+    public function test_badges_observer_profile_criteria_review() {
         global $CFG, $DB;
         require_once($CFG->dirroot.'/user/profile/lib.php');
 
@@ -719,7 +719,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @covers \award_criteria_cohort
      */
-    public function test_badges_observer_any_cohort_criteria_review(): void {
+    public function test_badges_observer_any_cohort_criteria_review() {
         global $CFG;
 
         require_once("$CFG->dirroot/cohort/lib.php");
@@ -822,7 +822,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @covers \award_criteria_cohort
      */
-    public function test_badges_observer_all_cohort_criteria_review(): void {
+    public function test_badges_observer_all_cohort_criteria_review() {
         global $CFG;
 
         require_once("$CFG->dirroot/cohort/lib.php");
@@ -901,7 +901,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test badges assertion generated when a badge is issued.
      */
-    public function test_badges_assertion(): void {
+    public function test_badges_assertion() {
         $this->preventResetByRollback(); // Messaging is not compatible with transactions.
         $badge = new badge($this->coursebadge);
         $this->assertFalse($badge->is_issued($this->user->id));
@@ -956,7 +956,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Tests the core_badges_myprofile_navigation() function.
      */
-    public function test_core_badges_myprofile_navigation(): void {
+    public function test_core_badges_myprofile_navigation() {
         // Set up the test.
         $tree = new \core_user\output\myprofile\tree();
         $this->setAdminUser();
@@ -972,13 +972,14 @@ class badgeslib_test extends advanced_testcase {
         core_badges_myprofile_navigation($tree, $this->user, $iscurrentuser, $course);
         $reflector = new ReflectionObject($tree);
         $nodes = $reflector->getProperty('nodes');
+        $nodes->setAccessible(true);
         $this->assertArrayHasKey('localbadges', $nodes->getValue($tree));
     }
 
     /**
      * Tests the core_badges_myprofile_navigation() function with badges disabled..
      */
-    public function test_core_badges_myprofile_navigation_badges_disabled(): void {
+    public function test_core_badges_myprofile_navigation_badges_disabled() {
         // Set up the test.
         $tree = new \core_user\output\myprofile\tree();
         $this->setAdminUser();
@@ -994,13 +995,14 @@ class badgeslib_test extends advanced_testcase {
         core_badges_myprofile_navigation($tree, $this->user, $iscurrentuser, $course);
         $reflector = new ReflectionObject($tree);
         $nodes = $reflector->getProperty('nodes');
+        $nodes->setAccessible(true);
         $this->assertArrayNotHasKey('localbadges', $nodes->getValue($tree));
     }
 
     /**
      * Tests the core_badges_myprofile_navigation() function with a course badge.
      */
-    public function test_core_badges_myprofile_navigation_with_course_badge(): void {
+    public function test_core_badges_myprofile_navigation_with_course_badge() {
         // Set up the test.
         $tree = new \core_user\output\myprofile\tree();
         $this->setAdminUser();
@@ -1012,13 +1014,14 @@ class badgeslib_test extends advanced_testcase {
         core_badges_myprofile_navigation($tree, $this->user, $iscurrentuser, $this->course);
         $reflector = new ReflectionObject($tree);
         $nodes = $reflector->getProperty('nodes');
+        $nodes->setAccessible(true);
         $this->assertArrayHasKey('localbadges', $nodes->getValue($tree));
     }
 
     /**
      * Test insert and update endorsement with a site badge.
      */
-    public function test_badge_endorsement(): void {
+    public function test_badge_endorsement() {
         $badge = new badge($this->badgeid);
 
         // Insert Endorsement.
@@ -1052,7 +1055,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test insert and delete related badge with a site badge.
      */
-    public function test_badge_related(): void {
+    public function test_badge_related() {
         $badge = new badge($this->badgeid);
         $newid1 = $badge->make_clone();
         $newid2 = $badge->make_clone();
@@ -1076,7 +1079,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test insert, update, delete alignment with a site badge.
      */
-    public function test_alignments(): void {
+    public function test_alignments() {
         $badge = new badge($this->badgeid);
 
         // Insert a alignment.
@@ -1174,7 +1177,7 @@ class badgeslib_test extends advanced_testcase {
      * @param  string|null  $mail  Backpack mail address.
      * @param  string|null  $password  Backpack password.
      */
-    public function test_save_backpack_credentials(bool $addbackpack = true, ?string $mail = null, ?string $password = null): void {
+    public function test_save_backpack_credentials(bool $addbackpack = true, ?string $mail = null, ?string $password = null) {
         global $DB;
 
         $this->resetAfterTest();
@@ -1242,7 +1245,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function save_backpack_credentials_provider(): array {
+    public static function save_backpack_credentials_provider(): array {
         return [
             'Empty fields' => [
                 false,
@@ -1270,7 +1273,7 @@ class badgeslib_test extends advanced_testcase {
      * @param  bool $adduser True if a real user has to be used for creating the backpack; false otherwise.
      * @param  bool $duplicates True if duplicates has to be tested too; false otherwise.
      */
-    public function test_badges_save_external_backpack(array $data, bool $adduser, bool $duplicates): void {
+    public function test_badges_save_external_backpack(array $data, bool $adduser, bool $duplicates) {
         global $DB;
 
         $this->resetAfterTest();
@@ -1310,7 +1313,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function badges_save_external_backpack_provider() {
+    public static function badges_save_external_backpack_provider(): array {
         $data = [
             'apiversion' => 2,
             'backpackapiurl' => 'https://api.ca.badgr.io/v2',
@@ -1381,7 +1384,7 @@ class badgeslib_test extends advanced_testcase {
      * @param boolean $updatetest
      * @dataProvider badges_create_site_backpack_provider
      */
-    public function test_badges_create_site_backpack($isadmin, $updatetest): void {
+    public function test_badges_create_site_backpack($isadmin, $updatetest) {
         global $DB;
         $this->resetAfterTest();
 
@@ -1427,7 +1430,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Provider for test_badges_(create/update)_site_backpack
      */
-    public function badges_create_site_backpack_provider() {
+    public static function badges_create_site_backpack_provider(): array {
         return [
             "Test as admin user - creation test" => [true, true],
             "Test as admin user - update test" => [true, false],
@@ -1439,7 +1442,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test the badges_open_badges_backpack_api with different backpacks
      */
-    public function test_badges_open_badges_backpack_api(): void {
+    public function test_badges_open_badges_backpack_api() {
         $this->resetAfterTest();
 
         $data = [
@@ -1472,7 +1475,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test the badges_get_site_backpack function
      */
-    public function test_badges_get_site_backpack(): void {
+    public function test_badges_get_site_backpack() {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $data = [
@@ -1513,7 +1516,7 @@ class badgeslib_test extends advanced_testcase {
     /**
      * Test the badges_get_user_backpack function
      */
-    public function test_badges_get_user_backpack(): void {
+    public function test_badges_get_user_backpack() {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         $data = [
@@ -1557,7 +1560,7 @@ class badgeslib_test extends advanced_testcase {
      * @param boolean $withauth Testing with authentication or not.
      * @dataProvider badges_get_site_primary_backpack_provider
      */
-    public function test_badges_get_site_primary_backpack($withauth): void {
+    public function test_badges_get_site_primary_backpack($withauth) {
         $data = [
             'apiversion' => '2',
             'backpackapiurl' => 'https://api.ca.badgr.io/v2',
@@ -1598,7 +1601,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function badges_get_site_primary_backpack_provider() {
+    public static function badges_get_site_primary_backpack_provider(): array {
         return [
             "Test with auth details" => [true],
             "Test without auth details" => [false],
@@ -1653,7 +1656,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function badges_change_sortorder_backpacks_provider(): array {
+    public static function badges_change_sortorder_backpacks_provider(): array {
         return [
             "Test up" => [
                 'backpacktomove' => 1,
@@ -1690,7 +1693,7 @@ class badgeslib_test extends advanced_testcase {
      * @param string $expected Expected string result
      * @dataProvider badgr_open_url_generator
      */
-    public function test_badges_generate_badgr_open_url($type, $expected): void {
+    public function test_badges_generate_badgr_open_url($type, $expected) {
         $data = [
             'apiversion' => '2',
             'backpackapiurl' => 'https://api.ca.badgr.io/v2',
@@ -1707,7 +1710,7 @@ class badgeslib_test extends advanced_testcase {
      * Data provider for test_badges_generate_badgr_open_url
      * @return array
      */
-    public function badgr_open_url_generator() {
+    public static function badgr_open_url_generator(): array {
         return [
             'Badgr Assertion URL test' => [
                 OPEN_BADGES_V2_TYPE_ASSERTION, "https://api.ca.badgr.io/public/assertions/123455"
@@ -1731,7 +1734,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @dataProvider badges_external_get_mapping_provider
      */
-    public function test_badges_external_get_mapping($internalid, $externalid, $expected, $field = null): void {
+    public function test_badges_external_get_mapping($internalid, $externalid, $expected, $field = null) {
         $data = [
             'apiversion' => '2',
             'backpackapiurl' => 'https://api.ca.badgr.io/v2',
@@ -1754,7 +1757,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @return array
      */
-    public function badges_external_get_mapping_provider() {
+    public static function badges_external_get_mapping_provider(): array {
         return [
             "Get the site backpack value" => [
                 1234, 4321, 'id', 'sitebackpackid'
@@ -1792,7 +1795,7 @@ class badgeslib_test extends advanced_testcase {
      *
      * @covers ::badge_get_tagged_badges
      */
-    public function test_badge_get_tagged_badges(): void {
+    public function test_badge_get_tagged_badges() {
         $this->resetAfterTest();
         $this->setAdminUser();
 

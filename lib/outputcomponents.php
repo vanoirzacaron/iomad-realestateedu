@@ -26,7 +26,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use core\output\local\action_menu\subpanel;
+ use core\output\local\action_menu\subpanel;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -494,7 +494,7 @@ class help_icon implements renderable, templatable {
      * Export this data so it can be used as the context for a mustache template.
      *
      * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
-     * @return stdClass
+     * @return array
      */
     public function export_for_template(renderer_base $output) {
         global $CFG;
@@ -1135,7 +1135,7 @@ class single_select implements renderable, templatable {
      * @param string $name name of selection field - the changing parameter in url
      * @param array $options list of options
      * @param string $selected selected element
-     * @param ?array $nothing
+     * @param array $nothing
      * @param string $formid
      */
     public function __construct(moodle_url $url, $name, array $options, $selected = '', $nothing = array('' => 'choosedots'), $formid = null) {
@@ -1438,7 +1438,7 @@ class url_select implements renderable, templatable {
      * Clean a URL.
      *
      * @param string $value The URL.
-     * @return string The cleaned URL.
+     * @return The cleaned URL.
      */
     protected function clean_url($value) {
         global $CFG;
@@ -1857,7 +1857,7 @@ class html_writer {
      * Generates random html element id.
      *
      * @staticvar int $counter
-     * @staticvar string $uniq
+     * @staticvar type $uniq
      * @param string $base A string fragment that will be included in the random ID.
      * @return string A unique ID
      */
@@ -1949,7 +1949,7 @@ class html_writer {
      *                array(1=>'One', '--1uniquekey'=>array('More'=>array(2=>'Two', 3=>'Three')))
      * @param string $name name of select element
      * @param string|array $selected value or array of values depending on multiple attribute
-     * @param array|bool|null $nothing add nothing selected option, or false of not added
+     * @param array|bool $nothing add nothing selected option, or false of not added
      * @param array $attributes html select element attributes
      * @return string HTML fragment
      */
@@ -3779,7 +3779,7 @@ class custom_menu_item implements renderable, templatable {
      * Export this data so it can be used as the context for a mustache template.
      *
      * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
-     * @return stdClass
+     * @return array
      */
     public function export_for_template(renderer_base $output) {
         $syscontext = context_system::instance();
@@ -3819,7 +3819,7 @@ class custom_menu_item implements renderable, templatable {
  * of custom_menu_item nodes that can be rendered by the core renderer.
  *
  * To configure the custom menu:
- *     Settings: Administration > Appearance > Advanced theme settings
+ *     Settings: Administration > Appearance > Themes > Theme settings
  *
  * @copyright 2010 Sam Hemelryk
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -4109,7 +4109,7 @@ class tabobject implements renderable, templatable {
  * @copyright 2015 Adrian Greeve <adrian@moodle.com>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class context_header implements renderable, templatable {
+class context_header implements renderable {
 
     /**
      * @var string $heading Main heading.
@@ -4189,47 +4189,6 @@ class context_header implements renderable, templatable {
             $this->additionalbuttons[$buttontype]['linkattributes'] = array_merge($button['linkattributes'],
                 array('class' => $class));
         }
-    }
-
-    /**
-     * Export for template.
-     *
-     * @param renderer_base $output Renderer.
-     * @return array
-     */
-    public function export_for_template(renderer_base $output): array {
-        // Heading.
-        $headingtext = isset($this->heading) ? $this->heading : $output->get_page()->heading;
-        $heading = $output->heading($headingtext, $this->headinglevel, "h2 mb-0");
-
-        // Buttons.
-        if (isset($this->additionalbuttons)) {
-            $additionalbuttons = [];
-            foreach ($this->additionalbuttons as $button) {
-                if (!isset($button->page)) {
-                    // Include js for messaging.
-                    if ($button['buttontype'] === 'togglecontact') {
-                        \core_message\helper::togglecontact_requirejs();
-                    }
-                    if ($button['buttontype'] === 'message') {
-                        \core_message\helper::messageuser_requirejs();
-                    }
-                }
-                foreach ($button['linkattributes'] as $key => $value) {
-                    $button['attributes'][] = ['name' => $key, 'value' => $value];
-                }
-                $additionalbuttons[] = $button;
-            }
-        }
-
-        return [
-            'heading' => $heading,
-            'headinglevel' => $this->headinglevel,
-            'imagedata' => $this->imagedata,
-            'prefix' => $this->prefix,
-            'hasadditionalbuttons' => !empty($additionalbuttons),
-            'additionalbuttons' => $additionalbuttons ?? [],
-        ];
     }
 }
 
@@ -4531,7 +4490,7 @@ class action_menu implements renderable, templatable {
     /**
      * Adds an action to this action menu.
      *
-     * @param action_link|pix_icon|subpanel|string $action
+     * @param action_menu_link|pix_icon|subpanel|string $action
      */
     public function add($action) {
 
@@ -5006,8 +4965,6 @@ class action_menu_link extends action_link implements renderable {
 
     /**
      * The number of instances of this action menu link (and its subclasses).
-     *
-     * @deprecated since Moodle 4.4.
      * @var int
      */
     protected static $instance = 1;
@@ -5036,6 +4993,7 @@ class action_menu_link extends action_link implements renderable {
      */
     public function export_for_template(renderer_base $output) {
         $data = parent::export_for_template($output);
+        $data->instance = self::$instance++;
 
         // Ignore what the parent did with the attributes, except for ID and class.
         $data->attributes = [];
@@ -5234,7 +5192,7 @@ class progress_bar implements renderable, templatable {
      * Getter for ID
      * @return string id
      */
-    public function get_id(): string {
+    public function get_id() : string {
         return $this->html_id;
     }
 

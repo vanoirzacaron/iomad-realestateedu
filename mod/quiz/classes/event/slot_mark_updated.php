@@ -14,10 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * The mod_quiz slots mark updated event.
+ *
+ * @package    mod_quiz
+ * @copyright  2021 The Open University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_quiz\event;
 
 /**
- * The mark a slot is graded out of has changed.
+ * The mod_quiz slot mark updated event class.
  *
  * @property-read array $other {
  *      Extra information about event.
@@ -27,9 +35,9 @@ namespace mod_quiz\event;
  *      - int newmaxmark: the new max mark value.
  * }
  *
- * @package   mod_quiz
- * @copyright 2021 The Open University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    mod_quiz
+ * @copyright  2021 The Open University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class slot_mark_updated extends \core\event\base {
     protected function init() {

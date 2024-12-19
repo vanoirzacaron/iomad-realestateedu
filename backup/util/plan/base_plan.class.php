@@ -158,7 +158,7 @@ abstract class base_plan implements checksumable, executable {
      * with their corresponding settings
      * (must set the $built property to true)
      */
-    abstract public function build();
+    public abstract function build();
 
     public function is_checksum_correct($checksum) {
         return $this->calculate_checksum() === $checksum;
@@ -201,7 +201,7 @@ abstract class base_plan implements checksumable, executable {
      *
      * @return \core\progress\base Progress reporting object
      */
-    abstract public function get_progress();
+    public abstract function get_progress();
 
     /**
      * Destroy all circular references. It helps PHP 5.2 a lot!

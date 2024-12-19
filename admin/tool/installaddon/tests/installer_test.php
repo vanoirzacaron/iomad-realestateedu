@@ -35,7 +35,7 @@ require_once(__DIR__.'/fixtures/testable_installer.php');
  */
 class installer_test extends \advanced_testcase {
 
-    public function test_get_addons_repository_url(): void {
+    public function test_get_addons_repository_url() {
         $installer = testable_tool_installaddon_installer::instance();
         $url = $installer->get_addons_repository_url();
         $query = parse_url($url, PHP_URL_QUERY);
@@ -49,7 +49,7 @@ class installer_test extends \advanced_testcase {
         $this->assertSame("2.5'; DROP TABLE mdl_user; --", $site['majorversion']);
     }
 
-    public function test_decode_remote_request(): void {
+    public function test_decode_remote_request() {
         $installer = testable_tool_installaddon_installer::instance();
 
         $request = base64_encode(json_encode(array(
@@ -107,7 +107,7 @@ class installer_test extends \advanced_testcase {
         $this->assertSame(false, $installer->testable_decode_remote_request($request));
     }
 
-    public function test_detect_plugin_component(): void {
+    public function test_detect_plugin_component() {
         global $CFG;
 
         $installer = tool_installaddon_installer::instance();
@@ -119,7 +119,7 @@ class installer_test extends \advanced_testcase {
         $this->assertFalse($installer->detect_plugin_component($zipfile));
     }
 
-    public function test_detect_plugin_component_from_versionphp(): void {
+    public function test_detect_plugin_component_from_versionphp() {
         global $CFG;
 
         $installer = testable_tool_installaddon_installer::instance();
@@ -136,7 +136,7 @@ $plugin->version  = 2014121300;
         $this->assertFalse($installer->testable_detect_plugin_component_from_versionphp($versionphp));
     }
 
-    public function test_make_installfromzip_storage(): void {
+    public function test_make_installfromzip_storage() {
         $installer = testable_tool_installaddon_installer::instance();
 
         // Check we get writable directory.

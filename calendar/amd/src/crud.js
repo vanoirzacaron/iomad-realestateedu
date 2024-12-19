@@ -32,7 +32,6 @@ define([
     'core_calendar/selectors',
     'core/pending',
     'core/modal_save_cancel',
-    'core/config',
 ],
 function(
     $,
@@ -46,7 +45,6 @@ function(
     CalendarSelectors,
     Pending,
     ModalSaveCancel,
-    Config,
 ) {
 
     /**
@@ -155,8 +153,7 @@ function(
                 var wrapper = root.find(CalendarSelectors.wrapper);
 
                 var categoryId = wrapper.data('categoryid');
-                const courseId = wrapper.data('courseid');
-                if (typeof categoryId !== 'undefined' && courseId != Config.siteId) {
+                if (typeof categoryId !== 'undefined') {
                     modal.setCategoryId(categoryId);
                 }
 

@@ -7,7 +7,7 @@ Feature: Administration nav tabs
     And I click on "Site administration" "link"
     And I click on "Users" "link"
     And I click on "Browse list of users" "link"
-    And I should see "Add a new user"
+    And I should see "New filter"
     When I press the "back" button in the browser
     Then I should see "Cohorts"
 

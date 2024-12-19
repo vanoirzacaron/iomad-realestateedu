@@ -24,19 +24,11 @@
 
 $messageproviders = array (
 
-    // Submitting a feedback.
-    'submission' => [
-        'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ],
-    ],
+/// Submitting a feedback
+    'submission' => array (
+    ),
+/// Message to nonrespondents
+    'message' => array (
+    )
 
-    // Message to nonrespondents.
-    'message' => [
-        'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ],
-    ],
 );

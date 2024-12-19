@@ -51,7 +51,7 @@ class context_locked_test extends \advanced_testcase {
     /**
      * Tests that events are created when contexts are locked and unlocked.
      */
-    public function test_creation(): void {
+    public function test_creation() {
         $this->resetAfterTest();
 
         $category = self::getDataGenerator()->create_category();

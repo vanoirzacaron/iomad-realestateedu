@@ -29,10 +29,10 @@ class event_times_test extends \advanced_testcase {
     /**
      * Test event times class getters.
      *
-     * @dataProvider getters_testcases()
+     * @dataProvider getters_testcases
      * @param array $constructorparams Associative array of constructor parameters.
      */
-    public function test_getters($constructorparams): void {
+    public function test_getters($constructorparams) {
         $eventtimes = new event_times(
             $constructorparams['start_time'],
             $constructorparams['end_time'],
@@ -51,7 +51,7 @@ class event_times_test extends \advanced_testcase {
     /**
      * Test cases for getters test.
      */
-    public function getters_testcases() {
+    public static function getters_testcases(): array {
         return [
             'Dataset 1' => [
                 'constructorparams' => [

@@ -61,7 +61,7 @@ class factories_test extends \advanced_testcase {
     /**
      * test get_logger_chain() method
      */
-    public function test_backup_factory(): void {
+    public function test_backup_factory() {
         global $CFG;
 
         // Default instantiate, all levels = backup::LOG_NONE

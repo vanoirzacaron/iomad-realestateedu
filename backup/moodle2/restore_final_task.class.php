@@ -147,7 +147,7 @@ class restore_final_task extends restore_task {
      * in final task because we need all the activities to be
      * restored in order to handle some log records properly
      */
-    public static function define_restore_log_rules() {
+    static public function define_restore_log_rules() {
         $rules = array();
 
         // module 'course' rules
