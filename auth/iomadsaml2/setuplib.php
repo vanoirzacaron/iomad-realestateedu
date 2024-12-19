@@ -42,7 +42,7 @@ require_once("{$CFG->dirroot}/auth/iomadsaml2/auth.php");
  * @param integer $numberofdays Certificate expirey period
  */
 function create_certificates($iomadsam2auth, $dn = false, $numberofdays = 3650) {
-    global $SITE;
+    global $CFG, $SITE;
 
     // IOMAD
     require_once($CFG->dirroot . '/local/iomad/lib/company.php');

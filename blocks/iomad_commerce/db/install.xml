@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/iomad_commerce/db" VERSION="20241124" COMMENT="XMLDB file for Moodle blocks/iomad_commerce"
+<XMLDB PATH="blocks/iomad_commerce/db" VERSION="20241209" COMMENT="XMLDB file for Moodle blocks/iomad_commerce"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -27,6 +27,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="paymentid" TYPE="foreign" FIELDS="paymentid" REFTABLE="payments" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="uniquereference" UNIQUE="true" FIELDS="reference"/>
@@ -48,6 +51,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="invoiceid" TYPE="foreign" FIELDS="invoiceid" REFTABLE="invoice" REFFIELDS="id"/>
+        <KEY NAME="invoiceableitemid" TYPE="foreign" FIELDS="invoiceableitemid" REFTABLE="course_shopsettings" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="course_shopblockprice" COMMENT="license block prices">
@@ -62,6 +67,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="itemid" TYPE="foreign" FIELDS="itemid" REFTABLE="course_shopsettings" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="course_shopsettings" COMMENT="course settings for shop">
@@ -85,6 +91,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="shoptag" COMMENT="shoptags">
@@ -104,6 +111,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="shoptagid" TYPE="foreign" FIELDS="shoptagid" REFTABLE="shoptag" REFFIELDS="id"/>
+        <KEY NAME="itemid" TYPE="foreign" FIELDS="itemid" REFTABLE="course_shopsettings" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="course_shopsettings_courses" COMMENT="Table to hold the courses which are associated to the shop listing.">
@@ -114,6 +123,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="itemid" TYPE="foreign" FIELDS="itemid" REFTABLE="course_shopsettings" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
   </TABLES>

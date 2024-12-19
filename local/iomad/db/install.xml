@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/iomad/db" VERSION="20241001" COMMENT="XMLDB file for Moodle local/iomad"
+<XMLDB PATH="local/iomad/db" VERSION="20241210" COMMENT="XMLDB file for Moodle local/iomad"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -56,11 +56,18 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="profileid" TYPE="foreign" FIELDS="profileid" REFTABLE="user_info_field" REFFIELDS="id"/>
+        <KEY NAME="supervisorprofileid" TYPE="foreign" FIELDS="supervisorprofileid" REFTABLE="user_info_field" REFFIELDS="id"/>
+        <KEY NAME="category" TYPE="foreign" FIELDS="category" REFTABLE="course_categories" REFFIELDS="id"/>
+        <KEY NAME="emailprofileid" TYPE="foreign" FIELDS="emailprofileid" REFTABLE="user_info_field" REFFIELDS="id"/>
+        <KEY NAME="previousroletemplateid" TYPE="foreign" FIELDS="previousroletemplateid" REFTABLE="company_role_templates" REFFIELDS="id"/>
+        <KEY NAME="previousemailtemplateid" TYPE="foreign" FIELDS="previousemailtemplateid" REFTABLE="email_templateset" REFFIELDS="id"/>
+        <KEY NAME="departmentprofileid" TYPE="foreign" FIELDS="departmentprofileid" REFTABLE="user_info_field" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="comp_par" UNIQUE="false" FIELDS="parentid"/>
         <INDEX NAME="comp_shortname" UNIQUE="false" FIELDS="shortname"/>
         <INDEX NAME="comp_name" UNIQUE="false" FIELDS="name"/>
+        <INDEX NAME="comp_par" UNIQUE="false" FIELDS="parentid" COMMENT="Parentid [Foreign Key, parentid, company, id]"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="company_course" COMMENT="Links Companies to Courses for Perficio">
@@ -74,8 +81,8 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="companycourse" UNIQUE="false" FIELDS="companyid, courseid"/>
-        <INDEX NAME="departmentcourse" UNIQUE="false" FIELDS="departmentid, courseid"/>
+        <INDEX NAME="companycourse" UNIQUE="false" FIELDS="companyid, courseid" COMMENT="[Foreign Key, companyid, company, id] [Foreign Key, courseid, course, id]"/>
+        <INDEX NAME="departmentcourse" UNIQUE="false" FIELDS="departmentid, courseid" COMMENT="[Foreign Key, departmentid, department, id]"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="department" COMMENT="Perficio department deginitions">
@@ -90,7 +97,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="depa_idcom" UNIQUE="false" FIELDS="id, company"/>
+        <INDEX NAME="depa_idcom" UNIQUE="false" FIELDS="id, company" COMMENT="[Foreign Key, company, company, id]"/>
         <INDEX NAME="depa_idcompar" UNIQUE="false" FIELDS="id, company, parent"/>
       </INDEXES>
     </TABLE>
@@ -115,9 +122,10 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="parentid" TYPE="foreign" FIELDS="parentid" REFTABLE="companylicense" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="complic_comp_ix" UNIQUE="false" FIELDS="companyid"/>
+        <INDEX NAME="complic_comp_ix" UNIQUE="false" FIELDS="companyid" COMMENT="[Foreign Key, companyid, company, id]"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="companylicense_users" COMMENT="To tie users to licenses">
@@ -137,6 +145,8 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="licenseid" TYPE="foreign" FIELDS="licenseid" REFTABLE="companylicense" REFFIELDS="id"/>
         <KEY NAME="licensecourseid" TYPE="foreign" FIELDS="licensecourseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="groupid" TYPE="foreign" FIELDS="groupid" REFTABLE="groups" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="complicu_userlicid_ix" UNIQUE="false" FIELDS="userid, licenseid, licensecourseid"/>
@@ -150,6 +160,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="licenseid" TYPE="foreign" FIELDS="licenseid" REFTABLE="companylicense" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_course_groups" COMMENT="Pivot table to map the groups table to the company table;">
@@ -161,6 +173,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="groupid" TYPE="foreign" FIELDS="groupid" REFTABLE="groups" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="iomad_courses" COMMENT="Table for holding course information for use within the iomad system.">
@@ -179,6 +194,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="classroom" COMMENT="Default comment for the table, please edit me">
@@ -198,6 +214,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_shared_courses" COMMENT="Pivot table to keep track of courses shared to other companies">
@@ -208,6 +225,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_created_courses" COMMENT="Table to hold all the courses which the company managers have created themselves">
@@ -218,6 +237,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_users" COMMENT="table to hold the users assigned to a company">
@@ -235,7 +256,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="departmentusers" UNIQUE="true" FIELDS="companyid, userid, departmentid"/>
+        <INDEX NAME="departmentusers" UNIQUE="true" FIELDS="companyid, userid, departmentid" COMMENT="[Foreign Key, companyid, company, id] [Foreign Key, userid, user, id] [Foreign Key, departmentid, department, id]"/>
         <INDEX NAME="companymanagers" UNIQUE="false" FIELDS="companyid, managertype"/>
         <INDEX NAME="departmentmanagers" UNIQUE="false" FIELDS="departmentid, managertype"/>
       </INDEXES>
@@ -249,8 +270,10 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="company_roleid_companyid" TYPE="unique" FIELDS="roleid, companyid, capability"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="company_roleid_companyid" UNIQUE="true" FIELDS="roleid, companyid, capability" COMMENT="[Foreign Key, roleid, role, id] [Foreign Key, companyid, company, id]"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="company_domains" COMMENT="swing table to hold domains and company ids">
       <FIELDS>
@@ -260,6 +283,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_comp_frameworks" COMMENT="Swing table for associating companies to frameworks">
@@ -270,6 +294,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="frameworkid" TYPE="foreign" FIELDS="frameworkid" REFTABLE="competency_framework" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_comp_templates" COMMENT="Swing table to associate learning plan templates to companies">
@@ -280,6 +306,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="templateid" TYPE="foreign" FIELDS="templateid" REFTABLE="competency_template" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="iomad_templates" COMMENT="for holding metadata on company templates">
@@ -290,6 +318,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="templateid" TYPE="foreign" FIELDS="templateid" REFTABLE="competency_template" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="iomad_frameworks" COMMENT="for holding meta data for company frameworks">
@@ -300,6 +329,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="frameworkid" TYPE="foreign" FIELDS="frameworkid" REFTABLE="competency_framework" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_shared_templates" COMMENT="for holding info on templates which have been shared between companies">
@@ -310,6 +340,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="templateid" TYPE="foreign" FIELDS="templateid" REFTABLE="competency_template" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_shared_frameworks" COMMENT="for holding info on templates which have been shared between companies">
@@ -320,6 +352,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="frameworkid" TYPE="foreign" FIELDS="frameworkid" REFTABLE="competency_framework" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_role_templates" COMMENT="Table for holding information on company role templates.">
@@ -340,6 +374,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="templateid" TYPE="foreign" FIELDS="templateid" REFTABLE="company_role_templates" REFFIELDS="id"/>
+        <KEY NAME="roleid" TYPE="foreign" FIELDS="roleid" REFTABLE="role" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_role_templates_ass" COMMENT="table to store which company templates are available to which companies">
@@ -350,6 +386,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="templateid" TYPE="foreign" FIELDS="templateid" REFTABLE="company_role_templates" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="companycertificate" COMMENT="for storing the options for the company certificate">
@@ -364,6 +402,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_transient_tokens" COMMENT="storing user tokens for SSO">
@@ -375,6 +414,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="company_course_autoenrol" COMMENT="Swing table for company courses which are auto enrolment courses">
@@ -386,6 +426,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="companyid" TYPE="foreign" FIELDS="companyid" REFTABLE="company" REFFIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
   </TABLES>

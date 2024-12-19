@@ -79,3 +79,14 @@ html.yui3-js-enabled body#page-my-index.format-site.path-my.gecko.dir-ltr.lang-e
 .block-mycourses .nav-tabs {
     padding-top: 15px;
 }
+.block_mycourses .card-img {
+    height: 7rem;
+    background-position: center;
+    background-size: cover;
+}
+.block_mycourses .list-image {
+    height: 5rem;
+    width: 20rem;
+    background-position: center;
+    background-size: cover;
+}

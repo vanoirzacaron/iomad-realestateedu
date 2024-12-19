@@ -505,6 +505,10 @@ class observer {
         $modifiedtime = $event->timecreated;
         $companyid = $event->companyid;
 
+        // We only care about company users.
+        if (empty($companyid)) {
+            return true;
+        }
 
         // Get the enrolment information.
         if (!$enrolrec = $DB->get_record('user_enrolments', ['id' => $event->objectid])) {

@@ -115,6 +115,12 @@ class auth extends \auth_plugin_base {
     ];
 
     /**
+     * IOMAD
+     * @var text $postfix the postfix used for configuration when we have a company selected.
+     */
+    protected $postfix = '';
+
+    /**
      * Constructor.
      */
     public function __construct() {
@@ -126,6 +132,7 @@ class auth extends \auth_plugin_base {
         if (!empty($companyid)) {
             $postfix = "_$companyid";
         }
+        $this->postfix = $postfix;
 
         // Add username field to the list of data mapping to be able to update it on user creation if required.
         if (!in_array('username', $this->userfields)) {
@@ -236,7 +243,13 @@ class auth extends \auth_plugin_base {
             $url = implode("\n", $url);
         }
 
-        $filename = md5($url) . '.idp.xml';
+        // IOMAD
+        if ($url == 'xml') {
+            $filename = md5($url) . $this->postfix . '.idp.xml';
+        } else {
+            $filename = md5($url) . '.idp.xml';
+        }
+
         return $this->get_file($filename);
     }
 

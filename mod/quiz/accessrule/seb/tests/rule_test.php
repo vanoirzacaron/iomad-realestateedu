@@ -87,7 +87,7 @@ class rule_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function valid_form_data_provider(): array {
+    public static function valid_form_data_provider(): array {
         return [
             'valid seb_requiresafeexambrowser' => ['seb_requiresafeexambrowser', '0'],
             'valid seb_linkquitseb0' => ['seb_linkquitseb', 'http://safeexambrowser.org/macosx'],
@@ -103,7 +103,7 @@ class rule_test extends \advanced_testcase {
      *
      * @return array
      */
-    public function invalid_form_data_provider(): array {
+    public static function invalid_form_data_provider(): array {
         return [
             'invalid seb_requiresafeexambrowser' => ['seb_requiresafeexambrowser', 'Uh oh!'],
             'invalid seb_linkquitseb0' => ['seb_linkquitseb', '\0'],
@@ -413,7 +413,7 @@ class rule_test extends \advanced_testcase {
         // Set quiz setting to require seb and save BEK.
         $quizsettings = seb_quiz_settings::get_record(['quizid' => $this->quiz->id]);
         $quizsettings->set('requiresafeexambrowser', settings_provider::USE_SEB_UPLOAD_CONFIG);
-        $xml = file_get_contents(__DIR__ . '/fixtures/unencrypted.seb');
+        $xml = file_get_contents(self::get_fixture_path(__NAMESPACE__, 'unencrypted.seb'));
         $this->create_module_test_file($xml, $this->quiz->cmid);
         $quizsettings->save();
 
@@ -517,7 +517,7 @@ class rule_test extends \advanced_testcase {
         // Set quiz setting to require seb and save BEK.
         $quizsettings = seb_quiz_settings::get_record(['quizid' => $this->quiz->id]);
         $quizsettings->set('requiresafeexambrowser', settings_provider::USE_SEB_UPLOAD_CONFIG);
-        $xml = file_get_contents(__DIR__ . '/fixtures/unencrypted.seb');
+        $xml = file_get_contents(self::get_fixture_path(__NAMESPACE__, 'unencrypted.seb'));
         $this->create_module_test_file($xml, $this->quiz->cmid);
         $quizsettings->save();
 
@@ -576,7 +576,7 @@ class rule_test extends \advanced_testcase {
         $quizsettings = seb_quiz_settings::get_record(['quizid' => $this->quiz->id]);
         $quizsettings->set('requiresafeexambrowser', settings_provider::USE_SEB_UPLOAD_CONFIG);
         $quizsettings->set('allowedbrowserexamkeys', $browserexamkey);
-        $xml = file_get_contents(__DIR__ . '/fixtures/unencrypted.seb');
+        $xml = file_get_contents(self::get_fixture_path(__NAMESPACE__, 'unencrypted.seb'));
         $this->create_module_test_file($xml, $this->quiz->cmid);
         $quizsettings->save();
 
@@ -694,7 +694,7 @@ class rule_test extends \advanced_testcase {
         $quizsettings = seb_quiz_settings::get_record(['quizid' => $this->quiz->id]);
         $quizsettings->set('requiresafeexambrowser', settings_provider::USE_SEB_UPLOAD_CONFIG);
         $quizsettings->set('allowedbrowserexamkeys', $browserexamkey);
-        $xml = file_get_contents(__DIR__ . '/fixtures/unencrypted.seb');
+        $xml = file_get_contents(self::get_fixture_path(__NAMESPACE__, 'unencrypted.seb'));
         $this->create_module_test_file($xml, $this->quiz->cmid);
         $quizsettings->save();
 
@@ -823,7 +823,7 @@ class rule_test extends \advanced_testcase {
         // Set quiz setting to require seb.
         $quizsettings = seb_quiz_settings::get_record(['quizid' => $this->quiz->id]);
         $quizsettings->set('requiresafeexambrowser', settings_provider::USE_SEB_UPLOAD_CONFIG); // Doesn't check basic header.
-        $xml = file_get_contents(__DIR__ . '/fixtures/unencrypted.seb');
+        $xml = file_get_contents(self::get_fixture_path(__NAMESPACE__, 'unencrypted.seb'));
         $this->create_module_test_file($xml, $this->quiz->cmid);
         $quizsettings->save();
 
@@ -1082,7 +1082,7 @@ class rule_test extends \advanced_testcase {
 
         // Should see links when using uploaded config.
         $quizsettings->set('requiresafeexambrowser', settings_provider::USE_SEB_UPLOAD_CONFIG);
-        $xml = file_get_contents(__DIR__ . '/fixtures/unencrypted.seb');
+        $xml = file_get_contents(self::get_fixture_path(__NAMESPACE__, 'unencrypted.seb'));
         $this->create_module_test_file($xml, $this->quiz->cmid);
         $quizsettings->save();
         $this->assertStringContainsString($this->get_seb_launch_link(), $method->invoke($this->make_rule()));
