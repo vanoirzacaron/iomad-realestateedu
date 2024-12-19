@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Scheduled tasks for IOMAD SAML2 auth plugin.
+ * Scheduled tasks for SAML2 auth plugin.
  *
  * @package    auth_iomadsaml2
  * @author     Sam Chaffee

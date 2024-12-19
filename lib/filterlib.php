@@ -140,7 +140,7 @@ class filter_manager {
      * @param string $filtername The filter name, for example 'tex'.
      * @param context $context context object.
      * @param array $localconfig array of local configuration variables for this filter.
-     * @return moodle_text_filter The filter, or null, if this type of filter is
+     * @return ?moodle_text_filter The filter, or null, if this type of filter is
      *      not recognised or could not be created.
      */
     protected function make_filter_object($filtername, $context, $localconfig) {
@@ -473,7 +473,7 @@ abstract class moodle_text_filter {
      * @param array $options options passed to the filters
      * @return string the HTML content after the filtering has been applied.
      */
-    public abstract function filter($text, array $options = array());
+    abstract public function filter($text, array $options = array());
 
     /**
      * Filter text before changing format to HTML.
@@ -1331,6 +1331,16 @@ function filter_get_global_states() {
     global $DB;
     $context = context_system::instance();
     return $DB->get_records('filter_active', array('contextid' => $context->id), 'sortorder', 'filter,active,sortorder');
+}
+
+/**
+ * Retrieve all the filters and their states (including overridden ones in any context).
+ *
+ * @return array filters objects containing filter name, context, active state and sort order.
+ */
+function filter_get_all_states(): array {
+    global $DB;
+    return $DB->get_records('filter_active');
 }
 
 /**

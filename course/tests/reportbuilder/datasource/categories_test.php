@@ -18,9 +18,10 @@ declare(strict_types=1);
 
 namespace core_course\reportbuilder\datasource;
 
+use core_course_category;
 use core_reportbuilder_generator;
 use core_reportbuilder_testcase;
-use core_reportbuilder\local\filters\{select, text};
+use core_reportbuilder\local\filters\{category, select, text};
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -68,7 +69,14 @@ class categories_test extends core_reportbuilder_testcase {
 
         $this->resetAfterTest();
 
-        $category = $this->getDataGenerator()->create_category(['name' => 'Zoo', 'idnumber' => 'Z01', 'description' => 'Animals']);
+        set_config('allowcategorythemes', true);
+
+        $category = $this->getDataGenerator()->create_category([
+            'name' => 'Zoo',
+            'idnumber' => 'Z01',
+            'description' => 'Animals',
+            'theme' => 'boost',
+        ]);
         $course = $this->getDataGenerator()->create_course(['category' => $category->id, 'fullname' => 'Zebra']);
 
         // Add a cohort.
@@ -87,6 +95,7 @@ class categories_test extends core_reportbuilder_testcase {
             'sortenabled' => 1]);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'course_category:path']);
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'course_category:description']);
+        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'course_category:theme']);
 
         // Add column from each of our entities.
         $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'course:fullname']);
@@ -97,19 +106,23 @@ class categories_test extends core_reportbuilder_testcase {
         $content = $this->get_custom_report_content($report->get('id'));
         $this->assertCount(2, $content);
 
-        [$namewithlink, $path, $description, $coursename, $cohortname, $rolename, $userfullname] = array_values($content[0]);
+        [$namewithlink, $path, $description, $theme, $coursename, $cohortname, $rolename, $userfullname] =
+            array_values($content[0]);
         $this->assertStringContainsString(get_string('defaultcategoryname'), $namewithlink);
         $this->assertEquals(get_string('defaultcategoryname'), $path);
         $this->assertEmpty($description);
+        $this->assertEmpty($theme);
         $this->assertEmpty($coursename);
         $this->assertEmpty($cohortname);
         $this->assertEmpty($rolename);
         $this->assertEmpty($userfullname);
 
-        [$namewithlink, $path, $description, $coursename, $cohortname, $rolename, $userfullname] = array_values($content[1]);
+        [$namewithlink, $path, $description, $theme, $coursename, $cohortname, $rolename, $userfullname] =
+            array_values($content[1]);
         $this->assertStringContainsString($category->get_formatted_name(), $namewithlink);
         $this->assertEquals($category->get_nested_name(false), $path);
         $this->assertEquals(format_text($category->description, $category->descriptionformat), $description);
+        $this->assertEquals('Boost', $theme);
         $this->assertEquals($course->fullname, $coursename);
         $this->assertEquals($cohort->name, $cohortname);
         $this->assertEquals('Manager', $rolename);
@@ -126,7 +139,12 @@ class categories_test extends core_reportbuilder_testcase {
 
         return [
             // Category.
+            'Filter category' => ['course_category:name', [
+                'course_category:name_operator' => category::NOT_EQUAL_TO,
+                'course_category:name_value' => -1,
+            ], true],
             'Filter category (no match)' => ['course_category:name', [
+                'course_category:name_operator' => category::EQUAL_TO,
                 'course_category:name_value' => -1,
             ], false],
             'Filter category name' => ['course_category:text', [
@@ -144,6 +162,14 @@ class categories_test extends core_reportbuilder_testcase {
             'Filter category idnumber (no match)' => ['course_category:idnumber', [
                 'course_category:idnumber_operator' => text::IS_EQUAL_TO,
                 'course_category:idnumber_value' => 'P01',
+            ], false],
+            'Filter category theme' => ['course_category:theme', [
+                'course_category:theme_operator' => select::EQUAL_TO,
+                'course_category:theme_value' => 'boost',
+            ], true],
+            'Filter category theme (no match)' => ['course_category:theme', [
+                'course_category:theme_operator' => select::EQUAL_TO,
+                'course_category:theme_value' => 'classic',
             ], false],
 
             // Course.
@@ -202,7 +228,10 @@ class categories_test extends core_reportbuilder_testcase {
 
         $this->resetAfterTest();
 
-        $category = $this->getDataGenerator()->create_category(['name' => 'Zoo', 'idnumber' => 'Z01']);
+        set_config('allowcategorythemes', true);
+
+        // Get the default category, modify it so we can filter each value.
+        ($category = core_course_category::get_default())->update(['name' => 'Zoo', 'idnumber' => 'Z01', 'theme' => 'boost']);
         $course = $this->getDataGenerator()->create_course(['category' => $category->id, 'fullname' => 'Zebra']);
 
         // Add a cohort.

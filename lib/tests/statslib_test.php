@@ -186,7 +186,7 @@ class statslib_test extends \advanced_testcase {
      *
      * @return array of fixture XML log file names.
      */
-    public static function daily_log_provider(): array {
+    public function daily_log_provider() {
         $logfiles = array();
         $fileno = array('00', '01', '02', '03', '04', '05', '06', '07', '08');
 
@@ -202,7 +202,7 @@ class statslib_test extends \advanced_testcase {
      *
      * @return array Dates and timezones for which the first day of the week will be calculated
      */
-    public static function get_base_weekly_provider(): array {
+    public function get_base_weekly_provider() {
         return [
             [
                 "startwday" => 0,
@@ -276,7 +276,7 @@ class statslib_test extends \advanced_testcase {
     /**
      * Test progress output when debug is on.
      */
-    public function test_statslib_progress_debug() {
+    public function test_statslib_progress_debug(): void {
         set_debugging(DEBUG_ALL);
         $this->expectOutputString('1:0 ');
         stats_progress('init');
@@ -287,7 +287,7 @@ class statslib_test extends \advanced_testcase {
     /**
      * Test progress output when debug is off.
      */
-    public function test_statslib_progress_no_debug() {
+    public function test_statslib_progress_no_debug(): void {
         set_debugging(DEBUG_NONE);
         $this->expectOutputString('.');
         stats_progress('init');
@@ -298,7 +298,7 @@ class statslib_test extends \advanced_testcase {
     /**
      * Test the function that gets the start date from the config.
      */
-    public function test_statslib_get_start_from() {
+    public function test_statslib_get_start_from(): void {
         global $CFG, $DB;
 
         $dataset = $this->load_xml_data_file(__DIR__."/fixtures/statslib-test01.xml");
@@ -387,7 +387,7 @@ class statslib_test extends \advanced_testcase {
      * NOTE: I don't think this is the way this function should work.
      *       This test documents the current functionality.
      */
-    public function test_statslib_get_base_daily() {
+    public function test_statslib_get_base_daily(): void {
         global $CFG;
 
         for ($x = 0; $x < 13; $x += 1) {
@@ -405,7 +405,7 @@ class statslib_test extends \advanced_testcase {
     /**
      * Test the function that gets the start of the next day.
      */
-    public function test_statslib_get_next_day_start() {
+    public function test_statslib_get_next_day_start(): void {
         $this->setTimezone(0);
         $this->assertEquals(1272758400, stats_get_next_day_start(1272686410));
 
@@ -435,7 +435,7 @@ class statslib_test extends \advanced_testcase {
      * @param string $timestart Date and time for which the first day of the week will be obtained
      * @param string $expected Expected date of the first day of the week
      */
-    public function test_statslib_get_base_weekly($startwday, $timezone, $timestart, $expected) {
+    public function test_statslib_get_base_weekly($startwday, $timezone, $timestart, $expected): void {
         $this->setTimezone($timezone);
         $time = strtotime($timestart);
         $expected = strtotime($expected);
@@ -453,7 +453,7 @@ class statslib_test extends \advanced_testcase {
      * Note: The function results depend on installed modules.  The hard coded lists are the
      *       defaults for a new Moodle 2.3 install.
      */
-    public function test_statslib_get_action_names() {
+    public function test_statslib_get_action_names(): void {
         $basepostactions = array (
             0 => 'add',
             1 => 'delete',
@@ -537,7 +537,7 @@ class statslib_test extends \advanced_testcase {
     /**
      * Test the temporary table creation and deletion.
      */
-    public function test_statslib_temp_table_create_and_drop() {
+    public function test_statslib_temp_table_create_and_drop(): void {
         global $DB;
 
         foreach ($this->tables as $table) {
@@ -562,7 +562,7 @@ class statslib_test extends \advanced_testcase {
      *
      * @depends test_statslib_temp_table_create_and_drop
      */
-    public function test_statslib_temp_table_fill() {
+    public function test_statslib_temp_table_fill(): void {
         global $CFG, $DB, $USER;
 
         $dataset = $this->load_xml_data_file(__DIR__."/fixtures/statslib-test09.xml");
@@ -664,7 +664,7 @@ class statslib_test extends \advanced_testcase {
      *
      * @depends test_statslib_temp_table_create_and_drop
      */
-    public function test_statslib_temp_table_setup() {
+    public function test_statslib_temp_table_setup(): void {
         global $DB;
 
         $DB->delete_records('log');
@@ -682,7 +682,7 @@ class statslib_test extends \advanced_testcase {
      *
      * @depends test_statslib_temp_table_create_and_drop
      */
-    public function test_statslib_temp_table_clean() {
+    public function test_statslib_temp_table_clean(): void {
         global $DB;
 
         $rows = array(
@@ -722,7 +722,7 @@ class statslib_test extends \advanced_testcase {
      * @depends test_statslib_temp_table_fill
      * @dataProvider daily_log_provider
      */
-    public function test_statslib_cron_daily($xmlfile) {
+    public function test_statslib_cron_daily($xmlfile): void {
         global $CFG, $DB;
 
         $dataset = $this->load_xml_data_file(__DIR__."/fixtures/{$xmlfile}");
@@ -744,7 +744,7 @@ class statslib_test extends \advanced_testcase {
      * @depends test_statslib_get_base_daily
      * @depends test_statslib_get_next_day_start
      */
-    public function test_statslib_cron_daily_no_default_profile_id() {
+    public function test_statslib_cron_daily_no_default_profile_id(): void {
         global $CFG, $DB;
         $CFG->defaultfrontpageroleid = 0;
 

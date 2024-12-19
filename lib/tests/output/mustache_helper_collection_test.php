@@ -31,7 +31,7 @@ class mustache_helper_collection_test extends \advanced_testcase {
      * text by the helper before being passed to other another helper. This prevents
      * nested calls to helpers.
      */
-    public static function get_strip_disallowed_helpers_testcases(): array {
+    public function get_strip_disallowed_helpers_testcases() {
         return [
             'no disallowed' => [
                 'disallowed' => [],
@@ -123,12 +123,12 @@ class mustache_helper_collection_test extends \advanced_testcase {
 
     /**
      * Test that the mustache_helper_collection class correctly strips
-     * @dataProvider get_strip_disallowed_helpers_testcases
+     * @dataProvider get_strip_disallowed_helpers_testcases()
      * @param string[] $disallowed The list of helpers to strip
      * @param string $input The input string for the helper
      * @param string $expected The expected output of the string after disallowed strip
      */
-    public function test_strip_disallowed_helpers($disallowed, $input, $expected) {
+    public function test_strip_disallowed_helpers($disallowed, $input, $expected): void {
         $collection = new mustache_helper_collection(null, $disallowed);
         $this->assertEquals($expected, $collection->strip_disallowed_helpers($disallowed, $input));
     }
@@ -140,7 +140,7 @@ class mustache_helper_collection_test extends \advanced_testcase {
      * Any allowed helper should still be available to call during the
      * execution of a helper.
      */
-    public function test_disallowed_helpers_disabled_during_execution() {
+    public function test_disallowed_helpers_disabled_during_execution(): void {
         $engine = new \Mustache_Engine();
         $context = new \Mustache_Context();
         $lambdahelper = new \Mustache_LambdaHelper($engine, $context);

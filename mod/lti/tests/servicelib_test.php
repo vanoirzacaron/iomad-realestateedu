@@ -37,7 +37,7 @@ class servicelib_test extends \basic_testcase {
      * @param mixed $expected Expected message ID.
      * @param string $xml XML to parse.
      */
-    public function test_lti_parse_message_id($expected, $xml) {
+    public function test_lti_parse_message_id($expected, $xml): void {
         $xml = simplexml_load_string($xml);
         $this->assertEquals($expected, lti_parse_message_id($xml));
     }
@@ -47,7 +47,7 @@ class servicelib_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function message_id_provider(): array {
+    public function message_id_provider() {
         $valid = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <imsx_POXEnvelopeRequest xmlns="http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0">

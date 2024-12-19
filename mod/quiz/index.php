@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_quiz\output\grades\grade_out_of;
 
 require_once("../../config.php");
 require_once("locallib.php");
@@ -88,7 +89,7 @@ if (has_capability('mod/quiz:viewreports', $coursecontext)) {
 
 } else if (has_any_capability(['mod/quiz:reviewmyattempts', 'mod/quiz:attempt'],
         $coursecontext)) {
-    array_push($headings, get_string('grade', 'quiz'));
+    array_push($headings, get_string('gradenoun'));
     array_push($align, 'left');
     if ($showfeedback) {
         array_push($headings, get_string('feedback', 'quiz'));
@@ -161,10 +162,8 @@ foreach ($quizzes as $quiz) {
         $feedback = '';
         if ($quiz->grade && array_key_exists($quiz->id, $grades)) {
             if ($alloptions->marks >= question_display_options::MARK_AND_MAX) {
-                $a = new stdClass();
-                $a->grade = quiz_format_grade($quiz, $grades[$quiz->id]);
-                $a->maxgrade = quiz_format_grade($quiz, $quiz->grade);
-                $grade = get_string('outofshort', 'quiz', $a);
+                $grade = $OUTPUT->render(new grade_out_of(
+                        $grades[$quiz->id], $quiz->grade, $quiz->sumgrades, style: grade_out_of::SHORT));
             }
             if ($alloptions->overallfeedback) {
                 $feedback = quiz_feedback_for_grade($grades[$quiz->id], $quiz, $context);

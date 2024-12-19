@@ -34,7 +34,7 @@ class numeric_helper_test extends \advanced_testcase {
      * @param $decsep
      * @param $tests
      */
-    public function test_lesson_unformat_numeric_value($decsep, $tests) {
+    public function test_lesson_unformat_numeric_value($decsep, $tests): void {
         $this->define_local_decimal_separator($decsep);
 
         foreach ($tests as $test) {
@@ -49,7 +49,7 @@ class numeric_helper_test extends \advanced_testcase {
      * @param $decsep
      * @param $tests
      */
-    public function test_lesson_format_numeric_value($decsep, $tests) {
+    public function test_lesson_format_numeric_value($decsep, $tests): void {
         $this->define_local_decimal_separator($decsep);
 
         foreach ($tests as $test) {
@@ -62,7 +62,7 @@ class numeric_helper_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function lesson_unformat_dataprovider(): array {
+    public function lesson_unformat_dataprovider() {
         return [
             "Using a decimal as a separator" => [
                 "decsep" => ".",
@@ -100,7 +100,7 @@ class numeric_helper_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function lesson_format_dataprovider(): array {
+    public function lesson_format_dataprovider() {
         return [
             "Using a decimal as a separator" => [
                 "decsep" => ".",

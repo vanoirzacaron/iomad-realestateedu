@@ -243,7 +243,7 @@ table.question-bank-table {
 
 body.path-question-type {
     /* Hacks to display the labels within a form group. */
-    .form-group .col-form-label.sr-only:not(legend):not([for="id_category"]) {
+    .fitem .col-form-label.sr-only:not(legend):not([for="id_category"]) {
         position: static;
         width: auto;
         height: auto;
@@ -660,13 +660,6 @@ body.path-question-type .mform fieldset.hidden {
 
 .tag-condition-container {
     position: relative;
-}
-
-// qbank_managecategories
-[data-filterregion=filter][data-filter-type=category] .form-autocomplete-suggestions li[aria-disabled=true] {
-    font-weight: bold;
-    color: $body-color;
-    background-color: $body-bg;
 }
 
 @include media-breakpoint-down(sm) {

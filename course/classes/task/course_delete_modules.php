@@ -87,4 +87,13 @@ class course_delete_modules extends \core\task\adhoc_task {
             implode('\n', $exceptions));
         }
     }
+
+    /**
+     * Sets attemptsavailable to false.
+     *
+     * @return boolean
+     */
+    public function retry_until_success(): bool {
+        return false;
+    }
 }

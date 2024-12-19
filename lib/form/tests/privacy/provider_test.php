@@ -27,17 +27,20 @@ namespace core_form\privacy;
 use core_form\privacy\provider;
 use core_privacy\local\request\writer;
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Unit tests for the privacy API implementation.
  *
  * @copyright 2018 David Mudrák <david@moodle.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class provider_test extends \core_privacy\tests\provider_testcase {
+class provider_test extends \core_privacy\tests\provider_testcase {
+
     /**
      * When no preference exists, there should be no export.
      */
-    public function test_no_preference() {
+    public function test_no_preference(): void {
         global $USER;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -53,7 +56,7 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
      * @param string $val Value of the preference filemanager_recentviewmode
      * @param string $desc Text describing the preference
      */
-    public function test_filemanager_recentviewmode(string $val, string $desc) {
+    public function test_filemanager_recentviewmode(string $val, string $desc): void {
         $this->resetAfterTest();
 
         // Create test user, add some preferences.
@@ -82,7 +85,7 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
      *
      * @return array
      */
-    public static function data_filemanager_recentviewmode(): array {
+    public function data_filemanager_recentviewmode() {
         return [
             'icons' => [
                 'val' => '1',

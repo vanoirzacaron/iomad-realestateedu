@@ -79,7 +79,7 @@ final class handler_test extends \advanced_testcase {
     /**
      * Test for xapi_handler with valid statements.
      */
-    public function test_xapi_handler() {
+    public function test_xapi_handler(): void {
         global $DB;
 
         $data = $this->generate_testing_scenario();
@@ -141,7 +141,7 @@ final class handler_test extends \advanced_testcase {
      * @param bool $generateattempt if generates an empty attempt
      */
     public function test_xapi_handler_errors(bool $hasverb, bool $hasdefinition, bool $hasresult,
-            bool $hascontext, bool $hasuser, bool $generateattempt) {
+            bool $hascontext, bool $hasuser, bool $generateattempt): void {
         global $DB, $CFG;
 
         $data = $this->generate_testing_scenario();
@@ -286,7 +286,7 @@ final class handler_test extends \advanced_testcase {
     /**
      * Test xapi_handler stored statements.
      */
-    public function test_stored_statements() {
+    public function test_stored_statements(): void {
         global $DB;
 
         $data = $this->generate_testing_scenario();
@@ -421,7 +421,6 @@ final class handler_test extends \advanced_testcase {
         $handler = handler::create($component);
         // Change the method visibility for validate_state in order to test it.
         $method = new \ReflectionMethod(handler::class, 'validate_state');
-        $method->setAccessible(true);
 
         // The activity id should be numeric.
         $state = test_helper::create_state(['activity' => item_activity::create_from_id('AA')]);

@@ -35,7 +35,7 @@ class recording_data_test extends \advanced_testcase {
      * @param string $name
      * @param string $type
      */
-    public function test_get_recording_type_text(string $name, string $type) {
+    public function test_get_recording_type_text(string $name, string $type): void {
         $this->assertEquals($name, recording_data::type_text($type));
     }
 
@@ -44,7 +44,7 @@ class recording_data_test extends \advanced_testcase {
      *
      * @return \string[][]
      */
-    public static function type_text_provider(): array {
+    public function type_text_provider(): array {
         return [
             ['Presentation', 'presentation'],
             ['Video', 'video'],

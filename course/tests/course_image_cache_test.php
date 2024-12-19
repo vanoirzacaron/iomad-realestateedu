@@ -86,7 +86,7 @@ class course_image_cache_test extends \advanced_testcase {
     /**
      * Test exception if try to get an image for non existing course.
      */
-    public function test_getting_data_if_course_is_not_exist() {
+    public function test_getting_data_if_course_is_not_exist(): void {
         $this->expectException('dml_missing_record_exception');
         $this->expectExceptionMessageMatches("/Can't find data record in database table course./");
         $this->assertFalse(\cache::make('core', 'course_image')->get(999));
@@ -95,10 +95,9 @@ class course_image_cache_test extends \advanced_testcase {
     /**
      * Test get_image_url_from_overview_files when no summary files in the course.
      */
-    public function test_get_image_url_from_overview_files_return_null_if_no_summary_files_in_the_course() {
+    public function test_get_image_url_from_overview_files_return_null_if_no_summary_files_in_the_course(): void {
         $method = new ReflectionMethod(course_image::class, 'get_image_url_from_overview_files');
         $cache = course_image::get_instance_for_cache(new cache_definition());
-        $method->setAccessible(true);
 
         // Create course without files.
         $course = $this->getDataGenerator()->create_course();
@@ -108,10 +107,9 @@ class course_image_cache_test extends \advanced_testcase {
     /**
      * Test get_image_url_from_overview_files when no summary images in the course.
      */
-    public function test_get_image_url_from_overview_files_returns_null_if_no_summary_images_in_the_course() {
+    public function test_get_image_url_from_overview_files_returns_null_if_no_summary_images_in_the_course(): void {
         $method = new ReflectionMethod(course_image::class, 'get_image_url_from_overview_files');
         $cache = course_image::get_instance_for_cache(new cache_definition());
-        $method->setAccessible(true);
 
         // Create course without image files.
         $draftid2 = $this->fill_draft_area(['filename2.zip' => 'Test file contents2']);
@@ -122,10 +120,9 @@ class course_image_cache_test extends \advanced_testcase {
     /**
      * Test get_image_url_from_overview_files when no summary images in the course.
      */
-    public function test_get_image_url_from_overview_files_returns_url_if_there_is_a_summary_image() {
+    public function test_get_image_url_from_overview_files_returns_url_if_there_is_a_summary_image(): void {
         $method = new ReflectionMethod(course_image::class, 'get_image_url_from_overview_files');
         $cache = course_image::get_instance_for_cache(new cache_definition());
-        $method->setAccessible(true);
 
         // Create course without one image.
         $draftid1 = $this->fill_draft_area(['filename1.jpg' => file_get_contents(__DIR__ . '/fixtures/image.jpg')]);
@@ -137,10 +134,9 @@ class course_image_cache_test extends \advanced_testcase {
     /**
      * Test get_image_url_from_overview_files when several summary images in the course.
      */
-    public function test_get_image_url_from_overview_files_returns_url_of_the_first_image_if_there_are_many_summary_images() {
+    public function test_get_image_url_from_overview_files_returns_url_of_the_first_image_if_there_are_many_summary_images(): void {
         $method = new ReflectionMethod(course_image::class, 'get_image_url_from_overview_files');
         $cache = course_image::get_instance_for_cache(new cache_definition());
-        $method->setAccessible(true);
 
         // Create course with two image files.
         $draftid1 = $this->fill_draft_area([
@@ -156,10 +152,9 @@ class course_image_cache_test extends \advanced_testcase {
     /**
      * Test get_image_url_from_overview_files when several summary files in the course.
      */
-    public function test_get_image_url_from_overview_files_returns_url_of_the_first_image_if_there_are_many_summary_files() {
+    public function test_get_image_url_from_overview_files_returns_url_of_the_first_image_if_there_are_many_summary_files(): void {
         $method = new ReflectionMethod(course_image::class, 'get_image_url_from_overview_files');
         $cache = course_image::get_instance_for_cache(new cache_definition());
-        $method->setAccessible(true);
 
         // Create course with two image files and one zip file.
         $draftid1 = $this->fill_draft_area([

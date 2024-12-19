@@ -257,7 +257,6 @@ $string['forstudents'] = 'For students';
 $string['full'] = 'Full';
 $string['fullmode'] = 'Show grades and totals';
 $string['generalsettings'] = 'General settings';
-$string['grade'] = 'Grade';
 $string['grade_help'] = 'The grade to award the student for their work.';
 $string['gradeadministration'] = 'Grade administration';
 $string['gradealreadyupdated'] = '{$a} grades have not been imported because the grades in the import file are older than in the grader report. To proceed with the grade import anyway, use the force import option.';
@@ -307,8 +306,6 @@ $string['gradeimport'] = 'Grade import';
 $string['gradeimportfailed'] = 'Grade Import failed during commit. Details:';
 $string['gradeitem'] = 'Grade item';
 $string['gradeitemaddusers'] = 'Exclude from grading';
-$string['gradeitemadvanced'] = 'Advanced grade item options';
-$string['gradeitemadvanced_help'] = 'Select all elements that should be displayed as advanced when editing grade items.';
 $string['gradeitemislocked'] = 'This activity is locked in the gradebook. Changes that are made to grades in this activity will not be copied to the gradebook until it is unlocked.';
 $string['gradeitemlocked'] = 'Grading locked';
 $string['gradeitemminmax'] = 'Min and max grades as specified in grade item settings';
@@ -892,15 +889,6 @@ $string['xml'] = 'XML';
 $string['yes'] = 'Yes';
 $string['yourgrade'] = 'Your grade';
 
-$string['aria-toggledropdown'] = 'Toggle the following dropdown';
-$string['aria:dropdowngrades'] = 'Grade items found';
-
-// Deprecated since Moodle 4.0.
-$string['navmethod'] = 'Navigation method';
-$string['dropdown'] = 'Drop-down menu';
-$string['tabs'] = 'Tabs';
-$string['combo'] = 'Tabs and drop-down menu';
-
 // Deprecated since Moodle 4.2.
 $string['showanalysisicon'] = 'Show grade analysis icon';
 $string['showanalysisicon_desc'] = 'Whether to show grade analysis icon by default. If the activity module supports it, the grade analysis icon links to a page with more detailed explanation of the grade and how it was obtained.';
@@ -922,3 +910,10 @@ $string['showcalculations'] = 'Show calculations';
 $string['showcalculations_help'] = 'If enabled, when editing, a calculator icon is shown for each grade item and category with a visual indicator that a grade item is calculated.';
 $string['studentsperpage'] = 'Students per page';
 $string['studentsperpage_help'] = 'This setting determines the number of students displayed per page in the grader report.';
+
+// Deprecated since Moodle 4.4.
+$string['grade'] = 'Grade';
+$string['gradeitemadvanced'] = 'Advanced grade item options';
+$string['gradeitemadvanced_help'] = 'Select all elements that should be displayed as advanced when editing grade items.';
+$string['aria-toggledropdown'] = 'Toggle the following dropdown';
+$string['aria:dropdowngrades'] = 'Grade items found';

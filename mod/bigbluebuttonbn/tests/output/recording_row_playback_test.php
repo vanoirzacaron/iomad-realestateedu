@@ -95,7 +95,7 @@ class recording_row_playback_test extends \advanced_testcase {
      * @covers       \recording_row_playback::should_be_included
      * @dataProvider should_be_included_data_provider
      */
-    public function test_should_be_included(string $role, array $canview, object $globalsettings = null) {
+    public function test_should_be_included(string $role, array $canview, object $globalsettings = null): void {
         global $PAGE;
         $this->resetAfterTest();
         ['recordings' => $recordingsdata, 'activity' => $activity] = $this->create_activity_with_recordings(
@@ -130,7 +130,7 @@ class recording_row_playback_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function should_be_included_data_provider(): array {
+    public function should_be_included_data_provider() {
         return [
             'editingteacher user should see all' => [
                 'role' => 'editingteacher',

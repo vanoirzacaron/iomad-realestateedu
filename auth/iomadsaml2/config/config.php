@@ -26,23 +26,14 @@ use auth_iomadsaml2\ssl_algorithms;
 
 defined('MOODLE_INTERNAL') || die();
 
-global $CFG, $iomadsaml2auth, $iomadsaml2config;
-
-// IOMAD
-require_once($CFG->dirroot . '/local/iomad/lib/company.php');
-$companyid = iomad::get_my_companyid(context_system::instance(), false);
-if (!empty($companyid)) {
-    $postfix = "_$companyid";
-} else {
-    $postfix = "";
-}
+global $CFG, $iomadsam2auth, $iomadsaml2config;
 
 $metadatasources = [];
-foreach ($iomadsaml2auth->metadataentities as $idpentity) {
+foreach ($iomadsam2auth->metadataentities as $idpentity) {
     $metadataurlhash = md5($idpentity->metadataurl);
     $metadatasources[$metadataurlhash] = [
         'type' => 'xml',
-        'file' => "$CFG->dataroot/iomadsaml2/" . $metadataurlhash . $postfix . ".idp.xml"
+        'file' => "$CFG->dataroot/saml2/" . $metadataurlhash . ".idp.xml"
     ];
 }
 
@@ -54,20 +45,21 @@ $config = array(
     'application'       => [
       'baseURL'         => $baseurl . '/auth/iomadsaml2/sp/',
     ],
-    'certdir'           => $iomadsaml2auth->get_iomadsaml2_directory() . '/',
-    'debug'             => $iomadsaml2auth->is_debugging(),
-    'logging.level'     => $iomadsaml2auth->is_debugging() ? SimpleSAML\Logger::DEBUG : SimpleSAML\Logger::ERR,
-    'logging.handler'   => $iomadsaml2auth->config->logtofile ? 'file' : 'errorlog',
+    'certdir'           => $iomadsam2auth->get_saml2_directory() . '/',
+    'debug'             => ['iomadsaml' => $iomadsam2auth->is_debugging()],
+    'logging.level'     => $iomadsam2auth->is_debugging() ? SimpleSAML\Logger::DEBUG : SimpleSAML\Logger::ERR,
+    'logging.handler'   => $iomadsam2auth->config->logtofile ? 'file' : 'errorlog',
+    'tempdir'           => $iomadsam2auth->config->tempdir,
 
     // SSP has a %srcip token, but instead use $remoteip so Moodle handle's which header to use.
     'logging.format'    => '%date{%b %d %H:%M:%S} ' . $remoteip . ' %process %level %stat[%trackid] %msg',
 
-    'loggingdir'        => $iomadsaml2auth->config->logdir,
+    'loggingdir'        => $iomadsam2auth->config->logdir,
     'logging.logfile'   => 'simplesamlphp.log',
     'showerrors'        => $CFG->debugdisplay ? true : false,
     'errorreporting'    => false,
     'debug.validatexml' => false,
-    'secretsalt'        => $iomadsaml2auth->config->privatekeypass,
+    'secretsalt'        => $iomadsam2auth->config->privatekeypass,
     'technicalcontact_name'  => !empty($CFG->supportname) ? $CFG->supportname : get_string('administrator'),
     'technicalcontact_email' => !empty($CFG->supportemail) ? $CFG->supportemail : $CFG->noreplyaddress,
     'timezone' => class_exists('core_date') ? core_date::get_server_timezone() : null,
@@ -89,14 +81,14 @@ $config = array(
 
     'enable.http_post' => false,
 
-    'signature.algorithm' => !empty($iomadsaml2auth->config->signaturealgorithm)
-        ? $iomadsaml2auth->config->signaturealgorithm
+    'signature.algorithm' => !empty($iomadsam2auth->config->signaturealgorithm)
+        ? $iomadsam2auth->config->signaturealgorithm
         : ssl_algorithms::get_default_saml_signature_algorithm(),
 
-    'metadata.sign.enable'          => $iomadsaml2auth->config->spmetadatasign ? true : false,
-    'metadata.sign.certificate'     => $iomadsaml2auth->certcrt,
-    'metadata.sign.privatekey'      => $iomadsaml2auth->certpem,
-    'metadata.sign.privatekey_pass' => $iomadsaml2auth->config->privatekeypass,
+    'metadata.sign.enable'          => $iomadsam2auth->config->spmetadatasign ? true : false,
+    'metadata.sign.certificate'     => $iomadsam2auth->certcrt,
+    'metadata.sign.privatekey'      => $iomadsam2auth->certpem,
+    'metadata.sign.privatekey_pass' => $iomadsam2auth->config->privatekeypass,
     'metadata.sources'              => array_values($metadatasources),
 
     'store.type' => !empty($CFG->auth_iomadsaml2_store) ? $CFG->auth_iomadsaml2_store : '\\auth_iomadsaml2\\store',

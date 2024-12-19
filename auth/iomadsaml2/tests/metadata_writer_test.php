@@ -42,7 +42,7 @@ class auth_iomadsaml2_metadata_writer_testcase extends basic_testcase {
         $writer = new metadata_writer();
         $writer->write($filename, $content);
 
-        $this->assertEquals($content, file_get_contents("$CFG->dataroot/iomadsaml2/idp.xml"));
+        $this->assertEquals($content, file_get_contents("$CFG->dataroot/saml2/idp.xml"));
     }
 
     public function test_write_empty_filename() {
@@ -71,7 +71,7 @@ class auth_iomadsaml2_metadata_writer_testcase extends basic_testcase {
         } else {
             $this->assertFileNotExists("/temp/yada/blah/idp.xml");
         }
-        $this->assertEquals($content, file_get_contents("$CFG->dataroot/iomadsaml2/idp.xml"));
+        $this->assertEquals($content, file_get_contents("$CFG->dataroot/saml2/idp.xml"));
     }
 
     public function test_write_trailing_slash() {
@@ -80,8 +80,8 @@ class auth_iomadsaml2_metadata_writer_testcase extends basic_testcase {
         $filename = 'idp.xml';
         $filename2 = 'idp2.xml';
         $content = 'Test data';
-        $pathtrailingslash = "$CFG->dataroot/iomadsaml2/";
-        $pathnotrailingslash = "$CFG->dataroot/iomadsaml2";
+        $pathtrailingslash = "$CFG->dataroot/saml2/";
+        $pathnotrailingslash = "$CFG->dataroot/saml2";
 
         $writer = new metadata_writer($pathtrailingslash);
         $writer->write($filename, $content);

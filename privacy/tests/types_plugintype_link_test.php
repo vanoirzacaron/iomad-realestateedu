@@ -37,7 +37,7 @@ class types_plugintype_link_test extends \advanced_testcase {
      * @param   string  $summary Summary
      * @covers ::__construct
      */
-    public function test_invalid_configs($name, $privacyfields, $summary) {
+    public function test_invalid_configs($name, $privacyfields, $summary): void {
         $record = new plugintype_link($name, $privacyfields, $summary);
         $this->assertDebuggingCalled();
     }
@@ -50,7 +50,7 @@ class types_plugintype_link_test extends \advanced_testcase {
      * @param   string  $summary Summary
      * @covers ::__construct
      */
-    public function test_invalid_configs_debug_normal($name, $privacyfields, $summary) {
+    public function test_invalid_configs_debug_normal($name, $privacyfields, $summary): void {
         global $CFG;
         $this->resetAfterTest();
 
@@ -67,7 +67,7 @@ class types_plugintype_link_test extends \advanced_testcase {
      * @param   string  $summary Summary
      * @covers ::__construct
      */
-    public function test_valid_configs($name, $privacyfields, $summary) {
+    public function test_valid_configs($name, $privacyfields, $summary): void {
         $record = new plugintype_link($name, $privacyfields, $summary);
         $this->assertDebuggingNotCalled();
     }
@@ -77,7 +77,7 @@ class types_plugintype_link_test extends \advanced_testcase {
      *
      * @return  array
      */
-    public static function invalid_string_provider(): array {
+    public function invalid_string_provider() {
         return [
             'Space in summary' => [
                 'example',
@@ -97,7 +97,7 @@ class types_plugintype_link_test extends \advanced_testcase {
      *
      * @return  array
      */
-    public static function valid_string_provider(): array {
+    public function valid_string_provider() {
         return [
             'Valid combination' => [
                 'example',

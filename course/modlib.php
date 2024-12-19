@@ -27,7 +27,10 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-use \core_grades\component_gradeitems;
+use core\di;
+use core\hook;
+use core_courseformat\formatactions;
+use core_grades\component_gradeitems;
 
 require_once($CFG->dirroot.'/course/lib.php');
 
@@ -496,28 +499,34 @@ function set_moduleinfo_defaults($moduleinfo) {
  * Check that the user can add a module. Also returns some information like the module, context and course section info.
  * The fucntion create the course section if it doesn't exist.
  *
- * @param object $course the course of the module
- * @param object $modulename the module name
- * @param object $section the section of the module
+ * @param stdClass $course the course of the module
+ * @param string $modulename the module name
+ * @param int $sectionnum the section of the module
  * @return array list containing module, context, course section.
  * @throws moodle_exception if user is not allowed to perform the action or module is not allowed in this course
  */
-function can_add_moduleinfo($course, $modulename, $section) {
+function can_add_moduleinfo($course, $modulename, $sectionnum) {
     global $DB;
 
-    $module = $DB->get_record('modules', array('name'=>$modulename), '*', MUST_EXIST);
+    $module = $DB->get_record('modules', ['name' => $modulename], '*', MUST_EXIST);
 
     $context = context_course::instance($course->id);
     require_capability('moodle/course:manageactivities', $context);
 
-    course_create_sections_if_missing($course, $section);
-    $cw = get_fast_modinfo($course)->get_section_info($section);
+    // If the $sectionnum is a delegated section, we cannot execute create_if_missing
+    // because it only works to create regular sections. To prevent that from happening, we
+    // check if the section is already there, no matter if it is delegated or not.
+    $sectioninfo = get_fast_modinfo($course)->get_section_info($sectionnum);
+    if (!$sectioninfo) {
+        formatactions::section($course)->create_if_missing([$sectionnum]);
+        $sectioninfo = get_fast_modinfo($course)->get_section_info($sectionnum);
+    }
 
     if (!course_allowed_module($course, $module->name)) {
         throw new \moodle_exception('moduledisable');
     }
 
-    return array($module, $context, $cw);
+    return [$module, $context, $sectioninfo];
 }
 
 /**
@@ -716,6 +725,16 @@ function update_moduleinfo($cm, $moduleinfo, $course, $mform = null) {
         $cminfo = cm_info::create($cm);
         $completion->reset_all_state($cminfo);
     }
+
+    if ($cm->name != $moduleinfo->name) {
+        di::get(hook\manager::class)->dispatch(
+            new \core_courseformat\hook\after_cm_name_edited(
+                get_fast_modinfo($course)->get_cm($cm->id),
+                $moduleinfo->name
+            ),
+        );
+    }
+
     $cm->name = $moduleinfo->name;
     \core\event\course_module_updated::create_from_cm($cm, $modcontext)->trigger();
 

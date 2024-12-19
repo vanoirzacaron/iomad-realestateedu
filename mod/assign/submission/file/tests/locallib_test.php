@@ -42,7 +42,7 @@ final class locallib_test extends \advanced_testcase {
      * @param string $data The file submission data
      * @param bool $expected The expected return value
      */
-    public function test_submission_is_empty($data, $expected) {
+    public function test_submission_is_empty($data, $expected): void {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -72,7 +72,7 @@ final class locallib_test extends \advanced_testcase {
     /**
      * Test that an empty directory is is not detected as a valid submission by submission_is_empty.
      */
-    public function test_submission_is_empty_directory_only() {
+    public function test_submission_is_empty_directory_only(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
         $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
@@ -104,7 +104,7 @@ final class locallib_test extends \advanced_testcase {
      * @param string $data The file submission data
      * @param bool $expected The expected return value
      */
-    public function test_new_submission_empty($data, $expected) {
+    public function test_new_submission_empty($data, $expected): void {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -133,7 +133,7 @@ final class locallib_test extends \advanced_testcase {
     /**
      * Test that an empty directory is is not detected as a valid submission by new_submission_is_empty.
      */
-    public function test_new_submission_empty_directory_only() {
+    public function test_new_submission_empty_directory_only(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
         $student = $this->getDataGenerator()->create_and_enrol($course, 'student');

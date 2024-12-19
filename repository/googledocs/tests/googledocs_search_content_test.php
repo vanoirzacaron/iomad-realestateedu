@@ -43,7 +43,7 @@ class googledocs_search_content_test extends \googledocs_content_testcase {
      * @param array $expected The expected array which contains the generated repository content nodes
      */
     public function test_get_content_nodes(string $query, bool $sortcontent, array $filterextensions,
-            array $shareddrives, array $searccontents, array $expected) {
+            array $shareddrives, array $searccontents, array $expected): void {
 
         // Mock the service object.
         $servicemock = $this->createMock(rest::class);
@@ -105,7 +105,7 @@ class googledocs_search_content_test extends \googledocs_content_testcase {
      *
      * @return array
      */
-    public static function get_content_nodes_provider(): array {
+    public function get_content_nodes_provider(): array {
 
         $rootid = \repository_googledocs::REPOSITORY_ROOT_ID;
         $searchnodeid = \repository_googledocs::SEARCH_ROOT_ID;
@@ -118,26 +118,26 @@ class googledocs_search_content_test extends \googledocs_content_testcase {
                     true,
                     [],
                     [
-                        self::create_google_drive_shared_drive_object('d85b21c0f86cb5', 'Shared Drive 1'),
+                        $this->create_google_drive_shared_drive_object('d85b21c0f86cb5', 'Shared Drive 1'),
                     ],
                     [
-                        self::create_google_drive_file_object('d85b21c0f86cb0', 'Test file 3.pdf',
+                        $this->create_google_drive_file_object('d85b21c0f86cb0', 'Test file 3.pdf',
                             'application/pdf', 'pdf', '1000', '',
                             'https://drive.google.com/uc?id=d85b21c0f86cb0&export=download'),
-                        self::create_google_drive_folder_object('0c4ad262c65333', 'Test folder 1'),
-                        self::create_google_drive_file_object('bed5a0f08d412a', 'Test file 1.pdf',
+                        $this->create_google_drive_folder_object('0c4ad262c65333', 'Test folder 1'),
+                        $this->create_google_drive_file_object('bed5a0f08d412a', 'Test file 1.pdf',
                             'application/pdf', 'pdf'),
-                        self::create_google_drive_folder_object('9c4ad262c65333', 'Test folder 2'),
+                        $this->create_google_drive_folder_object('9c4ad262c65333', 'Test folder 2'),
                     ],
                     [
-                        self::create_folder_content_node_array('0c4ad262c65333', 'Test folder 1',
+                        $this->create_folder_content_node_array('0c4ad262c65333', 'Test folder 1',
                             "{$rootid}|Google+Drive/{$searchnodeid}|" . urlencode("{$searchforstring} 'test'")),
-                        self::create_folder_content_node_array('9c4ad262c65333', 'Test folder 2',
+                        $this->create_folder_content_node_array('9c4ad262c65333', 'Test folder 2',
                             "{$rootid}|Google+Drive/{$searchnodeid}|" . urlencode("{$searchforstring} 'test'")),
-                        self::create_file_content_node_array('bed5a0f08d412a', 'Test file 1.pdf',
+                        $this->create_file_content_node_array('bed5a0f08d412a', 'Test file 1.pdf',
                             'Test file 1.pdf', null, '', 'https://googleusercontent.com/type/application/pdf',
                             '', 'download'),
-                        self::create_file_content_node_array('d85b21c0f86cb0', 'Test file 3.pdf',
+                        $this->create_file_content_node_array('d85b21c0f86cb0', 'Test file 3.pdf',
                             'Test file 3.pdf', '1000', '', 'https://googleusercontent.com/type/application/pdf',
                             'https://drive.google.com/uc?id=d85b21c0f86cb0&export=download', 'download'),
                     ],
@@ -149,16 +149,16 @@ class googledocs_search_content_test extends \googledocs_content_testcase {
                     [],
                     [],
                     [
-                        self::create_google_drive_folder_object('0c4ad262c65333', 'Testing folder 3'),
-                        self::create_google_drive_folder_object('d85b21c0f86cb0', 'Testing folder 1'),
-                        self::create_google_drive_folder_object('bed5a0f08d412a', 'Testing folder 2'),
+                        $this->create_google_drive_folder_object('0c4ad262c65333', 'Testing folder 3'),
+                        $this->create_google_drive_folder_object('d85b21c0f86cb0', 'Testing folder 1'),
+                        $this->create_google_drive_folder_object('bed5a0f08d412a', 'Testing folder 2'),
                     ],
                     [
-                        self::create_folder_content_node_array('0c4ad262c65333', 'Testing folder 3',
+                        $this->create_folder_content_node_array('0c4ad262c65333', 'Testing folder 3',
                             "{$rootid}|Google+Drive/{$searchnodeid}|" . urlencode("{$searchforstring} 'testing'")),
-                        self::create_folder_content_node_array('d85b21c0f86cb0', 'Testing folder 1',
+                        $this->create_folder_content_node_array('d85b21c0f86cb0', 'Testing folder 1',
                             "{$rootid}|Google+Drive/{$searchnodeid}|" . urlencode("{$searchforstring} 'testing'")),
-                        self::create_folder_content_node_array('bed5a0f08d412a', 'Testing folder 2',
+                        $this->create_folder_content_node_array('bed5a0f08d412a', 'Testing folder 2',
                             "{$rootid}|Google+Drive/{$searchnodeid}|" . urlencode("{$searchforstring} 'testing'")),
                     ],
                 ],
@@ -168,18 +168,18 @@ class googledocs_search_content_test extends \googledocs_content_testcase {
                     false,
                     ['doc', 'txt'],
                     [
-                        self::create_google_drive_shared_drive_object('d85b21c0f86cb5', 'Shared Drive 1'),
+                        $this->create_google_drive_shared_drive_object('d85b21c0f86cb5', 'Shared Drive 1'),
                     ],
                     [
-                        self::create_google_drive_file_object('d85b21c0f86cb0', 'Testing file 3.pdf',
+                        $this->create_google_drive_file_object('d85b21c0f86cb0', 'Testing file 3.pdf',
                             'application/pdf', 'pdf', '1000'),
-                        self::create_google_drive_file_object('a85b21c0f86cb0', 'Testing file 1.txt',
+                        $this->create_google_drive_file_object('a85b21c0f86cb0', 'Testing file 1.txt',
                             'text/plain', 'txt', '3000'),
-                        self::create_google_drive_file_object('f85b21c0f86cb0', 'Testing file 2.doc',
+                        $this->create_google_drive_file_object('f85b21c0f86cb0', 'Testing file 2.doc',
                             'application/msword', 'doc', '2000'),
                     ],
                     [
-                        self::create_file_content_node_array('d85b21c0f86cb0', 'Testing file 3.pdf',
+                        $this->create_file_content_node_array('d85b21c0f86cb0', 'Testing file 3.pdf',
                             'Testing file 3.pdf', '1000', '',
                             'https://googleusercontent.com/type/application/pdf', '', 'download'),
                     ],

@@ -470,6 +470,18 @@ class mod_scorm_mod_form extends moodleform_mod {
             }
         }
 
+        // Validate 'Require minimum score' value.
+        $completionscorerequiredel = 'completionscorerequired' . $this->get_suffix();
+        $completionscoreenabledel = 'completionscoreenabled' . $this->get_suffix();
+        if (array_key_exists($completionscoreenabledel, $data) &&
+                $data[$completionscoreenabledel] &&
+                array_key_exists($completionscorerequiredel, $data) &&
+                strlen($data[$completionscorerequiredel]) &&
+                $data[$completionscorerequiredel] <= 0
+        ) {
+            $errors['completionscoregroup' . $this->get_suffix()] = get_string('minimumscoregreater', 'scorm');
+        }
+
         return $errors;
     }
 
@@ -547,7 +559,8 @@ class mod_scorm_mod_form extends moodleform_mod {
     public function completion_rule_enabled($data) {
         $suffix = $this->get_suffix();
         $status = !empty($data['completionstatusrequired' . $suffix]);
-        $score = !empty($data['completionscoreenabled' . $suffix]) && strlen($data['completionscorerequired' . $suffix]);
+        $score = !empty($data['completionscoreenabled' . $suffix]) &&
+                strlen($data['completionscorerequired' . $suffix] && $data['completionscorerequired' . $suffix] > 0);
 
         return $status || $score;
     }

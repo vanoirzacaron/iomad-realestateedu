@@ -72,7 +72,7 @@ class xhprof_test extends \advanced_testcase {
      * @param   string $patterns
      * @param   bool   $expected
      */
-    public function test_profiling_string_matches($string, $patterns, $expected) {
+    public function test_profiling_string_matches($string, $patterns, $expected): void {
         $result = profiling_string_matches($string, $patterns);
         $this->assertSame($result, $expected);
     }
@@ -173,14 +173,13 @@ class xhprof_test extends \advanced_testcase {
      * @param array $rundata The run data to be sorted.
      * @param array $expectations The expected results.
      */
-    public function test_xhprof_topo_sort(array $rundata, array $expectations) {
+    public function test_xhprof_topo_sort(array $rundata, array $expectations): void {
         // Make sure all the examples in the provider are the same size.
         $this->assertSame($expectations['topocount'], count($rundata));
 
         // Make moodle_xhprofrun::xhprof_topo_sort() accessible.
         $reflection = new \ReflectionClass('\moodle_xhprofrun');
         $method = $reflection->getMethod('xhprof_topo_sort');
-        $method->setAccessible(true);
         // Sort the data.
         $result = $method->invokeArgs(new \moodle_xhprofrun(), [$rundata]);
         $this->assertIsArray($result);
@@ -218,7 +217,7 @@ class xhprof_test extends \advanced_testcase {
      * @param array $rundata The run data to be reduced.
      * @param array $expectations The expected results.
      */
-    public function test_reduce_run_data(array $rundata, array $expectations) {
+    public function test_reduce_run_data(array $rundata, array $expectations): void {
         // Make sure that the expected keys that will be removed are present.
         foreach ($expectations['reduceremoved'] as $key) {
             $this->assertArrayHasKey($key, $rundata);
@@ -227,7 +226,6 @@ class xhprof_test extends \advanced_testcase {
         // Make moodle_xhprofrun::reduce_run_data() accessible.
         $reflection = new \ReflectionClass('\moodle_xhprofrun');
         $method = $reflection->getMethod('reduce_run_data');
-        $method->setAccessible(true);
         // Reduce the data.
         $result = $method->invokeArgs(new \moodle_xhprofrun(), [$rundata]);
         $this->assertIsArray($result);

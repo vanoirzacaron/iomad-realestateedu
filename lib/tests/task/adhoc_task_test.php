@@ -16,10 +16,6 @@
 
 namespace core\task;
 
-defined('MOODLE_INTERNAL') || die();
-require_once(__DIR__ . '/../fixtures/task_fixtures.php');
-
-
 /**
  * Test class for adhoc tasks.
  *
@@ -27,14 +23,19 @@ require_once(__DIR__ . '/../fixtures/task_fixtures.php');
  * @category test
  * @copyright 2013 Damyon Wiese
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass \core\task\manager
+ * @covers \core\task\manager
  */
-class adhoc_task_test extends \advanced_testcase {
+final class adhoc_task_test extends \advanced_testcase {
+    public static function setUpBeforeClass(): void {
+        parent::setUpBeforeClass();
+
+        require_once(__DIR__ . '/../fixtures/task_fixtures.php');
+    }
 
     /**
      * Test getting name of task that implements it's own get_name method
      *
-     * @covers \core\task\adhoc_task::get_name
+     * @covers \core\task\adhoc_task
      */
     public function test_get_name(): void {
         $task = new \core\task\adhoc_test_task();
@@ -44,7 +45,7 @@ class adhoc_task_test extends \advanced_testcase {
     /**
      * Test getting name of task that uses the default implementation of get_name
      *
-     * @covers \core\task\adhoc_task::get_name
+     * @covers \core\task\adhoc_task
      */
     public function test_get_name_default(): void {
         $task = new \mod_fake\task\adhoc_component_task();
@@ -53,10 +54,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test basic adhoc task execution.
-     *
-     * @covers ::get_next_adhoc_task
      */
-    public function test_get_next_adhoc_task_now() {
+    public function test_get_next_adhoc_task_now(): void {
         $this->resetAfterTest(true);
 
         // Create an adhoc task.
@@ -75,10 +74,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test basic adhoc task execution.
-     *
-     * @covers ::get_next_adhoc_task
      */
-    public function test_get_next_adhoc_task_class() {
+    public function test_get_next_adhoc_task_class(): void {
         $this->resetAfterTest(true);
 
         // Create an adhoc task.
@@ -102,11 +99,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test adhoc task failure retry backoff.
-     *
-     * @covers ::get_next_adhoc_task
-     * @covers ::get_adhoc_task
      */
-    public function test_get_next_adhoc_task_fail_retry() {
+    public function test_get_next_adhoc_task_fail_retry(): void {
         $this->resetAfterTest(true);
 
         // Create an adhoc task.
@@ -143,10 +137,280 @@ class adhoc_task_test extends \advanced_testcase {
     }
 
     /**
-     * Test future adhoc task execution.
-     * @covers ::get_next_adhoc_task
+     * Test that failed tasks eventually hit the maximum delay.
+     *
+     * @covers \core\task\adhoc_task
      */
-    public function test_get_next_adhoc_task_future() {
+    public function test_get_next_adhoc_task_maximum_fail_delay(): void {
+        $this->resetAfterTest(true);
+
+        $now = time();
+
+        // Create an adhoc task.
+        $task = new adhoc_test_task();
+        $attemptsavailable = $task->get_attempts_available();
+        manager::queue_adhoc_task($task);
+
+        // Exhaust all attempts available.
+        for ($x = 0; $x < $attemptsavailable; $x++) {
+            $delay = $task->get_fail_delay() * 2;
+            $task = manager::get_next_adhoc_task($now + $delay);
+            $task->execute();
+            manager::adhoc_task_failed($task);
+        }
+        // Check that the fail delay is now set to 24 hours (the maximum amount of times).
+        $this->assertEquals(DAYSECS, $task->get_fail_delay());
+    }
+
+    /**
+     * Test adhoc task failure retry backoff.
+     */
+    public function test_adhoc_task_with_retry_flag(): void {
+        global $DB;
+        $this->resetAfterTest();
+
+        $now = time();
+        // Create a normal adhoc task.
+        $task = new adhoc_test_task();
+        $taskid1 = manager::queue_adhoc_task(task: $task);
+
+        // This is a normal task, so it should have limited attempts.
+        $attemptsavailable = $DB->get_field(
+            table: 'task_adhoc',
+            return: 'attemptsavailable',
+            conditions: ['id' => $taskid1]
+        );
+        $this->assertEquals(expected: 12, actual: $attemptsavailable);
+
+        // Get the task from the scheduler, execute it, and mark it as failed.
+        $task = manager::get_next_adhoc_task(timestart: $now);
+        $taskid1 = $task->get_id();
+        $task->execute();
+        manager::adhoc_task_failed(task: $task);
+
+        // Now that the task has failed, there should be one less attempt available.
+        $attemptsavailable = $DB->get_field(
+            table: 'task_adhoc',
+            return: 'attemptsavailable',
+            conditions: ['id' => $taskid1]
+        );
+        $this->assertEquals(expected: 12 - 1, actual: $attemptsavailable);
+
+        // Create a no-retry adhoc task.
+        $now = time();
+        $task = new no_retry_adhoc_task();
+        $taskid2 = manager::queue_adhoc_task(task: $task);
+
+        // This is no-retry task, so it should have only 1 attempt available.
+        $attemptsavailable = $DB->get_field(
+            table: 'task_adhoc',
+            return: 'attemptsavailable',
+            conditions: ['id' => $taskid2]
+        );
+        $this->assertEquals(
+            expected: 1,
+            actual: $attemptsavailable,
+        );
+
+        // Get the task from the scheduler, execute it, and mark it as failed.
+        $task = manager::get_next_adhoc_task(timestart: $now);
+        $taskid2 = $task->get_id();
+        $task->execute();
+        manager::adhoc_task_failed(task: $task);
+
+        // This is no-retry task, the remaining available attempts should be reduced to 0.
+        $attemptsavailable = $DB->get_field(
+            table: 'task_adhoc',
+            return: 'attemptsavailable',
+            conditions: ['id' => $taskid2]
+        );
+        $this->assertEquals(
+            expected: 0,
+            actual: $attemptsavailable,
+        );
+
+        // There will be two records in the task_adhoc table, one for each task.
+        $this->assertEquals(
+            expected: 2,
+            actual: $DB->count_records(table: 'task_adhoc')
+        );
+        // But get_next_adhoc_task() should return only the allowed re-try task.
+        // The no-retry task should not be returned because it has no remaining attempts.
+        do {
+            $task = manager::get_next_adhoc_task(timestart: $now + 86400);
+            if ($task) {
+                manager::adhoc_task_failed(task: $task);
+                $this->assertEquals(
+                    expected: $taskid1,
+                    actual: $task->get_id(),
+                );
+            }
+        } while ($task);
+
+        // Mark the normal task as complete.
+        $task = manager::get_adhoc_task(taskid: $taskid1);
+        manager::adhoc_task_complete($task);
+
+        // There will be one record in the task_adhoc table.
+        $this->assertEquals(
+            expected: 1,
+            actual: $DB->count_records(table: 'task_adhoc')
+        );
+
+        // But get_next_adhoc_task() should return nothing.
+        $this->assertNull(manager::get_next_adhoc_task(timestart: $now + 86400));
+    }
+
+    /**
+     * Test adhoc task failure cleanup.
+     */
+    public function test_adhoc_task_clean_up(): void {
+        global $DB, $CFG;
+        $this->resetAfterTest();
+
+        // Create two no-retry adhoc tasks.
+        $task1 = new no_retry_adhoc_task();
+        $taskid1 = manager::queue_adhoc_task(task: $task1);
+        $task2 = new no_retry_adhoc_task();
+        $taskid2 = manager::queue_adhoc_task(task: $task2);
+
+        // Get the tasks and mark it as failed.
+        $task = manager::get_adhoc_task($taskid1);
+        manager::adhoc_task_failed(task: $task);
+        $task = manager::get_adhoc_task($taskid2);
+        manager::adhoc_task_failed(task: $task);
+
+        // These are no-retry tasks, the remaining available attempts should be reduced to 0.
+        $this->assertEquals(
+            expected: 0,
+            actual: $DB->get_field(
+                table: 'task_adhoc',
+                return: 'attemptsavailable',
+                conditions: ['id' => $taskid1],
+            ),
+        );
+        $this->assertEquals(
+            expected: 0,
+            actual: $DB->get_field(
+                table: 'task_adhoc',
+                return: 'attemptsavailable',
+                conditions: ['id' => $taskid2],
+            ),
+        );
+
+        // There will be two records in the task_adhoc table.
+        $this->assertEquals(
+            expected: 2,
+            actual: $DB->count_records(table: 'task_adhoc'),
+        );
+
+        // Clean up failed adhoc tasks. This will clean nothing because the tasks are not old enough.
+        manager::clean_failed_adhoc_tasks();
+
+        // There will be two records in the task_adhoc table.
+        $this->assertEquals(
+            expected: 2,
+            actual: $DB->count_records(table: 'task_adhoc'),
+        );
+
+        // Update the time of the task2 to be older more than 2 days.
+        $DB->set_field(
+            table: 'task_adhoc',
+            newfield: 'firststartingtime',
+            newvalue: time() - (DAYSECS * 2) - 10, // Plus 10 seconds to make sure it is older than 2 days.
+            conditions: ['id' => $taskid2],
+        );
+
+        // Clean up failed adhoc tasks. This will clean nothing because the tasks are not old enough.
+        manager::clean_failed_adhoc_tasks();
+
+        // There will be two records in the task_adhoc table.
+        $this->assertEquals(
+            expected: 2,
+            actual: $DB->count_records(table: 'task_adhoc'),
+        );
+
+        // Update the time of the task1 to be older than the cleanup time.
+        $DB->set_field(
+            table: 'task_adhoc',
+            newfield: 'firststartingtime',
+            // Plus 10 seconds to make sure it is older than the retention time.
+            newvalue: time() - $CFG->task_adhoc_failed_retention - 10,
+            conditions: ['id' => $taskid1],
+        );
+
+        // Clean up failed adhoc tasks. task1 should be cleaned now.
+        manager::clean_failed_adhoc_tasks();
+
+        // There will be one record in the task_adhoc table.
+        $this->assertEquals(
+            expected: 1,
+            actual: $DB->count_records(table: 'task_adhoc'),
+        );
+
+        // Update the duration of the Failed ad hoc task retention period to one day.
+        $CFG->task_adhoc_failed_retention = DAYSECS;
+
+        // Clean up failed adhoc tasks. task2 should be cleaned now.
+        manager::clean_failed_adhoc_tasks();
+
+        // The task_adhoc table should be empty now.
+        $this->assertEquals(
+            expected: 0,
+            actual: $DB->count_records(table: 'task_adhoc'),
+        );
+    }
+
+    /**
+     * Test adhoc task failure will retain the time information.
+     */
+    public function test_adhoc_task_failed_will_retain_time_info(): void {
+        global $DB;
+        $this->resetAfterTest();
+
+        $now = time();
+        // Create an adhoc task.
+        $task = new adhoc_test_task();
+        // Queue it.
+        $taskid = manager::queue_adhoc_task(task: $task);
+
+        // Update the timecreated of the task to be older.
+        $DB->set_field(
+            table: 'task_adhoc',
+            newfield: 'timecreated',
+            newvalue: time() - DAYSECS,
+            conditions: ['id' => $taskid],
+        );
+
+        // Get the timecreated value before marking the task as failed.
+        $timecreatedbefore = $DB->get_field(
+            table: 'task_adhoc',
+            return: 'timecreated',
+            conditions: ['id' => $taskid],
+        );
+
+        // Get the task from the scheduler.
+        $task = manager::get_next_adhoc_task(timestart: $now);
+        // Execute the task.
+        $task->execute();
+        // Mark the task as failed.
+        manager::adhoc_task_failed(task: $task);
+
+        // Get the timecreated value after marking the task as failed.
+        $timecreatedafter = $DB->get_field(
+            table: 'task_adhoc',
+            return: 'timecreated',
+            conditions: ['id' => $taskid],
+        );
+
+        // The timecreated values should be the same.
+        $this->assertEquals($timecreatedbefore, $timecreatedafter);
+    }
+
+    /**
+     * Test future adhoc task execution.
+     */
+    public function test_get_next_adhoc_task_future(): void {
         $this->resetAfterTest(true);
 
         $now = time();
@@ -167,7 +431,6 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test queueing an adhoc task belonging to a component, where we set the task component accordingly
-     * @covers ::queue_adhoc_task
      */
     public function test_queue_adhoc_task_for_component(): void {
         $this->resetAfterTest();
@@ -181,7 +444,6 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test queueing an adhoc task belonging to a component, where we do not set the task component
-     * @covers ::queue_adhoc_task
      */
     public function test_queue_task_for_component_without_set_component(): void {
         $this->resetAfterTest();
@@ -197,7 +459,6 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test queueing an adhoc task belonging to an invalid component, where we do not set the task component
-     * @covers ::queue_adhoc_task
      */
     public function test_queue_task_for_invalid_component_without_set_component(): void {
         $this->resetAfterTest();
@@ -210,9 +471,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test empty set of adhoc tasks
-     * @covers ::get_adhoc_tasks
      */
-    public function test_get_adhoc_tasks_empty_set() {
+    public function test_get_adhoc_tasks_empty_set(): void {
         $this->resetAfterTest(true);
 
         $this->assertEquals([], manager::get_adhoc_tasks('\\core\\task\\adhoc_test_task'));
@@ -220,9 +480,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test correct set of adhoc tasks is returned for class.
-     * @covers ::get_adhoc_tasks
      */
-    public function test_get_adhoc_tasks_result_set() {
+    public function test_get_adhoc_tasks_result_set(): void {
         $this->resetAfterTest(true);
 
         for ($i = 0; $i < 3; $i++) {
@@ -252,9 +511,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Ensure that the reschedule_or_queue_adhoc_task function will schedule a new task if no tasks exist.
-     * @covers ::reschedule_or_queue_adhoc_task
      */
-    public function test_reschedule_or_queue_adhoc_task_no_existing() {
+    public function test_reschedule_or_queue_adhoc_task_no_existing(): void {
         $this->resetAfterTest(true);
 
         // Schedule adhoc task.
@@ -267,9 +525,8 @@ class adhoc_task_test extends \advanced_testcase {
     /**
      * Ensure that the reschedule_or_queue_adhoc_task function will schedule a new task if a task for the same user does
      * not exist.
-     * @covers ::reschedule_or_queue_adhoc_task
      */
-    public function test_reschedule_or_queue_adhoc_task_different_user() {
+    public function test_reschedule_or_queue_adhoc_task_different_user(): void {
         $this->resetAfterTest(true);
         $user = \core_user::get_user_by_username('admin');
 
@@ -290,9 +547,8 @@ class adhoc_task_test extends \advanced_testcase {
     /**
      * Ensure that the reschedule_or_queue_adhoc_task function will schedule a new task if a task with different custom
      * data exists.
-     * @covers ::reschedule_or_queue_adhoc_task
      */
-    public function test_reschedule_or_queue_adhoc_task_different_data() {
+    public function test_reschedule_or_queue_adhoc_task_different_data(): void {
         $this->resetAfterTest(true);
 
         // Schedule adhoc task.
@@ -311,9 +567,8 @@ class adhoc_task_test extends \advanced_testcase {
     /**
      * Ensure that the reschedule_or_queue_adhoc_task function will not make any change for matching data if no time was
      * specified.
-     * @covers ::reschedule_or_queue_adhoc_task
      */
-    public function test_reschedule_or_queue_adhoc_task_match_no_change() {
+    public function test_reschedule_or_queue_adhoc_task_match_no_change(): void {
         $this->resetAfterTest(true);
 
         // Schedule adhoc task.
@@ -335,9 +590,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Ensure that the reschedule_or_queue_adhoc_task function will update the run time if there are planned changes.
-     * @covers ::reschedule_or_queue_adhoc_task
      */
-    public function test_reschedule_or_queue_adhoc_task_match_update_runtime() {
+    public function test_reschedule_or_queue_adhoc_task_match_update_runtime(): void {
         $this->resetAfterTest(true);
         $initialruntime = time() + DAYSECS;
         $newruntime = time() + WEEKSECS;
@@ -365,40 +619,39 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test queue_adhoc_task "if not scheduled".
-     * @covers ::queue_adhoc_task
      */
-    public function test_queue_adhoc_task_if_not_scheduled() {
+    public function test_queue_adhoc_task_if_not_scheduled(): void {
         $this->resetAfterTest(true);
         $user = \core_user::get_user_by_username('admin');
 
         // Schedule adhoc task.
         $task = new adhoc_test_task();
-        $task->set_custom_data(array('courseid' => 10));
+        $task->set_custom_data(['courseid' => 10]);
         $this->assertNotEmpty(manager::queue_adhoc_task($task, true));
         $this->assertEquals(1, count(manager::get_adhoc_tasks('core\task\adhoc_test_task')));
 
         // Schedule adhoc task with a user.
         $task = new adhoc_test_task();
-        $task->set_custom_data(array('courseid' => 10));
+        $task->set_custom_data(['courseid' => 10]);
         $task->set_userid($user->id);
         $this->assertNotEmpty(manager::queue_adhoc_task($task, true));
         $this->assertEquals(2, count(manager::get_adhoc_tasks('core\task\adhoc_test_task')));
 
         // Schedule same adhoc task with different custom data.
         $task = new adhoc_test_task();
-        $task->set_custom_data(array('courseid' => 1));
+        $task->set_custom_data(['courseid' => 1]);
         $this->assertNotEmpty(manager::queue_adhoc_task($task, true));
         $this->assertEquals(3, count(manager::get_adhoc_tasks('core\task\adhoc_test_task')));
 
         // Schedule same adhoc task with same custom data.
         $task = new adhoc_test_task();
-        $task->set_custom_data(array('courseid' => 1));
+        $task->set_custom_data(['courseid' => 1]);
         $this->assertEmpty(manager::queue_adhoc_task($task, true));
         $this->assertEquals(3, count(manager::get_adhoc_tasks('core\task\adhoc_test_task')));
 
         // Schedule same adhoc task with same custom data and a user.
         $task = new adhoc_test_task();
-        $task->set_custom_data(array('courseid' => 1));
+        $task->set_custom_data(['courseid' => 1]);
         $task->set_userid($user->id);
         $this->assertNotEmpty(manager::queue_adhoc_task($task, true));
         $this->assertEquals(4, count(manager::get_adhoc_tasks('core\task\adhoc_test_task')));
@@ -432,9 +685,9 @@ class adhoc_task_test extends \advanced_testcase {
     /**
      * Test that when no userid is specified, it returns empty from the DB
      * too.
-     * @covers \core\task\adhoc_task::get_userid
+     * @covers \core\task\adhoc_task
      */
-    public function test_adhoc_task_user_empty() {
+    public function test_adhoc_task_user_empty(): void {
         $this->resetAfterTest(true);
 
         // Create an adhoc task in future.
@@ -453,10 +706,9 @@ class adhoc_task_test extends \advanced_testcase {
      * Test that when a userid is specified, that userid is subsequently
      * returned.
      *
-     * @covers \core\task\adhoc_task::set_userid
-     * @covers \core\task\adhoc_task::get_userid
+     * @covers \core\task\adhoc_task
      */
-    public function test_adhoc_task_user_set() {
+    public function test_adhoc_task_user_set(): void {
         $this->resetAfterTest(true);
 
         // Create an adhoc task in future.
@@ -474,11 +726,74 @@ class adhoc_task_test extends \advanced_testcase {
     }
 
     /**
+     * Test adhoc task with the first starting time.
+     */
+    public function test_adhoc_task_get_first_starting_time(): void {
+        global $DB;
+        $this->resetAfterTest(true);
+
+        $now = time();
+
+        // Create an adhoc task.
+        $task = new adhoc_test_task();
+        // Queue it.
+        $taskid = manager::queue_adhoc_task(task: $task);
+
+        // Get the firststartingtime value.
+        $firststartingtime = $DB->get_field(
+            table: 'task_adhoc',
+            return: 'firststartingtime',
+            conditions: ['id' => $taskid],
+        );
+        $this->assertNull($firststartingtime);
+
+        // This will make sure that the task will be started after the $now value.
+        sleep(3);
+
+        // Get the task from the scheduler.
+        $task = manager::get_next_adhoc_task(timestart: $now);
+        // Mark the task as starting.
+        manager::adhoc_task_starting($task);
+        // Execute the task.
+        $task->execute();
+        // Mark the task as failed.
+        manager::adhoc_task_failed(task: $task);
+
+        // Get the firststartingtime value.
+        $origintimestarted = $DB->get_field(
+            table: 'task_adhoc',
+            return: 'firststartingtime',
+            conditions: ['id' => $taskid],
+        );
+        $this->assertNotNull($origintimestarted);
+        $this->assertGreaterThan($now, $origintimestarted);
+
+        // Get the task from the scheduler.
+        $task = manager::get_next_adhoc_task(timestart: $now + 86400);
+        // Mark the task as starting.
+        manager::adhoc_task_starting($task);
+        // Execute the task.
+        $task->execute();
+        // Mark the task as failed.
+        manager::adhoc_task_failed(task: $task);
+
+        // Get the firststartingtime value.
+        $firststartingtime = $DB->get_field(
+            table: 'task_adhoc',
+            return: 'firststartingtime',
+            conditions: ['id' => $taskid],
+        );
+
+        // The firststartingtime value should not be changed.
+        $this->assertEquals($origintimestarted, $firststartingtime);
+    }
+
+    /**
      * Test get_concurrency_limit() method to return 0 by default.
      *
-     * @covers \core\task\adhoc_task::get_concurrency_limit
+     * @covers \core\task\adhoc_task
      */
-    public function test_get_concurrency_limit() {
+    public function test_get_concurrency_limit(): void {
         $this->resetAfterTest(true);
         $task = new adhoc_test_task();
         $concurrencylimit = $task->get_concurrency_limit();
@@ -487,9 +802,9 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test get_concurrency_limit() method to return a default value set in config.
-     * @covers \core\task\adhoc_task::get_concurrency_limit
+     * @covers \core\task\adhoc_task
      */
-    public function test_get_concurrency_limit_default() {
+    public function test_get_concurrency_limit_default(): void {
         $this->resetAfterTest(true);
         set_config('task_concurrency_limit_default', 10);
         $task = new adhoc_test_task();
@@ -499,13 +814,13 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test get_concurrency_limit() method to return a value for specific task class.
-     * @covers \core\task\adhoc_task::get_concurrency_limit
+     * @covers \core\task\adhoc_task
      */
-    public function test_get_concurrency_limit_for_task() {
+    public function test_get_concurrency_limit_for_task(): void {
         global $CFG;
         $this->resetAfterTest(true);
         set_config('task_concurrency_limit_default', 10);
-        $CFG->task_concurrency_limit = array('core\task\adhoc_test_task' => 5);
+        $CFG->task_concurrency_limit = ['core\task\adhoc_test_task' => 5];
         $task = new adhoc_test_task();
         $concurrencylimit = $task->get_concurrency_limit();
         $this->assertEquals(5, $concurrencylimit);
@@ -513,9 +828,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test adhoc task sorting.
-     * @covers ::get_next_adhoc_task
      */
-    public function test_get_next_adhoc_task_sorting() {
+    public function test_get_next_adhoc_task_sorting(): void {
         $this->resetAfterTest(true);
 
         // Create adhoc tasks.
@@ -560,9 +874,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test adhoc task run from CLI.
-     * @covers ::run_adhoc_from_cli
      */
-    public function test_run_adhoc_from_cli() {
+    public function test_run_adhoc_from_cli(): void {
         $this->resetAfterTest(true);
 
         $taskid = 1;
@@ -584,9 +897,8 @@ class adhoc_task_test extends \advanced_testcase {
 
     /**
      * Test adhoc class run from CLI.
-     * @covers ::run_all_adhoc_from_cli
      */
-    public function test_run_all_adhoc_from_cli() {
+    public function test_run_all_adhoc_from_cli(): void {
         $this->resetAfterTest(true);
 
         $classname = 'fake';
@@ -607,91 +919,75 @@ class adhoc_task_test extends \advanced_testcase {
     }
 
     /**
-     * Test adhoc task failure without retry.
+     * Test send messages when adhoc task reaches the max fail delay time.
      *
-     * @covers ::get_next_adhoc_task
-     * @covers ::get_adhoc_task
      * @covers ::adhoc_task_failed
+     * @covers ::send_failed_task_max_delay_message
      */
-    public function test_get_next_adhoc_task_without_fail_retry(): void {
-        global $DB;
+    public function test_adhoc_message_max_fail_delay(): void {
         $this->resetAfterTest();
+        $this->setAdminUser();
+
+        // Redirect messages.
+        $messagesink = $this->redirectMessages();
 
         // Create an adhoc task.
-        $task = new adhoc_test6_task();
+        $task = new adhoc_test_task();
         manager::queue_adhoc_task($task);
-        $this->assertCount(1, $DB->get_records('task_adhoc'));
 
         $now = time();
 
-        // Get the task from the scheduler, execute it, and mark it as failed.
+        // Get it from the scheduler, execute it, and mark it as failed.
         $task = manager::get_next_adhoc_task($now);
         $taskid = $task->get_id();
         $task->execute();
-        manager::adhoc_task_failed($task);
-        $this->assertCount(1, $DB->get_records('task_adhoc'));
 
-        // Get the task from the scheduler (retry after delay). Fail it again.
-        $task = manager::get_next_adhoc_task($now + 120);
-        $this->assertInstanceOf('\\core\\task\\adhoc_test6_task', $task);
+        // Catch the message. The task has not reach the max time delay yet.
+        manager::adhoc_task_failed($task);
+        $messages = $messagesink->get_messages();
+        $this->assertCount(0, $messages);
+
+        // Should get the adhoc task immediately.
+        $task = manager::get_adhoc_task($taskid);
+        $task->set_fail_delay(86400);
+        $this->assertInstanceOf('\\core\\task\\adhoc_test_task', $task);
         $this->assertEquals($taskid, $task->get_id());
         $task->execute();
+
+        // Catch the message.
+        manager::adhoc_task_failed($task);
+        $messages = $messagesink->get_messages();
+        $this->assertCount(1, $messages);
+
+        // Get the task and execute it second time.
+        $task = manager::get_adhoc_task($taskid);
+        // Set the fail delay to 12 hours.
+        $task->set_fail_delay(43200);
+        $task->execute();
         manager::adhoc_task_failed($task);
 
-        // The task was marked as no-retry, so it was deleted.
-        $this->assertCount(0, $DB->get_records('task_adhoc'));
-        $this->expectException(\moodle_exception::class);
-        $this->expectExceptionMessage('error/invalidtaskid');
-        manager::get_adhoc_task($taskid);
-    }
+        // Catch the message.
+        $messages = $messagesink->get_messages();
+        $this->assertCount(2, $messages);
 
-    /**
-     * Test adhoc task failure will retain the time information.
-     *
-     * @covers ::queue_adhoc_task
-     * @covers ::get_next_adhoc_task
-     * @covers ::adhoc_task_failed
-     */
-    public function test_adhoc_task_failed_will_retain_time_info(): void {
-        global $DB;
-        $this->resetAfterTest();
-
-        $now = time();
-        // Create an adhoc task.
-        $task = new adhoc_test_task();
-        // Queue it.
-        $taskid = manager::queue_adhoc_task(task: $task);
-
-        // Update the timecreated of the task to be older.
-        $DB->set_field(
-            table: 'task_adhoc',
-            newfield: 'timecreated',
-            newvalue: time() - DAYSECS,
-            conditions: ['id' => $taskid],
-        );
-
-        // Get the timecreated value before marking the task as failed.
-        $timecreatedbefore = $DB->get_field(
-            table: 'task_adhoc',
-            return: 'timecreated',
-            conditions: ['id' => $taskid],
-        );
-
-        // Get the task from the scheduler.
-        $task = manager::get_next_adhoc_task(timestart: $now);
-        // Execute the task.
+        // Get the task and execute it third time.
+        $task = manager::get_adhoc_task($taskid);
+        // Set the fail delay to 48 hours.
+        $task->set_fail_delay(172800);
         $task->execute();
-        // Mark the task as failed.
-        manager::adhoc_task_failed(task: $task);
+        manager::adhoc_task_failed($task);
 
-        // Get the timecreated value after marking the task as failed.
-        $timecreatedafter = $DB->get_field(
-            table: 'task_adhoc',
-            return: 'timecreated',
-            conditions: ['id' => $taskid],
-        );
+        // Catch the message.
+        $messages = $messagesink->get_messages();
+        $this->assertCount(3, $messages);
 
-        // The timecreated values should be the same.
-        $this->assertEquals($timecreatedbefore, $timecreatedafter);
+        // Check first message information.
+        $this->assertStringContainsString('Task failed: Test adhoc class', $messages[0]->subject);
+        $this->assertEquals('failedtaskmaxdelay', $messages[0]->eventtype);
+        $this->assertEquals('-10', $messages[0]->useridfrom);
+        $this->assertEquals('2', $messages[0]->useridto);
+
+        // Close sink.
+        $messagesink->close();
     }
 }

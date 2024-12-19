@@ -49,7 +49,7 @@ class backup_xml_transformer_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function filephp_links_replace_data_provider(): array {
+    public function filephp_links_replace_data_provider() {
         return array(
             array('http://test.test/', 'http://test.test/'),
             array('http://test.test/file.php/1', 'http://test.test/file.php/1'),
@@ -83,7 +83,7 @@ class backup_xml_transformer_test extends \advanced_testcase {
      * @param string $content Testing content.
      * @param string $expected Expected result.
      */
-    public function test_filephp_links_replace($content, $expected) {
+    public function test_filephp_links_replace($content, $expected): void {
         global $CFG;
 
         $CFG->wwwroot = 'http://test.test';

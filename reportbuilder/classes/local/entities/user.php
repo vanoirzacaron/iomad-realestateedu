@@ -21,11 +21,13 @@ namespace core_reportbuilder\local\entities;
 use context_helper;
 use context_system;
 use context_user;
+use core\context;
 use core_component;
 use html_writer;
 use lang_string;
 use moodle_url;
 use stdClass;
+use theme_config;
 use core_user\fields;
 use core_reportbuilder\local\filters\boolean_select;
 use core_reportbuilder\local\filters\date;
@@ -49,16 +51,16 @@ use core_reportbuilder\local\report\filter;
 class user extends base {
 
     /**
-     * Database tables that this entity uses and their default aliases
+     * Database tables that this entity uses
      *
-     * @return array
+     * @return string[]
      */
-    protected function get_default_table_aliases(): array {
+    protected function get_default_tables(): array {
         return [
-            'user' => 'u',
-            'context' => 'uctx',
-            'tag_instance' => 'uti',
-            'tag' => 'ut',
+            'user',
+            'context',
+            'tag_instance',
+            'tag',
         ];
     }
 
@@ -124,6 +126,19 @@ class user extends base {
     }
 
     /**
+     * Returns columns that correspond to the site configured identity fields
+     *
+     * @param context $context
+     * @param string[] $excluding
+     * @return column[]
+     */
+    public function get_identity_columns(context $context, array $excluding = []): array {
+        $identityfields = fields::for_identity($context)->excluding(...$excluding)->get_required_fields();
+
+        return array_map([$this, 'get_identity_column'], $identityfields);
+    }
+
+    /**
      * Returns filter that corresponds to the given identity field, profile field identifiers will be converted to those
      * used by the {@see user_profile_fields} helper
      *
@@ -136,6 +151,19 @@ class user extends base {
         }
 
         return $this->get_filter($identityfield);
+    }
+
+    /**
+     * Returns filters that correspond to the site configured identity fields
+     *
+     * @param context $context
+     * @param string[] $excluding
+     * @return filter[]
+     */
+    public function get_identity_filters(context $context, array $excluding = []): array {
+        $identityfields = fields::for_identity($context)->excluding(...$excluding)->get_required_fields();
+
+        return array_map([$this, 'get_identity_filter'], $identityfields);
     }
 
     /**
@@ -284,14 +312,8 @@ class user extends base {
                 ->set_is_sortable($this->is_sortable($userfield))
                 ->add_callback([$this, 'format'], $userfield);
 
-            // Some columns also have specific format callbacks.
-            if ($userfield === 'country') {
-                $column->add_callback(static function(string $country): string {
-                    $countries = get_string_manager()->get_list_of_countries(true);
-                    return $countries[$country] ?? '';
-                });
-            } else if ($userfield === 'description') {
-                // Select enough fields in order to format the column.
+            // Join on the context table so that we can use it for formatting these columns later.
+            if ($userfield === 'description') {
                 $column
                     ->add_join("LEFT JOIN {context} {$contexttablealias}
                            ON {$contexttablealias}.contextlevel = " . CONTEXT_USER . "
@@ -339,6 +361,12 @@ class user extends base {
 
         if ($this->get_user_field_type($fieldname) === column::TYPE_TIMESTAMP) {
             return format::userdate($value, $row);
+        }
+
+        // If the column has corresponding filter, determine the value from its options.
+        $options = $this->get_options_for($fieldname);
+        if ($options !== null && array_key_exists($value, $options)) {
+            return $options[$value];
         }
 
         if ($fieldname === 'description') {
@@ -401,6 +429,7 @@ class user extends base {
             'email' => new lang_string('email'),
             'city' => new lang_string('city'),
             'country' => new lang_string('country'),
+            'theme' => new lang_string('theme'),
             'description' => new lang_string('description'),
             'firstnamephonetic' => new lang_string('firstnamephonetic'),
             'lastnamephonetic' => new lang_string('lastnamephonetic'),
@@ -416,8 +445,11 @@ class user extends base {
             'suspended' => new lang_string('suspended'),
             'confirmed' => new lang_string('confirmed', 'admin'),
             'username' => new lang_string('username'),
+            'auth' => new lang_string('authentication', 'moodle'),
             'moodlenetprofile' => new lang_string('moodlenetprofile', 'user'),
             'timecreated' => new lang_string('timecreated', 'core_reportbuilder'),
+            'timemodified' => new lang_string('timemodified', 'core_reportbuilder'),
+            'lastip' => new lang_string('lastip'),
         ];
     }
 
@@ -438,6 +470,7 @@ class user extends base {
                 break;
             case 'lastaccess':
             case 'timecreated':
+            case 'timemodified':
                 $fieldtype = column::TYPE_TIMESTAMP;
                 break;
             default:
@@ -518,33 +551,40 @@ class user extends base {
         ))
             ->add_joins($this->get_joins());
 
-        // Authentication method filter.
-        $filters[] = (new filter(
-            select::class,
-            'auth',
-            new lang_string('authentication', 'moodle'),
-            $this->get_entity_name(),
-            "{$tablealias}.auth"
-        ))
-            ->add_joins($this->get_joins())
-            ->set_options_callback(static function(): array {
-                $plugins = core_component::get_plugin_list('auth');
-                $enabled = get_string('pluginenabled', 'core_plugin');
-                $disabled = get_string('plugindisabled', 'core_plugin');
-                $authoptions = [$enabled => [], $disabled => []];
-
-                foreach ($plugins as $pluginname => $unused) {
-                    $plugin = get_auth_plugin($pluginname);
-                    if (is_enabled_auth($pluginname)) {
-                        $authoptions[$enabled][$pluginname] = $plugin->get_title();
-                    } else {
-                        $authoptions[$disabled][$pluginname] = $plugin->get_title();
-                    }
-                }
-                return $authoptions;
-            });
-
         return $filters;
+    }
+
+    /**
+     * Gets list of options if the filter supports it
+     *
+     * @param string $fieldname
+     * @return null|array
+     */
+    protected function get_options_for(string $fieldname): ?array {
+        static $cached = [];
+        if (!array_key_exists($fieldname, $cached)) {
+            $callable = [static::class, 'get_options_for_' . $fieldname];
+            if (is_callable($callable)) {
+                $cached[$fieldname] = $callable();
+            } else {
+                $cached[$fieldname] = null;
+            }
+        }
+        return $cached[$fieldname];
+    }
+
+    /**
+     * List of options for the field auth
+     *
+     * @return string[]
+     */
+    public static function get_options_for_auth(): array {
+        $authlist = array_keys(core_component::get_plugin_list('auth'));
+
+        return array_map(
+            fn(string $auth) => get_auth_plugin($auth)->get_title(),
+            array_combine($authlist, $authlist),
+        );
     }
 
     /**
@@ -553,6 +593,18 @@ class user extends base {
      * @return string[]
      */
     public static function get_options_for_country(): array {
-        return array_map('shorten_text', get_string_manager()->get_list_of_countries());
+        return get_string_manager()->get_list_of_countries();
+    }
+
+    /**
+     * List of options for the field theme.
+     *
+     * @return string[]
+     */
+    public static function get_options_for_theme(): array {
+        return array_map(
+            fn(theme_config $theme) => $theme->get_theme_name(),
+            get_list_of_themes(),
+        );
     }
 }

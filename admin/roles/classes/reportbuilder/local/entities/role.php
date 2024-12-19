@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+declare(strict_types=1);
+
 namespace core_role\reportbuilder\local\entities;
 
 use context;
@@ -34,14 +36,14 @@ use core_reportbuilder\local\report\{column, filter};
 class role extends base {
 
     /**
-     * Database tables that this entity uses and their default aliases
+     * Database tables that this entity uses
      *
-     * @return array
+     * @return string[]
      */
-    protected function get_default_table_aliases(): array {
+    protected function get_default_tables(): array {
         return [
-            'context' => 'rctx',
-            'role' => 'r',
+            'context',
+            'role',
         ];
     }
 
@@ -97,7 +99,13 @@ class role extends base {
             ->set_type(column::TYPE_TEXT)
             ->add_fields("{$rolealias}.name, {$rolealias}.shortname, {$rolealias}.id, {$contextalias}.id AS contextid")
             ->add_fields(context_helper::get_preload_record_columns_sql($contextalias))
-            ->set_is_sortable(true, ["CASE WHEN {$rolealias}.name = '' THEN {$rolealias}.shortname ELSE {$rolealias}.name END"])
+            // The sorting is on name, unless empty (determined by single space - thanks Oracle) then we use shortname.
+            ->set_is_sortable(true, [
+                "CASE WHEN " . $DB->sql_concat("{$rolealias}.name", "' '") . " = ' '
+                      THEN {$rolealias}.shortname
+                      ELSE {$rolealias}.name
+                 END",
+            ])
             ->set_callback(static function($name, stdClass $role): string {
                 if ($name === null) {
                     return '';
@@ -107,6 +115,30 @@ class role extends base {
                 $context = context::instance_by_id($role->contextid);
 
                 return role_get_name($role, $context, ROLENAME_BOTH);
+            });
+
+        // Original name column.
+        $columns[] = (new column(
+            'originalname',
+            new lang_string('roleoriginalname', 'core_role'),
+            $this->get_entity_name()
+        ))
+            ->add_joins($this->get_joins())
+            ->set_type(column::TYPE_TEXT)
+            ->add_fields("{$rolealias}.name, {$rolealias}.shortname")
+            // The sorting is on name, unless empty (determined by single space - thanks Oracle) then we use shortname.
+            ->set_is_sortable(true, [
+                "CASE WHEN " . $DB->sql_concat("{$rolealias}.name", "' '") . " = ' '
+                      THEN {$rolealias}.shortname
+                      ELSE {$rolealias}.name
+                 END",
+            ])
+            ->set_callback(static function($name, stdClass $role): string {
+                if ($name === null) {
+                    return '';
+                }
+
+                return role_get_name($role, null, ROLENAME_ORIGINAL);
             });
 
         // Short name column.

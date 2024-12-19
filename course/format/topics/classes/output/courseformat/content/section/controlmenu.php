@@ -90,7 +90,7 @@ class controlmenu extends controlmenu_base {
         $format = $this->format;
         $section = $this->section;
         $course = $format->get_course();
-        $sectionreturn = $format->get_section_number();
+        $sectionreturn = $format->get_sectionnum();
 
         if ($sectionreturn) {
             $url = course_get_url($course, $section->section);
@@ -110,7 +110,11 @@ class controlmenu extends controlmenu_base {
         $format = $this->format;
         $section = $this->section;
         $course = $format->get_course();
+        $sectionreturn = $format->get_sectionnum();
         $url = $this->get_course_url();
+        if (!is_null($sectionreturn)) {
+            $url->param('sectionid', $format->get_sectionid());
+        }
 
         $highlightoff = get_string('highlightoff');
         $highlightofficon = 'i/marked';
@@ -128,6 +132,7 @@ class controlmenu extends controlmenu_base {
                 'attr' => [
                     'class' => 'editing_highlight',
                     'data-action' => 'sectionUnhighlight',
+                    'data-sectionreturn' => $sectionreturn,
                     'data-id' => $section->id,
                     'data-icon' => $highlightofficon,
                     'data-swapname' => $highlighton,
@@ -144,6 +149,7 @@ class controlmenu extends controlmenu_base {
                 'attr' => [
                     'class' => 'editing_highlight',
                     'data-action' => 'sectionHighlight',
+                    'data-sectionreturn' => $sectionreturn,
                     'data-id' => $section->id,
                     'data-icon' => $highlightonicon,
                     'data-swapname' => $highlightoff,

@@ -72,54 +72,6 @@ function tool_iomadpolicy_myprofile_navigation(tree $tree, $user, $iscurrentuser
 }
 
 /**
- * Load iomadpolicy message for guests.
- *
- * @return string The HTML code to insert before the head.
- */
-function tool_iomadpolicy_before_standard_html_head() {
-    global $CFG, $PAGE, $USER;
-
-    $message = null;
-    if (!empty($CFG->sitepolicyhandler)
-            && $CFG->sitepolicyhandler == 'tool_iomadpolicy'
-            && empty($USER->policyagreed)
-            && (isguestuser() || !isloggedin())) {
-        $output = $PAGE->get_renderer('tool_iomadpolicy');
-        try {
-            $page = new \tool_iomadpolicy\output\guestconsent();
-            $message = $output->render($page);
-        } catch (dml_read_exception $e) {
-            // During upgrades, the new plugin code with new SQL could be in place but the DB not upgraded yet.
-            $message = null;
-        }
-    }
-
-    return $message;
-}
-
-/**
- * Callback to add footer elements.
- *
- * @return string HTML footer content
- */
-function tool_iomadpolicy_standard_footer_html() {
-    global $CFG, $PAGE;
-
-    $output = '';
-    if (!empty($CFG->sitepolicyhandler)
-            && $CFG->sitepolicyhandler == 'tool_iomadpolicy') {
-        $policies = api::get_current_versions_ids();
-        if (!empty($policies)) {
-            $url = new moodle_url('/admin/tool/iomadpolicy/viewall.php', ['returnurl' => $PAGE->url]);
-            $output .= html_writer::link($url, get_string('useriomadpolicysettings', 'tool_iomadpolicy'));
-            $output = html_writer::div($output, 'policiesfooter');
-        }
-    }
-
-    return $output;
-}
-
-/**
  * Hooks redirection to iomadpolicy acceptance pages before sign up.
  */
 function tool_iomadpolicy_pre_signup_requests() {

@@ -37,7 +37,7 @@ class curl_security_helper_test extends \advanced_testcase {
      * @param bool $expected the expected result.
      * @dataProvider curl_security_url_data_provider
      */
-    public function test_curl_security_helper_url_is_blocked($dns, $url, $blockedhosts, $allowedports, $expected) {
+    public function test_curl_security_helper_url_is_blocked($dns, $url, $blockedhosts, $allowedports, $expected): void {
         $this->resetAfterTest(true);
         $helper = $this->getMockBuilder('\core\files\curl_security_helper')
             ->onlyMethods(['get_host_list_by_name'])
@@ -62,7 +62,7 @@ class curl_security_helper_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function curl_security_url_data_provider(): array {
+    public function curl_security_url_data_provider() {
         $simpledns = ['localhost' => ['127.0.0.1']];
         $multiplerecorddns = [
             'sub.example.com' => ['1.2.3.4', '5.6.7.8']
@@ -167,7 +167,7 @@ class curl_security_helper_test extends \advanced_testcase {
      * @param bool $expected the expected result.
      * @dataProvider curl_security_settings_data_provider
      */
-    public function test_curl_security_helper_is_enabled($blockedhosts, $allowedports, $expected) {
+    public function test_curl_security_helper_is_enabled($blockedhosts, $allowedports, $expected): void {
         $this->resetAfterTest(true);
         $helper = new \core\files\curl_security_helper();
         set_config('curlsecurityblockedhosts', $blockedhosts);
@@ -180,7 +180,7 @@ class curl_security_helper_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function curl_security_settings_data_provider(): array {
+    public function curl_security_settings_data_provider() {
         // Format: blocked hosts, allowed ports, expected result.
         return [
             ["", "", false],
@@ -199,7 +199,7 @@ class curl_security_helper_test extends \advanced_testcase {
      * @param bool $expected the expected result.
      * @dataProvider curl_security_host_data_provider
      */
-    public function test_curl_security_helper_host_is_blocked($host, $blockedhosts, $expected) {
+    public function test_curl_security_helper_host_is_blocked($host, $blockedhosts, $expected): void {
         $this->resetAfterTest(true);
         $helper = new \core\files\curl_security_helper();
         set_config('curlsecurityblockedhosts', $blockedhosts);
@@ -212,7 +212,7 @@ class curl_security_helper_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function curl_security_host_data_provider(): array {
+    public function curl_security_host_data_provider() {
         return [
             // IPv4 hosts.
             ["127.0.0.1", "127.0.0.1", true],
@@ -253,7 +253,7 @@ class curl_security_helper_test extends \advanced_testcase {
      * @param bool $expected the expected result.
      * @dataProvider curl_security_port_data_provider
      */
-    public function test_curl_security_helper_port_is_blocked($port, $allowedports, $expected) {
+    public function test_curl_security_helper_port_is_blocked($port, $allowedports, $expected): void {
         $this->resetAfterTest(true);
         $helper = new \core\files\curl_security_helper();
         set_config('curlsecurityallowedport', $allowedports);
@@ -266,7 +266,7 @@ class curl_security_helper_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function curl_security_port_data_provider(): array {
+    public function curl_security_port_data_provider() {
         return [
             ["", "80\n443", true],
             [" ", "80\n443", true],
@@ -289,7 +289,7 @@ class curl_security_helper_test extends \advanced_testcase {
     /**
      * Test for \core\files\curl_security_helper::get_blocked_url_string().
      */
-    public function test_curl_security_helper_get_blocked_url_string() {
+    public function test_curl_security_helper_get_blocked_url_string(): void {
         $helper = new \core\files\curl_security_helper();
         $this->assertEquals(get_string('curlsecurityurlblocked', 'admin'), $helper->get_blocked_url_string());
     }

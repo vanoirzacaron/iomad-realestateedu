@@ -1067,7 +1067,7 @@ abstract class moodleform {
     /**
      * Form definition. Abstract method - always override!
      */
-    protected abstract function definition();
+    abstract protected function definition();
 
     /**
      * After definition hook.
@@ -1380,8 +1380,7 @@ abstract class moodleform {
                 $mform->createElement('cancel'),
             ];
             $buttonarname = $forceuniqueid && $this::$uniqueid > 0 ? 'buttonar_' . $this::$uniqueid : 'buttonar';
-            $grp = $mform->addGroup($buttonarray, $buttonarname, get_string('formactions', 'core_form'), [' '], false);
-            $grp->setHiddenLabel(true);
+            $mform->addGroup($buttonarray, $buttonarname, '', [' '], false);
             $mform->closeHeaderBefore('buttonar');
         } else {
             // No group needed.
@@ -1520,7 +1519,7 @@ abstract class moodleform {
      * @param array  $simulatedsubmitteddata       An associative array of form values (same format as $_POST).
      * @param array  $simulatedsubmittedfiles      An associative array of files uploaded (same format as $_FILES). Can be omitted.
      * @param string $method                       'post' or 'get', defaults to 'post'.
-     * @param null   $formidentifier               the default is to use the class name for this class but you may need to provide
+     * @param ?string $formidentifier               the default is to use the class name for this class but you may need to provide
      *                                              a different value here for some forms that are used more than once on the
      *                                              same page.
      */
@@ -1964,7 +1963,7 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
      *
      * @param boolean $disable default true, controls if the shortforms are disabled.
      */
-    function setDisableShortforms ($disable = true) {
+    function setDisableShortforms($disable = true) {
         $this->_disableShortforms = $disable;
     }
 
@@ -2743,9 +2742,6 @@ require([
       }
     }
 
-    document.getElementById(\'' . $elem->_attributes['id'] . '\').addEventListener(\'blur\', function(ev) {
-        ' . $valFunc . '
-    });
     document.getElementById(\'' . $elem->_attributes['id'] . '\').addEventListener(\'change\', function(ev) {
         ' . $valFunc . '
     });
@@ -3684,6 +3680,7 @@ MoodleQuickForm::registerElementType('course', "$CFG->libdir/form/course.php", '
 MoodleQuickForm::registerElementType('cohort', "$CFG->libdir/form/cohort.php", 'MoodleQuickForm_cohort');
 MoodleQuickForm::registerElementType('searchableselector', "$CFG->libdir/form/searchableselector.php", 'MoodleQuickForm_searchableselector');
 MoodleQuickForm::registerElementType('checkbox', "$CFG->libdir/form/checkbox.php", 'MoodleQuickForm_checkbox');
+MoodleQuickForm::registerElementType('choicedropdown', "$CFG->libdir/form/choicedropdown.php", 'MoodleQuickForm_choicedropdown');
 MoodleQuickForm::registerElementType('date_selector', "$CFG->libdir/form/dateselector.php", 'MoodleQuickForm_date_selector');
 MoodleQuickForm::registerElementType('date_time_selector', "$CFG->libdir/form/datetimeselector.php", 'MoodleQuickForm_date_time_selector');
 MoodleQuickForm::registerElementType('duration', "$CFG->libdir/form/duration.php", 'MoodleQuickForm_duration');

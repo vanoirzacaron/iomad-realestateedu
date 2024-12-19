@@ -36,10 +36,10 @@ auth_iomadsaml2_admin_nav($heading, $here);
 $mform = new \auth_iomadsaml2\form\regenerate();
 
 if ($mform->is_cancelled()) {
-    redirect("$CFG->wwwroot/admin/settings.php?section=authsettingiomadsaml2");
+    redirect("$CFG->wwwroot/admin/settings.php?section=authsettingsaml2");
 }
 
-$path = $iomadsaml2auth->certcrt;
+$path = $iomadsam2auth->certcrt;
 $error = '';
 $success = false;
 
@@ -47,7 +47,7 @@ if ($fromform = $mform->get_data()) {
     try {
         auth_iomadsaml2_process_regenerate_form($fromform);
         redirect(new moodle_url('/auth/iomadsaml2/cert.php'), get_string('success'), null, \core\output\notification::NOTIFY_SUCCESS);
-    } catch (iomadsaml2_exception $exception) {
+    } catch (saml2_exception $exception) {
         $error = $exception->getMessage() . $exception->getTraceAsString();
     }
 }

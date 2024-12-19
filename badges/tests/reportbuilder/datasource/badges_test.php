@@ -22,6 +22,7 @@ use core_badges_generator;
 use core_reportbuilder_generator;
 use core_reportbuilder_testcase;
 use core_reportbuilder\local\filters\{boolean_select, date, select, tags, text};
+use core_reportbuilder\manager;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -37,7 +38,7 @@ require_once("{$CFG->libdir}/badgeslib.php");
  * @copyright   2022 Paul Holden <paulh@moodle.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class badges_test extends core_reportbuilder_testcase {
+final class badges_test extends core_reportbuilder_testcase {
 
     /**
      * Test default datasource
@@ -201,11 +202,52 @@ class badges_test extends core_reportbuilder_testcase {
     }
 
     /**
+     * Test creating a report containing "expiry" as both a condition and a filter
+     *
+     * This is really testing that it's possible to do so, for a filter instance that returns SQL parameters
+     */
+    public function test_report_expiry_condition_and_filter(): void {
+        $this->resetAfterTest();
+
+        /** @var core_badges_generator $generator */
+        $generator = $this->getDataGenerator()->get_plugin_generator('core_badges');
+
+        $badgeone = $generator->create_badge(['name' => 'Badge 1', 'expiredate' => 10]);
+        $badgetwo = $generator->create_badge(['name' => 'Badge 2', 'expiredate' => 20]);
+        $badgethree = $generator->create_badge(['name' => 'Badge 3', 'expiredate' => 30]);
+
+        /** @var core_reportbuilder_generator $generator */
+        $generator = $this->getDataGenerator()->get_plugin_generator('core_reportbuilder');
+        $report = $generator->create_report(['name' => 'Badges', 'source' => badges::class, 'default' => 0]);
+
+        $generator->create_column(['reportid' => $report->get('id'), 'uniqueidentifier' => 'badge:name']);
+        $generator->create_condition(['reportid' => $report->get('id'), 'uniqueidentifier' => 'badge:expiry']);
+        $generator->create_filter(['reportid' => $report->get('id'), 'uniqueidentifier' => 'badge:expiry']);
+
+        // Load report instance, set condition.
+        $instance = manager::get_report_from_persistent($report);
+        $instance->set_condition_values([
+            'badge:expiry_operator' => date::DATE_RANGE,
+            'badge:expiry_from' => 15,
+        ]);
+
+        // Set filter.
+        $content = $this->get_custom_report_content($report->get('id'), 0, [
+            'badge:expiry_operator' => date::DATE_RANGE,
+            'badge:expiry_to' => 25,
+        ]);
+
+        $this->assertEquals([
+            [$badgetwo->name],
+        ], array_map('array_values', $content));
+    }
+
+    /**
      * Data provider for {@see test_datasource_filters}
      *
      * @return array[]
      */
-    public function datasource_filters_provider(): array {
+    public static function datasource_filters_provider(): array {
         return [
             // Badge.
             'Filter badge name' => ['badge:name', [
@@ -216,6 +258,14 @@ class badges_test extends core_reportbuilder_testcase {
                 'badge:name_operator' => text::IS_EQUAL_TO,
                 'badge:name_value' => 'Other badge',
             ], false],
+            'Filter badge version' => ['badge:version', [
+                'badge:version_operator' => text::IS_EQUAL_TO,
+                'badge:version_value' => '2.0',
+            ], true],
+            'Filter badge version (no match)' => ['badge:version', [
+                'badge:version_operator' => text::IS_EQUAL_TO,
+                'badge:version_value' => '1.0',
+            ], false],
             'Filter badge status' => ['badge:status', [
                 'badge:status_operator' => select::EQUAL_TO,
                 'badge:status_value' => BADGE_STATUS_ACTIVE_LOCKED,
@@ -223,6 +273,14 @@ class badges_test extends core_reportbuilder_testcase {
             'Filter badge status (no match)' => ['badge:status', [
                 'badge:status_operator' => select::EQUAL_TO,
                 'badge:status_value' => BADGE_STATUS_ACTIVE,
+            ], false],
+            'Filter badge expiry' => ['badge:expiry', [
+                'badge:expiry_operator' => date::DATE_RANGE,
+                'badge:expiry_from' => 1622502000,
+            ], true],
+            'Filter badge expiry (no match)' => ['badge:expiry', [
+                'badge:expiry_operator' => date::DATE_RANGE,
+                'badge:expiry_to' => 1622502000,
             ], false],
             'Filter badge type' => ['badge:type', [
                 'badge:type_operator' => select::EQUAL_TO,
@@ -307,6 +365,7 @@ class badges_test extends core_reportbuilder_testcase {
         $generator = $this->getDataGenerator()->get_plugin_generator('core_badges');
         $badge = $generator->create_badge([
             'name' => 'Course badge',
+            'version' => '2.0',
             'type' => BADGE_TYPE_COURSE,
             'courseid' => $course->id,
             'expireperiod' => HOURSECS,

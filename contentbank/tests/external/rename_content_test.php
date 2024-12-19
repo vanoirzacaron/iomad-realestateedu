@@ -50,7 +50,7 @@ class rename_content_test extends \externallib_advanced_testcase {
      *
      * @return  array
      */
-    public static function rename_content_provider(): array {
+    public function rename_content_provider() {
         return [
             'Standard name' => ['New name', 'New name', true],
             'Name with digits' => ['Today is 17/04/2017', 'Today is 17/04/2017', true],
@@ -74,7 +74,7 @@ class rename_content_test extends \externallib_advanced_testcase {
      *
      * @covers ::execute
      */
-    public function test_rename_content_with_permission(string $newname, string $expectedname, bool $expectedresult) {
+    public function test_rename_content_with_permission(string $newname, string $expectedname, bool $expectedresult): void {
         global $DB;
         $this->resetAfterTest();
 
@@ -111,7 +111,7 @@ class rename_content_test extends \externallib_advanced_testcase {
      *
      * @covers ::execute
      */
-    public function test_rename_content_without_permission() {
+    public function test_rename_content_without_permission(): void {
         global $DB;
         $this->resetAfterTest();
 

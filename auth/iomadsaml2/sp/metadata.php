@@ -36,7 +36,7 @@ require_once('../locallib.php');
 
 $download = optional_param('download', '', PARAM_RAW);
 if ($download) {
-    header('Content-Disposition: attachment; filename=' . $iomadsaml2auth->spname . '.xml');
+    header('Content-Disposition: attachment; filename=' . $iomadsam2auth->spname . '.xml');
 }
 
 // Allow generating SP metadata for a different domain which can
@@ -45,7 +45,7 @@ if ($download) {
 $baseurl = optional_param('baseurl', $CFG->wwwroot, PARAM_URL);
 
 // To keep it simple, every time you visit this page, it should rebuild the SP XML.
-$file = $iomadsaml2auth->get_file_sp_metadata_file($baseurl);
+$file = $iomadsam2auth->get_file_sp_metadata_file($baseurl);
 @unlink($file);
 
 $xml = auth_iomadsaml2_get_sp_metadata($baseurl);
@@ -54,7 +54,7 @@ if (array_key_exists('output', $_REQUEST) && $_REQUEST['output'] == 'xhtml') {
 
 	$t = new SimpleSAML_XHTML_Template($config, 'metadata.php', 'admin');
 
-	$t->data['header'] = 'iomadsaml20-sp';
+	$t->data['header'] = 'saml20-sp';
 	$t->data['metadata'] = htmlspecialchars($xml);
 	$t->data['metadataflat'] = '$metadata[' . var_export($entityId, TRUE) . '] = ' . var_export($metaArray20, TRUE) . ';';
 	$t->data['metaurl'] = $source->getMetadataURL();

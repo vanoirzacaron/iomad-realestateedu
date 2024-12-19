@@ -29,10 +29,10 @@ class action_test extends \advanced_testcase {
     /**
      * Test action class getters.
      *
-     * @dataProvider getters_testcases
+     * @dataProvider getters_testcases()
      * @param array $constructorparams Associative array of constructor parameters.
      */
-    public function test_getters($constructorparams) {
+    public function test_getters($constructorparams): void {
         $action = new action(
             $constructorparams['name'],
             $constructorparams['url'],
@@ -52,7 +52,7 @@ class action_test extends \advanced_testcase {
     /**
      * Test cases for getters test.
      */
-    public static function getters_testcases(): array {
+    public function getters_testcases() {
         return [
             'Dataset 1' => [
                 'constructorparams' => [

@@ -1,5 +1,5 @@
 @auth @auth_iomadsaml2 @javascript
-Feature: IOMAD SAML2 settings
+Feature: SAML2 settings
   In order to configure the plugin
   As an administrator
   I need to change the settings in Moodle
@@ -7,9 +7,9 @@ Feature: IOMAD SAML2 settings
   Scenario: I can navigate to the settings page
     Given the authentication plugin iomadsaml2 is enabled                                  # auth_iomadsaml2
     And I am an administrator                                                         # auth_iomadsaml2
-    When I navigate to "Plugins > Authentication > IOMAD SAML2" in site administration
+    When I navigate to "Plugins > Authentication > SAML2" in site administration
     Then I should see "SAML2"
-    And I should see "Authenticate with a IOMAD SAML2 Identity Provider (IdP)"
+    And I should see "Authenticate with a SAML2 Identity Provider (IdP)"
 
   Scenario Outline: I can change the Dual Login options
     Given the authentication plugin iomadsaml2 is enabled        # auth_iomadsaml2

@@ -40,7 +40,7 @@ class lib_test extends \advanced_testcase {
      *
      * @return array Two options, one with true and one with false
      */
-    public static function true_or_false(): array {
+    public function true_or_false(): array {
         return [
             [true],
             [false]

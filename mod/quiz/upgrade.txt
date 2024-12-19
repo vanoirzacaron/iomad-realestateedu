@@ -1,23 +1,38 @@
 This file describes API changes in the quiz code.
 
-=== 4.3.9 ===
-* A new test-case, `\mod_quiz\tests\attempt_walkthrough_testcase`, has been extracted from the
-  `\mod_quiz\attempt_walkthrough_from_csv_test` unit test and should be used instead.
-  To support this testcase the existing `$files` instance property should be replaced with a new static method,
-  `::get_test_files`. Both the existing instance property and the new static method can co-exist.
-
-=== 4.3.4 ===
+=== 4.4 ===
+* A quiz_structure_modified callback has been added for quiz_ plugins, called from
+  grade_calculator::recompute_quiz_sumgrades(). Plugins can implement this by creating a `quiz_structure_modified`
+  class in their namespace with a static `callback` method, see quiz_statistics as an example.
+* External functions returning question information, currently get_attempt_summary(), get_attempt_data() and get_attemp_review()
+  now return a new field called "stateclass". A machine-readable class name for the state that this question attempt is in,
+  as returned by question_usage_by_activity::get_question_state_class().
+* External function mod_quiz_external::get_attempt_summary() now returns a new field "totalunanswered", with the total number of
+  unanswered questions.
+* quiz_settings::no_review_message now takes a new argument $attemptsubmittime for the time when the quiz attempt was
+  submitted. It is strongly recommended that you always pass that.
+* In the renderer, related to rendering the review page, review_summary_table and filter_review_summary_table have been
+  replaced by review_attempt_summary and filter_review_attempt_summary. This is to support changing the $summarydata argument
+  the review_page() method to an instance of a new templateable class attempt_summary_information for displaying this.
+  The $summarydata argument of review_question_page has also been changed to an attempt_summary_information.
+* In the renderer, the view_table has been deprecated. Please use the list_of_attempts renderable instead.
 * There is a new function qbank_helper::get_version_information_for_questions_in_attempt to efficiently
   check whether each question in an attempt is using the latest versions. This is used by re-grading,
   replacing some old code there, and to update teacher previews automatically.
-
-=== 4.3.3 ===
-* quiz_settings::no_review_message now takes a new argument $attemptsubmittime for the time when the quiz attempt was
-  submitted. It is strongly recommended that you always pass that.
-
-=== 4.3.1 ===
-* A quiz_structure_modified callback has been added for quiz_ plugins, called from
-  grade_calculator::recompute_quiz_sumgrades(). Plugins can implement this by creating a `quiz_structure_modified`
+* The following previously deprecated methods have been removed and can no longer be used:
+  - `get_slot_tags_for_slot_id`
+  - `quiz_retrieve_tags_for_slot_ids`
+* Quiz override logic has been refactored and put in a new override_manager class.
+* Quiz override cache should now be accessed using the new override_cache class.
+* The quiz_delete_overrides and quiz_delete_all_overrides functions are now deprecated. Please instead use:
+  - override_manager::delete_override_by_id
+  - override_manager::delete_overrides
+  - override_manager::delete_all_overrides
+* There is a new renderable grade_out_of to help with display a nicely formatted "42.00 out of 100.00" with a few variants.
+* The quiz now supports computing multiple total grades for each attempt. To support this there is a new database table
+  quiz_grade_items and a new column quizgradeitemid in quiz_slots. There are new methods in structure grade_calculator
+  and quiz_attempt to support this, and the new grades are shown on review.php, view.php and in some of the quiz reports.
+  Also, the external functions get_attempt_review and get_user_attempts return the information about the extra grades if applicable.
 
 === 4.3 ===
 

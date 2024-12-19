@@ -35,11 +35,11 @@ use auth_iomadsaml2\event\cert_regenerated;
  * @param string $baseurl
  */
 function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
-    global $iomadsaml2auth, $CFG;
+    global $iomadsam2auth, $CFG;
 
-    $sourceId = $iomadsaml2auth->spname;
+    $sourceId = $iomadsam2auth->spname;
 
-    $file = $iomadsaml2auth->get_file_sp_metadata_file($baseurl);
+    $file = $iomadsam2auth->get_file_sp_metadata_file($baseurl);
     if (file_exists($file)) {
         $xml = file_get_contents($file);
         return $xml;
@@ -57,7 +57,7 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
 
     $entityId = $source->getEntityId();
     $spconfig = $source->getMetadata();
-    $store = SimpleSAML\Store::getInstance();
+    \SimpleSAML\Store\StoreFactory::getInstance('\\auth_iomadsaml2\\store');
 
     $metaArray20 = array();
 
@@ -65,8 +65,8 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
         SAML2\Constants::BINDING_HTTP_REDIRECT,
         // SAML2\Constants::BINDING_SOAP, // TODO untested.
     );
+    $slob = $spconfig->getOptionalArray('SingleLogoutServiceBinding', $slosvcdefault);
 
-    $slob = $spconfig->getArray('SingleLogoutServiceBinding', $slosvcdefault);
     $slol = "{$baseurl}/auth/iomadsaml2/sp/saml2-logout.php/{$sourceId}";
 
     foreach ($slob as $binding) {
@@ -78,16 +78,14 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
 
     $assertionsconsumerservicesdefault = array(
         'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-        'urn:oasis:names:tc:SAML:1.0:profiles:browser-post',
         'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
-        'urn:oasis:names:tc:SAML:1.0:profiles:artifact-01',
     );
 
-    if ($spconfig->getString('ProtocolBinding', '') == 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser') {
-        $assertionsconsumerservicesdefault[] = 	'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser';
+    if ($spconfig->getOptionalString('ProtocolBinding', '') == 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser') {
+     $assertionsconsumerservicesdefault[] = 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser';
     }
 
-    $assertionsconsumerservices = $spconfig->getArray('acs.Bindings', $assertionsconsumerservicesdefault);
+    $assertionsconsumerservices = $spconfig->getOptionalArray('acs.Bindings', $assertionsconsumerservicesdefault);
 
     $index = 0;
     $eps = array();
@@ -99,17 +97,9 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
             $acsArray['Binding'] = SAML2\Constants::BINDING_HTTP_POST;
             $acsArray['Location'] = "{$baseurl}/auth/iomadsaml2/sp/saml2-acs.php/{$sourceId}";
             break;
-        case 'urn:oasis:names:tc:SAML:1.0:profiles:browser-post':
-            $acsArray['Binding'] = 'urn:oasis:names:tc:SAML:1.0:profiles:browser-post';
-            $acsArray['Location'] = "{$baseurl}/auth/iomadsaml2/sp/saml1-acs.php/{$sourceId}";
-            break;
         case 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact':
             $acsArray['Binding'] = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact';
             $acsArray['Location'] = "{$baseurl}/auth/iomadsaml2/sp/saml2-acs.php/{$sourceId}";
-            break;
-        case 'urn:oasis:names:tc:SAML:1.0:profiles:artifact-01':
-            $acsArray['Binding'] = 'urn:oasis:names:tc:SAML:1.0:profiles:artifact-01';
-            $acsArray['Location'] = "{$baseurl}/auth/iomadsaml2/sp/saml1-acs.php/{$sourceId}";
             break;
         case 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser':
             $acsArray['Binding'] = 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser';
@@ -124,11 +114,10 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
     $metaArray20['AssertionConsumerService'] = $eps;
 
     $keys = array();
-    $certInfo = SimpleSAML\Utils\Crypto::loadPublicKey($spconfig, FALSE, 'new_');
+    $cryptoUtils = new \SimpleSAML\Utils\Crypto();
+    $certInfo = $cryptoUtils->loadPublicKey($spconfig, FALSE, 'new_');
     if ($certInfo !== NULL && array_key_exists('certData', $certInfo)) {
         $hasNewCert = TRUE;
-
-        $certData = $certInfo['certData'];
 
         $keys[] = array(
             'type' => 'X509Certificate',
@@ -139,10 +128,9 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
     } else {
         $hasNewCert = FALSE;
     }
+    $certInfo = $cryptoUtils->loadPublicKey($spconfig);
 
-    $certInfo = SimpleSAML\Utils\Crypto::loadPublicKey($spconfig);
     if ($certInfo !== NULL && array_key_exists('certData', $certInfo)) {
-        $certData = $certInfo['certData'];
 
         $keys[] = array(
             'type' => 'X509Certificate',
@@ -150,11 +138,10 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
             'encryption' => ($hasNewCert ? FALSE : TRUE),
             'X509Certificate' => $certInfo['certData'],
         );
-    } else {
-        $certData = NULL;
     }
 
-    $format = $spconfig->getString('NameIDPolicy', NULL);
+    $format = $spconfig->getOptionalArray('NameIDPolicy', NULL);
+    $format = $format['Format'];
     if ($format !== NULL) {
         $metaArray20['NameIDFormat'] = $format;
     }
@@ -238,7 +225,7 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
 
     // add signature options
     if ($spconfig->hasValue('WantAssertionsSigned')) {
-        $metaArray20['iomadsaml20.sign.assertion'] = $spconfig->getBoolean('WantAssertionsSigned');
+        $metaArray20['saml20.sign.assertion'] = $spconfig->getBoolean('WantAssertionsSigned');
     }
     if ($spconfig->hasValue('redirect.sign')) {
         $metaArray20['redirect.validate'] = $spconfig->getBoolean('redirect.sign');
@@ -246,12 +233,12 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
         $metaArray20['validate.authnrequest'] = $spconfig->getBoolean('sign.authnrequest');
     }
 
-    $supported_protocols = array('urn:oasis:names:tc:SAML:1.1:protocol', SAML2\Constants::NS_SAMLP);
+    $supported_protocols = array(SAML2\Constants::NS_SAMLP);
 
-    $metaArray20['metadata-set'] = 'iomadsaml20-sp-remote';
+    $metaArray20['metadata-set'] = 'saml20-sp-remote';
     $metaArray20['entityid'] = $entityId;
 
-    $metaBuilder = new SimpleSAML_Metadata_SAMLBuilder($entityId);
+    $metaBuilder = new \SimpleSAML\Metadata\SAMLBuilder($entityId);
     $metaBuilder->addMetadataSP20($metaArray20, $supported_protocols);
     $metaBuilder->addOrganizationInfo($metaArray20);
 
@@ -267,7 +254,7 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
     }
 
     /* Sign the metadata if enabled. */
-    $xml = SimpleSAML_Metadata_Signer::sign($xml, $spconfig->toArray(), 'SAML 2 SP');
+    $xml = \SimpleSAML\Metadata\Signer::sign($xml, $spconfig->toArray(), 'SAML 2 SP');
 
     // Store the file so it is exactly the same next time.
     file_put_contents($file, $xml);
@@ -282,10 +269,10 @@ function auth_iomadsaml2_get_sp_metadata($baseurl = '') {
  *
  */
 function auth_iomadsaml2_update_sp_metadata() {
-    global $iomadsaml2auth;
+    global $iomadsam2auth;
     require_once(__DIR__ . '/setup.php');
 
-    $file = $iomadsaml2auth->get_file_sp_metadata_file();
+    $file = $iomadsam2auth->get_file_sp_metadata_file();
     @unlink($file);
 }
 
@@ -300,7 +287,7 @@ function auth_iomadsaml2_update_sp_metadata() {
  * @param array $customfields list of custom profile fields
  * @since Moodle 3.3
  */
-function auth_iomadsaml2_display_auth_lock_options($settings, $auth, $userfields, $helptext, $mapremotefields, $updateremotefields, $customfields = array(), $postfix = "") {
+function auth_iomadsaml2_display_auth_lock_options($settings, $auth, $userfields, $helptext, $mapremotefields, $updateremotefields, $customfields = array()) {
     global $DB;
 
     // Introductory explanation and help text.
@@ -355,31 +342,31 @@ function auth_iomadsaml2_display_auth_lock_options($settings, $auth, $userfields
             // Display a message that the field can not be mapped because it's too long.
             $url = new moodle_url('/user/profile/index.php');
             $a = (object)['fieldname' => s($fieldname), 'shortname' => s($field), 'charlimit' => 67, 'link' => $url->out()];
-            $settings->add(new admin_setting_heading($auth.'/field_not_mapped_'.sha1($field). $postfix, '',
+            $settings->add(new admin_setting_heading($auth.'/field_not_mapped_'.sha1($field), '',
                 get_string('cannotmapfield', 'auth_iomadsaml2', $a)));
         } else if ($mapremotefields) {
             // We are mapping to a remote field here.
             // Mapping.
-            $settings->add(new admin_setting_configtext("auth_{$auth}/field_map_{$field}". $postfix,
+            $settings->add(new admin_setting_configtext("auth_{$auth}/field_map_{$field}",
                 get_string('auth_fieldmapping', 'auth_iomadsaml2', $fieldname), '', '', PARAM_RAW, 30));
 
             // Update local.
-            $settings->add(new admin_setting_configselect("auth_{$auth}/field_updatelocal_{$field}". $postfix,
+            $settings->add(new admin_setting_configselect("auth_{$auth}/field_updatelocal_{$field}",
                 get_string('auth_updatelocalfield', 'auth_iomadsaml2', $fieldname), '', 'oncreate', $updatelocaloptions));
 
             // Update remote.
             if ($updateremotefields) {
-                $settings->add(new admin_setting_configselect("auth_{$auth}/field_updateremote_{$field}". $postfix,
+                $settings->add(new admin_setting_configselect("auth_{$auth}/field_updateremote_{$field}",
                     get_string('auth_updateremotefield', 'auth_iomadsaml2', $fieldname), '', 0, $updateextoptions));
             }
 
             // Lock fields.
-            $settings->add(new admin_setting_configselect("auth_{$auth}/field_lock_{$field}". $postfix,
+            $settings->add(new admin_setting_configselect("auth_{$auth}/field_lock_{$field}",
                 get_string('auth_fieldlockfield', 'auth_iomadsaml2', $fieldname), '', 'unlocked', $lockoptions));
 
         } else {
             // Lock fields Only.
-            $settings->add(new admin_setting_configselect("auth_{$auth}/field_lock_{$field}". $postfix,
+            $settings->add(new admin_setting_configselect("auth_{$auth}/field_lock_{$field}",
                 get_string('auth_fieldlockfield', 'auth_iomadsaml2', $fieldname), '', 'unlocked', $lockoptions));
         }
     }
@@ -472,8 +459,8 @@ function auth_iomadsaml2_process_regenerate_form($fromform) {
     );
     $numberofdays = $fromform->expirydays;
 
-    $iomadsaml2auth = new \auth_iomadsaml2\auth();
-    $error = create_certificates($iomadsaml2auth, $dn, $numberofdays);
+    $iomadsam2auth = new \auth_iomadsaml2\auth();
+    $error = create_certificates($iomadsam2auth, $dn, $numberofdays);
 
     if (!$error) {
         // Successfully regenerated cert so emit the cert_regenerated event.
@@ -485,7 +472,7 @@ function auth_iomadsaml2_process_regenerate_form($fromform) {
     }
 
     // Also refresh the SP metadata as well.
-    $file = $iomadsaml2auth->get_file_sp_metadata_file();
+    $file = $iomadsam2auth->get_file_sp_metadata_file();
     @unlink($file);
 
     if ($error) {
@@ -519,7 +506,7 @@ function auth_iomadsaml2_admin_nav($title, $url) {
             new moodle_url('/admin/settings.php?section=manageauths'));
 
     $PAGE->navbar->add(get_string('pluginname', 'auth_iomadsaml2'),
-            new moodle_url('/admin/settings.php', array('section' => 'authsettingiomadsaml2')));
+            new moodle_url('/admin/settings.php', array('section' => 'authsettingsaml2')));
 
     $PAGE->navbar->add($title, new moodle_url($url));
 

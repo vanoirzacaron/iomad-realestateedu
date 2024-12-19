@@ -63,6 +63,7 @@ export default class Component extends BaseComponent {
         };
         this.selectorGenerators = {
             cmNameFor: (id) => `[data-cm-name-for='${id}']`,
+            sectionNameFor: (id) => `[data-section-name-for='${id}']`,
         };
         // Default classes to toggle on refresh.
         this.classes = {
@@ -79,7 +80,7 @@ export default class Component extends BaseComponent {
         this.sections = {};
         this.cms = {};
         // The page section return.
-        this.sectionReturn = descriptor.sectionReturn ?? 0;
+        this.sectionReturn = descriptor.sectionReturn ?? null;
         this.debouncedReloads = new Map();
     }
 
@@ -230,6 +231,7 @@ export default class Component extends BaseComponent {
             {watch: `cm.name:updated`, handler: this._refreshCmName},
             // Update section number and title.
             {watch: `section.number:updated`, handler: this._refreshSectionNumber},
+            {watch: `section.title:updated`, handler: this._refreshSectionTitle},
             // Collapse and expand sections.
             {watch: `section.contentcollapsed:updated`, handler: this._refreshSectionCollapsed},
             // Sections and cm sorting.
@@ -424,6 +426,22 @@ export default class Component extends BaseComponent {
     }
 
     /**
+     * Update a course section name on the whole page.
+     *
+     * @param {object} param
+     * @param {Object} param.element details the update details.
+     */
+    _refreshSectionTitle({element}) {
+        // Replace the text content of the section name in the whole page.
+        const allSectionNamesFor = document.querySelectorAll(
+            this.selectorGenerators.sectionNameFor(element.id)
+        );
+        allSectionNamesFor.forEach((sectionNameFor) => {
+            sectionNameFor.textContent = element.title;
+        });
+    }
+
+    /**
      * Refresh a section cm list.
      *
      * @param {Object} param
@@ -444,14 +462,14 @@ export default class Component extends BaseComponent {
      * Refresh the section list.
      *
      * @param {Object} param
-     * @param {Object} param.element details the update details.
+     * @param {Object} param.state the full state object.
      */
-    _refreshCourseSectionlist({element}) {
+    _refreshCourseSectionlist({state}) {
         // If we have a section return means we only show a single section so no need to fix order.
-        if (this.reactive.sectionReturn != 0) {
+        if (this.reactive.sectionReturn !== null) {
             return;
         }
-        const sectionlist = element.sectionlist ?? [];
+        const sectionlist = this.reactive.getExporter().listedSectionIds(state);
         const listparent = this.getElement(this.selectors.COURSE_SECTIONLIST);
         // For now section cannot be created at a frontend level.
         const createSection = this._createSectionItem.bind(this);
@@ -556,7 +574,7 @@ export default class Component extends BaseComponent {
                 {
                     id: cmId,
                     courseid: Config.courseId,
-                    sr: this.reactive.sectionReturn ?? 0,
+                    sr: this.reactive.sectionReturn ?? null,
                 }
             );
             promise.then((html, js) => {
@@ -623,7 +641,7 @@ export default class Component extends BaseComponent {
                 {
                     id: element.id,
                     courseid: Config.courseId,
-                    sr: this.reactive.sectionReturn ?? 0,
+                    sr: this.reactive.sectionReturn ?? null,
                 }
             );
             promise.then((html, js) => {

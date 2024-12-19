@@ -63,7 +63,7 @@ class provider implements
      * @param   collection  $items  The collection to add metadata to.
      * @return  collection  The array of metadata
      */
-    public static function get_metadata(collection $items) : collection {
+    public static function get_metadata(collection $items): collection {
         // The table 'quiz' stores a record for each quiz.
         // It does not contain user personal data, but data is returned from it for contextual requirements.
 
@@ -140,7 +140,7 @@ class provider implements
      * @param   int             $userid The user to search.
      * @return  contextlist     $contextlist The contextlist containing the list of contexts used in this plugin.
      */
-    public static function get_contexts_for_userid(int $userid) : contextlist {
+    public static function get_contexts_for_userid(int $userid): contextlist {
         $resultset = new contextlist();
 
         // Users who attempted the quiz.
@@ -365,8 +365,8 @@ class provider implements
                 [$quizobj]
             );
 
-        // Delete all overrides - do not log.
-        quiz_delete_all_overrides($quiz, false);
+        // Delete all overrides.
+        $quizobj->get_override_manager()->delete_all_overrides(shouldlog: false);
 
         // This will delete all question attempts, quiz attempts, and quiz grades for this quiz.
         quiz_delete_all_attempts($quiz);
@@ -411,9 +411,11 @@ class provider implements
                 'userid' => $user->id,
             ]);
 
-            foreach ($overrides as $override) {
-                quiz_delete_override($quiz, $override->id, false);
-            }
+            $manager = $quizobj->get_override_manager();
+            $manager->delete_overrides(
+                overrides: $overrides,
+                shouldlog: false,
+            );
 
             // This will delete all question attempts, quiz attempts, and quiz grades for this quiz.
             quiz_delete_user_attempts($quizobj, $user);
@@ -461,9 +463,11 @@ class provider implements
                 'userid' => $userid,
             ]);
 
-            foreach ($overrides as $override) {
-                quiz_delete_override($quiz, $override->id, false);
-            }
+            $manager = $quizobj->get_override_manager();
+            $manager->delete_overrides(
+                overrides: $overrides,
+                shouldlog: false,
+            );
 
             // This will delete all question attempts, quiz attempts, and quiz grades for this user in the given quiz.
             quiz_delete_user_attempts($quizobj, (object)['id' => $userid]);

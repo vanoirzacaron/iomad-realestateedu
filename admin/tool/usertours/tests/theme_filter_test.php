@@ -22,9 +22,9 @@ namespace tool_usertours;
  * @package    tool_usertours
  * @copyright  2016 Andrew Nicols <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers    \tool_usertours\local\filter\theme
  */
 class theme_filter_test extends \advanced_testcase {
-
     /**
      * Data Provider for filter_matches function.
      *
@@ -73,7 +73,7 @@ class theme_filter_test extends \advanced_testcase {
      * @param   string      $currenttheme   The name of the current theme
      * @param   boolean     $expected       Whether the tour is expected to match
      */
-    public function test_filter_matches($filtervalues, $currenttheme, $expected) {
+    public function test_filter_matches($filtervalues, $currenttheme, $expected): void {
         global $PAGE;
 
         $filtername = \tool_usertours\local\filter\theme::class;

@@ -1,5 +1,5 @@
 <?php
-// This file is part of IOMAD SAML2 Authentication Plugin
+// This file is part of SAML2 Authentication Plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ class setting_idpmetadata_test extends advanced_testcase {
         }
 
         $file = md5('xml') . '.idp.xml';
-        $file = "{$CFG->dataroot}/iomadsaml2/{$file}";
+        $file = "{$CFG->dataroot}/saml2/{$file}";
         self::assertFileExists($file);
         $actual = file_get_contents($file);
         self::assertSame(trim($xml), $actual, "Invalid saved XML contents for: {$file}");
@@ -111,7 +111,7 @@ class setting_idpmetadata_test extends advanced_testcase {
         }
 
         $file = md5("xml") . '.idp.xml';
-        $file = "{$CFG->dataroot}/iomadsaml2/{$file}";
+        $file = "{$CFG->dataroot}/saml2/{$file}";
         self::assertFileExists($file);
         $actual = file_get_contents($file);
         self::assertSame(trim($xml), $actual, "Invalid saved XML contents for: {$file}");

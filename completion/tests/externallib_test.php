@@ -41,7 +41,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test update_activity_completion_status_manually
      */
-    public function test_update_activity_completion_status_manually() {
+    public function test_update_activity_completion_status_manually(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -88,7 +88,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test update_activity_completion_status
      */
-    public function test_get_activities_completion_status() {
+    public function test_get_activities_completion_status(): void {
         global $DB, $CFG, $PAGE;
 
         $this->resetAfterTest(true);
@@ -178,6 +178,7 @@ class externallib_test extends externallib_advanced_testcase {
                 $this->assertTrue($status['uservisible']);
                 $details = $status['details'];
                 $this->assertCount(0, $details);
+                $this->assertTrue($status['isoverallcomplete']);
             } else if ($status['cmid'] == $forumautocompletion->cmid) {
                 $activitiesfound++;
                 $this->assertEquals(COMPLETION_INCOMPLETE, $status['state']);
@@ -191,7 +192,7 @@ class externallib_test extends externallib_advanced_testcase {
                 $this->assertCount(1, $details);
                 $this->assertEquals('completionview', $details[0]['rulename']);
                 $this->assertEquals(0, $details[0]['rulevalue']['status']);
-
+                $this->assertFalse($status['isoverallcomplete']);
             } else if ($status['cmid'] == $assignautocompletion->cmid) {
                 $activitiesfound++;
                 $this->assertEquals(COMPLETION_INCOMPLETE, $status['state']);
@@ -201,6 +202,7 @@ class externallib_test extends externallib_advanced_testcase {
                 $this->assertTrue($status['isautomatic']);
                 $this->assertTrue($status['istrackeduser']);
                 $this->assertTrue($status['uservisible']);
+                $this->assertFalse($status['isoverallcomplete']);
                 $details = $status['details'];
                 $this->assertCount(3, $details);
                 $expecteddetails = [
@@ -224,6 +226,7 @@ class externallib_test extends externallib_advanced_testcase {
                 $this->assertTrue($status['uservisible']);
                 $details = $status['details'];
                 $this->assertCount(0, $details);
+                $this->assertFalse($status['isoverallcomplete']);
             }
         }
         $this->assertEquals(4, $activitiesfound);
@@ -251,6 +254,7 @@ class externallib_test extends externallib_advanced_testcase {
                 $this->assertEquals(COMPLETION_INCOMPLETE, $status['state']);
                 $this->assertEquals(COMPLETION_TRACKING_MANUAL, $status['tracking']);
                 $this->assertEquals($teacher->id, $status['overrideby']);
+                $this->assertFalse($status['isoverallcomplete']);
                 break;
             }
         }
@@ -274,14 +278,17 @@ class externallib_test extends externallib_advanced_testcase {
                 $activitiesfound++;
                 $this->assertEquals(COMPLETION_COMPLETE, $status['state']);
                 $this->assertEquals(COMPLETION_TRACKING_MANUAL, $status['tracking']);
+                $this->assertTrue($status['isoverallcomplete']);
             } else if (in_array($status['cmid'], [$forumautocompletion->cmid, $assignautocompletion->cmid])) {
                 $activitiesfound++;
                 $this->assertEquals(COMPLETION_INCOMPLETE, $status['state']);
                 $this->assertEquals(COMPLETION_TRACKING_AUTOMATIC, $status['tracking']);
+                $this->assertFalse($status['isoverallcomplete']);
             } else {
                 $activitiesfound++;
                 $this->assertEquals(COMPLETION_INCOMPLETE, $status['state']);
                 $this->assertEquals(COMPLETION_TRACKING_MANUAL, $status['tracking']);
+                $this->assertFalse($status['isoverallcomplete']);
             }
         }
         $this->assertEquals(5, $activitiesfound);
@@ -308,77 +315,9 @@ class externallib_test extends externallib_advanced_testcase {
     }
 
     /**
-     * Test get_activities_completion_status with overall completion
-     * @covers ::get_activities_completion_status
-     */
-    public function test_get_activities_completion_status_overall() {
-        global $DB;
-
-        $this->resetAfterTest(true);
-
-        $student = $this->getDataGenerator()->create_user();
-        $anotherstudent = $this->getDataGenerator()->create_user();
-        $course = $this->getDataGenerator()->create_course(['enablecompletion' => 1]);
-        \availability_completion\condition::wipe_static_cache();
-
-        // Create assignment with automatic completion and NO passing grade.
-        $assingnopassgrade = $this->getDataGenerator()->create_module('assign',
-            ['course' => $course->id], [
-                'showdescription' => true,
-                'completionview' => 1,
-                'completion' => COMPLETION_TRACKING_AUTOMATIC,
-                'completiongradeitemnumber' => 1,
-            ],
-        );
-        $cmassingnopassgrade = get_coursemodule_from_id('assign', $assingnopassgrade->cmid);
-
-        $this->getDataGenerator()->enrol_user($student->id, $course->id, 'student');
-        $this->getDataGenerator()->enrol_user($anotherstudent->id, $course->id, 'student');
-
-        $completion = new \completion_info($course);
-        $cinfo = new \stdClass();
-        $cinfo->coursemoduleid = $assingnopassgrade->cmid;
-        $cinfo->timemodified = time();
-        $cinfo->viewed = COMPLETION_NOT_VIEWED;
-        $cinfo->overrideby = null;
-
-        // Test student has achieved completion grade and it should pass.
-        $this->setUser($student);
-
-        $cinfo->id = 0;
-        $cinfo->completionstate = COMPLETION_COMPLETE_PASS;
-        $cinfo->userid = $student->id;
-        $completion->internal_set_data($cmassingnopassgrade, $cinfo, true);
-
-        $result = core_completion_external::get_activities_completion_status($course->id, $student->id);
-        $result = external_api::clean_returnvalue(
-            core_completion_external::get_activities_completion_status_returns(), $result);
-
-        $this->assertCount(1, $result['statuses']);
-        $status = reset($result['statuses']);
-        $this->assertEquals(COMPLETION_COMPLETE_PASS, $status['state']);
-
-        // Test student has failed but not passing grade is required for completion so it should pass.
-        $this->setUser($anotherstudent);
-
-        $cinfo->id = 0;
-        $cinfo->completionstate = COMPLETION_COMPLETE_FAIL;
-        $cinfo->userid = $anotherstudent->id;
-        $completion->internal_set_data($cmassingnopassgrade, $cinfo, true);
-
-        $result = core_completion_external::get_activities_completion_status($course->id, $anotherstudent->id);
-        $result = external_api::clean_returnvalue(
-            core_completion_external::get_activities_completion_status_returns(), $result);
-
-        $this->assertCount(1, $result['statuses']);
-        $status = reset($result['statuses']);
-        $this->assertEquals(COMPLETION_COMPLETE, $status['state']);
-    }
-
-    /**
      * Test override_activity_completion_status
      */
-    public function test_override_activity_completion_status() {
+    public function test_override_activity_completion_status(): void {
         global $DB, $CFG;
         $this->resetAfterTest(true);
 
@@ -441,7 +380,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test overriding the activity completion status as a user without the capability to do so.
      */
-    public function test_override_status_user_without_capability() {
+    public function test_override_status_user_without_capability(): void {
         global $DB, $CFG;
         $this->resetAfterTest(true);
 
@@ -470,7 +409,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_course_completion_status
      */
-    public function test_get_course_completion_status() {
+    public function test_get_course_completion_status(): void {
         global $DB, $CFG, $COMPLETION_CRITERIA_TYPES;
         require_once($CFG->dirroot.'/completion/criteria/completion_criteria_self.php');
         require_once($CFG->dirroot.'/completion/criteria/completion_criteria_date.php');
@@ -601,7 +540,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test mark_course_self_completed
      */
-    public function test_mark_course_self_completed() {
+    public function test_mark_course_self_completed(): void {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/completion/criteria/completion_criteria_self.php');
 

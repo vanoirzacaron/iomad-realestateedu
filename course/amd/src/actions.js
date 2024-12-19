@@ -85,6 +85,7 @@ define(
             TOGGLE: '.toggle-display,.dropdown-toggle',
             SECTIONLI: 'li.section',
             SECTIONACTIONMENU: '.section_action_menu',
+            SECTIONACTIONMENUTRIGGER: '.section-actions',
             SECTIONITEM: '[data-for="section_title"]',
             ADDSECTIONS: '.changenumsections [data-add-sections]',
             SECTIONBADGES: '[data-region="sectionbadges"]',
@@ -335,7 +336,7 @@ define(
                 methodname: 'core_course_edit_module',
                 args: {id: cmid,
                     action: action,
-                    sectionreturn: target.attr('data-sectionreturn') ? target.attr('data-sectionreturn') : 0
+                    sectionreturn: target.attr('data-sectionreturn') ? target.attr('data-sectionreturn') : null
                 }
             }], true);
 
@@ -694,7 +695,7 @@ define(
          */
         var editSection = function(sectionElement, sectionid, target, courseformat) {
             var action = target.attr('data-action'),
-                sectionreturn = target.attr('data-sectionreturn') ? target.attr('data-sectionreturn') : 0;
+                sectionreturn = target.attr('data-sectionreturn') ? target.attr('data-sectionreturn') : null;
 
             // Filter direct component handled actions.
             if (courseeditor.supportComponents && componentActions.includes(action)) {
@@ -957,16 +958,16 @@ define(
                     }
                 });
 
-                // Add a handler for section show/hide actions.
-                $('body').on('click keypress', SELECTOR.SECTIONLI + ' ' +
-                            SELECTOR.SECTIONACTIONMENU + '[data-sectionid] ' +
+                // Add a handler for section action menu.
+                $('body').on('click keypress',
+                            SELECTOR.SECTIONACTIONMENUTRIGGER + '[data-sectionid] ' +
                             'a[data-action]', function(e) {
                     if (e.type === 'keypress' && e.keyCode !== 13) {
                         return;
                     }
                     var actionItem = $(this),
                         sectionElement = actionItem.closest(SELECTOR.SECTIONLI),
-                        sectionId = actionItem.closest(SELECTOR.SECTIONACTIONMENU).attr('data-sectionid');
+                        sectionId = actionItem.closest(SELECTOR.SECTIONACTIONMENUTRIGGER).attr('data-sectionid');
 
                     if (actionItem.attr('data-action') === 'permalink') {
                         e.preventDefault();
@@ -994,7 +995,7 @@ define(
 
                 // The section and activity names are edited using inplace editable.
                 // The "update" jQuery event must be captured in order to update the course state.
-                $('body').on('updated', `${SELECTOR.SECTIONLI} ${SELECTOR.SECTIONITEM} [data-inplaceeditable]`, function(e) {
+                $('body').on('updated', `${SELECTOR.SECTIONITEM} [data-inplaceeditable]`, function(e) {
                     if (e.ajaxreturn && e.ajaxreturn.itemid) {
                         const state = courseeditor.state;
                         const section = state.section.get(e.ajaxreturn.itemid);

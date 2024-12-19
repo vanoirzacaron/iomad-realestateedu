@@ -18,14 +18,14 @@ Feature: Navigate and use preferences page
 
   Scenario Outline: Navigating through user menu Preferences
     When I follow "Preferences" in the user menu
-    # Click each link in the 'Preferences' page
+    # Click each link in the 'Preferences' page.
     And I click on "<userprefpage>" "link" in the "#page-content" "css_element"
-    # Confirm that each redirected page has 'Preferences' in the breadcrumbs
+    # Confirm that each redirected page has 'Preferences' in the breadcrumbs.
     And "Users" "link" should not exist in the ".breadcrumb" "css_element"
     Then "Preferences" "link" should exist in the ".breadcrumb" "css_element"
-    # Additional confirmation that breadcrumbs is correct
+    # Additional confirmation that breadcrumbs is correct.
     And "<userprefpage>" "text" should exist in the ".breadcrumb" "css_element"
-    # Confirm that user name and profile picture are displayed in header section
+    # Confirm that user name and profile picture are displayed in header section.
     And I should see "Admin User" in the ".page-header-headings" "css_element"
     And ".page-header-image" "css_element" should exist in the "#page-header" "css_element"
 
@@ -57,13 +57,15 @@ Feature: Navigate and use preferences page
     When I click on "Preferences" "link" in the "#region-main-box" "css_element"
     Then I should see "Sam Student" in the ".page-header-headings" "css_element"
     And ".page-header-image" "css_element" should exist in the "#page-header" "css_element"
-    # Click each link in the 'Preferences' page
+    # Click each link in the 'Preferences' page.
     And I click on "<courseprefpage>" "link" in the "#page-content" "css_element"
-    # Confirm that each redirected page has 'Preferences' in the breadcrumbs
-    Then "Preferences" "link" should exist in the ".breadcrumb" "css_element"
-    # Additional confirmation that breadcrumbs is correct
+    # Confirm that each redirected page has 'Users/{user}/Preferences' in the breadcrumbs.
+    Then "Users" "link" should exist in the ".breadcrumb" "css_element"
+    And "Sam Student" "link" should exist in the ".breadcrumb" "css_element"
+    And "Preferences" "link" should exist in the ".breadcrumb" "css_element"
+    # Additional confirmation that breadcrumbs is correct.
     And "<courseprefpage>" "text" should exist in the ".breadcrumb" "css_element"
-    # Confirm that user name and profile picture are displayed in header section
+    # Confirm that user name and profile picture are displayed in header section.
     And I should see "Sam Student" in the ".page-header-headings" "css_element"
     And ".page-header-image" "css_element" should exist in the "#page-header" "css_element"
 
@@ -91,14 +93,14 @@ Feature: Navigate and use preferences page
       | Event           | Allow role override |
     And I press "Save changes"
     When I follow "Preferences" in the user menu
-    # Confirm that Event monitoring is visible and clickable
+    # Confirm that Event monitoring is visible and clickable.
     Then I should see "Miscellaneous"
     And I follow "Event monitoring"
-    # Confirm that user can subscribe to new rule
+    # Confirm that user can subscribe to new rule.
     And "Subscribe to rule \"Testing1\"" "link" should exist
     And I am on "Course 1" course homepage
     And I navigate to course participants
     And I follow "Sam Student"
     And I click on "Preferences" "link" in the "#region-main-box" "css_element"
-    # Confirm that admin cannot change student's event monitor subscription
+    # Confirm that admin cannot change student's event monitor subscription.
     And I should not see "Event monitoring"

@@ -16,6 +16,7 @@ Feature: A teacher can use activity completion to track a student progress
       | user | course | role |
       | teacher1 | C1 | editingteacher |
       | student1 | C1 | student |
+    And I enable "survey" "mod" plugin
     And I log in as "teacher1"
 
   Scenario: Require survey view
@@ -50,7 +51,7 @@ Feature: A teacher can use activity completion to track a student progress
     And I follow "Test survey name"
     And the "Submit answers" completion condition of "Test survey name" is displayed as "done"
 
-  Scenario: A student can manually mark the survey activity as done but a teacher cannot
+  Scenario: Use manual completion
     Given the following "activities" exist:
       | activity   | name                   | course | idnumber    | completion |
       | survey     | Test survey name       | C1     | survey1     | 1          |

@@ -28,11 +28,15 @@ require_once(__DIR__ . '/../../../config.php');
 require('../setup.php');
 
 // First setup the PATH_INFO because that's how SSP rolls.
-$_SERVER['PATH_INFO'] = '/' . $iomadsaml2auth->spname;
+$_SERVER['PATH_INFO'] = '/' . $iomadsam2auth->spname;
 
 try {
-    require($CFG->dirroot.'/auth/iomadsaml2/.extlib/simplesamlphp/modules/saml/www/sp/saml2-acs.php');
+    $config = \SimpleSAML\Configuration::getInstance();
+    $session = \SimpleSAML\Session::getSessionFromRequest();
+    $controller = new \SimpleSAML\Module\saml\Controller\ServiceProvider($config, $session);
+    $acs = $controller->assertionConsumerService($iomadsam2auth->spname);
+    $acs->sendContent();
 } catch (Exception $e) {
-    throw new iomadsaml2_exception($e->getMessage(), $e->getTraceAsString());
+    throw new saml2_exception($e->getMessage(), $e->getTraceAsString());
 }
 

@@ -23,7 +23,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use auth_iomadsaml2\admin\iomadsaml2_settings;
+use auth_iomadsaml2\admin\saml2_settings;
 
 // @codingStandardsIgnoreStart
 require_once(__DIR__ . '/../../config.php');
@@ -42,16 +42,16 @@ $PAGE->requires->css('/auth/iomadsaml2/styles.css');
 
 $wants = optional_param('wants', '', PARAM_RAW);
 
-$idpname = $iomadsaml2auth->config->idpname;
+$idpname = $iomadsam2auth->config->idpname;
 
 // Retrieve IdP used for login when 'rememberidp' checkbox was set.
-$storedchoiceidp = $iomadsaml2auth->get_idp_cookie();
+$storedchoiceidp = $iomadsam2auth->get_idp_cookie();
 if (empty($idpname)) {
     $idpname = get_string('idpnamedefault', 'auth_iomadsaml2');
 }
 
 $data = [
-    'metadataentities' => $iomadsaml2auth->metadataentities,
+    'metadataentities' => $iomadsam2auth->metadataentities,
     'storedchoiceidp' => $storedchoiceidp,
     'wants' => $wants,
     'idpname' => $idpname
@@ -59,7 +59,7 @@ $data = [
 
 $action = new moodle_url('/auth/iomadsaml2/selectidp.php');
 
-$displaytype = $iomadsaml2auth->config->multiidpdisplay;
+$displaytype = $iomadsam2auth->config->multiidpdisplay;
 
 if ($displaytype == iomadsaml2_settings::OPTION_MULTI_IDP_DISPLAY_DROPDOWN) {
     $mform = new \auth_iomadsaml2\form\selectidp_dropdown($action, $data);

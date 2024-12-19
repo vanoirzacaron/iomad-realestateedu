@@ -451,9 +451,6 @@ class meeting {
             'bbb-recording-tags' =>
                 implode(',', core_tag_tag::get_item_tags_array('core',
                     'course_modules', $this->instance->get_cm_id())), // Same as $id.
-            'bbb-meeting-size-hint' =>
-                count_enrolled_users(context_course::instance($this->instance->get_course_id()),
-                    '', $this->instance->get_group_id()),
         ];
         // Special metadata for recording processing.
         if ((boolean) config::get('recordingstatus_enabled')) {
@@ -485,7 +482,7 @@ class meeting {
      * @param object $data
      * @return string
      */
-    public static function meeting_events(instance $instance, object $data):  string {
+    public static function meeting_events(instance $instance, object $data): string {
         $bigbluebuttonbn = $instance->get_instance_data();
         // Validate that the bigbluebuttonbn activity corresponds to the meeting_id received.
         $meetingidelements = explode('[', $data->{'meeting_id'});

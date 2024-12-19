@@ -489,3 +489,5 @@ $string['fieldids'] = 'Field ids';
 
 // Deprecated since Moodle 4.3.
 $string['completionentries'] = 'Require entries';
+
+// Deprecated since Moodle 4.4.

@@ -43,7 +43,7 @@ class dates_test extends advanced_testcase {
      * Data provider for get_dates_for_module().
      * @return array[]
      */
-    public static function get_dates_for_module_provider(): array {
+    public function get_dates_for_module_provider(): array {
         $now = time();
         $before = $now - DAYSECS;
         $earlier = $before - DAYSECS;
@@ -115,7 +115,7 @@ class dates_test extends advanced_testcase {
      */
     public function test_get_dates_for_module(?int $submissionstart, ?int $submissionend,
             ?int $assessmentstart, ?int $assessmentend,
-            array $expected) {
+            array $expected): void {
 
         $this->resetAfterTest();
 

@@ -34,7 +34,7 @@ class context_test extends \advanced_testcase {
      * @param array $expectations various expectations for the test cases.
      * @covers ::create
      */
-    public function test_creation(array $args, array $expectations) {
+    public function test_creation(array $args, array $expectations): void {
         if (!$expectations['valid']) {
             $this->expectException($expectations['exception']);
             $this->expectExceptionMessage($expectations['exceptionmessage']);
@@ -52,7 +52,7 @@ class context_test extends \advanced_testcase {
      * Data provider for testing object instantiation.
      * @return array[] the data for testing.
      */
-    public static function instantiation_data_provider(): array {
+    public function instantiation_data_provider(): array {
         return [
             'Creation of a course section context' => [
                 'args' => [

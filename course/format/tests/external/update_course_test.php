@@ -64,7 +64,7 @@ class update_course_test extends \externallib_advanced_testcase {
         array $expected,
         bool $expectexception,
         bool $assertdebug
-    ) {
+    ): void {
 
         $this->resetAfterTest();
 
@@ -93,7 +93,7 @@ class update_course_test extends \externallib_advanced_testcase {
         $update = $this->find_update($results, $expected['action'], 'cm', $activity->cmid);
         $this->assertNotEmpty($update);
         if ($expected['visible'] === null) {
-            $this->assertObjectNotHasAttribute('visible', $update->fields);
+            $this->assertObjectNotHasProperty('visible', $update->fields);
         } else {
             $this->assertEquals($expected['visible'], $update->fields->visible);
         }
@@ -104,7 +104,7 @@ class update_course_test extends \externallib_advanced_testcase {
      *
      * @return array of testing scenarios
      */
-    public static function execute_course_state_provider(): array {
+    public function execute_course_state_provider(): array {
         return [
             'Execute a core state action (cm_state)' => [
                 'format' => 'topics',
@@ -184,7 +184,7 @@ class update_course_test extends \externallib_advanced_testcase {
      * @covers ::execute
      *
      */
-    public function test_execute_wrong_courseid() {
+    public function test_execute_wrong_courseid(): void {
 
         $this->resetAfterTest();
 
@@ -206,7 +206,7 @@ class update_course_test extends \externallib_advanced_testcase {
      *
      * @covers ::execute
      */
-    public function test_execute_target_params() {
+    public function test_execute_target_params(): void {
 
         $this->resetAfterTest();
 

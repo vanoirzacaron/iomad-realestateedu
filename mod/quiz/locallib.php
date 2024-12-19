@@ -35,10 +35,14 @@ require_once($CFG->libdir . '/completionlib.php');
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->libdir . '/questionlib.php');
 
+use core\di;
+use core\hook;
 use core_question\local\bank\condition;
 use mod_quiz\access_manager;
 use mod_quiz\event\attempt_submitted;
 use mod_quiz\grade_calculator;
+use mod_quiz\hook\attempt_state_changed;
+use mod_quiz\local\override_manager;
 use mod_quiz\question\bank\qbank_helper;
 use mod_quiz\question\display_options;
 use mod_quiz\quiz_attempt;
@@ -144,6 +148,8 @@ function quiz_create_attempt(quiz_settings $quizobj, $attemptnumber, $lastattemp
     } else {
         $attempt->timecheckstate = $timeclose;
     }
+
+    di::get(hook\manager::class)->dispatch(new attempt_state_changed(null, $attempt));
 
     return $attempt;
 }
@@ -448,10 +454,14 @@ function quiz_delete_attempt($attempt, $quiz) {
         $event->add_record_snapshot('quiz_attempts', $attempt);
         $event->trigger();
 
+        // This class callback is deprecated, and will be removed in Moodle 4.8 (MDL-80327).
+        // Use the attempt_state_changed hook instead.
         $callbackclasses = \core_component::get_plugin_list_with_class('quiz', 'quiz_attempt_deleted');
         foreach ($callbackclasses as $callbackclass) {
-            component_class_callback($callbackclass, 'callback', [$quiz->id]);
+            component_class_callback($callbackclass, 'callback', [$quiz->id], null, true);
         }
+
+        di::get(hook\manager::class)->dispatch(new attempt_state_changed($attempt, null));
     }
 
     // Search quiz_attempts for other instances by this user.
@@ -1585,28 +1595,11 @@ function quiz_send_notify_manual_graded_message(quiz_attempt $attemptobj, object
  * @return void
  */
 function quiz_process_group_deleted_in_course($courseid) {
-    global $DB;
+    $affectedquizzes = override_manager::delete_orphaned_group_overrides_in_course($courseid);
 
-    // It would be nice if we got the groupid that was deleted.
-    // Instead, we just update all quizzes with orphaned group overrides.
-    $sql = "SELECT o.id, o.quiz, o.groupid
-              FROM {quiz_overrides} o
-              JOIN {quiz} quiz ON quiz.id = o.quiz
-         LEFT JOIN {groups} grp ON grp.id = o.groupid
-             WHERE quiz.course = :courseid
-               AND o.groupid IS NOT NULL
-               AND grp.id IS NULL";
-    $params = ['courseid' => $courseid];
-    $records = $DB->get_records_sql($sql, $params);
-    if (!$records) {
-        return; // Nothing to do.
+    if (!empty($affectedquizzes)) {
+        quiz_update_open_attempts(['quizid' => $affectedquizzes]);
     }
-    $DB->delete_records_list('quiz_overrides', 'id', array_keys($records));
-    $cache = cache::make('mod_quiz', 'overrides');
-    foreach ($records as $record) {
-        $cache->delete("{$record->quiz}_g_{$record->groupid}");
-    }
-    quiz_update_open_attempts(['quizid' => array_unique(array_column($records, 'quiz'))]);
 }
 
 /**
@@ -1662,7 +1655,7 @@ function quiz_question_tostring($question, $showicon = false, $showquestiontext 
     if ($showidnumber && $question->idnumber !== null && $question->idnumber !== '') {
         $result .= ' ' . html_writer::span(
                 html_writer::span(get_string('idnumber', 'question'), 'accesshide') .
-                ' ' . s($question->idnumber), 'badge badge-primary');
+                ' ' . s($question->idnumber), 'badge bg-primary text-white');
     }
 
     // Question tags.

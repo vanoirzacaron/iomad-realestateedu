@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Anobody can login using iomadsaml2
+ * Anobody can login using saml2
  *
  * @package   auth_iomadsaml2
  * @copyright Brendan Heywood <brendan@catalyst-au.net>
@@ -29,8 +29,8 @@ $string['anyauth_help'] = 'Yes: Allow SAML login for all users? No: Only users w
 $string['anyauthotherdisabled'] = 'You have logged in successfully as \'{$a->username}\' but your auth type of \'{$a->auth}\' is disabled.';
 $string['attemptsignout'] = 'Attempt IdP Signout';
 $string['attemptsignout_help'] = 'This will attempt to communicate with the IdP to send a sign out request';
-$string['auth_iomadsaml2description'] = 'Authenticate with a IOMAD SAML2 Identity Provider (IdP)';
-$string['auth_iomadsaml2blockredirectdescription'] = 'Redirect or display message to IOMAD SAML2 logins based on configured group restrictions';
+$string['auth_iomadsaml2description'] = 'Authenticate with a SAML2 Identity Provider (IdP)';
+$string['auth_iomadsaml2blockredirectdescription'] = 'Redirect or display message to SAML2 logins based on configured group restrictions';
 $string['autocreate'] = 'Auto create users';
 $string['autocreate_help'] = 'Allow creation of Moodle users on demand';
 $string['autologin'] = 'Auto-login';
@@ -70,7 +70,7 @@ $string['duallogin_help'] = '
 <p>If passive, then the users that are already authenticated into the IDP will be automatically logged in, otherwise they will be sent to Moodle login page.</p>
 <p>If off, then admins can still see the manual login page via /login/index.php?saml=off</p>
 <p>If on, then external pages can deep link into moodle using saml eg /course/view.php?id=45&saml=on</p>
-<p>If set to test IdP connection, the network will be checked for connectivity, and if functional, SAML login will be initiated.<p/>';
+<p>If set to test IdP connection, the network will be checked for connectivity, and if functional, SAML login will be initiated.</p>';
 $string['emailtaken'] = 'Can\'t create a new account, because {$a} email address is already registered';
 $string['emailtakenupdate'] = 'Your email wasn\'t updated, because email address {$a} is already registered';
 $string['errorinvalidautologin'] = 'Invalid autologin request';
@@ -96,14 +96,14 @@ $string['flagresponsetype_help'] = 'If access is blocked based on configured gro
 $string['idpattr_help'] = 'Which IdP attribute should be matched against a Moodle user field?';
 $string['idpattr'] = 'Mapping IdP';
 $string['idpmetadata_badurl'] = 'Invalid metadata at {$a}';
-$string['idpmetadata_help'] = 'To use multiple IdPs enter each public metadata url on a new line.<br/>To override a name, place text before the http. eg. "Forced IdP Name http://ssp.local/simplesaml/iomadsaml2/idp/metadata.php"';
+$string['idpmetadata_help'] = 'To use multiple IdPs enter each public metadata url on a new line.<br/>To override a name, place text before the http. eg. "Forced IdP Name http://ssp.local/simplesaml/saml2/idp/metadata.php"';
 $string['idpmetadata'] = 'IdP metadata xml OR public xml URL';
 $string['idpmetadata_invalid'] = 'The IdP XML isn\'t valid';
 $string['idpmetadata_noentityid'] = 'The IdP XML has no entityID';
 $string['idpmetadatarefresh_help'] = 'Run a scheduled task to update IdP metadata from IdP metadata URL';
 $string['idpmetadatarefresh'] = 'IdP metadata refresh';
-$string['idpnamedefault'] = 'Login via IOMAD SAML2';
-$string['idpnamedefault_varaible'] = 'Login via IOMAD SAML2 ({$a})';
+$string['idpnamedefault'] = 'Login via SAML2';
+$string['idpnamedefault_varaible'] = 'Login via SAML2 ({$a})';
 $string['idpname_help'] = 'eg myUNI - this is detected from the metadata and will show on the dual login page (if enabled)';
 $string['idpname'] = 'IdP label override';
 $string['localityname'] = 'Locality';
@@ -151,14 +151,16 @@ $string['nameidasattrib'] = 'Expose NameID as attribute';
 $string['nameidasattrib_help'] = 'The NameID claim will be exposed to SSPHP as an attribute named nameid';
 $string['noattribute'] = 'You have logged in successfully but we could not find your \'{$a}\' attribute to associate you to an account in Moodle.';
 $string['noidpfound'] = 'The IdP \'{$a}\' was not found as a configured IdP.';
+$string['noredirectips'] = 'Restrict noredirect by IP';
+$string['noredirectips_help'] = 'When dual login is turned off and IPs are set, this will restrict the use of ?saml=off and ?noredirect=1 during SAML login to users with matching IP subnets.';
 $string['nouser'] = 'You have logged in successfully as \'{$a}\' but do not have an account in Moodle.';
 $string['nullprivatecert'] = 'Creation of Private Certificate failed.';
 $string['nullpubliccert'] = 'Creation of Public Certificate failed.';
 $string['organizationalunitname'] = 'Organisational Unit';
 $string['organizationname'] = 'Organisation';
 $string['passivemode'] = 'Passive mode';
-$string['plugindisabled'] = 'IOMAD SAML2 authentication plugin is disabled';
-$string['pluginname'] = 'IOMAD SAML2';
+$string['plugindisabled'] = 'SAML2 authentication plugin is disabled';
+$string['pluginname'] = 'SAML2';
 $string['privatekeypass'] = 'Private certificate key password';
 $string['privatekeypass_help'] = 'This is used for signing the local Moodle certificate, changing this will invalidate the current certificate.';
 $string['regenerateheading'] = 'Regenerate Private Key and Certificate';
@@ -176,6 +178,9 @@ $string['spmetadata_help'] = '<a href=\'{$a}\'>View Service Provider Metadata</a
 $string['spmetadatasign_help'] = 'Sign the SP Metadata.';
 $string['spmetadatasign'] = 'SP Metadata signature';
 $string['spmetadata'] = 'SP Metadata';
+$string['tempdirdefault'] = '/tmp/simplesaml';
+$string['tempdir_help'] = 'A directory where SimpleSAMLphp can save temporary files';
+$string['tempdir'] = 'SimpleSAMLphp temporary directory';
 $string['sspversion'] = 'SimpleSAMLphp version';
 $string['stateorprovincename'] = 'State or Province';
 $string['status'] = 'Status';
@@ -231,7 +236,7 @@ deny library=overdue<br>';
 /*
  * Privacy provider (GDPR)
  */
-$string["privacy:no_data_reason"] = "The IOMAD Saml2 authentication plugin does not store any personal data.";
+$string["privacy:no_data_reason"] = "The Saml2 authentication plugin does not store any personal data.";
 
 /*
  * Signing Algorithm

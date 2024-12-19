@@ -25,8 +25,8 @@
 namespace core\session;
 
 use RedisException;
-
-defined('MOODLE_INTERNAL') || die();
+use RedisClusterException;
+use SessionHandlerInterface;
 
 /**
  * Redis based session handler.
@@ -39,7 +39,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2016 Russell Smith
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class redis extends handler {
+class redis extends handler implements SessionHandlerInterface {
     /**
      * Compressor: none.
      */
@@ -62,8 +62,8 @@ class redis extends handler {
      */
     private const REDIS_SERVER_MIN_VERSION = '2.6.12';
 
-    /** @var string $host save_path string  */
-    protected $host = '';
+    /** @var array $host save_path string  */
+    protected array $host = [];
     /** @var int $port The port to connect to */
     protected $port = 6379;
     /** @var array $sslopts SSL options, if applicable */
@@ -93,7 +93,7 @@ class redis extends handler {
      */
     protected $lockexpire;
 
-    /** @var Redis Connection */
+    /** @var Redis|RedisCluster Connection */
     protected $connection = null;
 
     /** @var array $locks List of currently held locks by this page. */
@@ -101,6 +101,12 @@ class redis extends handler {
 
     /** @var int $timeout How long sessions live before expiring. */
     protected $timeout;
+
+    /** @var bool $clustermode Redis in cluster mode. */
+    protected bool $clustermode = false;
+
+    /** @var int Maximum number of retries for cache store operations. */
+    const MAX_RETRIES = 5;
 
     /** @var int The number of seconds to wait for a connection or response from the Redis server. */
     const CONNECTION_TIMEOUT = 10;
@@ -112,7 +118,10 @@ class redis extends handler {
         global $CFG;
 
         if (isset($CFG->session_redis_host)) {
-            $this->host = $CFG->session_redis_host;
+            // If there is only one host, use the single Redis connection.
+            // If there are multiple hosts (separated by a comma), use the Redis cluster connection.
+            $this->host = array_filter(array_map('trim', explode(',', $CFG->session_redis_host)));
+            $this->clustermode = count($this->host) > 1;
         }
 
         if (isset($CFG->session_redis_port)) {
@@ -120,7 +129,6 @@ class redis extends handler {
         }
 
         if (isset($CFG->session_redis_encrypt) && $CFG->session_redis_encrypt) {
-            $this->host = 'tls://' . $this->host;
             $this->sslopts = $CFG->session_redis_encrypt;
         }
 
@@ -228,75 +236,105 @@ class redis extends handler {
                 'redis extension version must be at least ' . self::REDIS_EXTENSION_MIN_VERSION);
         }
 
-        $this->connection = new \Redis();
-
-        $result = session_set_save_handler(array($this, 'handler_open'),
-            array($this, 'handler_close'),
-            array($this, 'handler_read'),
-            array($this, 'handler_write'),
-            array($this, 'handler_destroy'),
-            array($this, 'handler_gc'));
+        $result = session_set_save_handler($this);
         if (!$result) {
             throw new exception('redissessionhandlerproblem', 'error');
         }
 
-        // MDL-59866: Add retries for connections (up to 5 times) to make sure it goes through.
-        $counter = 1;
-        $maxnumberofretries = 5;
-        $opts = [];
-        if ($this->sslopts) {
-            // Do not set $opts['stream'] = [], breaks connect().
-            $opts['stream'] = $this->sslopts;
-        }
-
-        while ($counter <= $maxnumberofretries) {
-
-            try {
-
-                $delay = rand(100, 500);
-
-                $connection = $this->connection->connect(
-                    $this->host,
-                    $this->port,
-                    self::CONNECTION_TIMEOUT, // Timeout.
-                    null,
-                    $delay, // Retry interval.
-                    self::CONNECTION_TIMEOUT, // Read timeout.
-                    $opts,
-                );
-                if (!$connection) {
-                    throw new RedisException('Unable to connect to host.');
+        $encrypt = (bool) ($this->sslopts ?? false);
+        // Set Redis server(s).
+        $trimmedservers = [];
+        foreach ($this->host as $host) {
+            $server = strtolower(trim($host));
+            if (!empty($server)) {
+                if ($server[0] === '/' || str_starts_with($server, 'unix://')) {
+                    $port = 0;
+                    $trimmedservers[] = $server;
+                } else {
+                    $port = $this->port ?? 6379; // No Unix socket so set default port.
+                    if (strpos($server, ':')) { // Check for custom port.
+                        list($server, $port) = explode(':', $server);
+                    }
+                    $trimmedservers[] = $server.':'.$port;
                 }
 
-                if ($this->auth !== '') {
-                    if (!$this->connection->auth($this->auth)) {
-                        throw new RedisException('Unable to authenticate.');
+                // We only need the first record for the single redis.
+                if (!$this->clustermode) {
+                    // Handle the case when the server is not a Unix domain socket.
+                    if ($port !== 0) {
+                        list($server, ) = explode(':', $trimmedservers[0]);
+                    } else {
+                        $server = $trimmedservers[0];
+                    }
+                    break;
+                }
+            }
+        }
+
+        // TLS/SSL Configuration.
+        $opts = [];
+        if ($encrypt) {
+            if ($this->clustermode) {
+                $opts = $this->sslopts;
+            } else {
+                // For a single (non-cluster) Redis, the TLS/SSL config must be added to the 'stream' key.
+                $opts['stream'] = $this->sslopts;
+            }
+        }
+
+        // MDL-59866: Add retries for connections (up to 5 times) to make sure it goes through.
+        $counter = 1;
+        $exceptionclass = $this->clustermode ? 'RedisClusterException' : 'RedisException';
+        while ($counter <= self::MAX_RETRIES) {
+            $this->connection = null;
+            // Make a connection to Redis server(s).
+            try {
+                // Create a $redis object of a RedisCluster or Redis class.
+                if ($this->clustermode) {
+                    $this->connection = new \RedisCluster(
+                        null,
+                        $trimmedservers,
+                        self::CONNECTION_TIMEOUT, // Timeout.
+                        self::CONNECTION_TIMEOUT, // Read timeout.
+                        true,
+                        $this->auth,
+                        !empty($opts) ? $opts : null,
+                    );
+                } else {
+                    $delay = rand(100, 500);
+                    $this->connection = new \Redis();
+                    $this->connection->connect(
+                        $server,
+                        $port,
+                        self::CONNECTION_TIMEOUT, // Timeout.
+                        null,
+                        $delay, // Retry interval.
+                        self::CONNECTION_TIMEOUT, // Read timeout.
+                        $opts,
+                    );
+                    if ($this->auth !== '' && !$this->connection->auth($this->auth)) {
+                        throw new $exceptionclass('Unable to authenticate.');
                     }
                 }
 
                 if (!$this->connection->setOption(\Redis::OPT_SERIALIZER, $this->serializer)) {
-                    throw new RedisException('Unable to set Redis PHP Serializer option.');
+                    throw new $exceptionclass('Unable to set the Redis PHP Serializer option.');
                 }
-
                 if ($this->prefix !== '') {
                     // Use custom prefix on sessions.
                     if (!$this->connection->setOption(\Redis::OPT_PREFIX, $this->prefix)) {
-                        throw new RedisException('Unable to set Redis Prefix option.');
+                        throw new $exceptionclass('Unable to set the Redis Prefix option.');
                     }
                 }
-
-                if ($this->sslopts && !$this->connection->ping()) {
-                    /*
-                     * In case of a TLS connection, if phpredis client does not
-                     * communicate immediately with the server the connection hangs.
-                     * See https://github.com/phpredis/phpredis/issues/2332 .
-                     */
-                    throw new \RedisException("Ping failed");
+                if ($this->sslopts && !$this->connection->ping('Ping')) {
+                    // In case of a TLS connection,
+                    // if phpredis client does not communicate immediately with the server the connection hangs.
+                    // See https://github.com/phpredis/phpredis/issues/2332.
+                    throw new $exceptionclass("Ping failed");
                 }
-
                 if ($this->database !== 0) {
                     if (!$this->connection->select($this->database)) {
-                        throw new RedisException('Unable to select Redis database '.$this->database.'.');
+                        throw new $exceptionclass('Unable to select the Redis database ' . $this->database . '.');
                     }
                 }
 
@@ -307,33 +345,36 @@ class redis extends handler {
                         'redis server version must be at least ' . self::REDIS_SERVER_MIN_VERSION);
                 }
                 return true;
-            } catch (RedisException $e) {
-                $logstring = "Failed to connect (try {$counter} out of {$maxnumberofretries}) to redis ";
-                $logstring .= "at {$this->host}:{$this->port}, error returned was: {$e->getMessage()}";
-
+            } catch (RedisException | RedisClusterException $e) {
+                $redishost = $this->clustermode ? implode(',', $this->host) : $server. ':'. $port;
+                $logstring = "Failed to connect (try {$counter} out of " . self::MAX_RETRIES . ") to Redis ";
+                $logstring .= "at ". $redishost .", the error returned was: {$e->getMessage()}";
                 debugging($logstring);
             }
-
             $counter++;
-
             // Introduce a random sleep between 100ms and 500ms.
             usleep(rand(100000, 500000));
         }
 
-        // We have exhausted our retries, time to give up.
         if (isset($logstring)) {
-            throw new RedisException($logstring);
+            // We have exhausted our retries; it's time to give up.
+            throw new $exceptionclass($logstring);
+        }
+
+        $result = session_set_save_handler($this);
+        if (!$result) {
+            throw new exception('redissessionhandlerproblem', 'error');
         }
     }
 
     /**
      * Update our session search path to include session name when opened.
      *
-     * @param string $savepath  unused session save path. (ignored)
-     * @param string $sessionname Session name for this session. (ignored)
+     * @param string $path  unused session save path. (ignored)
+     * @param string $name Session name for this session. (ignored)
      * @return bool true always as we will succeed.
      */
-    public function handler_open($savepath, $sessionname) {
+    public function open(string $path, string $name): bool {
         return true;
     }
 
@@ -342,7 +383,7 @@ class redis extends handler {
      *
      * @return bool true on success.  false on unable to unlock sessions.
      */
-    public function handler_close() {
+    public function close(): bool {
         $this->lasthash = null;
         try {
             foreach ($this->locks as $id => $expirytime) {
@@ -351,13 +392,14 @@ class redis extends handler {
                 }
                 unset($this->locks[$id]);
             }
-        } catch (RedisException $e) {
+        } catch (RedisException | RedisClusterException $e) {
             error_log('Failed talking to redis: '.$e->getMessage());
             return false;
         }
 
         return true;
     }
+
     /**
      * Read the session data from storage
      *
@@ -366,7 +408,7 @@ class redis extends handler {
      *
      * @throws RedisException when we are unable to talk to the Redis server.
      */
-    public function handler_read($id) {
+    public function read(string $id): string|false {
         try {
             if ($this->requires_write_lock()) {
                 $this->lock_session($id);
@@ -381,7 +423,7 @@ class redis extends handler {
                 return '';
             }
             $this->connection->expire($id, $this->timeout);
-        } catch (RedisException $e) {
+        } catch (RedisException | RedisClusterException $e) {
             error_log('Failed talking to redis: '.$e->getMessage());
             throw $e;
         }
@@ -443,7 +485,7 @@ class redis extends handler {
      * @param string $data session data
      * @return bool true on write success, false on failure
      */
-    public function handler_write($id, $data) {
+    public function write(string $id, string $data): bool {
 
         $hash = sha1(base64_encode($data));
 
@@ -466,7 +508,7 @@ class redis extends handler {
             $data = $this->compress($data);
 
             $this->connection->setex($id, $this->timeout, $data);
-        } catch (RedisException $e) {
+        } catch (RedisException | RedisClusterException $e) {
             error_log('Failed talking to redis: '.$e->getMessage());
             return false;
         }
@@ -479,12 +521,12 @@ class redis extends handler {
      * @param string $id the session id to destroy.
      * @return bool true if the session was deleted, false otherwise.
      */
-    public function handler_destroy($id) {
+    public function destroy(string $id): bool {
         $this->lasthash = null;
         try {
             $this->connection->del($id);
             $this->unlock_session($id);
-        } catch (RedisException $e) {
+        } catch (RedisException | RedisClusterException $e) {
             error_log('Failed talking to redis: '.$e->getMessage());
             return false;
         }
@@ -495,11 +537,12 @@ class redis extends handler {
     /**
      * Garbage collect sessions.  We don't we any as Redis does it for us.
      *
-     * @param integer $maxlifetime All sessions older than this should be removed.
+     * @param integer $max_lifetime All sessions older than this should be removed.
      * @return bool true, as Redis handles expiry for us.
      */
-    public function handler_gc($maxlifetime) {
-        return true;
+    // phpcs:ignore moodle.NamingConventions.ValidVariableName.VariableNameUnderscore
+    public function gc(int $max_lifetime): int|false {
+        return false;
     }
 
     /**
@@ -624,7 +667,7 @@ class redis extends handler {
 
         try {
             return !empty($this->connection->exists($sid));
-        } catch (RedisException $e) {
+        } catch (RedisException | RedisClusterException $e) {
             return false;
         }
     }
@@ -640,7 +683,7 @@ class redis extends handler {
 
         $rs = $DB->get_recordset('sessions', array(), 'id DESC', 'id, sid');
         foreach ($rs as $record) {
-            $this->handler_destroy($record->sid);
+            $this->destroy($record->sid);
         }
         $rs->close();
     }
@@ -655,6 +698,6 @@ class redis extends handler {
             return;
         }
 
-        $this->handler_destroy($sid);
+        $this->destroy($sid);
     }
 }

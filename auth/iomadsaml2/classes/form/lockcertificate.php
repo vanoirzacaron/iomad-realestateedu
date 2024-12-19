@@ -43,12 +43,21 @@ class lockcertificate extends moodleform {
      * Form definition.
      */
     protected function definition() {
-        global $OUTPUT;
+        global $OUTPUT, $CFG;
         $mform = $this->_form;
         $buttonarray = [];
 
+        // IOMAD
+        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
+        $companyid = iomad::get_my_companyid(context_system::instance(), false);
+        if (!empty($companyid)) {
+            $postfix = "_$companyid";
+        } else {
+            $postfix = "";
+        }
+
         $certslockwarning  = html_writer::start_div('warning');
-        if (get_config('auth_iomadsaml2', 'certs_locked') == false) {
+        if (get_config('auth_iomadsaml2', 'certs_locked' . $postfix) == false) {
             // The certs are unlocked.
             $certslockwarning .= $OUTPUT->notification(get_string('certificatelock_warning', 'auth_iomadsaml2'), 'warning');
             $certslockwarning .= html_writer::end_div();

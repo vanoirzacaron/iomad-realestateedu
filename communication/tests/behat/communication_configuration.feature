@@ -38,6 +38,7 @@ Feature: Access the communication configuration page
     When I navigate to "Communication" in current page administration
     And I set the following fields to these values:
       | selectedcommunication | communication_matrix |
+    And I wait to be redirected
     Then I should see "Room name"
     And I should see "Room topic"
 
@@ -87,3 +88,22 @@ Feature: Access the communication configuration page
     And the field "Room name" matches value "Custom link room"
     And the field "Custom link URL" matches value "https://moodle.org"
     And I should not see "Room topic"
+    And I set the following fields to these values:
+      | selectedcommunication        | communication_matrix |
+    And I wait to be redirected
+    And I click on "Save changes" "button"
+    And I am on "Test course" course homepage with editing mode on
+    And I navigate to "Settings" in current page administration
+    And I set the following fields to these values:
+      | Group mode | Separate groups |
+    And I press "Save and display"
+    And I navigate to "Communication" in current page administration
+    And the field "Room name" matches value "Matrix room"
+    And the field "Room topic" matches value "Matrix topic"
+    And I press "Cancel"
+    And I navigate to "Settings" in current page administration
+    And I set the following fields to these values:
+      | Group mode | Visible groups |
+    And I navigate to "Communication" in current page administration
+    And the field "Room name" matches value "Matrix room"
+    And the field "Room topic" matches value "Matrix topic"

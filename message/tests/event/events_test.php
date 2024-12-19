@@ -39,7 +39,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the message contact added event.
      */
-    public function test_message_contact_added() {
+    public function test_message_contact_added(): void {
         global $USER;
 
         $this->resetAfterTest();
@@ -66,7 +66,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the message contact removed event.
      */
-    public function test_message_contact_removed() {
+    public function test_message_contact_removed(): void {
         global $USER;
 
         $this->resetAfterTest();
@@ -96,7 +96,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the message user blocked event.
      */
-    public function test_message_user_blocked() {
+    public function test_message_user_blocked(): void {
         global $USER;
 
         $this->resetAfterTest();
@@ -124,7 +124,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the message user unblocked event.
      */
-    public function test_message_user_unblocked() {
+    public function test_message_user_unblocked(): void {
         global $USER;
 
         $this->resetAfterTest();
@@ -163,7 +163,7 @@ final class events_test extends \advanced_testcase {
      * We can not use the message_send() function in the unit test to check that the event was fired as there is a
      * conditional check to ensure a fake message is sent during unit tests when calling that particular function.
      */
-    public function test_message_sent() {
+    public function test_message_sent(): void {
         $event = \core\event\message_sent::create(array(
             'objectid' => 3,
             'userid' => 1,
@@ -264,7 +264,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the group message sent event when created without a courseid.
      */
-    public function test_group_message_sent_without_other_courseid() {
+    public function test_group_message_sent_without_other_courseid(): void {
         // Creating a message_sent event without other[courseid] leads to exception.
         $this->expectException('coding_exception');
         $this->expectExceptionMessage('The \'courseid\' value must be set in other');
@@ -283,7 +283,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the group message sent event when created without a conversationid.
      */
-    public function test_group_message_sent_without_other_conversationid() {
+    public function test_group_message_sent_without_other_conversationid(): void {
         // Creating a message_sent event without other[courseid] leads to exception.
         $this->expectException('coding_exception');
         $this->expectExceptionMessage('The \'conversationid\' value must be set in other');
@@ -327,7 +327,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the message viewed event.
      */
-    public function test_message_viewed() {
+    public function test_message_viewed(): void {
         global $DB;
 
         $this->resetAfterTest();
@@ -361,7 +361,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the message deleted event.
      */
-    public function test_message_deleted() {
+    public function test_message_deleted(): void {
         global $DB, $USER;
 
         $this->resetAfterTest();
@@ -419,7 +419,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the message deleted event is fired when deleting a conversation.
      */
-    public function test_message_deleted_whole_conversation() {
+    public function test_message_deleted_whole_conversation(): void {
         global $DB;
 
         $this->resetAfterTest();
@@ -528,7 +528,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the notification sent event when null passed as course.
      */
-    public function test_notification_sent_with_null_course() {
+    public function test_notification_sent_with_null_course(): void {
         $event = \core\event\notification_sent::create_from_ids(1, 1, 1, null);
 
         $this->resetAfterTest();
@@ -547,7 +547,7 @@ final class events_test extends \advanced_testcase {
     /**
      * Test the notification viewed event.
      */
-    public function test_notification_viewed() {
+    public function test_notification_viewed(): void {
         global $DB;
 
         $this->resetAfterTest();

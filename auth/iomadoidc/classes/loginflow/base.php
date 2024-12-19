@@ -28,11 +28,12 @@ namespace auth_iomadoidc\loginflow;
 
 use auth_iomadoidc\jwt;
 use auth_iomadoidc\iomadoidcclient;
+use auth_iomadoidc\utils;
 use core_user;
 use moodle_exception;
 use stdClass;
-use context_system;
 use iomad;
+use context_system;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -48,10 +49,23 @@ class base {
     /** @var \auth_iomadoidc\httpclientinterface An HTTP client to use. */
     protected $httpclient;
 
+    /** @var string postfix for config based off of company id */
+    private $postfix;
+
     /**
      * Constructor.
      */
     public function __construct() {
+        global $CFG;
+
+        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
+        $companyid = iomad::get_my_companyid(context_system::instance(), false);
+        if (!empty($companyid)) {
+            $this->postfix = "_$companyid";
+        } else {
+            $this->postfix = "";
+        }
+
         $default = [
             'opname' => get_string('pluginname', 'auth_iomadoidc')
         ];
@@ -105,16 +119,7 @@ class base {
      * @return mixed array with no magic quotes or false on error
      */
     public function get_userinfo($username) {
-        global $CFG, $DB;
-
-        // IOMAD
-        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
-        $companyid = iomad::get_my_companyid(context_system::instance(), false);
-        if (!empty($companyid)) {
-            $postfix = "_$companyid";
-        } else {
-            $postfix = "";
-        }
+        global $DB;
 
         $tokenrec = $DB->get_record('auth_iomadoidc_token', ['username' => $username]);
         if (empty($tokenrec)) {
@@ -134,22 +139,28 @@ class base {
         if (auth_iomadoidc_is_local_365_installed()) {
             // Check if multi tenants is enabled. User from additional tenants can only sync fields from token.
             $userfromadditionaltenant = false;
-            $hostingtenantid = get_config('local_o365', 'aadtenantid' . $postfix);
+            $hostingtenantid = get_config('local_o365', 'microsofttenantid');
             $token = jwt::instance_from_encoded($tokenrec->token);
             if ($token->claim('tid') != $hostingtenantid) {
                 $userfromadditionaltenant = true;
             }
 
             if (!$userfromadditionaltenant) {
+                $userdatafetchedfromgraph = false;
                 if (\local_o365\feature\usersync\main::fieldmap_require_graph_api_call($eventtype)) {
                     // If local_o365 is installed, and connects to Microsoft Identity Platform (v2.0),
                     // or field mapping uses fields not covered by token, then call Graph API function to get user details.
-                    $apiclient = \local_o365\utils::get_api($tokenrec->userid);
+                    $apiclient = \local_o365\utils::get_api();
                     if ($apiclient) {
                         $fieldmappingfromtoken = false;
-                        $userdata = $apiclient->get_user($tokenrec->iomadoidcuniqid, true);
+                        $userdata = $apiclient->get_user($tokenrec->iomadoidcuniqid);
+                        if ($userdata) {
+                            $userdatafetchedfromgraph = true;
+                        }
                     }
-                } else {
+                }
+
+                if (!$userdatafetchedfromgraph) {
                     // If local_o365 is installed, but all field mapping fields are in token, then use token.
                     $fieldmappingfromtoken = false;
                     // Process both ID token and access tokens.
@@ -166,7 +177,7 @@ class base {
                         }
 
                         if (!isset($userdata['userPrincipalName'])) {
-                            if (get_config('auth_iomadoidc', 'idptype' . $postfix) == AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT) {
+                            if (get_config('auth_iomadoidc', 'idptype' . $this->postfix) == AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT_IDENTITY_PLATFORM) {
                                 $upn = $token->claim('preferred_username');
                                 if (empty($upn)) {
                                     $upn = $token->claim('email');
@@ -196,15 +207,15 @@ class base {
                             }
                         }
 
-                        if (!isset($userdata['email'])) {
+                        if (!isset($userdata['mail'])) {
                             $email = $token->claim('email');
                             if (!empty($email)) {
                                 $userdata['mail'] = $email;
                             } else {
                                 if (!empty($upn)) {
-                                    $aademailvalidateresult = filter_var($upn, FILTER_VALIDATE_EMAIL);
-                                    if (!empty($aademailvalidateresult)) {
-                                        $userdata['mail'] = $aademailvalidateresult;
+                                    $entraidemailvalidateresult = filter_var($upn, FILTER_VALIDATE_EMAIL);
+                                    if (!empty($entraidemailvalidateresult)) {
+                                        $userdata['mail'] = $entraidemailvalidateresult;
                                     }
                                 }
                             }
@@ -234,7 +245,7 @@ class base {
                 }
 
                 if (!isset($userdata['objectId'])) {
-                    // Use 'oid' if available (Azure-specific), or fall back to standard "sub" claim.
+                    // Use 'oid' if available (Microsoft-specific), or fall back to standard "sub" claim.
                     $objectid = $token->claim('oid');
                     if (empty($objectid)) {
                         $objectid = $token->claim('sub');
@@ -245,7 +256,7 @@ class base {
                 }
 
                 if (!isset($userdata['userPrincipalName'])) {
-                    if (get_config('auth_iomadoidc', 'idptype' . $postfix) == AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT) {
+                    if (get_config('auth_iomadoidc', 'idptype' . $this->postfix) == AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT_IDENTITY_PLATFORM) {
                         $upn = $token->claim('preferred_username');
                         if (empty($upn)) {
                             $upn = $token->claim('email');
@@ -275,15 +286,15 @@ class base {
                     }
                 }
 
-                if (!isset($userdata['email'])) {
+                if (!isset($userdata['mail'])) {
                     $email = $token->claim('email');
                     if (!empty($email)) {
                         $userdata['mail'] = $email;
                     } else {
                         if (!empty($upn)) {
-                            $aademailvalidateresult = filter_var($upn, FILTER_VALIDATE_EMAIL);
-                            if (!empty($aademailvalidateresult)) {
-                                $userdata['mail'] = $aademailvalidateresult;
+                            $entraidemailvalidateresult = filter_var($upn, FILTER_VALIDATE_EMAIL);
+                            if (!empty($entraidemailvalidateresult)) {
+                                $userdata['mail'] = $entraidemailvalidateresult;
                             }
                         }
                     }
@@ -380,7 +391,8 @@ class base {
             $PAGE->set_pagelayout('standard');
             $USER->editing = false;
 
-            $ucptitle = get_string('ucp_disconnect_title', 'auth_iomadoidc', $this->config->opname);
+            $opname = "opname" . $this->postfix;
+            $ucptitle = get_string('ucp_disconnect_title', 'auth_iomadoidc', $this->config->$opname);
             $PAGE->navbar->add($ucptitle, $PAGE->url);
             $PAGE->set_title($ucptitle);
 
@@ -461,7 +473,7 @@ class base {
                 $updateduser->id = $userrec->id;
                 try {
                     user_update_user($updateduser);
-                } catch (\Exception $e) {
+                } catch (moodle_exception $e) {
                     throw new moodle_exception($e->errorcode, '', $selfurl);
                 }
 
@@ -508,16 +520,6 @@ class base {
      */
     protected function get_iomadoidcclient() {
         global $CFG;
-
-        // IOMAD
-        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
-        $companyid = iomad::get_my_companyid(context_system::instance(), false);
-        if (!empty($companyid)) {
-            $postfix = "_$companyid";
-        } else {
-            $postfix = "";
-        }
-
         if (empty($this->httpclient) || !($this->httpclient instanceof \auth_iomadoidc\httpclientinterface)) {
             $this->httpclient = new \auth_iomadoidc\httpclient();
         }
@@ -526,22 +528,22 @@ class base {
             throw new moodle_exception('errorauthnocredsandendpoints', 'auth_iomadoidc');
         }
 
-        $clientidname = "clientid" . $postfix;
-        $clientsecretname = "clientsecret" . $postfix;
-        $iomadoidcresourcename = "iomadoidcresource" . $postfix;
-        $iomadscopename = "scope" . $postfix;
+        $clientidname = "clientid" . $this->postfix;
+        $clientsecretname = "clientsecret" . $this->postfix;
+        $clientiomadoidcresourcename = "clientiomadoidcresource" . $this->postfix;
+        $iomadoidcscopename = "iomadoidcscope" . $this->postfix;
+        $authendpointname = "authendpoint" . $this->postfix;
+        $tokenendpointname = "tokenendpoint" . $this->postfix;
         $clientid = (isset($this->config->$clientidname)) ? $this->config->$clientidname : null;
         $clientsecret = (isset($this->config->$clientsecretname)) ? $this->config->$clientsecretname : null;
         $redirecturi = (!empty($CFG->loginhttps)) ? str_replace('http://', 'https://', $CFG->wwwroot) : $CFG->wwwroot;
         $redirecturi .= '/auth/iomadoidc/';
-        $tokenresource = (isset($this->config->$iomadoidcresourcename)) ? $this->config->$iomadoidcresourcename : null;
-        $scope = (isset($this->config->$iomadscopename)) ? $this->config->$iomadscopename : null;
+        $tokenresource = (isset($this->config->$clientiomadoidcresourcename)) ? $this->config->$clientiomadoidcresourcename : null;
+        $scope = (isset($this->config->$iomadoidcscopename)) ? $this->config->$iomadoidcscopename : null;
 
         $client = new iomadoidcclient($this->httpclient);
         $client->setcreds($clientid, $clientsecret, $redirecturi, $tokenresource, $scope);
 
-        $authendpointname = "authendpoint" . $postfix;
-        $tokenendpointname = "tokenendpoint" . $postfix;
         $client->setendpoints(['auth' => $this->config->$authendpointname, 'token' => $this->config->$tokenendpointname]);
 
         return $client;
@@ -559,16 +561,16 @@ class base {
         $idtoken = jwt::instance_from_encoded($idtoken);
         $sub = $idtoken->claim('sub');
         if (empty($sub)) {
-            \auth_iomadoidc\utils::debug('Invalid idtoken', 'base::process_idtoken', $idtoken);
+            utils::debug('Invalid idtoken', __METHOD__, $idtoken);
             throw new moodle_exception('errorauthinvalididtoken', 'auth_iomadoidc');
         }
         $receivednonce = $idtoken->claim('nonce');
         if (!empty($orignonce) && (empty($receivednonce) || $receivednonce !== $orignonce)) {
-            \auth_iomadoidc\utils::debug('Invalid nonce', 'base::process_idtoken', $idtoken);
+            utils::debug('Invalid nonce', __METHOD__, $idtoken);
             throw new moodle_exception('errorauthinvalididtoken', 'auth_iomadoidc');
         }
 
-        // Use 'oid' if available (Azure-specific), or fall back to standard "sub" claim.
+        // Use 'oid' if available (Microsoft-specific), or fall back to standard "sub" claim.
         $iomadoidcuniqid = $idtoken->claim('oid');
         if (empty($iomadoidcuniqid)) {
             $iomadoidcuniqid = $idtoken->claim('sub');
@@ -586,24 +588,14 @@ class base {
      * @return bool Whether the restriction check passed.
      */
     protected function checkrestrictions(jwt $idtoken) {
-        global $CFG;
-
-        // IOMAD
-        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
-        $companyid = iomad::get_my_companyid(context_system::instance(), false);
-        if (!empty($companyid)) {
-            $postfix = "_$companyid";
-        } else {
-            $postfix = "";
-        }
-
-        $restrictions = (isset($this->config->userrestrictions)) ? trim($this->config->userrestrictions) : '';
+        $userrestrictionsname = "userrestrictions" . $this->postfix;
+        $restrictions = (isset($this->config->$userrestrictionsname)) ? trim($this->config->$userrestrictionsname) : '';
         $hasrestrictions = false;
         $userpassed = false;
         if ($restrictions !== '') {
             $restrictions = explode("\n", $restrictions);
             // Check main user identifier claim based on IdP type, and falls back to iomadoidc-standard "sub" if still empty.
-            if (get_config('auth_iomadoidc', 'idptype' . $postfix) == AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT) {
+            if (get_config('auth_iomadoidc', 'idptype' . $this->postfix) == AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT_IDENTITY_PLATFORM) {
                 $tomatch = $idtoken->claim('preferred_username');
                 if (empty($tomatch)) {
                     $tomatch = $idtoken->claim('email');
@@ -618,6 +610,7 @@ class base {
             if (empty($tomatch)) {
                 $tomatch = $idtoken->claim('sub');
             }
+            $userrestrictionscasesensitivename = "userrestrictionscasesensitive" . $this->postfix;
             foreach ($restrictions as $restriction) {
                 $restriction = trim($restriction);
                 if ($restriction !== '') {
@@ -625,7 +618,7 @@ class base {
                     ob_start();
                     try {
                         $pattern = '/'.$restriction.'/';
-                        if (isset($this->config->userrestrictionscasesensitive) && !$this->config->userrestrictionscasesensitive) {
+                        if (isset($this->config->$userrestrictionscasesensitivename) && !$this->config->$userrestrictionscasesensitivename) {
                             $pattern .= 'i';
                         }
                         $count = @preg_match($pattern, $tomatch, $matches);
@@ -633,13 +626,13 @@ class base {
                             $userpassed = true;
                             break;
                         }
-                    } catch (\Exception $e) {
+                    } catch (moodle_exception $e) {
                         $debugdata = [
                             'exception' => $e,
                             'restriction' => $restriction,
                             'tomatch' => $tomatch,
                         ];
-                        \auth_iomadoidc\utils::debug('Error running user restrictions.', 'handleauthresponse', $debugdata);
+                        utils::debug('Error running user restrictions.', __METHOD__, $debugdata);
                     }
                     $contents = ob_get_contents();
                     ob_end_clean();
@@ -649,7 +642,7 @@ class base {
                             'restriction' => $restriction,
                             'tomatch' => $tomatch,
                         ];
-                        \auth_iomadoidc\utils::debug('Output while running user restrictions.', 'handleauthresponse', $debugdata);
+                        utils::debug('Output while running user restrictions.', __METHOD__, $debugdata);
                     }
                 }
             }
@@ -671,22 +664,13 @@ class base {
      */
     protected function createtoken($iomadoidcuniqid, $username, $authparams, $tokenparams, jwt $idtoken, $userid = 0,
         $originalupn = null) {
-        global $CFG, $DB;
-
-        // IOMAD
-        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
-        $companyid = iomad::get_my_companyid(context_system::instance(), false);
-        if (!empty($companyid)) {
-            $postfix = "_$companyid";
-        } else {
-            $postfix = "";
-        }
+        global $DB;
 
         if (!is_null($originalupn)) {
             $iomadoidcusername = $originalupn;
         } else {
             // Determine remote username depending on IdP type, or fall back to standard 'sub'.
-            if (get_config('auth_iomadoidc', 'idptype' . $postfix) == AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT) {
+            if (get_config('auth_iomadoidc', 'idptype' . $this->postfix) == AUTH_IOMADOIDC_IDP_TYPE_MICROSOFT_IDENTITY_PLATFORM) {
                 $iomadoidcusername = $idtoken->claim('preferred_username');
                 if (empty($iomadoidcusername)) {
                     $iomadoidcusername = $idtoken->claim('email');
@@ -719,9 +703,8 @@ class base {
             }
         }
 
-        $iomadoidcresourcename = "iomadoidcresource" . $postfix;
-        $iomadoidcscopename = "iomadoidcscope" . $postfix;
-
+        $iomadoidcresourcename = "iomadoidcresource" . $this->postfix;
+        $iomadoidcscopename = "iomadoidcscope" . $this->postfix;
         $tokenrec = new stdClass;
         $tokenrec->iomadoidcuniqid = $iomadoidcuniqid;
         $tokenrec->username = $username;

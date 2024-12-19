@@ -39,20 +39,11 @@ class setting_idpmetadata extends admin_setting_configtextarea {
     /**
      * Constructor
      */
-    public function __construct($postfix = "") {
-
-        // IOMAD set the postfix.
-        $this->postfix = $postfix;
-        $this->companyid = 0;
-        if ("" != $postfix) {
-            list ($drop, $companyid) = explode('_', $postfix);
-            $this->companyid = $companyid;
-        }
-
+    public function __construct() {
         // All parameters are hardcoded because there can be only one instance:
         // When it validates, it saves extra configs, preventing this component from being reused as is.
         parent::__construct(
-            'auth_iomadsaml2/idpmetadata' . $postfix,
+            'auth_iomadsaml2/idpmetadata',
             get_string('idpmetadata', 'auth_iomadsaml2'),
             get_string('idpmetadata_help', 'auth_iomadsaml2'),
             '',
@@ -92,7 +83,7 @@ class setting_idpmetadata extends admin_setting_configtextarea {
     private function process_all_idps_metadata($idps) {
         global $DB;
 
-        $currentidpsrs = $DB->get_records('auth_iomadsaml2_idps', ['companyid' => $this->companyid]);
+        $currentidpsrs = $DB->get_records('auth_iomadsaml2_idps');
         $oldidps = array();
         foreach ($currentidpsrs as $idpentity) {
             if (!isset($oldidps[$idpentity->metadataurl])) {
@@ -186,7 +177,6 @@ class setting_idpmetadata extends admin_setting_configtextarea {
             $newidp->adminidp = 0;
             $newidp->defaultname = $idpname;
             $newidp->logo = $logo;
-            $newidp->companyid = $this->companyid;
 
             $DB->insert_record('auth_iomadsaml2_idps', $newidp);
         }
@@ -288,10 +278,10 @@ class setting_idpmetadata extends admin_setting_configtextarea {
      * @param string $xml
      */
     private function save_idp_metadata_xml($url, $xml) {
-        global $CFG, $iomadsaml2auth;
+        global $CFG, $iomadsam2auth;
         require_once("{$CFG->dirroot}/auth/iomadsaml2/setup.php");
 
-        $file = $iomadsaml2auth->get_file_idp_metadata_file($url);
+        $file = $iomadsam2auth->get_file_idp_metadata_file($url);
         file_put_contents($file, $xml);
     }
 }

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Redis store simpleSAMLphp class for auth/iomadsaml2.
+ * Redis store simpleSAMLphp class for auth/saml2.
  *
  * @package    auth_iomadsaml2
  * @author     Sam Chaffee
@@ -27,16 +27,14 @@ namespace auth_iomadsaml2;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . '/../.extlib/simplesamlphp/lib/SimpleSAML/Store.php');
-
 /**
- * Redis store simpleSAMLphp class for auth/iomadsaml2.
+ * Redis store simpleSAMLphp class for auth/saml2.
  *
  * @package    auth_iomadsaml2
  * @copyright  Copyright (c) 2017 Blackboard Inc. (http://www.blackboard.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class redis_store extends \SimpleSAML\Store {
+class redis_store implements \SimpleSAML\Store\StoreInterface {
 
     /**
      * @var \Redis
@@ -72,7 +70,7 @@ class redis_store extends \SimpleSAML\Store {
      * @param mixed    $value
      * @param int|null $expire
      */
-    public function set($type, $key, $value, $expire = null) {
+    public function set(string $type, string $key, $value, ?int $expire = null): void {
         $this->redis->set($this->make_key($type, $key), $value, $this->get_set_options($expire));
     }
 
@@ -98,7 +96,7 @@ class redis_store extends \SimpleSAML\Store {
      * @param string $type
      * @param string $key
      */
-    public function delete($type, $key) {
+    public function delete(string $type, string $key): void {
         $this->redis->del($this->make_key($type, $key));
     }
 

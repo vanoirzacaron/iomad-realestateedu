@@ -38,9 +38,18 @@ require_once($CFG->dirroot . '/webservice/tests/helpers.php');
 class externallib_test extends externallib_advanced_testcase {
 
     /**
+     * Setup testcase.
+     */
+    public function setUp(): void {
+        // Chat module is disabled by default, enable it for testing.
+        $manager = \core_plugin_manager::resolve_plugininfo_class('mod');
+        $manager::enable_plugin('chat', 1);
+    }
+
+    /**
      * Test login user
      */
-    public function test_login_user() {
+    public function test_login_user(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -67,7 +76,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get chat users
      */
-    public function test_get_chat_users() {
+    public function test_get_chat_users(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -111,7 +120,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test send and get chat messages
      */
-    public function test_send_get_chat_message() {
+    public function test_send_get_chat_message(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -150,7 +159,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test view_chat
      */
-    public function test_view_chat() {
+    public function test_view_chat(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -218,7 +227,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_chats_by_courses
      */
-    public function test_get_chats_by_courses() {
+    public function test_get_chats_by_courses(): void {
         global $DB, $CFG;
         $this->resetAfterTest(true);
         $this->setAdminUser();
@@ -290,7 +299,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_sessions_empty_chat
      */
-    public function test_get_sessions_empty_chat() {
+    public function test_get_sessions_empty_chat(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -310,7 +319,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_sessions_no_permissions_for_student
      */
-    public function test_get_sessions_no_permissions_for_student() {
+    public function test_get_sessions_no_permissions_for_student(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -341,7 +350,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_sessions_not_completed_session
      */
-    public function test_get_sessions_not_completed_session() {
+    public function test_get_sessions_not_completed_session(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -380,7 +389,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_sessions_completed_session
      */
-    public function test_get_sessions_completed_session() {
+    public function test_get_sessions_completed_session(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -432,7 +441,7 @@ class externallib_test extends externallib_advanced_testcase {
     /**
      * Test get_session_messages
      */
-    public function test_get_session_messages() {
+    public function test_get_session_messages(): void {
         global $DB;
 
         $this->resetAfterTest(true);

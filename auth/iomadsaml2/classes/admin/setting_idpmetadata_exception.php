@@ -1,5 +1,5 @@
 <?php
-// This file is part of IOMAD SAML2 Authentication Plugin for Moodle
+// This file is part of SAML2 Authentication Plugin for Moodle
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

@@ -33,7 +33,7 @@ use core_question\local\bank\column_base;
 function xmldb_qbank_columnsortorder_upgrade(int $oldversion): bool {
     global $DB;
 
-    if ($oldversion < 2023100901) {
+    if ($oldversion < 2024042201) {
         // Before Moodle 4.3, config_plugins settings for qbank_columnsortorder (disabledcol, enabledcol) had a value like
         // qbank_statistics\columns\facility_index,qbank_statistics\columns\discriminative_efficiency, ...
         // In Moodle 4.3, the values are stored as qbank_statistics\columns\discriminative_efficiency-discriminative_efficiency.
@@ -68,13 +68,13 @@ function xmldb_qbank_columnsortorder_upgrade(int $oldversion): bool {
         }
 
         // Custom sort order savepoint reached.
-        upgrade_plugin_savepoint(true, 2023100901, 'qbank', 'columnsortorder');
+        upgrade_plugin_savepoint(true, 2024042201, 'qbank', 'columnsortorder');
     }
 
-    if ($oldversion < 2023100902) {
-        // Remove plugin entry created by previously incorrect 2023100901 savepoint.
+    if ($oldversion < 2024042202) {
+        // Remove plugin entry created by previously incorrect 2024042201 savepoint.
         $DB->delete_records('config_plugins', ['plugin' => 'qbank_qbank_columnsortorder']);
-        upgrade_plugin_savepoint(true, 2023100902, 'qbank', 'columnsortorder');
+        upgrade_plugin_savepoint(true, 2024042202, 'qbank', 'columnsortorder');
     }
 
     return true;

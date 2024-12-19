@@ -61,7 +61,7 @@ class restore_test extends advanced_testcase {
      * @param array $result1 data to check on original course
      * @param array $result2 data to check on resotred course
      */
-    public function test_backup_restore(bool $content, bool $userdata, array $result1, array $result2) {
+    public function test_backup_restore(bool $content, bool $userdata, array $result1, array $result2): void {
         global $DB;
         $this->resetAfterTest();
 
@@ -155,7 +155,7 @@ class restore_test extends advanced_testcase {
      *
      * @return array
      */
-    public static function backup_restore_data(): array {
+    public function backup_restore_data(): array {
         return [
             'Activity attempts and restore with userdata' => [
                 true, true, [1, 1, 3], [1, 1, 3]

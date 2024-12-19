@@ -123,6 +123,25 @@ class auth_plugin_base {
     /** @var array Stores extra information available to the logged in event. */
     protected $extrauserinfo = [];
 
+    // IOMAD
+    /** stores the prefix to associate with the current company id **/
+    protected $postfix = "";
+
+    /**
+     * Constructor function for the class
+     */
+    function __construct() {
+        global $CFG;
+
+        require_once($CFG->dirroot . '/local/iomad/lib/company.php');
+        $companyid = iomad::get_my_companyid(context_system::instance(), false);
+        if (!empty($companyid)) {
+            $this->postfix = "_$companyid";
+        } else {
+            $this->postfix = "";
+        }
+    }
+
     /**
      * This is the primary method that is used by the authenticate_user_login()
      * function in moodlelib.php.
@@ -162,7 +181,7 @@ class auth_plugin_base {
      * If you are using a plugin config variable in this method, please make sure it is set before using it,
      * as this method can be called even if the plugin is disabled, in which case the config values won't be set.
      *
-     * @return moodle_url url of the profile page or null if standard used
+     * @return ?moodle_url url of the profile page or null if standard used
      */
     function change_password_url() {
         //override if needed
@@ -187,7 +206,7 @@ class auth_plugin_base {
      * This method is used if can_edit_profile() returns true.
      * This method is called only when user is logged in, it may use global $USER.
      *
-     * @return moodle_url url of the profile page or null if standard used
+     * @return ?moodle_url url of the profile page or null if standard used
      */
     function edit_profile_url() {
         //override if needed
@@ -314,7 +333,7 @@ class auth_plugin_base {
     /**
      * Return a form to capture user details for account creation.
      * This is used in /login/signup.php.
-     * @return moodle_form A form which edits a record from the user table.
+     * @return moodleform A form which edits a record from the user table.
      */
     function signup_form() {
         global $CFG;
@@ -773,7 +792,7 @@ class auth_plugin_base {
      * @param stdClass $user A user object
      * @return string[] An array of strings with keys subject and message
      */
-    public function get_password_change_info(stdClass $user) : array {
+    public function get_password_change_info(stdClass $user): array {
 
         global $USER;
 
@@ -831,6 +850,66 @@ class auth_plugin_base {
      */
     public function get_extrauserinfo(): array {
         return $this->extrauserinfo;
+    }
+
+    /**
+     * Returns the enabled auth plugins
+     *
+     * @return array of plugin classes
+     */
+    public static function get_enabled_auth_plugin_classes(): array {
+        $plugins = [];
+        $authsequence = get_enabled_auth_plugins();
+        foreach ($authsequence as $authname) {
+            $plugins[] = get_auth_plugin($authname);
+        }
+        return $plugins;
+    }
+
+    /**
+     * Find an OS level admin Moodle user account
+     *
+     * Used when running CLI scripts. Only accounts which are
+     * site admin will be accepted.
+     *
+     * @return null|stdClass Admin user record if found
+     */
+    public static function find_cli_admin_user(): ?stdClass {
+        $plugins = static::get_enabled_auth_plugin_classes();
+        foreach ($plugins as $authplugin) {
+            $user = $authplugin->find_cli_user();
+            // This MUST be a valid admin user.
+            if (!empty($user) && is_siteadmin($user->id)) {
+                return $user;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Find and login as an OS level admin Moodle user account
+     *
+     * Used for running CLI scripts which must be admin accounts.
+     */
+    public static function login_cli_admin_user(): void {
+        $user = static::find_cli_admin_user();
+        if (!empty($user)) {
+            \core\session\manager::set_user($user);
+        }
+    }
+
+    /**
+     * Identify a Moodle account on the CLI
+     *
+     * For example a plugin might use posix_geteuid and posix_getpwuid
+     * to find the username of the OS level user and then match that
+     * against Moodle user accounts.
+     *
+     * @return null|stdClass User user record if found
+     */
+    public function find_cli_user(): ?stdClass {
+        // Override if needed.
+        return null;
     }
 }
 
@@ -1205,7 +1284,7 @@ function signup_setup_new_user($user) {
 /**
  * Check if user confirmation is enabled on this site and return the auth plugin handling registration if enabled.
  *
- * @return stdClass the current auth plugin handling user registration or false if registration not enabled
+ * @return auth_plugin_base|false the current auth plugin handling user registration or false if registration not enabled
  * @since Moodle 3.2
  */
 function signup_get_user_confirmation_authplugin() {

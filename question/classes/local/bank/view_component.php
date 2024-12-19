@@ -67,7 +67,8 @@ abstract class view_component {
      */
     public function get_menu_position(): int {
         // We return a big number by default, which is after all the standard core links,
-        // so they go first. This should be overridden by all plugins.
+        // so they go first. This should be overridden by all plugins, and not overriding will
+        // generate a debugging warning from {@see \core_question\local\bank\view::init_question_actions()}.
         return self::MENU_POSITION_NOT_SET;
     }
 

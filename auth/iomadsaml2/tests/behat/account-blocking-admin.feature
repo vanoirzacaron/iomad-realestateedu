@@ -1,5 +1,5 @@
 @auth @auth_iomadsaml2 @javascript
-Feature: IOMAD SAML2 Account blocking settings
+Feature: SAML2 Account blocking settings
   In order to handle Account blocking logging in through and IdP
   As an administrator
   I need to be able to change Account blocking settings in Moodle
@@ -7,9 +7,9 @@ Feature: IOMAD SAML2 Account blocking settings
   Scenario: I can navigate to the settings page
     Given the authentication plugin iomadsaml2 is enabled                            # auth_iomadsaml2
     And I am an administrator                                                   # auth_iomadsaml2
-    When I navigate to "Plugins > Authentication > IOMAD SAML2" in site administration
+    When I navigate to "Plugins > Authentication > SAML2" in site administration
     Then I should see "Account blocking actions"
-    And I should see "Redirect or display message to IOMAD SAML2 logins based on configured group restrictions"
+    And I should see "Redirect or display message to SAML2 logins based on configured group restrictions"
 
   Scenario Outline: I can change the Account blocking response type options
     Given the authentication plugin iomadsaml2 is enabled                            # auth_iomadsaml2

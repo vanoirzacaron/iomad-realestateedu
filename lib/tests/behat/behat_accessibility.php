@@ -46,7 +46,7 @@ class behat_accessibility extends behat_base {
      * It is also possible to specify any desired optional tags.
      *
      * The list of available tags can be found at
-     * https://github.com/dequelabs/axe-core/blob/v4.7.2/doc/rule-descriptions.md.
+     * https://github.com/dequelabs/axe-core/blob/v4.8.4/doc/rule-descriptions.md.
      *
      * @Then the page should meet accessibility standards
      * @Then the page should meet accessibility standards with :extratags extra tests
@@ -218,14 +218,6 @@ EOF;
                 'type' > 'tag',
                 'values' => array_merge($standardtags, $extratags),
             ],
-            'rules' => [
-                // Disable the target-size rule.
-                // This rule was added in Axe 4.7, but changed in 4.8 to allow for spacing around the element.
-                // See https://github.com/dequelabs/axe-core/pull/4117 for more information on this change.
-                'target-size' => [
-                    'enabled' => false,
-                ],
-            ]
         ]);
     }
 }

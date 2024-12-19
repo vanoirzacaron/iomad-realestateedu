@@ -720,7 +720,7 @@ class flexible_table {
     }
 
     /**
-     * @return string sql to add to where statement.
+     * @return array sql to add to where statement.
      */
     function get_sql_where() {
         global $DB;
@@ -949,9 +949,6 @@ class flexible_table {
             if (!isset($options->newlines)) {
                 $options->newlines = false;
             }
-            if (!isset($options->smiley)) {
-                $options->smiley = false;
-            }
             if (!isset($options->filter)) {
                 $options->filter = false;
             }
@@ -1068,7 +1065,7 @@ class flexible_table {
 
         $this->print_initials_bar();
 
-        echo $OUTPUT->heading(get_string('nothingtodisplay'));
+        echo $OUTPUT->notification(get_string('nothingtodisplay'), 'info', false);
 
         // Render the dynamic table footer.
         echo $this->get_dynamic_table_html_end();

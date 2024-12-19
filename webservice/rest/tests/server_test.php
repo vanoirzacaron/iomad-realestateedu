@@ -32,12 +32,13 @@ require_once($CFG->dirroot . '/webservice/rest/locallib.php');
  * @copyright  2016 Frédéric Massart - FMCorz.net
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class server_test extends \advanced_testcase {
+class server_test extends \advanced_testcase {
+
     /**
      * Data provider for test_xmlize.
      * @return array
      */
-    public static function xmlize_provider(): array {
+    public function xmlize_provider() {
         $data = [];
         $data[] = [null, null, ''];
         $data[] = [new external_value(PARAM_BOOL), false, "<VALUE>0</VALUE>\n"];
@@ -204,9 +205,9 @@ final class server_test extends \advanced_testcase {
      * @param mixed $value The value to xmlise.
      * @param mixed $expected The expected output.
      */
-    public function test_xmlize($description, $value, $expected) {
+    public function test_xmlize($description, $value, $expected): void {
         $method = new \ReflectionMethod('webservice_rest_server', 'xmlize_result');
-        $method->setAccessible(true);
         $this->assertEquals($expected, $method->invoke(null, $value, $description));
     }
+
 }

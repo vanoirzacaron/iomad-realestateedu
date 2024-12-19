@@ -65,7 +65,7 @@ class edit_renderer extends \plugin_renderer_base {
         $output .= html_writer::start_div('mod_quiz-edit-top-controls');
 
         $output .= html_writer::start_div('d-flex justify-content-between flex-wrap mb-1');
-        $output .= html_writer::start_div('d-flex flex-column justify-content-around');
+        $output .= html_writer::start_div('d-flex align-items-center justify-content-around');
         $output .= $this->quiz_information($structure);
         $output .= html_writer::end_tag('div');
         $output .= $this->maximum_grade_input($structure, $pageurl);
@@ -178,19 +178,19 @@ class edit_renderer extends \plugin_renderer_base {
      */
     public function maximum_grade_input($structure, \moodle_url $pageurl) {
         $output = '';
-        $output .= html_writer::start_div('maxgrade');
+        $output .= html_writer::start_div('maxgrade', ['class' => 'mt-2 mt-sm-0']);
         $output .= html_writer::start_tag('form', ['method' => 'post', 'action' => 'edit.php',
-                'class' => 'quizsavegradesform form-inline']);
-        $output .= html_writer::start_tag('fieldset', ['class' => 'invisiblefieldset']);
+                'class' => 'quizsavegradesform']);
+        $output .= html_writer::start_tag('fieldset', ['class' => 'invisiblefieldset d-flex align-items-center']);
         $output .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()]);
         $output .= html_writer::input_hidden_params($pageurl);
         $output .= html_writer::tag('label', get_string('maximumgrade') . ' ',
-                ['for' => 'inputmaxgrade']);
+                ['for' => 'inputmaxgrade', 'class' => 'd-inline-block w-auto mb-0']);
         $output .= html_writer::empty_tag('input', ['type' => 'text', 'id' => 'inputmaxgrade',
                 'name' => 'maxgrade', 'size' => ($structure->get_decimal_places_for_grades() + 2),
                 'value' => $structure->formatted_quiz_grade(),
-                'class' => 'form-control']);
-        $output .= html_writer::empty_tag('input', ['type' => 'submit', 'class' => 'btn btn-secondary ml-1',
+                'class' => 'form-control d-inline-block align-middle w-auto ml-1']);
+        $output .= html_writer::empty_tag('input', ['type' => 'submit', 'class' => 'btn btn-secondary ml-1 d-inline-block w-auto ',
                 'name' => 'savechanges', 'value' => get_string('save', 'quiz')]);
         $output .= html_writer::end_tag('fieldset');
         $output .= html_writer::end_tag('form');
@@ -793,7 +793,7 @@ class edit_renderer extends \plugin_renderer_base {
      * @param int $slot the slot on the page we are outputting.
      * @return string HTML to output.
      */
-    public function get_checkbox_render(structure $structure, int $slot) : string {
+    public function get_checkbox_render(structure $structure, int $slot): string {
         $questionslot = $structure->get_displayed_number_for_slot($slot);
         $checkbox = new \core\output\checkbox_toggleall($this->togglegroup, false,
             [
@@ -815,7 +815,7 @@ class edit_renderer extends \plugin_renderer_base {
      * @param \moodle_url $pageurl the canonical URL of this page.
      * @return string HTML to output.
      */
-    public function get_question_name_for_slot(structure $structure, int $slot, \moodle_url $pageurl) : string {
+    public function get_question_name_for_slot(structure $structure, int $slot, \moodle_url $pageurl): string {
         // Display the link to the question (or do nothing if question has no url).
         if ($structure->get_question_type_for_slot($slot) === 'random') {
             $questionname = $this->random_question($structure, $slot, $pageurl);
@@ -834,7 +834,7 @@ class edit_renderer extends \plugin_renderer_base {
      * @param \moodle_url $pageurl the canonical URL of this page.
      * @return string HTML to output.
      */
-    public function get_action_icon(structure $structure, int $slot, \moodle_url $pageurl) : string {
+    public function get_action_icon(structure $structure, int $slot, \moodle_url $pageurl): string {
         // Action icons.
         $qtype = $structure->get_question_type_for_slot($slot);
         $slotinfo = $structure->get_slot_by_number($slot);
@@ -1232,8 +1232,6 @@ class edit_renderer extends \plugin_renderer_base {
                 'edittitleinstructions',
                 'emptydragdropregion',
                 'hide',
-                'markedthistopic',
-                'markthistopic',
                 'move',
                 'movecontent',
                 'moveleft',

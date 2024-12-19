@@ -424,6 +424,7 @@ $string['newbadge'] = 'Add a new badge';
 $string['newimage'] = 'New image';
 $string['noalignment'] = 'This badge does not have any external skills or standards specified.';
 $string['noawards'] = 'This badge has not been earned yet.';
+$string['nomatchingawards'] = 'There are no matching recipients who have earned this badge yet.';
 $string['nobackpack'] = 'There is no backpack service connected to this account.<br/>';
 $string['nobackpackbadgessummary'] = 'There are no badges in the collections you have selected.';
 $string['nobackpackcollectionssummary'] = 'No badge collections have been selected.';
@@ -592,11 +593,6 @@ $string['version_help'] = 'The version field may be used to keep track of the ba
 $string['warnexpired'] = ' (This badge has expired!)';
 $string['year'] = 'Year(s)';
 $string['includeauthdetails'] = "Include authentication details with the backpack";
-
-// Deprecated since Moodle 4.0.
-$string['evidence'] = 'Evidence';
-$string['recipientdetails'] = 'Recipient details';
-$string['recipientidentificationproblem'] = 'Cannot find a recipient of this badge among the existing users.';
 
 // Deprecated since Moodle 4.3.
 $string['backpackemail'] = 'Email address';

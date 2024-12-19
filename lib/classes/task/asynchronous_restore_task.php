@@ -46,8 +46,7 @@ class asynchronous_restore_task extends adhoc_task {
         global $DB;
         $started = time();
 
-        $customdata = $this->get_custom_data();
-        $restoreid = $customdata->backupid;
+        $restoreid = $this->get_custom_data()->backupid;
         $restorerecord = $DB->get_record('backup_controllers', array('backupid' => $restoreid), 'id, controller', IGNORE_MISSING);
         // If the record doesn't exist, the backup controller failed to create. Unable to proceed.
         if (empty($restorerecord)) {
@@ -96,12 +95,6 @@ class asynchronous_restore_task extends adhoc_task {
         } catch (\Exception $e) {
             // If an exception is thrown, mark the restore as failed.
             $rc->set_status(\backup::STATUS_FINISHED_ERR);
-
-            // Retrying isn't going to fix this, so add a no-retry flag to customdata.
-            // We can cancel the task in the task manager.
-            $customdata->noretry = true;
-            $this->set_custom_data($customdata);
-
             mtrace('Exception thrown during restore execution, marking job as failed.');
             mtrace($e->getMessage());
         } finally {
@@ -109,5 +102,14 @@ class asynchronous_restore_task extends adhoc_task {
             // Always destroy the controller.
             $rc->destroy();
         }
+    }
+
+    /**
+     * Sets attemptsavailable to false.
+     *
+     * @return boolean
+     */
+    public function retry_until_success(): bool {
+        return false;
     }
 }

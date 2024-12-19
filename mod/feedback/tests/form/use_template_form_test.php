@@ -66,7 +66,7 @@ class use_template_form_test extends \advanced_testcase {
      * @param bool $expected Whether or not the form should be validated
      * @dataProvider usetemplate_form_provider
      */
-    public function test_usetemplate_form(string $loginas, bool $private, bool $expected) {
+    public function test_usetemplate_form(string $loginas, bool $private, bool $expected): void {
         [$user, $feedback] = $this->setup_instance();
         switch($loginas) {
             case 'admin':
@@ -100,7 +100,7 @@ class use_template_form_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function usetemplate_form_provider(): array {
+    public function usetemplate_form_provider() {
         return [
             'Test submission with a private template as an admin' => [
                 'admin', true, true

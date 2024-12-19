@@ -30,7 +30,7 @@ class field_value_validators_test extends \advanced_testcase {
     /**
      * Data provider for \field_value_validators_testcase::test_validate_theme().
      */
-    public static function themes_provider(): array {
+    public function themes_provider() {
         return [
             'User themes disabled' => [
                 false, 'boost', 'warning', get_string('userthemesnotallowed', 'tool_uploaduser')
@@ -56,7 +56,7 @@ class field_value_validators_test extends \advanced_testcase {
      * @param string $expectedstatus The expected status.
      * @param string $expectedmessage The expected validation message.
      */
-    public function test_validate_theme($userthemesallowed, $themename, $expectedstatus, $expectedmessage) {
+    public function test_validate_theme($userthemesallowed, $themename, $expectedstatus, $expectedmessage): void {
         $this->resetAfterTest();
 
         // Set value for $CFG->allowuserthemes.

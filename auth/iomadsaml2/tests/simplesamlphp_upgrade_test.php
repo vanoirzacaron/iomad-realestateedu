@@ -37,9 +37,9 @@ class auth_iomadsaml2_simplesamlphp_upgrade_testcase extends advanced_testcase {
         $this->resetAfterTest();
 
         $filenames = [
-            "auth/iomadsaml2/.extlib/simplesamlphp/composer.json",
-            "auth/iomadsaml2/.extlib/simplesamlphp/composer.lock",
-            "auth/iomadsaml2/.extlib/simplesamlphp/modules/.gitignore",
+            "auth/saml2/.extlib/simplesamlphp/composer.json",
+            "auth/saml2/.extlib/simplesamlphp/composer.lock",
+            "auth/saml2/.extlib/simplesamlphp/modules/.gitignore",
         ];
 
         foreach ($filenames as $filename) {

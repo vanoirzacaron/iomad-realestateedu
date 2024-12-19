@@ -45,11 +45,11 @@ class backup_forum_activity_task_test extends \advanced_testcase {
      *
      * @dataProvider encode_content_links_provider
      */
-    public function test_encode_content_links($content, $expectation) {
+    public function test_encode_content_links($content, $expectation): void {
         $this->assertEquals($expectation, backup_forum_activity_task::encode_content_links($content));
     }
 
-    public static function encode_content_links_provider(): array {
+    public function encode_content_links_provider() {
         global $CFG;
         $altwwwroot = 'http://invalid.example.com/';
         return [

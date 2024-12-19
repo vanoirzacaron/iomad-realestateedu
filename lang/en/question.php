@@ -218,6 +218,7 @@ $string['invalidcategoryidtomove'] = 'Invalid category id to move!';
 $string['invalidconfirm'] = 'Confirmation string was incorrect';
 $string['invalidcontextinhasanyquestions'] = 'Invalid context passed to question_context_has_any_questions.';
 $string['invalidgrade'] = 'Grades ({$a}) do not match grade options - question skipped.';
+$string['invalidgradequestion'] = 'Grades ({$a->grades}) do not match grade options - question \'{$a->question}\' skipped.';
 $string['invalidpenalty'] = 'Invalid penalty';
 $string['invalidwizardpage'] = 'Incorrect or no wizard page specified!';
 $string['lastmodifiedby'] = 'Last modified by';
@@ -519,9 +520,6 @@ $string['version_selection'] = 'Version {$a->version}';
 $string['versioninfo'] = 'Version {$a->version} (of {$a->latestversion})';
 $string['versioninfolatest'] = 'Version {$a->version} (latest)';
 $string['question_version'] = 'Question version';
-
-// Deprecated since Moodle 4.0.
-$string['notflagged'] = 'Not flagged';
 
 // Deprecated since Moodle 4.1.
 $string['nopermissionmove'] = 'You don\'t have permission to move questions from here. You must save the question in this category or save it as a new question.';

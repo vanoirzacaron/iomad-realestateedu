@@ -63,9 +63,9 @@ class certificateexpiry extends check {
      * @return result
      */
     public function get_result() : result {
-        global $CFG, $iomadsaml2auth;
+        global $CFG, $iomadsam2auth;
 
-        $path = $iomadsaml2auth->certcrt;
+        $path = $iomadsam2auth->certcrt;
         $data = openssl_x509_parse(file_get_contents($path));
 
         $now = time();

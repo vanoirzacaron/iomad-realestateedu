@@ -53,7 +53,7 @@ class category_hooks_test extends \advanced_testcase {
      * @param string $callback Callback function used in method we test.
      * @return MockObject
      */
-    public function get_mock_category(\core_course_category $category, string $callback = '') : MockObject {
+    public function get_mock_category(\core_course_category $category, string $callback = ''): MockObject {
         // Setup mock object for \core_course_category.
         // Disable original constructor, since we can't use it directly since it is private.
         $mockcategory = $this->getMockBuilder(\core_course_category::class)
@@ -72,13 +72,12 @@ class category_hooks_test extends \advanced_testcase {
         // This is used to overcome private constructor.
         $reflected = new \ReflectionClass(\core_course_category::class);
         $constructor = $reflected->getConstructor();
-        $constructor->setAccessible(true);
         $constructor->invoke($mockcategory, $category->get_db_record());
 
         return $mockcategory;
     }
 
-    public function test_can_course_category_delete_hook() {
+    public function test_can_course_category_delete_hook(): void {
         $category1 = \core_course_category::create(array('name' => 'Cat1'));
         $category2 = \core_course_category::create(array('name' => 'Cat2', 'parent' => $category1->id));
         $category3 = \core_course_category::create(array('name' => 'Cat3'));
@@ -105,7 +104,7 @@ class category_hooks_test extends \advanced_testcase {
         $this->assertSame($mockcategory2, $argument);
     }
 
-    public function test_can_course_category_delete_move_hook() {
+    public function test_can_course_category_delete_move_hook(): void {
         $category1 = \core_course_category::create(array('name' => 'Cat1'));
         $category2 = \core_course_category::create(array('name' => 'Cat2', 'parent' => $category1->id));
         $category3 = \core_course_category::create(array('name' => 'Cat3'));
@@ -137,7 +136,7 @@ class category_hooks_test extends \advanced_testcase {
         $this->assertEquals($category3->id, $argument->id);
     }
 
-    public function test_pre_course_category_delete_hook() {
+    public function test_pre_course_category_delete_hook(): void {
         $category1 = \core_course_category::create(array('name' => 'Cat1'));
         $category2 = \core_course_category::create(array('name' => 'Cat2', 'parent' => $category1->id));
 
@@ -153,7 +152,7 @@ class category_hooks_test extends \advanced_testcase {
         $this->assertEquals($mockcategory2->get_db_record(), $argument);
     }
 
-    public function test_pre_course_category_delete_move_hook() {
+    public function test_pre_course_category_delete_move_hook(): void {
         $category1 = \core_course_category::create(array('name' => 'Cat1'));
         $category2 = \core_course_category::create(array('name' => 'Cat2', 'parent' => $category1->id));
         $category3 = \core_course_category::create(array('name' => 'Cat3'));
@@ -179,7 +178,7 @@ class category_hooks_test extends \advanced_testcase {
         $this->assertEquals($category3->id, $argument->id);
     }
 
-    public function test_get_course_category_contents_hook() {
+    public function test_get_course_category_contents_hook(): void {
         $category1 = \core_course_category::create(array('name' => 'Cat1'));
         $category2 = \core_course_category::create(array('name' => 'Cat2', 'parent' => $category1->id));
 

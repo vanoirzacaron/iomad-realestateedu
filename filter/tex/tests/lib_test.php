@@ -44,7 +44,7 @@ class lib_test extends advanced_testcase {
      *
      * @return array
      */
-    public static function filter_tex_sanitize_formula_provider(): array {
+    public function filter_tex_sanitize_formula_provider(): array {
         return [
             ['x\ =\ \frac{\sqrt{144}}{2}\ \times\ (y\ +\ 12)', 'x\ =\ \frac{\sqrt{144}}{2}\ \times\ (y\ +\ 12)'],
             ['\usepackage[latin1]{inputenc}', '\usepackage[latin1]{inputenc}'],
@@ -60,7 +60,7 @@ class lib_test extends advanced_testcase {
      * @param $formula The formula to test
      * @param $expected The sanitized version of the formula we expect to get
      */
-    public function test_filter_tex_sanitize_formula(string $formula, string $expected) {
+    public function test_filter_tex_sanitize_formula(string $formula, string $expected): void {
         $this->assertEquals($expected, filter_tex_sanitize_formula($formula));
     }
 }

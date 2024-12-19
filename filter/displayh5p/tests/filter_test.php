@@ -59,7 +59,7 @@ class filter_test extends \advanced_testcase {
      *
      * @dataProvider texts_provider
      */
-    public function test_filter_urls($text, $filteredtextpattern) {
+    public function test_filter_urls($text, $filteredtextpattern): void {
 
         $filterplugin = new filter_displayh5p(null, array());
 
@@ -72,7 +72,7 @@ class filter_test extends \advanced_testcase {
      *
      * @return array
      */
-    public static function texts_provider(): array {
+    public function texts_provider() {
         global $CFG;
 
         return [

@@ -32,14 +32,13 @@ class factor_test extends \advanced_testcase {
      * @covers ::check_verification_code
      * @covers ::post_pass_state
      */
-    public function test_check_verification_code() {
+    public function test_check_verification_code(): void {
         global $DB, $USER;
         $this->resetAfterTest(true);
 
         $emailfactorclass = new \factor_email\factor('email');
         $rc = new \ReflectionClass($emailfactorclass::class);
         $rcm = $rc->getMethod('check_verification_code');
-        $rcm->setAccessible(true);
 
         // Assigned email to be used in getting the email factor.
         $USER->email = 'user@mail.com';
@@ -76,7 +75,6 @@ class factor_test extends \advanced_testcase {
 
         // Cleans up email records once MFA passed.
         $rcm = $rc->getMethod('post_pass_state');
-        $rcm->setAccessible(true);
         $rcm->invoke($emailfactorclass);
 
         // Check if the email records have been deleted.

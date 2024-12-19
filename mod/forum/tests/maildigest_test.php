@@ -62,7 +62,7 @@ class maildigest_test extends \advanced_testcase {
         $this->mailsink = $this->redirectEmails();
 
         // Confirm that we have an empty message sink so far.
-        $messages = $this->messagesink->get_messages();
+        $messages = $this->messagesink->get_messages_by_component('mod_forum');
         $this->assertEquals(0, count($messages));
 
         $messages = $this->mailsink->get_messages();
@@ -138,7 +138,7 @@ class maildigest_test extends \advanced_testcase {
         return $return;
     }
 
-    public function test_set_maildigest() {
+    public function test_set_maildigest(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -194,7 +194,7 @@ class maildigest_test extends \advanced_testcase {
         forum_set_user_maildigest($forum1, 42, $user);
     }
 
-    public function test_get_user_digest_options_default() {
+    public function test_get_user_digest_options_default(): void {
         global $USER, $DB;
 
         $this->resetAfterTest(true);
@@ -233,7 +233,7 @@ class maildigest_test extends \advanced_testcase {
         $this->assertEquals($options[-1], get_string('emaildigestdefault', 'mod_forum', $digestoptions[2]));
     }
 
-    public function test_get_user_digest_options_sorting() {
+    public function test_get_user_digest_options_sorting(): void {
         global $USER, $DB;
 
         $this->resetAfterTest(true);
@@ -258,7 +258,7 @@ class maildigest_test extends \advanced_testcase {
         }
     }
 
-    public function test_cron_no_posts() {
+    public function test_cron_no_posts(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -272,7 +272,7 @@ class maildigest_test extends \advanced_testcase {
      * Sends several notifications to one user as:
      * * single messages based on a user profile setting.
      */
-    public function test_cron_profile_single_mails() {
+    public function test_cron_profile_single_mails(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -323,7 +323,7 @@ class maildigest_test extends \advanced_testcase {
      * Sends several notifications to one user as:
      * * daily digests coming from the user profile setting.
      */
-    public function test_cron_profile_digest_email() {
+    public function test_cron_profile_digest_email(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -373,7 +373,7 @@ class maildigest_test extends \advanced_testcase {
     /**
      * Send digests to a user who cannot view fullnames
      */
-    public function test_cron_digest_view_fullnames_off() {
+    public function test_cron_digest_view_fullnames_off(): void {
         global $DB, $CFG;
 
         $CFG->fullnamedisplay = 'lastname';
@@ -405,7 +405,9 @@ class maildigest_test extends \advanced_testcase {
         $this->send_digests_and_assert($user, $posts);
 
         // The user does not, by default, have permission to view the fullname.
-        $messagecontent = $this->messagesink->get_messages()[0]->fullmessage;
+        $messages = $this->messagesink->get_messages_by_component('mod_forum');
+        $messages = reset($messages);
+        $messagecontent = $messages->fullmessage;
 
         // Assert that the expected name is present (lastname only).
         $this->assertStringContainsString(fullname($user, false), $messagecontent);
@@ -417,7 +419,7 @@ class maildigest_test extends \advanced_testcase {
     /**
      * Send digests to a user who can view fullnames.
      */
-    public function test_cron_digest_view_fullnames_on() {
+    public function test_cron_digest_view_fullnames_on(): void {
         global $DB, $CFG;
 
         $CFG->fullnamedisplay = 'lastname';
@@ -456,7 +458,9 @@ class maildigest_test extends \advanced_testcase {
 
         // The user does not, by default, have permission to view the fullname.
         // However we have given the user that capability so we expect to see both firstname and lastname.
-        $messagecontent = $this->messagesink->get_messages()[0]->fullmessage;
+        $messages = $this->messagesink->get_messages_by_component('mod_forum');
+        $messages = reset($messages);
+        $messagecontent = $messages->fullmessage;
 
         // Assert that the expected name is present (lastname only).
         $this->assertStringContainsString(fullname($user, false), $messagecontent);
@@ -470,7 +474,7 @@ class maildigest_test extends \advanced_testcase {
      * * daily digests coming from the per-forum setting; and
      * * single e-mails from the profile setting.
      */
-    public function test_cron_mixed_email_1() {
+    public function test_cron_mixed_email_1(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -524,7 +528,7 @@ class maildigest_test extends \advanced_testcase {
      * * single e-mails from the per-forum setting; and
      * * daily digests coming from the per-user setting.
      */
-    public function test_cron_mixed_email_2() {
+    public function test_cron_mixed_email_2(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -577,7 +581,7 @@ class maildigest_test extends \advanced_testcase {
      * Sends several notifications to one user as:
      * * daily digests coming from the per-forum setting.
      */
-    public function test_cron_forum_digest_email() {
+    public function test_cron_forum_digest_email(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -627,7 +631,7 @@ class maildigest_test extends \advanced_testcase {
     /**
      * The digest being in the past is queued til the next day.
      */
-    public function test_cron_digest_previous_day() {
+    public function test_cron_digest_previous_day(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -667,7 +671,7 @@ class maildigest_test extends \advanced_testcase {
     /**
      * The digest being in the future is queued for today.
      */
-    public function test_cron_digest_same_day() {
+    public function test_cron_digest_same_day(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -709,7 +713,7 @@ class maildigest_test extends \advanced_testcase {
      * Tests that if a new message is posted after the days digest time,
      * but before that days digests are sent a new task is created.
      */
-    public function test_cron_digest_queue_next_before_current_processed() {
+    public function test_cron_digest_queue_next_before_current_processed(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -775,7 +779,7 @@ class maildigest_test extends \advanced_testcase {
     /**
      * The sending of a digest marks posts as read if automatic message read marking is set.
      */
-    public function test_cron_digest_marks_posts_read() {
+    public function test_cron_digest_marks_posts_read(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);
@@ -832,7 +836,7 @@ class maildigest_test extends \advanced_testcase {
     /**
      * The sending of a digest does not mark posts as read when manual message read marking is set.
      */
-    public function test_cron_digest_leaves_posts_unread() {
+    public function test_cron_digest_leaves_posts_unread(): void {
         global $DB, $CFG;
 
         $this->resetAfterTest(true);

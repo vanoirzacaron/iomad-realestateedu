@@ -25,7 +25,16 @@ namespace mod_chat;
  */
 class generator_test extends \advanced_testcase {
 
-    public function test_create_instance() {
+    /**
+     * Setup testcase.
+     */
+    public function setUp(): void {
+        // Chat module is disabled by default, enable it for testing.
+        $manager = \core_plugin_manager::resolve_plugininfo_class('mod');
+        $manager::enable_plugin('chat', 1);
+    }
+
+    public function test_create_instance(): void {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();

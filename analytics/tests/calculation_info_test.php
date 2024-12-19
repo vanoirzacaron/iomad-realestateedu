@@ -23,7 +23,8 @@ namespace core_analytics;
  * @copyright 2017 David Monllaó {@link http://www.davidmonllao.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class calculation_info_test extends \advanced_testcase {
+class calculation_info_test extends \advanced_testcase {
+
     /**
      * test_calculation_info description
      *
@@ -34,7 +35,7 @@ final class calculation_info_test extends \advanced_testcase {
      * @param mixed $info4
      * @return null
      */
-    public function test_calculation_info_add_pull($info1, $info2, $info3, $info4) {
+    public function test_calculation_info_add_pull($info1, $info2, $info3, $info4): void {
         require_once(__DIR__ . '/fixtures/test_indicator_max.php');
         require_once(__DIR__ . '/fixtures/test_indicator_min.php');
         $this->resetAfterTest();
@@ -87,7 +88,7 @@ final class calculation_info_test extends \advanced_testcase {
      *
      * @return mixed[]
      */
-    public static function provider_test_calculation_info_add_pull(): array {
+    public function provider_test_calculation_info_add_pull() {
         return [
             'mixed-types' => ['asd', true, [123, 123, 123], (object)['asd' => 'fgfg']],
         ];

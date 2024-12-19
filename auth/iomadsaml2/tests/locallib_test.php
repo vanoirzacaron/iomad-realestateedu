@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use auth_iomadsaml2\admin\iomadsaml2_settings;
+use auth_iomadsaml2\admin\saml2_settings;
 use auth_iomadsaml2\admin\setting_idpmetadata;
 
 defined('MOODLE_INTERNAL') || die();
@@ -126,7 +126,7 @@ class auth_iomadsaml2_locallib_testcase extends advanced_testcase {
             create_certificates($auth);
             // Fail if the exception is not thrown.
             $this->fail();
-        } catch (\iomadsaml2_exception $e) {
+        } catch (\saml2_exception $e) {
             $this->assertFalse(file_exists($auth->certcrt));
         }
     }

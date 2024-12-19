@@ -1,17 +1,17 @@
 @auth @auth_iomadsaml2 @javascript
 Feature: Login
   In order to allow single sign on
-  As a IOMAD SAML2 user
+  As a SAML2 user
   I need to be able to login into Moodle
 
-  Scenario: Use Moodle Login if IOMAD SAML2 is disabled
+  Scenario: Use Moodle Login if SAML2 is disabled
     Given the authentication plugin iomadsaml2 is disabled                          # auth_iomadsaml2
     When I go to the login page                                                # auth_iomadsaml2
     Then I should see "Acceptance test site"
     And I should see "Log in"
     But I should not see "Mock IdP login"
 
-  Scenario: IOMAD SAML2 login to existing account with field mapping and updates
+  Scenario: SAML2 login to existing account with field mapping and updates
     Given the following "users" exist:
       | username | auth  | firstname | lastname |
       | student1 | iomadsaml2 | Eigh      | Person   |
@@ -31,7 +31,7 @@ Feature: Login
       | sillyname2 | Other    |
     Then I should see "You are logged in as Anne Other"
 
-  Scenario: IOMAD SAML2 logout
+  Scenario: SAML2 logout
     Given the following "users" exist:
       | username | auth  | firstname | lastname |
       | student1 | iomadsaml2 | Eigh      | Person   |

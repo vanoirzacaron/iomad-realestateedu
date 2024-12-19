@@ -53,7 +53,7 @@ class restore_structure_parser_processor_test extends advanced_testcase {
      *
      * @return array
      */
-    public static function process_cdata_data_provider(): array {
+    public function process_cdata_data_provider() {
         return array(
             array(null, null, true),
             array("$@NULL@$", null, true),
@@ -123,7 +123,7 @@ class restore_structure_parser_processor_test extends advanced_testcase {
      * @param string $expected Expected result.
      * @param bool $slasharguments A value for $CFG->slasharguments setting.
      */
-    public function test_process_cdata($content, $expected, $slasharguments) {
+    public function test_process_cdata($content, $expected, $slasharguments): void {
         global $CFG;
 
         $CFG->slasharguments = $slasharguments;

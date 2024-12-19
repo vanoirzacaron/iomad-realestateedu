@@ -83,7 +83,7 @@ class primary extends view {
 
         // Allow plugins to add nodes to the primary navigation.
         $hook = new \core\hook\navigation\primary_extend($this);
-        \core\hook\manager::get_instance()->dispatch($hook);
+        \core\di::get(\core\hook\manager::class)->dispatch($hook);
 
         // IOMAD.
         $systemcontext = \context_system::instance();

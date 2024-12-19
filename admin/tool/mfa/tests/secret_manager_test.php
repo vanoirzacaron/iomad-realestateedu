@@ -31,7 +31,7 @@ class secret_manager_test extends \advanced_testcase {
      *
      * @covers ::create_secret
      */
-    public function test_create_secret() {
+    public function test_create_secret(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -42,7 +42,6 @@ class secret_manager_test extends \advanced_testcase {
 
         // Mutate the sessionid using reflection.
         $reflectedsessionid = new \ReflectionProperty($secman, 'sessionid');
-        $reflectedsessionid->setAccessible(true);
         $reflectedsessionid->setValue($secman, 'fakesession');
 
         $sec1 = $secman->create_secret(1800, false);
@@ -86,7 +85,7 @@ class secret_manager_test extends \advanced_testcase {
      * @covers ::get_record
      * @covers ::delete_records
      */
-    public function test_add_secret_to_db() {
+    public function test_add_secret_to_db(): void {
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -97,7 +96,6 @@ class secret_manager_test extends \advanced_testcase {
         // Let's make stuff public using reflection.
         $reflectedscanner = new \ReflectionClass($secman);
         $reflectedmethod = $reflectedscanner->getMethod('add_secret_to_db');
-        $reflectedmethod->setAccessible(true);
 
         // Now add a secret and confirm it creates the correct record.
         $reflectedmethod->invoke($secman, 'code', 1800);
@@ -124,7 +122,7 @@ class secret_manager_test extends \advanced_testcase {
      * @covers ::validate_secret
      * @covers ::create_secret
      */
-    public function test_validate_secret() {
+    public function test_validate_secret(): void {
         global $DB;
 
         // Test adding a code and getting it returned, then validated.
@@ -164,7 +162,6 @@ class secret_manager_test extends \advanced_testcase {
         // Session locked code from the same session id.
         // Mutate the sessionid using reflection.
         $reflectedsessionid = new \ReflectionProperty($secman, 'sessionid');
-        $reflectedsessionid->setAccessible(true);
         $reflectedsessionid->setValue($secman, 'fakesession');
 
         $secret = $secman->create_secret(1800, true);
@@ -185,7 +182,7 @@ class secret_manager_test extends \advanced_testcase {
      * @covers ::create_secret
      * @covers ::revoke_secret
      */
-    public function test_revoke_secret() {
+    public function test_revoke_secret(): void {
         global $DB, $SESSION;
 
         $this->resetAfterTest(true);
@@ -216,7 +213,7 @@ class secret_manager_test extends \advanced_testcase {
      * @covers ::create_secret
      * @covers ::revoke_secret
      */
-    public function test_has_active_secret() {
+    public function test_has_active_secret(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -227,7 +224,6 @@ class secret_manager_test extends \advanced_testcase {
         $reflectedscanner = new \ReflectionClass($secman);
 
         $reflectedmethod = $reflectedscanner->getMethod('has_active_secret');
-        $reflectedmethod->setAccessible(true);
 
         // DB secrets.
         $this->assertFalse($reflectedmethod->invoke($secman));
@@ -244,7 +240,6 @@ class secret_manager_test extends \advanced_testcase {
         // Now check a secret with session involvement.
         // Mutate the sessionid using reflection.
         $reflectedsessionid = new \ReflectionProperty($secman, 'sessionid');
-        $reflectedsessionid->setAccessible(true);
         $reflectedsessionid->setValue($secman, 'fakesession');
 
         $this->assertFalse($reflectedmethod->invoke($secman, true));
@@ -261,5 +256,30 @@ class secret_manager_test extends \advanced_testcase {
         $secret = $secman->create_secret(1800, true);
          $reflectedsessionid->setValue($secman, 'diffsession');
         $this->assertFalse($reflectedmethod->invoke($secman, true));
+    }
+
+    /**
+     * Tests with cleanup temporal secrets
+     *
+     * @covers ::cleanup_temp_secrets
+     */
+    public function test_cleanup_temp_secrets(): void {
+        global $DB;
+
+        $this->resetAfterTest(true);
+        $secman = new \tool_mfa\local\secret_manager('mock');
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+
+        // Create secrets.
+        $secman->create_secret(1800, true);
+        $secman->create_secret(1800, true);
+
+        // Cleanup current user secrets.
+        $secman->cleanup_temp_secrets();
+
+        // Check there are no secrets of the current user.
+        $records = $DB->get_records('tool_mfa_secrets', ['userid' => $user->id]);
+        $this->assertEmpty($records);
     }
 }

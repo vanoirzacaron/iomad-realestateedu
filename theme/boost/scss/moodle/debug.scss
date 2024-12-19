@@ -12,8 +12,9 @@ body.behat-site {
     .stickyfooter {
         position: inherit;
         z-index: inherit;
-        .bulkcancel {
-            position: inherit;
+        .sticky-footer-content-wrapper {
+            padding: 0;
+            margin: 0;
         }
     }
 

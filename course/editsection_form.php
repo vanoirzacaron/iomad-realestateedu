@@ -25,17 +25,23 @@ class editsection_form extends moodleform {
 
         $mform->addElement('header', 'generalhdr', get_string('general'));
 
-        $mform->addElement('defaultcustom', 'name', get_string('sectionname'), [
-            'defaultvalue' => $this->_customdata['defaultsectionname'],
-            'customvalue' => $sectioninfo->name,
-        ], ['size' => 30, 'maxlength' => 255]);
-        $mform->setDefault('name', false);
-        $mform->addGroupRule('name', array('name' => array(array(get_string('maximumchars', '', 255), 'maxlength', 255))));
+        $mform->addElement(
+            'text',
+            'name',
+            get_string('sectionname'),
+            [
+                'placeholder' => $this->_customdata['defaultsectionname'],
+                'size' => 30,
+                'maxlength' => 255,
+            ],
+        );
+        $mform->setType('name', PARAM_RAW);
+        $mform->setDefault('name', $sectioninfo->name);
+        $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
         /// Prepare course and the editor
 
-        $mform->addElement('editor', 'summary_editor', get_string('summary'), null, $this->_customdata['editoroptions']);
-        $mform->addHelpButton('summary_editor', 'summary');
+        $mform->addElement('editor', 'summary_editor', get_string('description'), null, $this->_customdata['editoroptions']);
         $mform->setType('summary_editor', PARAM_RAW);
 
         $mform->addElement('hidden', 'id');
@@ -99,9 +105,6 @@ class editsection_form extends moodleform {
         $editoroptions = $this->_customdata['editoroptions'];
         $default_values = file_prepare_standard_editor($default_values, 'summary', $editoroptions,
                 $editoroptions['context'], 'course', 'section', $default_values->id);
-        if (strval($default_values->name) === '') {
-            $default_values->name = false;
-        }
         parent::set_data($default_values);
     }
 

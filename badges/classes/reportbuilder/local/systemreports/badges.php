@@ -112,6 +112,7 @@ class badges extends system_report {
         $columns = [
             'badge:image',
             'badge:namewithlink',
+            'badge:version',
             'badge:status',
             'badge:criteria',
         ];
@@ -158,7 +159,9 @@ class badges extends system_report {
     protected function add_filters(): void {
         $this->add_filters_from_entities([
             'badge:name',
+            'badge:version',
             'badge:status',
+            'badge:expiry',
         ]);
     }
 
@@ -267,7 +270,7 @@ class badges extends system_report {
                 'id' => ':courseid',
             ]),
             new pix_icon('t/delete', '', 'core'),
-            [],
+            ['class' => 'text-danger'],
             false,
             new lang_string('delete', 'core')
         ))->add_callback(static function(stdclass $row): bool {

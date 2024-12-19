@@ -46,7 +46,7 @@ class field_controller_test extends \advanced_testcase {
     /**
      * Test for function \core_customfield\field_controller::create()
      */
-    public function test_constructor() {
+    public function test_constructor(): void {
         global $DB;
         $this->resetAfterTest();
 
@@ -117,7 +117,7 @@ class field_controller_test extends \advanced_testcase {
     /**
      * Test for function \core_customfield\field_controller::create() in case of wrong parameters
      */
-    public function test_constructor_errors() {
+    public function test_constructor_errors(): void {
         global $DB;
         $this->resetAfterTest();
 
@@ -191,7 +191,7 @@ class field_controller_test extends \advanced_testcase {
      * \core_customfield\field_controller::get()
      * \core_customfield\field_controller::get_category()
      */
-    public function test_create_field() {
+    public function test_create_field(): void {
         global $DB;
         $this->resetAfterTest();
 
@@ -221,7 +221,7 @@ class field_controller_test extends \advanced_testcase {
     /**
      * Tests for \core_customfield\field_controller::delete() behaviour.
      */
-    public function test_delete_field() {
+    public function test_delete_field(): void {
         global $DB;
         $this->resetAfterTest();
 
@@ -250,7 +250,7 @@ class field_controller_test extends \advanced_testcase {
     /**
      * Tests for \core_customfield\field_controller::get_configdata_property() behaviour.
      */
-    public function test_get_configdata_property() {
+    public function test_get_configdata_property(): void {
         $this->resetAfterTest();
 
         $lpg = $this->get_generator();

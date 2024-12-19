@@ -32,7 +32,7 @@ class ip_utils_test extends \basic_testcase {
      * @param bool $expected the expected result.
      * @dataProvider domain_name_data_provider
      */
-    public function test_is_domain_name($domainname, $expected) {
+    public function test_is_domain_name($domainname, $expected): void {
         $this->assertEquals($expected, \core\ip_utils::is_domain_name($domainname));
     }
 
@@ -41,7 +41,7 @@ class ip_utils_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function domain_name_data_provider(): array {
+    public function domain_name_data_provider() {
         return [
             ["com", true],
             ["i.net", true], // Single char, alpha tertiary domain.
@@ -82,7 +82,7 @@ class ip_utils_test extends \basic_testcase {
      * @param bool $expected the expected result.
      * @dataProvider domain_matching_patterns_data_provider
      */
-    public function test_is_domain_matching_pattern($str, $expected) {
+    public function test_is_domain_matching_pattern($str, $expected): void {
         $this->assertEquals($expected, \core\ip_utils::is_domain_matching_pattern($str));
     }
 
@@ -91,7 +91,7 @@ class ip_utils_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function domain_matching_patterns_data_provider(): array {
+    public function domain_matching_patterns_data_provider() {
         return [
             ["*.com", true],
             ["*.example.com", true],
@@ -127,7 +127,7 @@ class ip_utils_test extends \basic_testcase {
      * @param bool $expected the expected result.
      * @dataProvider ip_address_data_provider
      */
-    public function test_is_ip_address($address, $expected) {
+    public function test_is_ip_address($address, $expected): void {
         $this->assertEquals($expected, \core\ip_utils::is_ip_address($address));
     }
 
@@ -136,7 +136,7 @@ class ip_utils_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function ip_address_data_provider(): array {
+    public function ip_address_data_provider() {
         return [
             ["127.0.0.1", true],
             ["10.1", false],
@@ -174,7 +174,7 @@ class ip_utils_test extends \basic_testcase {
      * @param bool $expected the expected result.
      * @dataProvider ipv4_address_data_provider
      */
-    public function test_is_ipv4_address($address, $expected) {
+    public function test_is_ipv4_address($address, $expected): void {
         $this->assertEquals($expected, \core\ip_utils::is_ipv4_address($address));
     }
 
@@ -183,7 +183,7 @@ class ip_utils_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function ipv4_address_data_provider(): array {
+    public function ipv4_address_data_provider() {
         return [
             ["127.0.0.1", true],
             ["0.0.0.0", true],
@@ -210,7 +210,7 @@ class ip_utils_test extends \basic_testcase {
      * @param bool $expected the expected result.
      * @dataProvider ipv4_range_data_provider
      */
-    public function test_is_ipv4_range($addressrange, $expected) {
+    public function test_is_ipv4_range($addressrange, $expected): void {
         $this->assertEquals($expected, \core\ip_utils::is_ipv4_range($addressrange));
     }
 
@@ -219,7 +219,7 @@ class ip_utils_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function ipv4_range_data_provider(): array {
+    public function ipv4_range_data_provider() {
         return [
             ["127.0.0.1/24", true],
             ["127.0.0.20-20", true],
@@ -251,7 +251,7 @@ class ip_utils_test extends \basic_testcase {
      * @param bool $expected the expected result.
      * @dataProvider ipv6_address_data_provider
      */
-    public function test_is_ipv6_address($address, $expected) {
+    public function test_is_ipv6_address($address, $expected): void {
         $this->assertEquals($expected, \core\ip_utils::is_ipv6_address($address));
     }
 
@@ -260,7 +260,7 @@ class ip_utils_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function ipv6_address_data_provider(): array {
+    public function ipv6_address_data_provider() {
         return [
             ["::", true],
             ["::0", true],
@@ -291,7 +291,7 @@ class ip_utils_test extends \basic_testcase {
      * @param bool $expected the expected result.
      * @dataProvider ipv6_range_data_provider
      */
-    public function test_is_ipv6_range($addressrange, $expected) {
+    public function test_is_ipv6_range($addressrange, $expected): void {
         $this->assertEquals($expected, \core\ip_utils::is_ipv6_range($addressrange));
     }
 
@@ -300,7 +300,7 @@ class ip_utils_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function ipv6_range_data_provider(): array {
+    public function ipv6_range_data_provider() {
         return [
             ["::/128", true],
             ["::1/128", true],
@@ -338,7 +338,7 @@ class ip_utils_test extends \basic_testcase {
      * @param  string $domain domain address
      * @dataProvider data_domain_addresses
      */
-    public function test_check_domain_against_allowed_domains($expected, $domain) {
+    public function test_check_domain_against_allowed_domains($expected, $domain): void {
         $alloweddomains = ['example.com',
                            '*.moodle.com',
                            '*.per.this.penny-arcade.com',
@@ -352,7 +352,7 @@ class ip_utils_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function data_domain_addresses(): array {
+    public function data_domain_addresses() {
         return [
             [true, 'example.com'],
             [true, 'ExAmPle.com'],
@@ -378,7 +378,7 @@ class ip_utils_test extends \basic_testcase {
      *
      * @return array
      */
-    public static function data_is_ip_in_subnet_list(): array {
+    public function data_is_ip_in_subnet_list() {
         return [
             [true, '1.1.1.1', '1.1.1.1', "\n"],
             [false, '1.1.1.1', '2.2.2.2', "\n"],
@@ -396,7 +396,7 @@ class ip_utils_test extends \basic_testcase {
      * @param  string $delim delimiter of list
      * @dataProvider data_is_ip_in_subnet_list
      */
-    public function test_is_ip_in_subnet_list($expected, $ip, $list, $delim) {
+    public function test_is_ip_in_subnet_list($expected, $ip, $list, $delim): void {
         $this->assertEquals($expected, \core\ip_utils::is_ip_in_subnet_list($ip, $list, $delim));
     }
 

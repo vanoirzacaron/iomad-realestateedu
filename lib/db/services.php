@@ -151,6 +151,36 @@ $functions = array(
         'ajax'          => true,
         'loginrequired' => false,
     ),
+    'core_blog_get_access_information' => [
+        'classname' => '\core_blog\external\get_access_information',
+        'description' => 'Retrieves permission information for the current user.',
+        'type' => 'read',
+        'services' => [MOODLE_OFFICIAL_MOBILE_SERVICE],
+    ],
+    'core_blog_add_entry' => [
+        'classname' => '\core_blog\external\add_entry',
+        'description' => 'Creates a new blog post entry.',
+        'type' => 'write',
+        'services' => [MOODLE_OFFICIAL_MOBILE_SERVICE],
+    ],
+    'core_blog_delete_entry' => [
+        'classname' => '\core_blog\external\delete_entry',
+        'description' => 'Deletes a blog post entry.',
+        'type' => 'write',
+        'services' => [MOODLE_OFFICIAL_MOBILE_SERVICE],
+    ],
+    'core_blog_prepare_entry_for_edition' => [
+        'classname' => '\core_blog\external\prepare_entry_for_edition',
+        'description' => 'Prepare a draft area for editing a blog entry..',
+        'type' => 'write',
+        'services' => [MOODLE_OFFICIAL_MOBILE_SERVICE],
+    ],
+    'core_blog_update_entry' => [
+        'classname' => '\core_blog\external\update_entry',
+        'description' => 'Updates a blog entry.',
+        'type' => 'write',
+        'services' => [MOODLE_OFFICIAL_MOBILE_SERVICE],
+    ],
     'core_calendar_get_calendar_monthly_view' => array(
         'classname' => 'core_calendar_external',
         'methodname' => 'get_calendar_monthly_view',
@@ -228,6 +258,7 @@ $functions = array(
         'capabilities' => 'moodle/calendar:manageentries, moodle/calendar:manageownentries, moodle/calendar:managegroupentries',
         'ajax' => true,
         'services' => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
+        'readonlysession' => true,
     ),
     'core_calendar_get_action_events_by_course' => array(
         'classname' => 'core_calendar_external',
@@ -304,6 +335,13 @@ $functions = array(
         'description' => 'Delete the calendar subscription',
         'type' => 'write',
         'ajax' => true
+    ],
+    'core_check_get_result_admintree' => [
+        'classname' => 'core\check\external\get_result_admintree',
+        'description' => 'Executes a check stored in the admin tree and returns the result',
+        'type' => 'read',
+        'ajax' => true,
+        'readonlysession' => true,
     ],
     'core_cohort_add_cohort_members' => array(
         'classname' => 'core_cohort_external',
@@ -669,6 +707,7 @@ $functions = array(
         'type' => 'read',
         'ajax' => true,
         'services' => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
+        'readonlysession' => true,
     ),
     'core_course_get_recent_courses' => array(
         'classname' => 'core_course_external',
@@ -1484,6 +1523,7 @@ $functions = array(
         'capabilities' => 'moodle/site:sendmessage',
         'ajax' => true,
         'services' => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
+        'readonlysession' => true,
     ),
     'core_message_send_messages_to_conversation' => array(
         'classname' => 'core_message_external',
@@ -1665,13 +1705,6 @@ $functions = array(
         'type'          => 'write',
         'capabilities'  => 'moodle/question:flag',
         'services'      => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
-    ),
-    'core_question_submit_tags_form' => array(
-        'classname'     => 'core_question_external',
-        'methodname'    => 'submit_tags_form',
-        'description'   => 'Update the question tags.',
-        'type'          => 'write',
-        'ajax' => true,
     ),
     'core_question_get_random_question_summaries' => array(
         'classname' => 'core_question_external',
@@ -2777,6 +2810,13 @@ $functions = array(
         'type'        => 'read',
         'services'    => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
     ),
+    'core_filters_get_all_states' => [
+        'classname'   => 'core_filters\external\get_all_states',
+        'description' => 'Retrieve all the filters and their states (including overridden ones in any context).',
+        'type'        => 'read',
+        'services'    => [MOODLE_OFFICIAL_MOBILE_SERVICE],
+    ],
+
     'core_customfield_delete_field' => array(
         'classname'   => 'core_customfield_external',
         'methodname'  => 'delete_field',

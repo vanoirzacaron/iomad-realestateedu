@@ -22,7 +22,10 @@ use context;
 use context_helper;
 use lang_string;
 use stdClass;
+use theme_config;
 use core_reportbuilder\local\entities\base;
+use core_reportbuilder\local\filters\boolean_select;
+use core_reportbuilder\local\filters\cohort as cohort_filter;
 use core_reportbuilder\local\filters\date;
 use core_reportbuilder\local\filters\select;
 use core_reportbuilder\local\filters\text;
@@ -41,14 +44,14 @@ use core_reportbuilder\local\report\filter;
 class cohort extends base {
 
     /**
-     * Database tables that this entity uses and their default aliases
+     * Database tables that this entity uses
      *
-     * @return array
+     * @return string[]
      */
-    protected function get_default_table_aliases(): array {
+    protected function get_default_tables(): array {
         return [
-            'cohort' => 'c',
-            'context' => 'chctx',
+            'cohort',
+            'context',
         ];
     }
 
@@ -244,7 +247,14 @@ class cohort extends base {
             ->add_joins($this->get_joins())
             ->set_type(column::TYPE_TEXT)
             ->add_fields("{$tablealias}.theme")
-            ->set_is_sortable(true);
+            ->set_is_sortable(true)
+            ->add_callback(static function (?string $theme): string {
+                if ((string) $theme === '') {
+                    return '';
+                }
+
+                return get_string('pluginname', "theme_{$theme}");
+            });
 
         return $columns;
     }
@@ -258,6 +268,16 @@ class cohort extends base {
         global $DB;
 
         $tablealias = $this->get_table_alias('cohort');
+
+        // Cohort select filter.
+        $filters[] = (new filter(
+            cohort_filter::class,
+            'cohortselect',
+            new lang_string('selectcohort', 'core_cohort'),
+            $this->get_entity_name(),
+            "{$tablealias}.id"
+        ))
+            ->add_joins($this->get_joins());
 
         // Context filter.
         $filters[] = (new filter(
@@ -324,6 +344,32 @@ class cohort extends base {
             new lang_string('description'),
             $this->get_entity_name(),
             $DB->sql_cast_to_char("{$tablealias}.description")
+        ))
+            ->add_joins($this->get_joins());
+
+        // Theme filter.
+        $filters[] = (new filter(
+            select::class,
+            'theme',
+            new lang_string('theme'),
+            $this->get_entity_name(),
+            "{$tablealias}.theme",
+        ))
+            ->set_options_callback(static function(): array {
+                return array_map(
+                    fn(theme_config $theme) => $theme->get_theme_name(),
+                    get_list_of_themes(),
+                );
+            })
+            ->add_joins($this->get_joins());
+
+        // Visible filter.
+        $filters[] = (new filter(
+            boolean_select::class,
+            'visible',
+            new lang_string('visible', 'core_cohort'),
+            $this->get_entity_name(),
+            "{$tablealias}.visible"
         ))
             ->add_joins($this->get_joins());
 

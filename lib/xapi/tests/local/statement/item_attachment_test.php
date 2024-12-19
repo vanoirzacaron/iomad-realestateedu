@@ -41,7 +41,7 @@ class item_attachment_test extends advanced_testcase {
     /**
      * Test item creation.
      */
-    public function test_create() {
+    public function test_create(): void {
 
         $data = $this->get_generic_data();
         $item = item_attachment::create_from_data($data);
@@ -94,7 +94,7 @@ class item_attachment_test extends advanced_testcase {
      *
      * @return  array
      */
-    public static function invalid_values_data(): array {
+    public function invalid_values_data(): array {
         return [
             'No usageType attachment' => [
                 'usageType', null
